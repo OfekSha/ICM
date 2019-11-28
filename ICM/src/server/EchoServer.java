@@ -1,3 +1,4 @@
+package server;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -85,7 +86,11 @@ public class EchoServer extends AbstractServer
   public static void main(String[] args) 
   {
     int port = 0; //Port to listen on
-
+    mysqlConnection.connect();
+  //mysqlConnection.buildDB();
+  	//mysqlConnection.insertRequirement("Ofek1","after sending message there is button","button dosen't work","");
+  	mysqlConnection.readFromDB();
+  	//mysqlConnection.closeConnection();
     try
     {
       port = Integer.parseInt(args[0]); //Get port from command line
