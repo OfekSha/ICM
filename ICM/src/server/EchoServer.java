@@ -45,12 +45,12 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		mysqlConnection querry=new mysqlConnection(); // create new DB communication. 
+		mysqlConnection querry=new mysqlConnection(); // create new DB communication.  ofek
 		querry.connect();
 		System.out.println("Message received: " + msg + " from " + client);
 		
-		try {
-			client.sendToClient((querry.readFromDB()).toString());
+		try { // ofek 
+			client.sendToClient((querry.readFromDB()).toString()); 
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
