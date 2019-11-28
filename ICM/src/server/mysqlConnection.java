@@ -5,14 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class mysqlConnection {
 	private static Connection conn;
-	private static String name="root";
-	private static String password="Aa123456";
-	public static void connect(){ 
-	{
+	private  String name;
+	private  String password;
+	private String ip;
+	public mysqlConnection(String name,String password,String ip) {
+		this.name=name;
+		this.ip=ip;
+		this.password=password;
+	}
+	public mysqlConnection(){
+		this("root","Aa123456","localhost");
+	}
+	public void connect(){ 
+		{
+		
 		try 
 		{
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -24,7 +36,7 @@ public class mysqlConnection {
         
         try 
         {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/?serverTimezone=IST",name,password);
+            conn = DriverManager.getConnection("jdbc:mysql://"+ip+"/?serverTimezone=IST",name,password);
             System.out.println("SQL connection succeed");
             
      	} catch (SQLException ex) 
@@ -35,7 +47,7 @@ public class mysqlConnection {
             }
    	}
 }
-public static void closeConnection() {
+public  void closeConnection() {
 	try {
 		conn.close();
 	} catch (SQLException e) {
@@ -43,7 +55,7 @@ public static void closeConnection() {
 		e.printStackTrace();
 	}
 }
-public static void buildDB() {
+public void buildDB() {
 	Statement stmt;
 	try {
 		stmt = conn.createStatement();
@@ -53,69 +65,45 @@ public static void buildDB() {
 				"  `Num` INT NOT NULL,\r\n" + 
 				"  `CurrentSituationDetails` LONGTEXT NULL,\r\n" + 
 				"  `RequestDetails` LONGTEXT NULL,\r\n" + 
-				"  `StageSupervisor` VARCHAR(45) NULL,\r\n" + 
+				"  `StageSupervisor` VARCHAR(45) NULL,\r\n" +
+				"  `Status` ENUM('ongoing','suspended','closed') NOT NULL DEFAULT 'ongoing',\r\n" +
 				"  PRIMARY KEY (`Num`, `Initiator`));"); // create table
-		
+		stmt.close();
 	}catch (SQLException e) {	e.printStackTrace();}
 		
 	}
-public static void readFromDB(String where,String value){
-	PreparedStatement stmt;
-	ResultSet re;
+public void updateQuerry(String sqlQuerry){
+	PreparedStatement UpdateStmnt;
+	
 	try {
-		stmt = conn.prepareStatement("SELECT * FROM `icm`.`requirement` WHERE ?=?;");
-		stmt.setString(1, where);
-		stmt.setString(2, value);
-		re=stmt.executeQuery();
-		while(re.next()) {
-			System.out.println("1: "+re.getNString(1));
-			//System.out.println("2: "+re.getInt(2));
-			//System.out.println("3: "+re.getNString(3));
-			//System.out.println("4: "+re.getNString(4));
-			//System.out.println("5: "+re.getNString(5));
-		}
- 	
+		UpdateStmnt = conn.prepareStatement(sqlQuerry);
+		UpdateStmnt.execute();
+		readFromDB();
+		UpdateStmnt.close();
 	} catch (SQLException e) {	e.printStackTrace();}
 	 		
 }
-public static void readFromDB(){
+public List<Object> readFromDB(){
 	Statement stmt;
-	ResultSet re;
+	ResultSet re=null;
+	List<Object> list = new ArrayList<Object>();
 	try {
 		stmt = conn.createStatement();
 		re=stmt.executeQuery("SELECT * FROM `icm`.`requirement`;");
 		while(re.next()) {
-			System.out.println("1: "+re.getNString(1));
-			System.out.println("2: "+re.getInt(2));
-			System.out.println("3: "+re.getNString(3));
-			System.out.println("4: "+re.getNString(4));
-			System.out.println("5: "+re.getNString(5));
+			list.add(re.getNString(1));
+			list.add(re.getInt(2));
+			list.add(re.getNString(3));
+			list.add(re.getNString(4));
+			list.add(re.getNString(5));
+			list.add(re.getNString(6));
 		}
- 	
+		stmt.close();
+		
 	} catch (SQLException e) {	e.printStackTrace();}
-	 		
+	 	return list;	
 }
-public static void readFromDB(String where,int value){
-	PreparedStatement stmt;
-	ResultSet re;
-	try {
-		stmt = conn.prepareStatement("SELECT `requirement`.* FROM `icm`.`requirement` WHERE ?=?;");
-		stmt.setString(1, where);
-		stmt.setInt(2, value);
-		re=stmt.executeQuery();
-		while(re.next()) {
-			System.out.println(re.toString());
-			System.out.println("1: "+re.getNString(1));
-			System.out.println("2: "+re.getInt(2));
-			System.out.println("3: "+re.getNString(3));
-			System.out.println("4: "+re.getNString(4));
-			System.out.println("5: "+re.getNString(5));
-		}
- 	
-	} catch (SQLException e) {	e.printStackTrace();}
-	 		
-}	
-	public static void insertRequirement(String Initiator,String CurrentSituationDetails,String RequestDetails,String StageSupervisor){ // send the use details.
+	public  void insertRequirement(String Initiator,String CurrentSituationDetails,String RequestDetails,String StageSupervisor,String status){ // send the use details.
 		PreparedStatement stmt;
 		Statement numTest;
 		ResultSet re;
@@ -126,14 +114,15 @@ public static void readFromDB(String where,int value){
 			while (re.next()) { // generate number for submission.
 				num=re.getInt(1)+1;
 			}
-			stmt = conn.prepareStatement("INSERT INTO `icm`.`requirement` VALUES(?,?,?,?,?);");
+			stmt = conn.prepareStatement("INSERT INTO `icm`.`requirement`(Initiator,num,CurrentSituationDetails,RequestDetails,StageSupervisor) VALUES(?,?,?,?,?);");
 			stmt.setNString(1, Initiator);
 			stmt.setInt(2, num);
 			stmt.setNString(3, CurrentSituationDetails);
 			stmt.setNString(4, RequestDetails);
 			stmt.setNString(5, StageSupervisor);
+			//stmt.setNString(6, status);
 			stmt.execute(); // insert new row to requirement table.
-	 	
+			stmt.close();
 		} catch (SQLException e) {	e.printStackTrace();}
 		 		
 	}
