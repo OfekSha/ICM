@@ -45,18 +45,18 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		mysqlConnection querry=new mysqlConnection(); // create new DB communication.  ofek
-		querry.connect();
+		mysqlConnection query = new mysqlConnection(); // create new DB communication.  ofek
+		query.connect();
 		System.out.println("Message received: " + msg + " from " + client);
 		
 		try { // ofek 
-			client.sendToClient((querry.readFromDB()).toString()); 
+			client.sendToClient((query.readFromDB()).toString());
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		querry.closeConnection();
+		query.closeConnection();
 		this.sendToAllClients(msg);
 	}
 
@@ -77,16 +77,8 @@ public class EchoServer extends AbstractServer {
 	}
 
 	// Class methods ***************************************************
-
-	/**
-	 * This method is responsible for the creation of the server instance (there is
-	 * no UI in this phase).
-	 *
-	 * @param args[0] The port number to listen on. Defaults to 5555 if no argument
-	 *                is entered.
-	 */
 	public static void main(String[] args) {
-		int port = 0; // Port to listen on
+		int port; // Port to listen on
 
 		try {
 			port = Integer.parseInt(args[0]); // Get port from command line
@@ -104,6 +96,12 @@ public class EchoServer extends AbstractServer {
 		}
 
 	}
-
+	/**
+	 * This method is responsible for the creation of the server instance (there is
+	 * no UI in this phase).
+	 *
+	 * @param args[0] The port number to listen on. Defaults to 5555 if no argument
+	 *                is entered.
+	 **/
 }
 //End of EchoServer class
