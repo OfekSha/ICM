@@ -53,7 +53,6 @@ public class EchoServer extends AbstractServer {
 			client.sendToClient((query.readFromDB()).toString());
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		query.closeConnection();
