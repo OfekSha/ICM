@@ -119,7 +119,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
-
+.idea/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -185,3 +185,4 @@ fabric.properties
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,eclipse,intellij
+
