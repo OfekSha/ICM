@@ -2,9 +2,9 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import java.io.*;
+import client.*;
 
-import common.*;
+import java.io.*;
 
 /**
  * This class constructs the UI for a chat client.  It implements the
@@ -16,7 +16,7 @@ import common.*;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
-public class ClientConsole implements ChatIF 
+public class ClientConsole implements ChatIF
 {
   //Class variables *************************************************
   
@@ -64,27 +64,23 @@ public class ClientConsole implements ChatIF
    */
   public void accept() 
   {
-    try
-    {
       BufferedReader fromConsole = 
         new BufferedReader(new InputStreamReader(System.in));
       String message;
-
-      while (true) 
-      {
-        message = fromConsole.readLine();
-        client.handleMessageFromClientUI(message);
+      while (true) {
+        try {
+          message = fromConsole.readLine();
+          client.handleMessageFromClientUI(message);
+        } catch (Exception ex) {
+          System.out.println
+                  ("Unexpected error while reading from console!");
+          ex.printStackTrace();
+        }
       }
-    } 
-    catch (Exception ex) 
-    {
-      System.out.println
-        ("Unexpected error while reading from console!");
-    }
   }
 
   /**
-   * This method overrides the method in the ChatIF interface.  It
+   * This method overrides the method in the client.ChatIF interface.  It
    * displays a message onto the screen.
    *
    * @param message The string to be displayed.
@@ -100,11 +96,11 @@ public class ClientConsole implements ChatIF
   /**
    * This method is responsible for the creation of the Client UI.
    *
-   * @param args[0] The host to connect to.
+   * @param args The host to connect to.
    */
   public static void main(String[] args) 
   {
-    String host = "";
+    String host;
     int port = 0;  //The port number
 
     try

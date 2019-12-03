@@ -4,6 +4,7 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
+import server.*;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -74,6 +75,13 @@ public class EchoServer extends AbstractServer {
 	}
 
 	// Class methods ***************************************************
+	/**
+	 * This method is responsible for the creation of the server instance (there is
+	 * no UI in this phase).
+	 *
+	 * @param args The port number to listen on. Defaults to 5555 if no argument
+	 *                is entered.
+	 **/
 	public static void main(String[] args) {
 		int port; // Port to listen on
 
@@ -93,12 +101,5 @@ public class EchoServer extends AbstractServer {
 		}
 
 	}
-	/**
-	 * This method is responsible for the creation of the server instance (there is
-	 * no UI in this phase).
-	 *
-	 * @param args[0] The port number to listen on. Defaults to 5555 if no argument
-	 *                is entered.
-	 **/
 }
 //End of EchoServer class

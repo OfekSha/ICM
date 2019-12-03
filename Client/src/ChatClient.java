@@ -2,6 +2,7 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
+import client.*;
 import java.io.*;
 
 /**
@@ -21,7 +22,7 @@ public class ChatClient extends AbstractClient
    * The interface type variable.  It allows the implementation of 
    * the display method in the client.
    */
-  ChatIF clientUI; 
+  ChatIF clientUI;
 
   
   //Constructors ****************************************************
@@ -96,7 +97,9 @@ public class ChatClient extends AbstractClient
     {
       closeConnection();
     }
-    catch(IOException e) {}
+    catch(IOException e) {
+      e.printStackTrace();
+    }
     System.exit(0);
   }
 }
