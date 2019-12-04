@@ -102,12 +102,16 @@ local.properties
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
-# .idea/modules.xml
-# .idea/*.iml
-# .idea/modules
-# *.iml
-# *.ipr
-
+ .idea/modules.xml
+ .idea/*.iml
+ .idea/modules
+ *.iml
+ *.eml
+ *.ipr
+ Client/Client.iml
+ Client/Client.eml
+ OCSF/OCSF.iml
+ ICM.iml
 # CMake
 cmake-build-*/
 
@@ -144,12 +148,9 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-*.iml
-*.eml
 *.MF
-# modules.xml
-# .idea/misc.xml
-# *.ipr
+ modules.xml
+ .idea/misc.xml
 
 # Sonarlint plugin
 .idea/**/sonarlint/
@@ -187,4 +188,3 @@ fabric.properties
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,eclipse,intellij
-
