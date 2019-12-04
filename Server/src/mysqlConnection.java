@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class mysqlConnection {
 	private static Connection conn;
@@ -50,16 +51,28 @@ public class mysqlConnection {
 
 	}
 
-	public void updateQuerry(String sqlQuerry) {
+	/**
+	 * 
+	 * for prototype.
+	 * update status to some id in requirement table.
+	 * 
+	 * @param id
+	 * @param status
+	 * @return ArrayList<Object> or null
+	 */
+	public ArrayList<Object> updateQuery(int id, String status) { 
 		PreparedStatement UpdateStmnt;
 		try {
-			UpdateStmnt = conn.prepareStatement(sqlQuerry);
+			UpdateStmnt = conn.prepareStatement("UPDATE icm.requirement SET status=? WHERE ID=? ");
+			UpdateStmnt.setString(1, status);
+			UpdateStmnt.setInt(2, id);
 			UpdateStmnt.execute();
-			readFromDB();
 			UpdateStmnt.close();
+			return readFromDB();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public ArrayList<Object> readFromDB() {
