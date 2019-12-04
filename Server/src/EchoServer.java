@@ -3,8 +3,8 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import java.io.*;
 import server.*;
+import java.io.*;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -45,17 +45,20 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		mysqlConnection query = new mysqlConnection(); // create new DB communication.  ofek
-		query.connect();
+
 		System.out.println("Message received: " + msg + " from " + client);
-		
-		try { // ofek 
+
+		try { // ofek
+			if (!query.checkExistence()) {
+				query.buildDB();
+				query.insertRequirement("Bob", "Cataclism", "Fix it!", "Johny", "zero");
+			}
 			client.sendToClient((query.readFromDB()).toString());
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		query.closeConnection();
-		this.sendToAllClients(msg);
+		//query.closeConnection();
+		sendToAllClients(msg, client);
 	}
 
 	/**

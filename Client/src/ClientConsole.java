@@ -2,8 +2,6 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import client.*;
-
 import java.io.*;
 
 /**
@@ -45,7 +43,9 @@ public class ClientConsole implements ChatIF
   {
     try 
     {
-      client= new ChatClient(host, port, this);
+      client = new ChatClient(host, port, this);
+      System.out.println("Connection established!\n"
+              + "Welcome to ICM.\n");
     } 
     catch(IOException exception) 
     {
@@ -80,7 +80,7 @@ public class ClientConsole implements ChatIF
   }
 
   /**
-   * This method overrides the method in the client.ChatIF interface.  It
+   * This method overrides the method in the ChatIF interface.  It
    * displays a message onto the screen.
    *
    * @param message The string to be displayed.
@@ -109,9 +109,9 @@ public class ClientConsole implements ChatIF
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
-      host = "192.168.1.20";
+      host = "localhost";
     }
-    ClientConsole chat= new ClientConsole(host, DEFAULT_PORT);
+    ClientConsole chat = new ClientConsole(host, DEFAULT_PORT);
     chat.accept();  //Wait for console data
   }
 }
