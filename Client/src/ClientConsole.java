@@ -14,7 +14,7 @@ import java.io.*;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
-public class ClientConsole implements ChatIF
+public class ClientConsole implements IForm
 {
   //Class variables *************************************************
   

@@ -187,13 +187,17 @@ hs_err_pid*
 # End of https://www.gitignore.io/api/java,eclipse,intellij
 /Client/Client.iml
 /Client/Client.eml
-/ICM.iml
+Client/Client.iml
+Client/Client.eml
 /Server/Server.eml
 /Server/Server.iml
-/OCSF/OCSF.iml
-/OCSF/OCSF.eml
-ICM.iml
-OCSF/OCSF.iml
 Server/Server.eml
 Server/Server.iml
+/OCSF/OCSF.iml
+/OCSF/OCSF.eml
+OCSF/OCSF.iml
+OCSF/OCSF.eml
+/ICM.iml
+ICM.iml
 /ICM.eml
+ICM.eml

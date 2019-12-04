@@ -9,7 +9,7 @@
  * @author Dr Timothy C. Lethbridge
  * @version July 2000
  */
-public interface ChatIF 
+public interface IForm
 {
   /**
    * Method that when overriden is used to display objects onto
