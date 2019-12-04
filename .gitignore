@@ -108,10 +108,7 @@ local.properties
  *.iml
  *.eml
  *.ipr
- Client/Client.iml
- Client/Client.eml
- OCSF/OCSF.iml
- ICM.iml
+
 # CMake
 cmake-build-*/
 
@@ -188,3 +185,15 @@ fabric.properties
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,eclipse,intellij
+/Client/Client.iml
+/Client/Client.eml
+/ICM.iml
+/Server/Server.eml
+/Server/Server.iml
+/OCSF/OCSF.iml
+/OCSF/OCSF.eml
+ICM.iml
+OCSF/OCSF.iml
+Server/Server.eml
+Server/Server.iml
+/ICM.eml
