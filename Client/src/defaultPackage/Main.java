@@ -21,7 +21,7 @@ public class Main   extends Application {
 	/**
 	 * The instance of the client that created this ConsoleChat.
 	 */
-	ChatClient client;
+	 public static ICMclient client;
 	/**
 	 * The instance of the frame
 	 */
@@ -38,7 +38,7 @@ public class Main   extends Application {
 
 		aFrame = new FormController(); // create the frame
 		try {
-			client = new ChatClient(host, port, aFrame);
+			client = new ICMclient(host, port, aFrame);
 			System.out.println("Connection established!\n" //to be removed/changed
 					+ "Welcome to ICM.\n");
 		} catch (IOException exception) {
