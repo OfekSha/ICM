@@ -1,6 +1,8 @@
 package GUI;
 
 import defaultPackage.*;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -45,20 +47,15 @@ public class FrameController implements Initializable , IForm{
 	private ComboBox cmbRequests;	
 	
 	
-	public void test() {}
+	  ChatClient client;
 	
 	
-// we need a luch in the client class - chat client?
-	
-	public void start(Stage primaryStage) throws Exception {	
-		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm()); // ???
+	public void loadFrame(String[] args) {
 		
-		primaryStage.setTitle("Update staus tool");
-		primaryStage.setScene(scene);
-		primaryStage.show();		
+		
+		
 	}
+	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {	 //for the ComboBox?
@@ -77,5 +74,7 @@ public class FrameController implements Initializable , IForm{
 
 		
 	}
+	
+	
 	
 }
