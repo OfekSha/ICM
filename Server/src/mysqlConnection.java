@@ -48,7 +48,6 @@ public class mysqlConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -113,14 +112,15 @@ public class mysqlConnection {
 					"Num," +
 					"CurrentSituationDetails," +
 					"RequestDetails," +
-					"StageSupervisor) " +
-					"VALUES(?, ?, ?, ?, ?);");
+					"StageSupervisor," +
+					"Status)" +
+					"VALUES(?, ?, ?, ?, ?, ?);");
 			stmt.setNString(1, Initiator);
 			stmt.setInt(2, num);
 			stmt.setNString(3, CurrentSituationDetails);
 			stmt.setNString(4, RequestDetails);
 			stmt.setNString(5, StageSupervisor);
-			//stmt.setNString(6, status);
+			stmt.setNString(6, status);
 			stmt.execute(); // insert new row to requirement table.
 			stmt.close();
 		} catch (SQLException e) {

@@ -51,7 +51,7 @@ public class EchoServer extends AbstractServer {
 		try { // ofek
 			if (!query.checkExistence()) {
 				query.buildDB();
-				query.insertRequirement("Bob", "Cataclism", "Fix it!", "Johny", "zero");
+				query.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", "zero");
 			}
 			client.sendToClient((query.readFromDB()).toString());
 		} catch (IOException e) {
