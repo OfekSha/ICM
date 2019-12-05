@@ -1,37 +1,32 @@
 package GUI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class FormController implements Initializable {
 	//text fields
 	@FXML
 	private TextField txtInitiator;
 	@FXML
-	private TextField txtCurrentSituationDetails;
+	private TextArea txtCurrentSituationDetails;
 	@FXML
-	private TextField txtRequestDetails ;
+	private TextArea txtRequestDetails ;
 	@FXML
 	private TextField txtStageSupervisor;
-	@FXML
-	private TextField txtStatus;
+
 	//buttons
 	@FXML
 	private Button btnExit;
 	@FXML
 	private Button btnUpdateStatus;
-	
+
+	//Combo Boxes
 	@FXML
 	private ComboBox<?> cmbRequests;
+	@FXML
+	private ComboBox<?> cmbStatus;
 	
 	
 	public void test() {}
