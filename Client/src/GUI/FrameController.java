@@ -48,16 +48,19 @@ public class FrameController implements Initializable , IForm{
 	
 	
 	  ChatClient client;
-	
-	
-	  public void start(Stage primaryStage) throws Exception {	
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
+	  
+	  
+	  /** 
+	 * @param primaryStage
+	 * @throws Exception  
+	 */
+	public void start(Stage primaryStage) throws Exception {	
+			Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 					
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/gui/AcademicFrame.css").toExternalForm());
-			primaryStage.setTitle("Academic Managment Tool");
+			scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
+			primaryStage.setTitle("Update Tool");
 			primaryStage.setScene(scene);
-			
 			primaryStage.show();		
 		}
 	
@@ -70,7 +73,7 @@ public class FrameController implements Initializable , IForm{
 	
 	//from IForm
 	/*
-	 * display is whode be what opens the window = the start methode
+	 * server answer
 	 * 
 	 * 
 	 */

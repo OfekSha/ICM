@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+
 public class Main   extends Application   {
 	
 
@@ -30,7 +31,7 @@ public class Main   extends Application   {
 	   */
 	  final public static int DEFAULT_PORT = 5555;
 	  
-	  FrameController aFrame ;
+	
 	  
 	  //Instance variables **********************************************
 	  
@@ -38,8 +39,18 @@ public class Main   extends Application   {
 	   * The instance of the client that created this ConsoleChat.
 	   */
 	  ChatClient client; 
+	  /**
+	   * The instance of the frame 
+	   */
+	  FrameController aFrame ;
 	  
-	  
+	  /**
+	   * @author Yonathan
+	   * The contractor for the Main class - crates the connection and the frame 
+	   * 
+	   * @param host
+	   * @param port
+	   */
 	  public Main (String host, int port) {
 		  
 		  
@@ -58,7 +69,10 @@ public class Main   extends Application   {
 			    }
 	  }
 	  
-	  
+	  /**
+	   * the  real main method 
+	   * @param args
+	   */
 	public static void main(String[] args) 
 	  {
 	    
@@ -78,10 +92,12 @@ public class Main   extends Application   {
 	    
 	  }
 
-
+/**
+ * "lunches" the frame
+ */
 	@Override
 	public void start(Stage arg0) throws Exception {
-		aFrame.start(arg0);
+		aFrame.start(arg0);	 						
 		
 	}
 
