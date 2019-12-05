@@ -92,7 +92,7 @@
                         </TextField>
                         <Button fx:id="btnUpdateStatus" mnemonicParsing="false" text="Update status">
                            <VBox.margin>
-                              <Insets />
+                              <Insets/>
                            </VBox.margin>
                         </Button>
                      </children>
