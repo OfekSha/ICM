@@ -12,8 +12,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class FrameController implements Initializable {
-	//text filds
+public class FormController implements Initializable {
+	//text fields
 	@FXML
 	private TextField txtInitiator;
 	@FXML
@@ -31,7 +31,7 @@ public class FrameController implements Initializable {
 	private Button btnUpdateStatus;
 	
 	@FXML
-	private ComboBox cmbRequests;	
+	private ComboBox<?> cmbRequests;
 	
 	
 	public void test() {}
