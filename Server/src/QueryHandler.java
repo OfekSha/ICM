@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QueryHandler {
     private mysqlConnection mysqlConn;
@@ -10,23 +11,23 @@ public class QueryHandler {
 
     /**
      * for prototype.
-     * insert new requirement in requirement.
-     * @param reqInitiator
-     * @param currentSituationDetails
-     * @param requestDetails
-     * @param stageSupervisor
+     * insert new requirement in icm.requirement.
+     * @param reqInitiator Initiator of request
+     * @param currentSituationDetails details of current situation
+     * @param requestDetails details of request
+     * @param stageSupervisor Supervisor of request
      */
 
     public void insertRequirment(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor) { // send the use details.
         int count = 0;
         try {
-            Statement numTest = mysqlConnection.conn.createStatement();
+            Statement numTest = mysqlConn.getConn().createStatement();
             ResultSet re = numTest.executeQuery("SELECT count(*) FROM icm.requirement;");// get all numbers submissions.
             numTest.close();
             while (re.next()) { // generate number for submission.
                 count = re.getInt(1) + 1;
             }
-            PreparedStatement stmt = mysqlConnection.conn.prepareStatement("INSERT INTO icm.requirement " +
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.requirement " +
                     "(Initiator," +
                     "RequestID," +
                     "CurrentSituationDetails," +
@@ -51,14 +52,14 @@ public class QueryHandler {
      * for prototype.
      * update status to some id in requirement table.
      *
-     * @param id
-     * @param status
+     * @param id id of Request going to Update
+     * @param status current status
      * @return ArrayList<Object> or null
      */
     public ArrayList<Object> updateStatus(int id, int status) {
         PreparedStatement UpdateStmnt;
         try {
-            UpdateStmnt = mysqlConnection.conn.prepareStatement(
+            UpdateStmnt = mysqlConn.getConn().prepareStatement(
                     "UPDATE icm.requirement " +
                             "SET Status = ? " +
                             "WHERE RequestID = ?");
@@ -76,7 +77,7 @@ public class QueryHandler {
     public ArrayList<Object> selectRequirement(int reqID) {
         ArrayList<Object> toReturn = new ArrayList<>();
         try {
-            PreparedStatement stmt = mysqlConnection.conn.prepareStatement("SELECT * FROM icm.requirement WHERE RequestID = ?");
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.requirement WHERE RequestID = ?");
             stmt.setInt(1, reqID);
             ResultSet re = stmt.executeQuery();
             stmt.close();
@@ -97,10 +98,10 @@ public class QueryHandler {
 
 
     /**
-     * 
+     *
      * get all requirement data.
      * send it to server as ArrayList of array of strings.
-     * 
+     *
      * the array:
      * place 1: Initiator
      * place 2: RequestID
@@ -108,16 +109,17 @@ public class QueryHandler {
      * place 4: RequestDetails
      * place 5: StageSupervisor
      * place 6: Status
-     * 
-     * @return
+     *
+     * @return toReturn ArrayList<String[]>
      */
     public ArrayList<String[]> selectAll() {
-        ArrayList<String[]> toReturn = new ArrayList<String[]>();
+        ArrayList<String[]> toReturn = new ArrayList<>();
         String[] toPut;
+        Statement stmt;
+        ResultSet re;
         try {
-            Statement stmt = mysqlConnection.conn.createStatement();
-            ResultSet re = stmt.executeQuery("SELECT * FROM icm.requirement;");
-            stmt.close();
+            stmt = mysqlConn.getConn().createStatement();
+            re = stmt.executeQuery("SELECT * FROM icm.requirement;");
             while (re.next()) {
                 toPut = new String[6];
                 for (int i = 0; i < 6; i++) {
@@ -125,9 +127,11 @@ public class QueryHandler {
                 }
                 toReturn.add(toPut);
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return toReturn;
     }
 }

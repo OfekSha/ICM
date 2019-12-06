@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class mysqlConnection {
-	public static Connection conn;
+	private static Connection conn;
 
 	public mysqlConnection() {
 		this("root", "Aa123456", "localhost");
@@ -18,6 +18,10 @@ public class mysqlConnection {
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
+	}
+
+	public Connection getConn() {
+		return conn;
 	}
 
 	public static void closeConnection() {

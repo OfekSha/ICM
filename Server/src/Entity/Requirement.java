@@ -1,5 +1,7 @@
 package Entity;
 
+import java.util.Objects;
+
 /**
  * 
  * This class includes (entity) requirement => line from table requirement in the database.
@@ -10,30 +12,34 @@ package Entity;
  *
  */
 public class Requirement {
-	private String reqInitiator, currentSituationDetails, requestDetails, stageSupervisor; 
-	public enum statusOptions {ongoing,suspended,closed};
+	public enum statusOptions {
+		ongoing,
+		suspended,
+		closed}
 	private statusOptions status;
+	private String reqInitiator, currentSituationDetails, requestDetails, stageSupervisor;
 	private int ID;
-	
+
+
 	/**
 	 * 
 	 * constructor for Requirement
 	 * 
-	 * @param reqInitiator
-	 * @param currentSituationDetails
-	 * @param requestDetails
-	 * @param stageSupervisor
-	 * @param status
-	 * @param iD
+	 * @param reqInitiator Initiator of request
+	 * @param currentSituationDetails details of current situation
+	 * @param requestDetails details of request
+	 * @param stageSupervisor Supervisor of request
+	 * @param status status ?????
+	 * @param ID id ?????
 	 */
 	public Requirement(String reqInitiator, String currentSituationDetails, String requestDetails,
-			String stageSupervisor, statusOptions status, int iD) {
+			String stageSupervisor, statusOptions status, int ID) {
 		this.reqInitiator = reqInitiator;
 		this.currentSituationDetails = currentSituationDetails;
 		this.requestDetails = requestDetails;
 		this.stageSupervisor = stageSupervisor;
 		this.status = status;
-		ID = iD;
+		this.ID = ID;
 	}
 	public String getReqInitiator() {
 		return reqInitiator;
@@ -56,6 +62,34 @@ public class Requirement {
 	public void setID(int iD) {
 		ID = iD;
 	}
+
+
 	//Todo: add to string and equals.
-	
+	@Override
+	public String toString() {
+		return "ID = " + ID +
+				", reqInitiator = '" + reqInitiator + '\'' +
+				", stageSupervisor = '" + stageSupervisor + '\'' +
+				", status = '" + status +
+				", requestDetails = '" + requestDetails + '\'' +
+				", currentSituationDetails = '" + currentSituationDetails + '\'';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Requirement that = (Requirement) o;
+		return ID == that.ID &&
+				status == that.status &&
+				reqInitiator.equals(that.reqInitiator) &&
+				currentSituationDetails.equals(that.currentSituationDetails) &&
+				requestDetails.equals(that.requestDetails) &&
+				stageSupervisor.equals(that.stageSupervisor);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(status, reqInitiator, currentSituationDetails, requestDetails, stageSupervisor, ID);
+	}
 }

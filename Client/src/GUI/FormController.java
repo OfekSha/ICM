@@ -55,20 +55,20 @@ public class FormController implements Initializable, ICMform {
 
 	// Combo Boxes
 	@FXML
-	private ComboBox cmbRequests;
+	private ComboBox<String> cmbRequests;
 
 	@FXML
-	private ComboBox cmbStatus;
+	private ComboBox<String> cmbStatus;
 
 	//
-	private ArrayList<String> names = new ArrayList<String>();
+	private ArrayList<String> names = new ArrayList<>();
 	private ArrayList<Requirement> ReqListForClient ;
 	ObservableList<String> list;
-	
+
 
 	/**
-	 * @param primaryStage
-	 * @throws Exception
+	 * @param primaryStage ????
+	 * @throws Exception ????
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		// request DB
@@ -86,7 +86,7 @@ public class FormController implements Initializable, ICMform {
 	/**
 	 * 
 	 */
-	
+
 	@SuppressWarnings("unchecked") // tested thwo
 	@Override
 	public void getFromServer(Object message) {
@@ -95,42 +95,43 @@ public class FormController implements Initializable, ICMform {
 		clientRequestFromServer request = (clientRequestFromServer) (((Object[]) message)[0]); // msg is array of
 																								// objects first is from
 																								// where
-		switch (request) {
-		case getRequirement:
-			if (((Object[]) message)[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
-				ReqListForClient = (ArrayList<Requirement>) (((Object[]) message)[1]);
-			} else throw new IllegalArgumentException(message + "is not correct type" );
-			
-			break;
-		default:
-			throw new IllegalArgumentException("the request " + request + " not implemented in the client.");
+		switch (request.getRequest()) {
+			case getRequirement:
+				if (((Object[]) message)[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
+					ReqListForClient = (ArrayList<Requirement>) (((Object[]) message)[1]);
+				} else throw new IllegalArgumentException(message + "is not correct type");
+				break;
+			case updateStatus:
+				break;
+			default:
+				throw new IllegalArgumentException("the request " + request + " not implemented in the client.");
 		}
 
 	} // END of public void getFromServer(Object message) {
-	
-	//all the scene enteractions 
-	
-	
+
+	//all the scene enteractions
+
+
 	private void setRequestsComboBox() {
 		getRequests();
-		ArrayList<String> al = new ArrayList<String>();	
+		ArrayList<String> al = new ArrayList<>();
 		for(Requirement req: ReqListForClient) {
 			al.add(Integer.toString((req.getID())));
 		}
-		
+
 		list = FXCollections.observableArrayList(al);
 		cmbRequests.setItems(list);
 	} //END OF private void setRequestsComboBox()
-	
+
 	//TODO : add the other combo box
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setRequestsComboBox() ;
 	}
-	
-	//private methods 
+
+	//private methods
 	private void getRequests() {
-		clientRequestFromServer commend = clientRequestFromServer.getRequirement;
+		clientRequestFromServer commend = new clientRequestFromServer("getRequirement");
 		Object[] o = new Object[1];
 		o[0] = commend;
 		Main.client.handleMessageFromClientUI(o);

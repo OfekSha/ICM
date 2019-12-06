@@ -45,36 +45,36 @@ public class EchoServer extends AbstractServer {
 	 * @param msg    The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
-	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+	public void handleMessageFromClient(Object[] msg, ConnectionToClient client) {
 		QueryHandler query = new QueryHandler();
-		System.out.println("Message received: " + msg + " from " + client);
+		System.out.println("Message received: " + msg[0] + msg[1] + " from " + client);
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
 				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
 			}
 			else {
-				clientRequestFromServer request = (clientRequestFromServer)(((Object[])msg)[0]); // msg is array of objects first is from where
-				switch(request) {
+				clientRequestFromServer request = new clientRequestFromServer((String)msg[0]); // msg is array of objects first is from where
+				switch(request.getRequest()) {
 						// read all requirement data
-					case getRequirement: ArrayList<String[]> reqList= query.selectAll() ; 
-					ArrayList<Requirement> ReqListForClient=new ArrayList<Requirement>();
+					case getRequirement: ArrayList<String[]> reqList = query.selectAll() ;
+					ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 						for (String[] arr : reqList)
 							try {
 								ReqListForClient.add(packageRequirement(arr));
 							} catch (InvalidAttributesException e) {
 								e.printStackTrace();
 							}
-						Object[] o = new Object[1];
+						Object[] o = new Object[2];
 						o[0] = request;
 						o[1] = ReqListForClient;
 						client.sendToClient(o);
 						break; //TODO select * from icm.requirement
 						// read data from some id in requirement
-					/*case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
+					case updateStatus: // client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
 						break;
-						// insert new line to requirement
-					case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
+					// insert new line to requirement
+					/*case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
 							client.sendToClient(query.selectAll());
 						break;
 						//Update status in requirement.
@@ -111,26 +111,32 @@ public class EchoServer extends AbstractServer {
  * package list of strings to requirement
  * 
  * @author Ofek
- * @param reqLine
+ * @param reqLine ?????
  * @return newReq
- * @throws InvalidAttributesException
+ * @throws InvalidAttributesException ????
  */
-@SuppressWarnings("unused")
+
 private Requirement packageRequirement (String[] reqLine) throws InvalidAttributesException {
-	int id=Integer.parseInt(reqLine[1]);
-	String reqInitiator=reqLine[0],  currentSituationDetails=reqLine[2],  requestDetails=reqLine[3],  stageSupervisor=reqLine[4];
+	int id = Integer.parseInt(reqLine[1]);
+	String reqInitiator = reqLine[0],
+			currentSituationDetails = reqLine[2],
+			requestDetails = reqLine[3],
+			stageSupervisor = reqLine[4];
 	statusOptions status;
 	switch (reqLine[5]) {
-	case "ongoing": status=statusOptions.ongoing;
-	break;
-	case "suspended": status=statusOptions.suspended;
-	break;
-	case "closed": status=statusOptions.closed;
-	break;
-	default: throw  new InvalidAttributesException("Invaild status");
+		case "ongoing":
+			status = statusOptions.ongoing;
+			break;
+		case "suspended":
+			status = statusOptions.suspended;
+			break;
+		case "closed":
+			status = statusOptions.closed;
+			break;
+		default:
+			throw new InvalidAttributesException("Invalid status");
 	}
-	Requirement newReq= new Requirement(stageSupervisor, stageSupervisor, stageSupervisor, stageSupervisor, status, id);
-	return newReq;
+	return new Requirement(reqInitiator, currentSituationDetails, requestDetails, stageSupervisor, status, id);
 }
 	// Class methods ***************************************************
 	/**
