@@ -23,8 +23,6 @@ public class IcmClient extends AbstractClient {
 	}
 
 
-	//TODO: is needed?
-
 	/**
 	 * This method handles all data that comes in from the server.
 	 *
