@@ -6,6 +6,7 @@ import javax.naming.directory.InvalidAttributesException;
 
 import Entity.Requirement;
 import Entity.Requirement.statusOptions;
+import Entity.clientRequestFromServer;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -47,16 +48,16 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		QueryHandler query = new QueryHandler();
 		System.out.println("Message received: " + msg + " from " + client);
-
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
 				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
 			}
 			else {
-				switch(Integer.parseInt(msg.toString())) {
+				clientRequestFromServer request = (clientRequestFromServer)(((Object[])msg)[0]); // msg is array of objects first is from where
+				switch(request) {
 						// read all requirement data
-					case 1: ArrayList<String[]> reqList= query.selectAll() ; 
+					case getRequirement: ArrayList<String[]> reqList= query.selectAll() ; 
 					ArrayList<Requirement> ReqListForClient=new ArrayList<Requirement>();
 						for (String[] arr : reqList)
 							try {
@@ -67,7 +68,7 @@ public class EchoServer extends AbstractServer {
 						client.sendToClient(ReqListForClient);
 						break; //TODO select * from icm.requirement
 						// read data from some id in requirement
-					case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
+					/*case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
 						break;
 						// insert new line to requirement
 					case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
@@ -75,7 +76,8 @@ public class EchoServer extends AbstractServer {
 						break;
 						//Update status in requirement.
 					case 4:
-						break;
+						break;*/
+				default: throw new IllegalArgumentException("the request "+request+" not implemented in the server.");
 				}
 			}
 			//client.sendToClient((query.selectAll()).toString());
