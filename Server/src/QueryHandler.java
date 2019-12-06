@@ -96,19 +96,34 @@ public class QueryHandler {
     }
 
 
-    public ArrayList<Object[]> selectAll() {
-        ArrayList<Object[]> toReturn = new ArrayList<>();
-        Object[] toPut;
+    /**
+     * 
+     * get all requirement data.
+     * send it to server as ArrayList of array of strings.
+     * 
+     * the array:
+     * place 1: Initiator
+     * place 2: RequestID
+     * place 3: CurrentSituationDetails
+     * place 4: RequestDetails
+     * place 5: StageSupervisor
+     * place 6: Status
+     * 
+     * @return
+     */
+    public ArrayList<String[]> selectAll() {
+        ArrayList<String[]> toReturn = new ArrayList<String[]>();
+        String[] toPut;
         try {
             Statement stmt = mysqlConnection.conn.createStatement();
             ResultSet re = stmt.executeQuery("SELECT * FROM icm.requirement;");
             stmt.close();
             while (re.next()) {
-                toPut = new Object[6];
+                toPut = new String[6];
                 for (int i = 0; i < 6; i++) {
-                    toPut[i] = re.getObject(i + 1);
+                    toPut[i] = (re.getObject(i + 1)).toString();
                 }
-                toReturn.add(new Object[6]);
+                toReturn.add(toPut);
             }
         } catch (SQLException e) {
             e.printStackTrace();

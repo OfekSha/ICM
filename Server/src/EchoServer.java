@@ -1,5 +1,11 @@
 import server.*;
 import java.io.*;
+import java.util.ArrayList;
+
+import javax.naming.directory.InvalidAttributesException;
+
+import Entity.Requirement;
+import Entity.Requirement.statusOptions;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -50,7 +56,15 @@ public class EchoServer extends AbstractServer {
 			else {
 				switch(Integer.parseInt(msg.toString())) {
 						// read all requirement data
-					case 1: client.sendToClient(query.selectAll());
+					case 1: ArrayList<String[]> reqList= query.selectAll() ; 
+					ArrayList<Requirement> ReqListForClient=new ArrayList<Requirement>();
+						for (String[] arr : reqList)
+							try {
+								ReqListForClient.add(packageRequirement(arr));
+							} catch (InvalidAttributesException e) {
+								e.printStackTrace();
+							}
+						client.sendToClient(ReqListForClient);
 						break; //TODO select * from icm.requirement
 						// read data from some id in requirement
 					case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
@@ -87,7 +101,32 @@ public class EchoServer extends AbstractServer {
 	protected void serverStopped() {
 		System.out.println("Server has stopped listening for connections.");
 	}
-
+/**
+ * 
+ * package list of strings to requirement
+ * 
+ * @author Ofek
+ * @param reqLine
+ * @return newReq
+ * @throws InvalidAttributesException
+ */
+@SuppressWarnings("unused")
+private Requirement packageRequirement (String[] reqLine) throws InvalidAttributesException {
+	int id=Integer.parseInt(reqLine[1]);
+	String reqInitiator=reqLine[0],  currentSituationDetails=reqLine[2],  requestDetails=reqLine[3],  stageSupervisor=reqLine[4];
+	statusOptions status;
+	switch (reqLine[5]) {
+	case "ongoing": status=statusOptions.ongoing;
+	break;
+	case "suspended": status=statusOptions.suspended;
+	break;
+	case "closed": status=statusOptions.closed;
+	break;
+	default: throw  new InvalidAttributesException("Invaild status");
+	}
+	Requirement newReq= new Requirement(stageSupervisor, stageSupervisor, stageSupervisor, stageSupervisor, status, id);
+	return newReq;
+}
 	// Class methods ***************************************************
 	/**
 	 * This method is responsible for the creation of the server instance (there is
