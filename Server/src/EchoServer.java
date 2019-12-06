@@ -1,4 +1,4 @@
-import server.*;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -7,6 +7,8 @@ import javax.naming.directory.InvalidAttributesException;
 import Entity.Requirement;
 import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer;
+import server.AbstractServer;
+import server.ConnectionToClient;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -45,31 +47,42 @@ public class EchoServer extends AbstractServer {
 	 * @param msg    The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
-	public void handleMessageFromClient(Object[] msg, ConnectionToClient client) {
+	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+
 		QueryHandler query = new QueryHandler();
-		clientRequestFromServer request = new clientRequestFromServer((String)msg[0]); // msg is array of objects first is from where
-		System.out.println("Message received: " + msg[0] + " = [" + request.getRequest() + ']' + " from " + client);
+		String asStr = String.valueOf(msg);
+		String[] splittedMsg = asStr.split(" ");
+		clientRequestFromServer request = new clientRequestFromServer(splittedMsg[0]); // msg is array of objects first is from where
+		System.out.println("Message received: " + splittedMsg[0] + " = [" + request.getRequest() + ']' +
+				" from " + client);
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
 				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
 			}
 			else {
-				switch(request.getRequest()) {
-						// read all requirement data
-					case getAll: ArrayList<String[]> reqList = query.selectAll() ;
-					ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+				ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+
+				switch (request.getRequest()) {
+					// read all requirement data
+					case getAll:
+						ArrayList<String[]> reqList = query.selectAll();
 						for (String[] arr : reqList)
 							try {
 								ReqListForClient.add(packageRequirement(arr));
 							} catch (InvalidAttributesException e) {
 								e.printStackTrace();
 							}
-						Object[] o = new Object[] {request, ReqListForClient};
-						client.sendToClient(o);
 						break; //TODO select * from icm.requirement
-						// read data from some id in requirement
-					case updateStatus: // client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
+					// read data from some id in requirement
+					case getRequirement:
+						int ID = Integer.parseInt(splittedMsg[1]);
+						String[] getReq = query.selectRequirement(ID);
+							try {
+								ReqListForClient.add(packageRequirement(getReq));
+							} catch (InvalidAttributesException e) {
+								e.printStackTrace();
+							}
 						break;
 					// insert new line to requirement
 					/*case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
@@ -78,15 +91,18 @@ public class EchoServer extends AbstractServer {
 						//Update status in requirement.
 					case 4:
 						break;*/
-				default: throw new IllegalArgumentException("the request "+request+" not implemented in the server.");
+					default:
+						throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
 				}
+				Object[] answer = new Object[] { request, ReqListForClient };
+				client.sendToClient(answer);
 			}
 			//client.sendToClient((query.selectAll()).toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		mysqlConnection.closeConnection();
-		sendToAllClients(msg, client);
+//		mysqlConnection.closeConnection();
+//		sendToAllClients(msg, client);
 	}
 
 	/**

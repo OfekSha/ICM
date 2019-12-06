@@ -1,5 +1,6 @@
 package Entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Objects;
  * @author ofek
  *
  */
-public class Requirement {
+public class Requirement implements Serializable {
 	public enum statusOptions {
 		ongoing, suspended, closed
 	}

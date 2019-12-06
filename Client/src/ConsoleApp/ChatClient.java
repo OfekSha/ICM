@@ -51,8 +51,8 @@ public class ChatClient extends AbstractClient
    *
    * @param msg The message from the server.
    */
-  public void handleMessageFromServer(Object[] msg) {
-    for (Object o : msg) {
+  public void handleMessageFromServer(Object msg) {
+    for (Object o : (Object[])msg) {
       clientUI.display(o.toString());
     }
   }
@@ -64,21 +64,10 @@ public class ChatClient extends AbstractClient
    */
   public void handleMessageFromClientUI(String message) {
     try {
-      Object[] toSend = new Object[] { message };
-      sendToServer(toSend);
-    } catch (IOException e) {
-      clientUI.display
-              ("Could not send message to server.  Terminating client.");
-      quit();
-    }
-  }
-  // can send object too: (added by ofek) <-------------------------------------
-  public void handleMessageFromClientUI(Object[] message) {
-    try {
       sendToServer(message);
     } catch (IOException e) {
       clientUI.display
-              ("Could not send message to server.  Terminating client.");
+              ("Could not send message to server. Terminating client.");
       quit();
     }
   }

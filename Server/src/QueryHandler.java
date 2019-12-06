@@ -67,32 +67,44 @@ public class QueryHandler {
             UpdateStmnt.setInt(2, id);
             UpdateStmnt.execute();
             UpdateStmnt.close();
-            return selectRequirement(id);
+            //return selectRequirement(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public ArrayList<Object> selectRequirement(int reqID) {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    /**
+     *
+     * @param reqID input request ID
+     * @return list
+     */
+    public String[] selectRequirement(int reqID) {
+        String[] toReturn = new String[6];
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.requirement WHERE RequestID = ?");
             stmt.setInt(1, reqID);
             ResultSet re = stmt.executeQuery();
-            stmt.close();
+
             while (re.next()) {
-                toReturn.add(re.getNString(1));
+                toReturn[0] = re.getNString(1);
+                toReturn[1] = re.getInt(2) + "";
+                toReturn[2] = re.getNString(3);
+                toReturn[3] = re.getNString(4);
+                toReturn[4] = re.getNString(5);
+                toReturn[5] = re.getNString(6);
+                /*toReturn.add(re.getNString(1));
                 toReturn.add(re.getInt(2));
                 toReturn.add(re.getNString(3));
                 toReturn.add(re.getNString(4));
                 toReturn.add(re.getNString(5));
-                toReturn.add(re.getNString(6));
+                toReturn.add(re.getNString(6));*/
             }
-
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return toReturn;
     }
 

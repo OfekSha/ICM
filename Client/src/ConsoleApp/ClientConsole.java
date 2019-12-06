@@ -85,8 +85,6 @@ public class ClientConsole implements IForm {
   public void display(String message) {
     System.out.println("> " + message);
   }
-
-
   //Class methods ***************************************************
 
   /**
