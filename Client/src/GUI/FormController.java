@@ -80,6 +80,7 @@ public class FormController implements Initializable, ICMform {
 		 */
 	}
 
+	@SuppressWarnings("unchecked") // tested thwo
 	@Override
 	public void getFromServer(Object message) {
 		// TODO Auto-generated method stub
@@ -91,9 +92,8 @@ public class FormController implements Initializable, ICMform {
 		case getRequirement:
 			if (((Object[]) message)[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
 				ReqListForClient = (ArrayList<Requirement>) (((Object[]) message)[1]);
-
-			} else {
-			} // TODO: throw something?
+			} else throw new IllegalArgumentException(message + "is not correct type" );
+			
 			break;
 		default:
 			throw new IllegalArgumentException("the request " + request + " not implemented in the client.");

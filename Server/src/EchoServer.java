@@ -65,7 +65,10 @@ public class EchoServer extends AbstractServer {
 							} catch (InvalidAttributesException e) {
 								e.printStackTrace();
 							}
-						client.sendToClient(ReqListForClient);
+						Object[] o = new Object[1];
+						o[0] = request;
+						o[1] = ReqListForClient;
+						client.sendToClient(o);
 						break; //TODO select * from icm.requirement
 						// read data from some id in requirement
 					/*case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
