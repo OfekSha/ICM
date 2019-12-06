@@ -6,7 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 
-public class Main   extends Application {
+public class Main extends Application {
 
 	//Class variables *************************************************
 
@@ -40,7 +40,7 @@ public class Main   extends Application {
 		try {
 			client = new ChatClient(host, port, aFrame);
 			System.out.println("Connection established!\n" //to be removed/changed
-					+ "Welcome to ICM.\n");
+					+ "Welcome to ICM.");
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection!" // to be removed/changed
 					+ " Terminating client.");
@@ -54,7 +54,6 @@ public class Main   extends Application {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
 		int port = 0;  //The port number
 		String host;
 		try {
@@ -62,10 +61,9 @@ public class Main   extends Application {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			host = "localhost";
 		}
-
+		//TODO what for 'chat' object ?
 		Main chat = new Main(host, DEFAULT_PORT);
 		launch(args);      //Wait for  data
-
 	}
 
 	/**
@@ -74,6 +72,5 @@ public class Main   extends Application {
 	@Override
 	public void start(Stage arg0) throws Exception {
 		aFrame.start(arg0);
-
 	}
 }

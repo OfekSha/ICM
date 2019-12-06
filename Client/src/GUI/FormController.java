@@ -37,8 +37,7 @@ public class FormController implements Initializable, IForm {
 	public void test() {}
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {	
-		//setFacultyComboBox();		
+	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
 
 	public void start(Stage primaryStage) throws Exception {

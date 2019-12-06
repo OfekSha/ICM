@@ -1,8 +1,3 @@
-// This file contains material supporting section 3.7 of the textbook:
-
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
-
 import server.*;
 import java.io.*;
 
@@ -44,20 +39,32 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		mysqlConnection query = new mysqlConnection(); // create new DB communication.  ofek
-
+		QueryHandler query = new QueryHandler();
 		System.out.println("Message received: " + msg + " from " + client);
 
-		try { // ofek
-			if (!query.checkExistence()) {
-				query.buildDB();
-				query.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", "zero");
+		try {
+			if (!mysqlConnection.checkExistence()) {
+				mysqlConnection.buildDB();
+				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
 			}
-			client.sendToClient((query.readFromDB()).toString());
+			else {
+				switch(Integer.parseInt(msg.toString())) {
+					case 1: client.sendToClient(query.selectAll());
+						break; //TODO select * from icm.requirement
+					case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
+						break;
+					case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
+							client.sendToClient(query.selectAll());
+						break;
+					case 4:
+						break;
+				}
+			}
+			//client.sendToClient((query.selectAll()).toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//query.closeConnection();
+		mysqlConnection.closeConnection();
 		sendToAllClients(msg, client);
 	}
 
@@ -98,11 +105,9 @@ public class EchoServer extends AbstractServer {
 
 		try {
 			sv.listen(); // Start listening for connections
-
 		} catch (Exception ex) {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
-
 	}
 }
 //End of EchoServer class
