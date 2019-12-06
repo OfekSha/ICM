@@ -1,4 +1,4 @@
-package defaultPackage;
+package ConsoleApp;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -15,23 +15,21 @@ import java.io.*;
  * @author Dr Robert Lagani&egrave;re
  * @version July 2000
  */
-public class ClientConsole implements IForm
-{
+public class ClientConsole implements IForm {
   //Class variables *************************************************
-  
+
   /**
    * The default port to connect on.
    */
   final public static int DEFAULT_PORT = 5555;
-  
+
   //Instance variables **********************************************
-  
+
   /**
    * The instance of the client that created this ConsoleChat.
    */
   ChatClient client;
 
-  
   //Constructors ****************************************************
 
   /**
@@ -40,47 +38,42 @@ public class ClientConsole implements IForm
    * @param host The host to connect to.
    * @param port The port to connect on.
    */
-  public ClientConsole(String host, int port) 
-  {
-    try 
-    {
+  public ClientConsole(String host, int port) {
+    try {
       client = new ChatClient(host, port, this);
       System.out.println("Connection established!\n" +
               "Welcome to ICM.\n" +
               "1. select * from icm.requirement\n" +
               "2. select * from icm.requirement where id = ?\n" +
               "3. insert something");
-    } 
-    catch(IOException exception) 
-    {
+    } catch (IOException exception) {
       System.out.println("Error: Can't setup connection!"
-                + " Terminating client.");
+              + " Terminating client.");
       System.exit(1);
     }
   }
 
-  
+
   //Instance methods ************************************************
-  
+
   /**
-   * This method waits for input from the console.  Once it is 
+   * This method waits for input from the console.  Once it is
    * received, it sends it to the client's message handler.
    */
-  public void accept() 
-  {
-      BufferedReader fromConsole = 
-        new BufferedReader(new InputStreamReader(System.in));
-      String message;
-      while (true) {
-        try {
-          message = fromConsole.readLine();
-          client.handleMessageFromClientUI(message);
-        } catch (Exception ex) {
-          System.out.println
-                  ("Unexpected error while reading from console!");
-          ex.printStackTrace();
-        }
+  public void accept() {
+    BufferedReader fromConsole =
+            new BufferedReader(new InputStreamReader(System.in));
+    String message;
+    while (true) {
+      try {
+        message = fromConsole.readLine();
+        client.handleMessageFromClientUI(message);
+      } catch (Exception ex) {
+        System.out.println
+                ("Unexpected error while reading from console!");
+        ex.printStackTrace();
       }
+    }
   }
 
   /**
@@ -89,30 +82,25 @@ public class ClientConsole implements IForm
    *
    * @param message The string to be displayed.
    */
-  public void display(String message) 
-  {
+  public void display(String message) {
     System.out.println("> " + message);
   }
 
-  
+
   //Class methods ***************************************************
-  
+
   /**
    * This method is responsible for the creation of the Client UI.
    *
    * @param args The host to connect to.
    */
-  public static void main(String[] args) 
-  {
+  public static void main(String[] args) {
     String host;
     int port = 0;  //The port number
 
-    try
-    {
+    try {
       host = args[0];
-    }
-    catch(ArrayIndexOutOfBoundsException e)
-    {
+    } catch (ArrayIndexOutOfBoundsException e) {
       host = "localhost";
     }
     ClientConsole chat = new ClientConsole(host, DEFAULT_PORT);

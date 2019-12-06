@@ -5,38 +5,24 @@ import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import Entity.Requirement;
 import Entity.clientRequestFromServer;
-import defaultPackage.ICMform;
-import defaultPackage.IForm;
-import defaultPackage.Main;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import WindowApp.IcmForm;
 
-public class FormController implements Initializable, ICMform {
+import WindowApp.ClientGUI;
+import javafx.scene.control.*;
+import javafx.stage.StageStyle;
+
+public class FormController implements Initializable, IcmForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -79,6 +65,7 @@ public class FormController implements Initializable, ICMform {
 		scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
 		primaryStage.setScene(scene);
+		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.show();
 	}
 
@@ -115,7 +102,7 @@ public class FormController implements Initializable, ICMform {
 	private void setRequestsComboBox() {
 		getRequests();
 		ArrayList<String> al = new ArrayList<>();
-		for(Requirement req: ReqListForClient) {
+		for(Requirement req : ReqListForClient) {
 			al.add(Integer.toString((req.getID())));
 		}
 
@@ -134,7 +121,7 @@ public class FormController implements Initializable, ICMform {
 		clientRequestFromServer commend = new clientRequestFromServer("getRequirement");
 		Object[] o = new Object[1];
 		o[0] = commend;
-		Main.client.handleMessageFromClientUI(o);
+		ClientGUI.client.handleMessageFromClientUI(o);
 	}
 
 
