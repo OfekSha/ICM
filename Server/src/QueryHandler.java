@@ -1,6 +1,10 @@
+import Entity.Requirement;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static Entity.Requirement.*;
 
 public class QueryHandler {
     private mysqlConnection mysqlConn;
@@ -54,24 +58,23 @@ public class QueryHandler {
      *
      * @param id id of Request going to Update
      * @param status current status
-     * @return ArrayList<Object> or null
      */
-    public ArrayList<Object> updateStatus(int id, int status) {
-        PreparedStatement UpdateStmnt;
+    public void updateStatus(int id, String status) throws IllegalArgumentException {
+        PreparedStatement updStatus;
+        int ordinalStatus = statusOptions.valueOf(status).ordinal() + 1;
+        if (ordinalStatus < 1 || ordinalStatus > 3) throw new IllegalArgumentException();
         try {
-            UpdateStmnt = mysqlConn.getConn().prepareStatement(
+            updStatus = mysqlConn.getConn().prepareStatement(
                     "UPDATE icm.requirement " +
                             "SET Status = ? " +
-                            "WHERE RequestID = ?");
-            UpdateStmnt.setInt(1, status);
-            UpdateStmnt.setInt(2, id);
-            UpdateStmnt.execute();
-            UpdateStmnt.close();
-            //return selectRequirement(id);
+                            "WHERE RequestID = ?;");
+            updStatus.setInt(1, ordinalStatus);
+            updStatus.setInt(2, id);
+            updStatus.execute();
+            updStatus.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     /**
@@ -80,19 +83,27 @@ public class QueryHandler {
      * @return list
      */
     public String[] selectRequirement(int reqID) {
-        String[] toReturn = new String[6];
+        String[] toReturn = null;
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.requirement WHERE RequestID = ?");
             stmt.setInt(1, reqID);
             ResultSet re = stmt.executeQuery();
 
             while (re.next()) {
-                toReturn[0] = re.getNString(1);
+                toReturn = new String[] {
+                        re.getNString(1),
+                        re.getInt(2) + "",
+                        re.getNString(3),
+                        re.getNString(4),
+                        re.getNString(5),
+                        re.getNString(6)
+                };
+                /*toReturn[0] = re.getNString(1);
                 toReturn[1] = re.getInt(2) + "";
                 toReturn[2] = re.getNString(3);
                 toReturn[3] = re.getNString(4);
                 toReturn[4] = re.getNString(5);
-                toReturn[5] = re.getNString(6);
+                toReturn[5] = re.getNString(6);*/
                 /*toReturn.add(re.getNString(1));
                 toReturn.add(re.getInt(2));
                 toReturn.add(re.getNString(3));
