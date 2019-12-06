@@ -43,9 +43,9 @@ public class ClientConsole implements IForm {
       client = new ChatClient(host, port, this);
       System.out.println("Connection established!\n" +
               "Welcome to ICM.\n" +
-              "1. select * from icm.requirement\n" +
-              "2. select * from icm.requirement where id = ?\n" +
-              "3. insert something");
+              "0. select * from icm.requirement\n" +
+              "1. select * from icm.requirement where id = ?\n" +
+              "3. insert something\n");
     } catch (IOException exception) {
       System.out.println("Error: Can't setup connection!"
               + " Terminating client.");

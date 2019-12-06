@@ -47,17 +47,17 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object[] msg, ConnectionToClient client) {
 		QueryHandler query = new QueryHandler();
-		System.out.println("Message received: " + msg[0] + msg[1] + " from " + client);
+		clientRequestFromServer request = new clientRequestFromServer((String)msg[0]); // msg is array of objects first is from where
+		System.out.println("Message received: " + msg[0] + " = [" + request.getRequest() + ']' + " from " + client);
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
 				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
 			}
 			else {
-				clientRequestFromServer request = new clientRequestFromServer((String)msg[0]); // msg is array of objects first is from where
 				switch(request.getRequest()) {
 						// read all requirement data
-					case getRequirement: ArrayList<String[]> reqList = query.selectAll() ;
+					case getAll: ArrayList<String[]> reqList = query.selectAll() ;
 					ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 						for (String[] arr : reqList)
 							try {
@@ -65,9 +65,7 @@ public class EchoServer extends AbstractServer {
 							} catch (InvalidAttributesException e) {
 								e.printStackTrace();
 							}
-						Object[] o = new Object[2];
-						o[0] = request;
-						o[1] = ReqListForClient;
+						Object[] o = new Object[] {request, ReqListForClient};
 						client.sendToClient(o);
 						break; //TODO select * from icm.requirement
 						// read data from some id in requirement

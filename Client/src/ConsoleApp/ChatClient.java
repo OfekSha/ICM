@@ -4,7 +4,6 @@ package ConsoleApp;
 // license found at www.lloseng.com 
 
 import client.*;
-
 import java.io.*;
 
 /**
@@ -38,11 +37,10 @@ public class ChatClient extends AbstractClient
    */
   
   public ChatClient(String host, int port, IForm clientUI)
-    throws IOException 
-  {
-    super(host, port); //Call the superclass constructor
-    this.clientUI = clientUI;
-    openConnection();
+    throws IOException {
+      super(host, port); //Call the superclass constructor
+      this.clientUI = clientUI;
+      openConnection();
   }
 
   
@@ -53,9 +51,10 @@ public class ChatClient extends AbstractClient
    *
    * @param msg The message from the server.
    */
-  public void handleMessageFromServer(Object msg) 
-  {
-    clientUI.display(msg.toString());
+  public void handleMessageFromServer(Object[] msg) {
+    for (Object o : msg) {
+      clientUI.display(o.toString());
+    }
   }
 
   /**
@@ -63,43 +62,33 @@ public class ChatClient extends AbstractClient
    *
    * @param message The message from the UI.    
    */
-  public void handleMessageFromClientUI(String message)  
-  {
-    try
-    {
-    	sendToServer(message);
-    }
-    catch(IOException e)
-    {
+  public void handleMessageFromClientUI(String message) {
+    try {
+      Object[] toSend = new Object[] { message };
+      sendToServer(toSend);
+    } catch (IOException e) {
       clientUI.display
-        ("Could not send message to server.  Terminating client.");
+              ("Could not send message to server.  Terminating client.");
       quit();
     }
   }
   // can send object too: (added by ofek) <-------------------------------------
-  public void handleMessageFromClientUI(Object message)  
-  {
-    try
-    {
-    	sendToServer(message);
-    }
-    catch(IOException e)
-    {
+  public void handleMessageFromClientUI(Object[] message) {
+    try {
+      sendToServer(message);
+    } catch (IOException e) {
       clientUI.display
-        ("Could not send message to server.  Terminating client.");
+              ("Could not send message to server.  Terminating client.");
       quit();
     }
   }
   /**
    * This method terminates the client.
    */
-  public void quit()
-  {
-    try
-    {
+  public void quit() {
+    try {
       closeConnection();
-    }
-    catch(IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
     System.exit(0);

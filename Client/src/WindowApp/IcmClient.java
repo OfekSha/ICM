@@ -30,7 +30,7 @@ public class IcmClient extends AbstractClient {
 	 *
 	 * @param msg The message from the server.
 	 */
-	public void handleMessageFromServer(Object msg) {
+	public void handleMessageFromServer(Object[] msg) {
 
 		clientUI.getFromServer(msg);
 	}
@@ -40,7 +40,7 @@ public class IcmClient extends AbstractClient {
 	 *
 	 * @param message The message from the UI.
 	 */
-	public void handleMessageFromClientUI(Object message) {
+	public void handleMessageFromClientUI(Object[] message) {
 		try {
 			sendToServer(message);
 		} catch (IOException e) {//TODO: display some messge ?

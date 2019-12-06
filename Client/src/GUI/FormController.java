@@ -3,6 +3,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entity.Requirement;
+import Entity.clientRequestFromServer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,11 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
-
-import Entity.Requirement;
-import Entity.clientRequestFromServer;
 import WindowApp.IcmForm;
-
 import WindowApp.ClientGUI;
 import javafx.scene.control.*;
 import javafx.stage.StageStyle;
@@ -69,24 +67,23 @@ public class FormController implements Initializable, IcmForm {
 		primaryStage.show();
 	}
 
-	//
 	/**
-	 * 
-	 */
-
-	@SuppressWarnings("unchecked") // tested thwo
+	 * @param message is array of objects where
+	 *                where message[0] is requested action
+	 *                and message[1] is answer
+	*  */
 	@Override
-	public void getFromServer(Object message) {
+	public void getFromServer(Object[] message) {
 		// TODO Auto-generated method stub
 
-		clientRequestFromServer request = (clientRequestFromServer) (((Object[]) message)[0]); // msg is array of
-																								// objects first is from
-																								// where
+		clientRequestFromServer request = (clientRequestFromServer) message[0]; // msg is array of
+																				// objects first is from
+																				// where
 		switch (request.getRequest()) {
 			case getRequirement:
-				if (((Object[]) message)[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
-					ReqListForClient = (ArrayList<Requirement>) (((Object[]) message)[1]);
-				} else throw new IllegalArgumentException(message + "is not correct type");
+				if (message[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
+					ReqListForClient = (ArrayList<Requirement>) message[1];
+				} else throw new IllegalArgumentException(message.getClass() + " is not correct type");
 				break;
 			case updateStatus:
 				break;
