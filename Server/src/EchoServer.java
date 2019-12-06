@@ -49,13 +49,17 @@ public class EchoServer extends AbstractServer {
 			}
 			else {
 				switch(Integer.parseInt(msg.toString())) {
+						// read all requirement data
 					case 1: client.sendToClient(query.selectAll());
 						break; //TODO select * from icm.requirement
+						// read data from some id in requirement
 					case 2: client.sendToClient(query.selectRequirement(Integer.parseInt(msg.toString())));
 						break;
+						// insert new line to requirement
 					case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
 							client.sendToClient(query.selectAll());
 						break;
+						//Update status in requirement.
 					case 4:
 						break;
 				}
