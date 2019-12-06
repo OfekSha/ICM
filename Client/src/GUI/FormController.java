@@ -1,12 +1,15 @@
 package GUI;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Entity.Requirement;
+import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,9 +49,9 @@ public class FormController implements Initializable, IcmForm {
 
 	//
 	private ArrayList<String> names = new ArrayList<>();
-	private ArrayList<Requirement> ReqListForClient ;
-	ObservableList<String> list;
-
+	private ArrayList<Requirement> ReqListForClient;
+	ObservableList<String> listFor_cmbRequests;
+	ObservableList<String> listFor_cmbStatus;
 
 	/**
 	 * @param primaryStage ????
@@ -68,58 +71,121 @@ public class FormController implements Initializable, IcmForm {
 	}
 
 	/**
-	 * @param message is array of objects where
-	 *                where message[0] is requested action
+	 * @param message is array of objects where where message[0] is requested action
 	 *                and message[1] is answer
-	*  */
+	 */
 	@Override
 	public void getFromServer(Object[] message) {
 		// TODO Auto-generated method stub
 
 		clientRequestFromServer request = (clientRequestFromServer) message[0]; // msg is array of
-																				// objects first is from
-																				// where
+																				// objects first is from // where
 		switch (request.getRequest()) {
-			case getRequirement:
-				if (message[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
-					ReqListForClient = (ArrayList<Requirement>) message[1];
-				} else throw new IllegalArgumentException(message.getClass() + " is not correct type");
-				break;
-			case updateStatus:
-				break;
-			default:
-				throw new IllegalArgumentException("the request " + request + " not implemented in the client.");
+		case getRequirement:
+			if (message[1] instanceof ArrayList<?>) { // TODO: test if the element is correct ?
+				ReqListForClient = (ArrayList<Requirement>) message[1];
+			} else
+				throw new IllegalArgumentException(message.getClass() + " is not correct type");
+			break;
+		case updateStatus:
+			break;
+		default:
+			throw new IllegalArgumentException("the request " + request + " not implemented in the client.");
 		}
 
 	} // END of public void getFromServer(Object message) {
 
-	//all the scene enteractions
-
+	// setting up the combo boxes
 
 	private void setRequestsComboBox() {
-		getRequests();
 		ArrayList<String> al = new ArrayList<>();
-		for(Requirement req : ReqListForClient) {
+		for (Requirement req : ReqListForClient) {
 			al.add(Integer.toString((req.getID())));
 		}
 
-		list = FXCollections.observableArrayList(al);
-		cmbRequests.setItems(list);
-	} //END OF private void setRequestsComboBox()
+		listFor_cmbRequests = FXCollections.observableArrayList(al);
+		cmbRequests.setItems(listFor_cmbRequests);
+	} // END OF private void setRequestsComboBox()
 
-	//TODO : add the other combo box
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		setRequestsComboBox() ;
+	// cmbStatus
+	private void setStatusComboBox() {
+		ArrayList<String> al = new ArrayList<>();
+		al.add(statusOptions.ongoing.name());
+		al.add(statusOptions.suspended.name());
+		al.add(statusOptions.closed.name());
+		listFor_cmbStatus = FXCollections.observableArrayList(al);
+		cmbStatus.setItems(listFor_cmbStatus);
 	}
 
-	//private methods
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		setRequestsComboBox();
+		setStatusComboBox();
+
+	}
+	// end of setting up combo boxes
+
+	// ActionEvent event methods
+
+	/**
+	 * @param event
+	 * @throws Exception the user has chosen an a user , all data boxes will be
+	 *                   updated accordingly
+	 */
+	public void RequestsComboBoxUsed(ActionEvent event) throws Exception {
+		getRequests();
+
+		String s = cmbRequests.getSelectionModel().getSelectedItem().toString();
+
+		for (Requirement req : ReqListForClient) {
+
+			if (s.equals(Integer.toString((req.getID())))) {
+				this.txtInitiator.setText(req.getReqInitiator());
+				this.txtCurrentSituationDetails.setText(req.getCurrentSituationDetails());
+				this.txtRequestDetails.setText(req.getRequestDetails());
+				this.txtStageSupervisor.setText(req.getStageSupervisor());
+				this.cmbStatus.setPromptText((req.getStatus()).name());
+				break;
+			}
+		}
+
+	} // END of RequestsComboBoxUsed();
+
+	// TODO:connect the button to the method
+	
+	/**
+	 * @param event
+	 * @throws Exception
+	 * 
+	 * when the update button will be pressed the server will be sent 
+	 * object array with the following :
+	 * |String|statusOptions|
+	 */
+	public void PressedUpdate(ActionEvent event) throws Exception {
+		String s = cmbStatus.getSelectionModel().getSelectedItem().toString();
+		clientRequestFromServer commend = new clientRequestFromServer("2");
+		Object[] o = new Object[2];
+		o[0] = commend;
+
+		if (s.equals(statusOptions.ongoing.name()))
+			o[1] = statusOptions.ongoing;
+		else if (s.equals(statusOptions.suspended.name()))
+			o[1] = statusOptions.suspended;
+		else if (s.equals(statusOptions.closed.name()))
+			o[1] = statusOptions.closed;
+		ClientGUI.client.handleMessageFromClientUI(o);
+	}
+
+	// private methods
+
+	/**
+	 * @author Yonathan gets all requests with all the details to
+	 */
 	private void getRequests() {
-		clientRequestFromServer commend = new clientRequestFromServer("getRequirement");
+		clientRequestFromServer commend = new clientRequestFromServer("0");
 		Object[] o = new Object[1];
 		o[0] = commend;
 		ClientGUI.client.handleMessageFromClientUI(o);
 	}
-
 
 }// end of FormController class
