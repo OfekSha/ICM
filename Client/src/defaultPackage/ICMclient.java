@@ -34,12 +34,7 @@ public class ICMclient  extends AbstractClient {
 	   */
 	  public void handleMessageFromServer(Object msg) 
 	  {
-		  clientRequestFromServer request = (clientRequestFromServer)(((Object[])msg)[0]); // msg is array of objects first is from where
-		  switch (request) {
-		  case getRequirement:
-			  break;
-		  default: throw new IllegalArgumentException("the request "+request+" not implemented in the client.");
-		  }
+		 
 	    clientUI.getFromServer(msg);
 	  }
 	  

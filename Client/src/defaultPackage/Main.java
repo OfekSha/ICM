@@ -6,6 +6,13 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 
+/**
+ * @author Yonathan
+ * 
+ * 1) creates the connection, and holds it
+ * 2) creates and lunches the manin sence  
+ * 
+ */
 public class Main extends Application {
 
 	//Class variables *************************************************
