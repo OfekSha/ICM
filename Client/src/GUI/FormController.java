@@ -1,4 +1,21 @@
 package GUI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,6 +26,8 @@ import Entity.clientRequestFromServer;
 import defaultPackage.ICMform;
 import defaultPackage.IForm;
 import defaultPackage.Main;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,16 +55,16 @@ public class FormController implements Initializable, ICMform {
 
 	// Combo Boxes
 	@FXML
-	private ComboBox<?> cmbRequests;
+	private ComboBox cmbRequests;
+
 	@FXML
-	private ComboBox<?> cmbStatus;
+	private ComboBox cmbStatus;
 
 	//
 	private ArrayList<String> names = new ArrayList<String>();
 	private ArrayList<Requirement> ReqListForClient ;
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-	}
+	ObservableList<String> list;
+	
 
 	/**
 	 * @param primaryStage
@@ -53,11 +72,7 @@ public class FormController implements Initializable, ICMform {
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		// request DB
-		clientRequestFromServer commend = clientRequestFromServer.getRequirement;
-		Object[] o = new Object[1];
-		o[0] = commend;
-		Main.client.handleMessageFromClientUI(o);
-
+		getRequests();
 		// scene
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 		Scene scene = new Scene(root);
@@ -71,15 +86,7 @@ public class FormController implements Initializable, ICMform {
 	/**
 	 * 
 	 */
-	private void setFacultyComboBox() {
-
-		/**
-		 * TODO: 1 request the data 2 enter the request numbers to the list 3 save the
-		 * arraylist for the intere class (thas itch time some one changes request the
-		 * data wold be updated) 4
-		 */
-	}
-
+	
 	@SuppressWarnings("unchecked") // tested thwo
 	@Override
 	public void getFromServer(Object message) {
@@ -100,5 +107,34 @@ public class FormController implements Initializable, ICMform {
 		}
 
 	} // END of public void getFromServer(Object message) {
+	
+	//all the scene enteractions 
+	
+	
+	private void setRequestsComboBox() {
+		getRequests();
+		ArrayList<String> al = new ArrayList<String>();	
+		for(Requirement req: ReqListForClient) {
+			al.add(Integer.toString((req.getID())));
+		}
+		
+		list = FXCollections.observableArrayList(al);
+		cmbRequests.setItems(list);
+	} //END OF private void setRequestsComboBox()
+	
+	//TODO : add the other combo box
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		setRequestsComboBox() ;
+	}
+	
+	//private methods 
+	private void getRequests() {
+		clientRequestFromServer commend = clientRequestFromServer.getRequirement;
+		Object[] o = new Object[1];
+		o[0] = commend;
+		Main.client.handleMessageFromClientUI(o);
+	}
+
 
 }// end of FormController class
