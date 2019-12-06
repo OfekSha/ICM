@@ -2,7 +2,9 @@ package Entity;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class clientRequestFromServer {
+import java.io.Serializable;
+
+public class clientRequestFromServer implements Serializable {
     public enum requestOptions {
         getAll,
         getRequirement,
@@ -29,5 +31,14 @@ public class clientRequestFromServer {
 
     public requestOptions getRequest() {
         return request;
+    }
+
+    public void setRequest(requestOptions request) {
+        this.request = request;
+    }
+
+    @Override
+    public String toString() {
+        return "Client requested = " + request;
     }
 }

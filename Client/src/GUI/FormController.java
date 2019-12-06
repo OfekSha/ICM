@@ -83,7 +83,7 @@ public class FormController implements Initializable, IcmForm {
 			case getRequirement:
 				if (message[1] instanceof ArrayList<?>) { //TODO: test if the element is correct ?
 					ReqListForClient = (ArrayList<Requirement>) message[1];
-				} else throw new IllegalArgumentException(message.getClass() + " is not correct type");
+				} else throw new IllegalArgumentException(message.getClass() + "is not correct type");
 				break;
 			case updateStatus:
 				break;
@@ -94,7 +94,6 @@ public class FormController implements Initializable, IcmForm {
 	} // END of public void getFromServer(Object message) {
 
 	//all the scene enteractions
-
 
 	private void setRequestsComboBox() {
 		getRequests();
