@@ -14,5 +14,5 @@ public interface IcmForm {
 	   * Method that when overriden is used to display objects onto
 	   * a UI.
 	   */
-	void getFromServer(Object[] message);
+	void getFromServer(Object message);
 }

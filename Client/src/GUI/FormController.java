@@ -79,15 +79,15 @@ public class FormController implements Initializable, IcmForm {
 	 *                and message[1] is answer
 	 */
 	@Override
-	public void getFromServer(Object[] message) {
+	public void getFromServer(Object message) {
 		// TODO Auto-generated method stub
 
-		clientRequestFromServer request = (clientRequestFromServer) message[0]; // msg is array of
+		clientRequestFromServer request = (clientRequestFromServer) message; // msg is array of
 																				// objects first is from // where
 		switch (request.getRequest()) {
 		case getRequirement:
-			if (message[1] instanceof ArrayList<?>) { // TODO: test if the element is correct ?
-				ReqListForClient = (ArrayList<Requirement>) message[1];
+			if (request.getObj() instanceof ArrayList<?>) { // TODO: test if the element is correct ?
+				ReqListForClient = (ArrayList<Requirement>) request.getObj();
 			} else
 				throw new IllegalArgumentException(message.getClass() + " is not correct type");
 			break;
@@ -171,8 +171,8 @@ public class FormController implements Initializable, IcmForm {
 
 		
 		
-		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,);
-		ClientLauncher.client.handleMessageFromClientUI(commend);
+		//clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,);
+		//ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 	
 	
