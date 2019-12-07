@@ -61,6 +61,7 @@ public class EchoServer extends AbstractServer {
 				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
 			}
 			else {
+				
 				ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 				switch (request.getRequest()) {
 					// read all requirement data

@@ -49,7 +49,7 @@ public class FormController implements Initializable, IcmForm {
 
 	//
 	private ArrayList<String> names = new ArrayList<>();
-	private ArrayList<Requirement> ReqListForClient = new ArrayList<>() ;
+	 static private ArrayList<Requirement> ReqListForClient  ;
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
@@ -62,6 +62,7 @@ public class FormController implements Initializable, IcmForm {
 		getRequests();
 		// scene
 		//	Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
+		Thread.sleep(10000);
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
@@ -88,7 +89,6 @@ public class FormController implements Initializable, IcmForm {
 		case getAll:
 			if (request.getObj() instanceof ArrayList<?>) { // TODO: test if the element is correct ?
 				ReqListForClient = (ArrayList<Requirement>) request.getObj();
-				setRequestsComboBox();
 			} else
 				throw new IllegalArgumentException(message.getClass() + " is not correct type");
 			break;
