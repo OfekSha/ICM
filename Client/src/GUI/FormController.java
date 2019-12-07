@@ -131,14 +131,14 @@ public class FormController implements Initializable, IcmForm {
 	// ActionEvent event methods
 
 	/**
-	 * @param event
+	 * @param event //TODO what event?
 	 * @throws Exception the user has chosen an a user , all data boxes will be
 	 *                   updated accordingly
 	 */
 	public void RequestsComboBoxUsed(ActionEvent event) throws Exception {
 		getRequests();
 
-		String s = cmbRequests.getSelectionModel().getSelectedItem().toString();
+		String s = cmbRequests.getSelectionModel().getSelectedItem();
 
 		for (Requirement req : ReqListForClient) {
 
@@ -157,7 +157,7 @@ public class FormController implements Initializable, IcmForm {
 	// TODO:connect the button to the method
 	
 	/**
-	 * @param event
+	 * @param event //TODO what event?
 	 * @throws Exception
 	 * 
 	 * when the update button will be pressed the server will be sent 
@@ -165,17 +165,22 @@ public class FormController implements Initializable, IcmForm {
 	 * |String|statusOptions|
 	 */
 	public void PressedUpdate(ActionEvent event) throws Exception {
-		String s = cmbStatus.getSelectionModel().getSelectedItem().toString();
+		String s = cmbStatus.getSelectionModel().getSelectedItem();
 		clientRequestFromServer commend = new clientRequestFromServer("2");
 		Object[] o = new Object[2];
 		o[0] = commend;
 
-		if (s.equals(statusOptions.ongoing.name()))
-			o[1] = statusOptions.ongoing;
-		else if (s.equals(statusOptions.suspended.name()))
-			o[1] = statusOptions.suspended;
-		else if (s.equals(statusOptions.closed.name()))
-			o[1] = statusOptions.closed;
+		switch(s) {
+			case "ongoing":
+				o[1] = statusOptions.ongoing;
+				break;
+			case "suspended":
+				o[1] = statusOptions.suspended;
+				break;
+			case "closed":
+				o[1] = statusOptions.closed;
+				break;
+		}
 		ClientLauncher.client.handleMessageFromClientUI(o);
 	}
 	

@@ -2,7 +2,6 @@ package Entity;
 
 import javax.naming.directory.InvalidAttributesException;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 
@@ -71,7 +70,6 @@ public class Requirement implements Serializable {
 		ID = iD;
 	}
 
-	// Todo: add to string and equals.
 	public void setStatus(String status) throws InvalidAttributesException {
 		switch (status) {
 			case "ongoing":
