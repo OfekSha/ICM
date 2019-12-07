@@ -85,7 +85,7 @@ public class FormController implements Initializable, IcmForm {
 		clientRequestFromServer request = (clientRequestFromServer) message; // msg is array of
 																				// objects first is from // where
 		switch (request.getRequest()) {
-		case getRequirement:
+		case getAll:
 			if (request.getObj() instanceof ArrayList<?>) { // TODO: test if the element is correct ?
 				ReqListForClient = (ArrayList<Requirement>) request.getObj();
 			} else
@@ -169,10 +169,16 @@ public class FormController implements Initializable, IcmForm {
 		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
 		String sRequests = cmbRequests.getSelectionModel().getSelectedItem();
 
+		for (Requirement r:ReqListForClient) {
+			if (sRequests.equals(Integer.toString(r.getID()))) {
+				r.setStatus(sStatus);
+				clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,r);
+				ClientLauncher.client.handleMessageFromClientUI(commend);
+				break;
+			}
+		}
+
 		
-		
-		//clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,);
-		//ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 	
 	
