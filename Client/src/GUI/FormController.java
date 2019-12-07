@@ -88,6 +88,7 @@ public class FormController implements Initializable, IcmForm {
 		case getAll:
 			if (request.getObj() instanceof ArrayList<?>) { // TODO: test if the element is correct ?
 				ReqListForClient = (ArrayList<Requirement>) request.getObj();
+				setRequestsComboBox();
 			} else
 				throw new IllegalArgumentException(message.getClass() + " is not correct type");
 			break;
