@@ -34,39 +34,11 @@ public class ClientLuncher extends Application {
 	public FormController aFrame;
 
 	/**
-	 * @param host ????
-	 * @param port ????
-	 * @author Yonathan
-	 * The contractor for the Main class - crates the connection and the frame
-	 */
-	public ClientLuncher(String host, int port) {
-		aFrame = new FormController(); // create the frame
-		try {
-			client = new IcmClient(host, port, aFrame);
-			System.out.println("Connection established!\n" //to be removed/changed
-					+ "Welcome to ICM.");
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" // to be removed/changed
-					+ " Terminating client.");
-			System.exit(1);
-		}
-	}
-
-	/**
 	 * the  real main method
 	 *
 	 * @param args ????
 	 */
 	public static void main(String[] args) throws Exception {
-		int port = 0; 
-		String host;
-		try {
-			host = args[0];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			host = "localhost";
-		}
-	ClientLuncher TheClient = new ClientLuncher(host,port);
-		
 		launch(args);      //Wait for  data
 	}
 
@@ -75,6 +47,21 @@ public class ClientLuncher extends Application {
 	 */
 	@Override
 	public void start(Stage arg0) throws Exception {
+		String host="localhost";
+		aFrame = new FormController(); // create the frame
+		
+		
+		try {
+			client = new IcmClient(host, DEFAULT_PORT, aFrame);
+			System.out.println("Connection established!\n" //to be removed/changed
+					+ "Welcome to ICM.");
+		} catch (IOException exception) {
+			System.out.println("Error: Can't setup connection!" // to be removed/changed
+					+ " Terminating client.");
+			System.exit(1);
+		}
 		aFrame.start(arg0);
+		
+		
 	}
 }

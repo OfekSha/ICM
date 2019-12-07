@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="768.0" prefWidth="1024.0" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,7 +24,7 @@
             </ImageView>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="btnExit" mnemonicParsing="false" text="Exit">
+                  <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" text="Exit">
                      <VBox.margin>
                         <Insets right="20.0" top="20.0" />
                      </VBox.margin>
@@ -117,4 +117,4 @@
         </items>
       </SplitPane>
    </center>
-</fx:root>
+</BorderPane>

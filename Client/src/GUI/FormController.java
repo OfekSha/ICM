@@ -49,7 +49,7 @@ public class FormController implements Initializable, IcmForm {
 
 	//
 	private ArrayList<String> names = new ArrayList<>();
-	private ArrayList<Requirement> ReqListForClient ;
+	private ArrayList<Requirement> ReqListForClient = new ArrayList<>() ;
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
@@ -59,16 +59,19 @@ public class FormController implements Initializable, IcmForm {
 	 * @throws Exception ????
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		// request DB
-		getRequests();
+		
 		// scene
+		//	Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
 		primaryStage.setScene(scene);
-		primaryStage.initStyle(StageStyle.UNDECORATED);
+		//primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.show();
+		
+		// request DB
+				getRequests();
 	}
 
 	/**
@@ -175,6 +178,11 @@ public class FormController implements Initializable, IcmForm {
 		else if (s.equals(statusOptions.closed.name()))
 			o[1] = statusOptions.closed;
 		ClientLuncher.client.handleMessageFromClientUI(o);
+	}
+	
+	
+	public void ExitBtn(ActionEvent event) throws Exception {
+		System.exit(0);			
 	}
 
 	// private methods
