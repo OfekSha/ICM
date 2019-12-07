@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import Entity.Requirement;
 import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -166,22 +167,20 @@ public class FormController implements Initializable, IcmForm {
 	 */
 	public void PressedUpdate(ActionEvent event) throws Exception {
 		String s = cmbStatus.getSelectionModel().getSelectedItem();
-		clientRequestFromServer commend = new clientRequestFromServer("2");
-		Object[] o = new Object[2];
-		o[0] = commend;
-
+		statusOptions newStatus ;
 		switch(s) {
 			case "ongoing":
-				o[1] = statusOptions.ongoing;
+				newStatus=statusOptions.ongoing;
 				break;
 			case "suspended":
-				o[1] = statusOptions.suspended;
+				newStatus=statusOptions.suspended;
 				break;
 			case "closed":
-				o[1] = statusOptions.closed;
+				newStatus=statusOptions.closed;
 				break;
 		}
-		ClientLauncher.client.handleMessageFromClientUI(o);
+		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,newStatus);
+		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 	
 	
@@ -195,10 +194,7 @@ public class FormController implements Initializable, IcmForm {
 	 * @author Yonathan gets all requests with all the details to
 	 */
 	private void getRequests() {
-		clientRequestFromServer commend = new clientRequestFromServer("0");
-
-		//Object[] o = new Object[1];
-		//o[0] = commend;
+		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getAll);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
 
 	}
