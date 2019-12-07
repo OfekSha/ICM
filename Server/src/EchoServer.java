@@ -76,6 +76,9 @@ public class EchoServer extends AbstractServer {
 						String status = splittedMsg[2];
 						query.updateStatus(ID, status);*/
 					// no break because we want to see the changes!
+						Requirement updateStatus=(Requirement) request.getObj();
+						
+						
 					case getRequirement:
 						//kostya
 						/*int ID = Integer.parseInt(splittedMsg[1]);
