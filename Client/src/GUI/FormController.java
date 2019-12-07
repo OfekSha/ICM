@@ -92,6 +92,7 @@ public class FormController implements Initializable, IcmForm {
 				throw new IllegalArgumentException(message.getClass() + " is not correct type");
 			break;
 		case updateStatus:
+			ReqListForClient = (ArrayList<Requirement>) request.getObj();
 			break;
 		default:
 			throw new IllegalArgumentException("the request " + request + " not implemented in the client.");
