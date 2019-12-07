@@ -166,20 +166,12 @@ public class FormController implements Initializable, IcmForm {
 	 * |String|statusOptions|
 	 */
 	public void PressedUpdate(ActionEvent event) throws Exception {
-		String s = cmbStatus.getSelectionModel().getSelectedItem();
-		statusOptions newStatus ;
-		switch(s) {
-			case "ongoing":
-				newStatus=statusOptions.ongoing;
-				break;
-			case "suspended":
-				newStatus=statusOptions.suspended;
-				break;
-			case "closed":
-				newStatus=statusOptions.closed;
-				break;
-		}
-		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,newStatus);
+		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
+		String sRequests = cmbRequests.getSelectionModel().getSelectedItem();
+
+		
+		
+		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 	
