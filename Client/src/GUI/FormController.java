@@ -162,8 +162,6 @@ public class FormController implements Initializable, IcmForm {
 	 * @throws Exception
 	 * 
 	 * when the update button will be pressed the server will be sent 
-	 * object array with the following :
-	 * |String|statusOptions|
 	 */
 	public void PressedUpdate(ActionEvent event) throws Exception {
 		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
