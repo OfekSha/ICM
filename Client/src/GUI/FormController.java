@@ -62,7 +62,6 @@ public class FormController implements Initializable, IcmForm {
 		getRequests();
 		// scene
 		//	Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
-		Thread.sleep(10000);
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
