@@ -49,20 +49,12 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		QueryHandler query = new QueryHandler();
-<<<<<<< HEAD
 		//String asStr = String.valueOf(msg); // kostya
 		//String[] splittedMsg = asStr.split(" "); //kostya
 		//clientRequestFromServer request = new clientRequestFromServer(splittedMsg[0]); // kostya
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from client
 		//System.out.println("Message received: " + splittedMsg[0] + " = [" + request.getRequest() + ']' +
 		//		" from " + client);
-=======
-		String[] splittedMsg = String.valueOf(msg).split(" "), reqRes;
-		int ID;
-		clientRequestFromServer request = new clientRequestFromServer(splittedMsg[0]); // msg is array of objects first is from where
-		System.out.println("Message received: " + splittedMsg[0] + " = [" + request.getRequest() + ']' +
-				" from " + client);
->>>>>>> branch 'master' of https://github.com/OfekSha/ICM
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
@@ -80,12 +72,11 @@ public class EchoServer extends AbstractServer {
 						break;
 					// read data from some id in requirement
 					case updateStatus:
-						ID = Integer.parseInt(splittedMsg[1]);
+						/*ID = Integer.parseInt(splittedMsg[1]);
 						String status = splittedMsg[2];
-						query.updateStatus(ID, status);
+						query.updateStatus(ID, status);*/
 					// no break because we want to see the changes!
 					case getRequirement:
-<<<<<<< HEAD
 						//kostya
 						/*int ID = Integer.parseInt(splittedMsg[1]);
 						String[] getReq = query.selectRequirement(ID);
@@ -94,11 +85,7 @@ public class EchoServer extends AbstractServer {
 							} catch (InvalidAttributesException e) {
 								e.printStackTrace();
 							}*/
-=======
-						ID = Integer.parseInt(splittedMsg[1]);
-						reqRes = query.selectRequirement(ID);
-						ReqListForClient.add(packageRequirement(reqRes));
->>>>>>> branch 'master' of https://github.com/OfekSha/ICM
+
 						break;
 					// insert new line to requirement
 					/*case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert

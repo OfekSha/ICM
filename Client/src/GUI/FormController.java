@@ -196,15 +196,11 @@ public class FormController implements Initializable, IcmForm {
 	 */
 	private void getRequests() {
 		clientRequestFromServer commend = new clientRequestFromServer("0");
-<<<<<<< HEAD
+
 		//Object[] o = new Object[1];
 		//o[0] = commend;
-		ClientLuncher.client.handleMessageFromClientUI(commend);
-=======
-		Object[] o = new Object[1];
-		o[0] = commend;
-		ClientLauncher.client.handleMessageFromClientUI(o);
->>>>>>> branch 'master' of https://github.com/OfekSha/ICM
+		ClientLauncher.client.handleMessageFromClientUI(commend);
+
 	}
 
 }// end of FormController class
