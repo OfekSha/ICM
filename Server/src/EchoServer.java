@@ -77,12 +77,21 @@ public class EchoServer extends AbstractServer {
 						String status = splittedMsg[2];
 						query.updateStatus(ID, status);*/
 					// no break because we want to see the changes!
+						
+						
+						// jonny  - i disabled it cus it makes everything crush 
+						//	to ofeck: ? 
+						/*
+						 * -----------------------DISABELED------------------------------
 						Requirement updateStatus=(Requirement) request.getObj();
 						query.updateStatus(updateStatus.getID(), updateStatus.getStatus().name());
 						reqList = query.selectAll();
 						for (String[] arr : reqList) {
 							ReqListForClient.add(packageRequirement(arr));
 						}
+							-----------------------DISABELED------------------------------
+						*/
+						
 						
 					case getRequirement:
 						//kostya
