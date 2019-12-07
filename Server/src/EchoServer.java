@@ -78,7 +78,11 @@ public class EchoServer extends AbstractServer {
 						query.updateStatus(ID, status);*/
 					// no break because we want to see the changes!
 						Requirement updateStatus=(Requirement) request.getObj();
-						
+						query.updateStatus(updateStatus.getID(), updateStatus.getStatus().name());
+						reqList = query.selectAll();
+						for (String[] arr : reqList) {
+							ReqListForClient.add(packageRequirement(arr));
+						}
 						
 					case getRequirement:
 						//kostya
