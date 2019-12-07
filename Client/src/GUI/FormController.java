@@ -59,7 +59,7 @@ public class FormController implements Initializable, IcmForm {
 	 * @throws Exception ????
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		
+		getRequests();
 		// scene
 		//	Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
@@ -71,7 +71,7 @@ public class FormController implements Initializable, IcmForm {
 		primaryStage.show();
 		
 		// request DB
-				getRequests();
+				
 	}
 
 	/**
