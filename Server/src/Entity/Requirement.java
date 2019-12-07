@@ -1,7 +1,7 @@
 package Entity;
 
+import javax.naming.directory.InvalidAttributesException;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 
@@ -70,12 +70,30 @@ public class Requirement implements Serializable {
 		ID = iD;
 	}
 
-	// Todo: add to string and equals.
+	public void setStatus(String status) throws InvalidAttributesException {
+		switch (status) {
+			case "ongoing":
+				this.status = statusOptions.ongoing;
+				break;
+			case "suspended":
+				this.status = statusOptions.suspended;
+				break;
+			case "closed":
+				this.status = statusOptions.closed;
+				break;
+			default:
+				throw new InvalidAttributesException("Invalid status");
+		}
+	}
+
 	@Override
 	public String toString() {
-		return "ID = " + ID + ", reqInitiator = '" + reqInitiator + '\'' + ", stageSupervisor = '" + stageSupervisor
-				+ '\'' + ", status = '" + status + ", requestDetails = '" + requestDetails + '\''
-				+ ", currentSituationDetails = '" + currentSituationDetails + '\'';
+		return "ID = " + ID +
+				", reqInitiator = '" + reqInitiator + '\'' +
+				", stageSupervisor = '" + stageSupervisor + '\'' +
+				", status = '" + status + '\'' +
+				", requestDetails = '" + requestDetails + '\'' +
+				", currentSituationDetails = '" + currentSituationDetails + '\'';
 	}
 
 	@Override
@@ -90,8 +108,5 @@ public class Requirement implements Serializable {
 				&& requestDetails.equals(that.requestDetails) && stageSupervisor.equals(that.stageSupervisor);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(status, reqInitiator, currentSituationDetails, requestDetails, stageSupervisor, ID);
-	}
+
 }

@@ -19,7 +19,7 @@
          <children>
             <ImageView fitHeight="200.0" fitWidth="200.0">
                <image>
-                  <Image url="@../../../ICMlogo.png" />
+                  <Image url="/img/ICMlogo.png" />
                </image>
             </ImageView>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">

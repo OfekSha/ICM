@@ -40,10 +40,6 @@ public class clientRequestFromServer implements Serializable {
         return request;
     }
 
-    public void setRequest(requestOptions request) {
-        this.request = request;
-    }
-
     @Override
     public String toString() {
         return "Client requested = " + request;

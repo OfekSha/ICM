@@ -19,9 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import WindowApp.IcmForm;
-import WindowApp.ClientLuncher;
+import WindowApp.ClientLauncher;
 import javafx.scene.control.*;
-import javafx.stage.StageStyle;
 
 public class FormController implements Initializable, IcmForm {
 	// text fields
@@ -132,14 +131,14 @@ public class FormController implements Initializable, IcmForm {
 	// ActionEvent event methods
 
 	/**
-	 * @param event
+	 * @param event //TODO what event?
 	 * @throws Exception the user has chosen an a user , all data boxes will be
 	 *                   updated accordingly
 	 */
 	public void RequestsComboBoxUsed(ActionEvent event) throws Exception {
 		getRequests();
 
-		String s = cmbRequests.getSelectionModel().getSelectedItem().toString();
+		String s = cmbRequests.getSelectionModel().getSelectedItem();
 
 		for (Requirement req : ReqListForClient) {
 
@@ -158,7 +157,7 @@ public class FormController implements Initializable, IcmForm {
 	// TODO:connect the button to the method
 	
 	/**
-	 * @param event
+	 * @param event //TODO what event?
 	 * @throws Exception
 	 * 
 	 * when the update button will be pressed the server will be sent 
@@ -166,18 +165,23 @@ public class FormController implements Initializable, IcmForm {
 	 * |String|statusOptions|
 	 */
 	public void PressedUpdate(ActionEvent event) throws Exception {
-		String s = cmbStatus.getSelectionModel().getSelectedItem().toString();
+		String s = cmbStatus.getSelectionModel().getSelectedItem();
 		clientRequestFromServer commend = new clientRequestFromServer("2");
 		Object[] o = new Object[2];
 		o[0] = commend;
 
-		if (s.equals(statusOptions.ongoing.name()))
-			o[1] = statusOptions.ongoing;
-		else if (s.equals(statusOptions.suspended.name()))
-			o[1] = statusOptions.suspended;
-		else if (s.equals(statusOptions.closed.name()))
-			o[1] = statusOptions.closed;
-		ClientLuncher.client.handleMessageFromClientUI(o);
+		switch(s) {
+			case "ongoing":
+				o[1] = statusOptions.ongoing;
+				break;
+			case "suspended":
+				o[1] = statusOptions.suspended;
+				break;
+			case "closed":
+				o[1] = statusOptions.closed;
+				break;
+		}
+		ClientLauncher.client.handleMessageFromClientUI(o);
 	}
 	
 	
@@ -192,9 +196,15 @@ public class FormController implements Initializable, IcmForm {
 	 */
 	private void getRequests() {
 		clientRequestFromServer commend = new clientRequestFromServer("0");
+<<<<<<< HEAD
 		//Object[] o = new Object[1];
 		//o[0] = commend;
 		ClientLuncher.client.handleMessageFromClientUI(commend);
+=======
+		Object[] o = new Object[1];
+		o[0] = commend;
+		ClientLauncher.client.handleMessageFromClientUI(o);
+>>>>>>> branch 'master' of https://github.com/OfekSha/ICM
 	}
 
 }// end of FormController class

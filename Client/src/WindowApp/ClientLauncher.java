@@ -5,8 +5,6 @@ import GUI.FormController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
-
 /**
  * @author Yonathan
  * 
@@ -14,7 +12,7 @@ import javafx.stage.Stage;
  * 2) creates and lunches the manin sence  
  * 
  */
-public class ClientLuncher extends Application {
+public class ClientLauncher extends Application {
 
 	//Class variables *************************************************
 	/**
