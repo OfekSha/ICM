@@ -10,12 +10,12 @@ public class clientRequestFromServer implements Serializable {
         getRequirement,
         updateStatus,
     }
-
-    private requestOptions request;
+    private Object obj;	// some object that transfer to client or to server.
+    private requestOptions request; // request
 
     public clientRequestFromServer(String request) {
         switch (request) {
-            case "0":
+            case "0": 
                 this.request = requestOptions.getAll;
                 break;
             case "1":
@@ -28,7 +28,14 @@ public class clientRequestFromServer implements Serializable {
                 throw new NotImplementedException();
         }
     }
-
+    public clientRequestFromServer(requestOptions request) {
+    	this.obj=null;
+    	this.request=request;
+    }
+    public clientRequestFromServer(requestOptions request,Object obj) {
+    	this.obj=obj;
+    	this.request=request;
+    }
     public requestOptions getRequest() {
         return request;
     }
@@ -41,4 +48,7 @@ public class clientRequestFromServer implements Serializable {
     public String toString() {
         return "Client requested = " + request;
     }
+	public Object getObj() {
+		return obj;
+	}
 }

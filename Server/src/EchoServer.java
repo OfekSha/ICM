@@ -50,11 +50,12 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
 		QueryHandler query = new QueryHandler();
-		String asStr = String.valueOf(msg);
-		String[] splittedMsg = asStr.split(" ");
-		clientRequestFromServer request = new clientRequestFromServer(splittedMsg[0]); // msg is array of objects first is from where
-		System.out.println("Message received: " + splittedMsg[0] + " = [" + request.getRequest() + ']' +
-				" from " + client);
+		//String asStr = String.valueOf(msg); // kostya
+		//String[] splittedMsg = asStr.split(" "); //kostya
+		//clientRequestFromServer request = new clientRequestFromServer(splittedMsg[0]); // kostya
+		clientRequestFromServer request = (clientRequestFromServer)msg; // request from client
+		//System.out.println("Message received: " + splittedMsg[0] + " = [" + request.getRequest() + ']' +
+		//		" from " + client);
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
@@ -76,13 +77,14 @@ public class EchoServer extends AbstractServer {
 						break; //TODO select * from icm.requirement
 					// read data from some id in requirement
 					case getRequirement:
-						int ID = Integer.parseInt(splittedMsg[1]);
+						//kostya
+						/*int ID = Integer.parseInt(splittedMsg[1]);
 						String[] getReq = query.selectRequirement(ID);
 							try {
 								ReqListForClient.add(packageRequirement(getReq));
 							} catch (InvalidAttributesException e) {
 								e.printStackTrace();
-							}
+							}*/
 						break;
 					// insert new line to requirement
 					/*case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
@@ -94,7 +96,8 @@ public class EchoServer extends AbstractServer {
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
 				}
-				Object[] answer = new Object[] { request, ReqListForClient };
+				//Object[] answer = new Object[] { request, ReqListForClient }; // kostya
+				clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(),ReqListForClient); // answer to the client
 				client.sendToClient(answer);
 			}
 			//client.sendToClient((query.selectAll()).toString());
