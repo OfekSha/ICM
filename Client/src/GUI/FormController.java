@@ -19,9 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import WindowApp.IcmForm;
-import WindowApp.ClientLuncher;
+import WindowApp.ClientLauncher;
 import javafx.scene.control.*;
-import javafx.stage.StageStyle;
 
 public class FormController implements Initializable, IcmForm {
 	// text fields
@@ -177,7 +176,7 @@ public class FormController implements Initializable, IcmForm {
 			o[1] = statusOptions.suspended;
 		else if (s.equals(statusOptions.closed.name()))
 			o[1] = statusOptions.closed;
-		ClientLuncher.client.handleMessageFromClientUI(o);
+		ClientLauncher.client.handleMessageFromClientUI(o);
 	}
 	
 	
@@ -194,7 +193,7 @@ public class FormController implements Initializable, IcmForm {
 		clientRequestFromServer commend = new clientRequestFromServer("0");
 		Object[] o = new Object[1];
 		o[0] = commend;
-		ClientLuncher.client.handleMessageFromClientUI(o);
+		ClientLauncher.client.handleMessageFromClientUI(o);
 	}
 
 }// end of FormController class
