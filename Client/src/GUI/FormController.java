@@ -19,7 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import WindowApp.IcmForm;
-import WindowApp.ClientGUI;
+import WindowApp.ClientLuncher;
 import javafx.scene.control.*;
 import javafx.stage.StageStyle;
 
@@ -174,7 +174,7 @@ public class FormController implements Initializable, IcmForm {
 			o[1] = statusOptions.suspended;
 		else if (s.equals(statusOptions.closed.name()))
 			o[1] = statusOptions.closed;
-		ClientGUI.client.handleMessageFromClientUI(o);
+		ClientLuncher.client.handleMessageFromClientUI(o);
 	}
 
 	// private methods
@@ -186,7 +186,7 @@ public class FormController implements Initializable, IcmForm {
 		clientRequestFromServer commend = new clientRequestFromServer("0");
 		Object[] o = new Object[1];
 		o[0] = commend;
-		ClientGUI.client.handleMessageFromClientUI(o);
+		ClientLuncher.client.handleMessageFromClientUI(o);
 	}
 
 }// end of FormController class

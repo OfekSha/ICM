@@ -5,7 +5,7 @@ import java.io.*;
 
 public class IcmClient extends AbstractClient {
 
-	IcmForm clientUI; // the UI currently in serves
+	public IcmForm clientUI; // the UI currently in serves
 
 	//Constructors ****************************************************
 
