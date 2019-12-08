@@ -54,7 +54,6 @@ public class ClientLauncher extends Application {
 		System.out.println("Insert Server IP:");
 		Scanner ip = new Scanner(System.in);
 		host=ip.nextLine();
-		if (!(host.contains("127"))) host="localhost";
 		
 		// END ---- insert server ip to connect from client console----
 		aFrame = new FormController(); // create the frame

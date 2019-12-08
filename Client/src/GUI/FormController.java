@@ -49,7 +49,7 @@ public class FormController implements Initializable, IcmForm {
 
 	//
 	private ArrayList<String> names = new ArrayList<>();
-	 static private ArrayList<Requirement> ReqListForClient  ;
+	 static private ArrayList<Requirement> ReqListForClient=null  ;
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
