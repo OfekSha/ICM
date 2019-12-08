@@ -55,7 +55,6 @@ public class EchoServer extends AbstractServer {
 		try {
 			ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 			Requirement reqReceived;
-			String[] result;
 			switch (request.getRequest()) {
 				// read all requirement data
 				case getAll:
@@ -65,13 +64,11 @@ public class EchoServer extends AbstractServer {
 				case updateStatus:
 					reqReceived = request.getObj().get(0);
 					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
-					result = queryHandler.selectRequirement(reqReceived.getID());
-					ReqListForClient.add(new Requirement(result));
+					selectRequirement(ReqListForClient, reqReceived);
 					break;
 				case getRequirement:
 					reqReceived = request.getObj().get(0);
-					result = queryHandler.selectRequirement(reqReceived.getID());
-					ReqListForClient.add(new Requirement(result));
+					selectRequirement(ReqListForClient, reqReceived);
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
@@ -81,6 +78,12 @@ public class EchoServer extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void selectRequirement(ArrayList<Requirement> reqListForClient, Requirement reqReceived) {
+		String[] result;
+		result = queryHandler.selectRequirement(reqReceived.getID());
+		reqListForClient.add(new Requirement(result));
 	}
 
 	private void getAllRequest(ArrayList<Requirement> reqListForClient) {
