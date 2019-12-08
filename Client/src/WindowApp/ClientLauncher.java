@@ -1,5 +1,6 @@
 package WindowApp;
 import java.io.IOException;
+import java.util.Scanner;
 
 import GUI.FormController;
 import javafx.application.Application;
@@ -46,6 +47,16 @@ public class ClientLauncher extends Application {
 	@Override
 	public void start(Stage arg0) throws Exception {
 		String host="localhost";
+		
+		
+		// START ----insert server ip to connect from client console----
+		
+		System.out.println("Insert Server IP:");
+		Scanner ip = new Scanner(System.in);
+		host=ip.nextLine();
+		if (!(host.contains("127"))) host="localhost";
+		
+		// END ---- insert server ip to connect from client console----
 		aFrame = new FormController(); // create the frame
 		
 		
