@@ -54,7 +54,6 @@ public class FormController implements Initializable, IcmForm {
 	private ComboBox<String> cmbStatus;
 
 	//Variables
-	private ArrayList<String> names = new ArrayList<>();
 	private static ArrayList<Requirement> ReqListForClient = null;
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
@@ -161,7 +160,6 @@ public class FormController implements Initializable, IcmForm {
 	
 	/**
 	 * @throws Exception
-	 * 
 	 * when the update button will be pressed the server will be sent 
 	 */
 	public void PressedUpdate() throws Exception {

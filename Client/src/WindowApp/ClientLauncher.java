@@ -50,7 +50,7 @@ public class ClientLauncher extends Application {
 		
 		
 		// START ----insert server ip to connect from client console----
-		System.out.println("Insert Server IP:");
+		System.out.println("Insert Server IP: ");
 		Scanner ip = new Scanner(System.in);
 		host = ip.nextLine();
 		

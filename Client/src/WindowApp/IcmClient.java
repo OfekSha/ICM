@@ -1,6 +1,5 @@
 package WindowApp;
 
-import Entity.clientRequestFromServer;
 import client.*;
 import java.io.*;
 
@@ -46,7 +45,6 @@ public class IcmClient extends AbstractClient {
 			quit();
 		}
 	}
-
 
 	/**
 	 * This method terminates the client.

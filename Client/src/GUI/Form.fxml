@@ -20,7 +20,6 @@
                   <Image url="/img/ICMlogo.png" />
             </ImageView>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
-
                   <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" text="Exit">
                      <VBox.margin>
                         <Insets right="20.0" top="20.0" />

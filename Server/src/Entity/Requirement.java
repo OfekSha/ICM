@@ -14,25 +14,17 @@ import java.io.Serializable;
  */
 public class Requirement implements Serializable {
 	public enum statusOptions {
-		ongoing, suspended, closed
+		ongoing,
+		suspended,
+		closed
 	}
 
 	private statusOptions status;
 	private String reqInitiator, currentSituationDetails, requestDetails, stageSupervisor;
 	private int ID;
 
-	/**
-	 * 
-	 * constructor for Requirement
-	 * 
-	 * @param reqInitiator            Initiator of request
-	 * @param currentSituationDetails details of current situation
-	 * @param requestDetails          details of request
-	 * @param stageSupervisor         Supervisor of request
-	 * @param status                  status ?????
-	 * @param ID                      id ?????
-	 */
-	public Requirement(String reqInitiator, String currentSituationDetails, String requestDetails,
+
+	/*public Requirement(String reqInitiator, String currentSituationDetails, String requestDetails,
 			String stageSupervisor, statusOptions status, int ID) {
 		this.reqInitiator = reqInitiator;
 		this.currentSituationDetails = currentSituationDetails;
@@ -41,7 +33,21 @@ public class Requirement implements Serializable {
 		this.status = status;
 		this.ID = ID;
 	}
+	*/
 
+	/**
+	 *
+	 * @param reqLine 	data array
+	 */
+	public Requirement(String[] reqLine)
+	{
+		this.reqInitiator = reqLine[0];
+		this.currentSituationDetails = reqLine[2];
+		this.requestDetails = reqLine[3];
+		this.stageSupervisor = reqLine[4];
+		this.status = statusOptions.valueOf(reqLine[5]);
+		this.ID = Integer.parseInt(reqLine[1]);
+	}
 	public String getReqInitiator() {
 		return reqInitiator;
 	}

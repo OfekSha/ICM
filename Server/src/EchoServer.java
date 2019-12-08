@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import Entity.Requirement;
 import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer;
+
 import server.AbstractServer;
 import server.ConnectionToClient;
 
@@ -50,9 +51,11 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from client
-		System.out.println(LocalTime.now() + ": Message received: " + msg + " of \n[" + request.getObj() + "\t]" + " from " + client.getInetAddress());
+		System.out.println(LocalTime.now() + ": Message received [" + msg + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		try {
 			ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+			Requirement reqReceived;
+			String[] result;
 			switch (request.getRequest()) {
 				// read all requirement data
 				case getAll:
@@ -60,16 +63,15 @@ public class EchoServer extends AbstractServer {
 					break;
 				// read data from some id in requirement
 				case updateStatus:
-					Requirement updateStatus = request.getObj().get(0);
-					queryHandler.updateStatus(updateStatus.getID(), updateStatus.getStatus().name());
-					String[] selected = queryHandler.selectRequirement(updateStatus.getID());
-					packageRequirement(selected);
-					getAllRequest(ReqListForClient);
+					reqReceived = request.getObj().get(0);
+					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
+					result = queryHandler.selectRequirement(reqReceived.getID());
+					ReqListForClient.add(new Requirement(result));
 					break;
 				case getRequirement:
-					Requirement getReq = request.getObj().get(0);
-					String[] result = queryHandler.selectRequirement(getReq.getID());
-					packageRequirement(result);
+					reqReceived = request.getObj().get(0);
+					result = queryHandler.selectRequirement(reqReceived.getID());
+					ReqListForClient.add(new Requirement(result));
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
@@ -83,7 +85,7 @@ public class EchoServer extends AbstractServer {
 
 	private void getAllRequest(ArrayList<Requirement> reqListForClient) {
 		for (String[] arr : queryHandler.selectAll()) {
-			reqListForClient.add(packageRequirement(arr));
+			reqListForClient.add(new Requirement(arr));
 		}
 	}
 
@@ -98,6 +100,8 @@ public class EchoServer extends AbstractServer {
 		if (!mysqlConnection.checkExistence()) {
 			mysqlConnection.buildDB();
 			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", statusOptions.closed);
+			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", statusOptions.ongoing);
+			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", statusOptions.suspended);
 		}
 	}
 
@@ -109,23 +113,6 @@ public class EchoServer extends AbstractServer {
 		mysqlConnection.closeConnection();
 		System.out.println("Server has stopped listening for connections.");
 	}
-/**
- * 
- * package list of strings to requirement
- * 
- * @author Ofek
- * @param reqLine ?????
- * @return newReq
- */
-
-private Requirement packageRequirement (String[] reqLine) {
-	return new Requirement(reqLine[0],
-			reqLine[2],
-			reqLine[3],
-			reqLine[4],
-			statusOptions.valueOf(reqLine[5]),
-			Integer.parseInt(reqLine[1]));
-}
 /**
 	 * This method is responsible for the creation of the server instance (there is
 	 * no UI in this phase).
