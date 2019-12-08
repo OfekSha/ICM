@@ -2,6 +2,7 @@ package GUI;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 import Entity.Requirement;
@@ -10,10 +11,10 @@ import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 import WindowApp.IcmForm;
 import WindowApp.ClientLauncher;
 import javafx.scene.control.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class FormController implements Initializable, IcmForm {
 	// text fields
@@ -49,7 +51,7 @@ public class FormController implements Initializable, IcmForm {
 
 	//
 	private ArrayList<String> names = new ArrayList<>();
-	 static private ArrayList<Requirement> ReqListForClient=null  ;
+	static private ArrayList<Requirement> ReqListForClient = null;
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
@@ -59,9 +61,9 @@ public class FormController implements Initializable, IcmForm {
 	 * @throws Exception ????
 	 */
 	public void start(Stage primaryStage) throws Exception {
+		// request DB
 		getRequests();
 		// scene
-		//	Parent root = FXMLLoader.load(getClass().getResource("/gui/AcademicFrame.fxml"));
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
@@ -69,9 +71,6 @@ public class FormController implements Initializable, IcmForm {
 		primaryStage.setScene(scene);
 		//primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.show();
-		
-		// request DB
-				
 	}
 
 	/**
@@ -79,29 +78,25 @@ public class FormController implements Initializable, IcmForm {
 	 *                and message[1] is answer
 	 */
 	@Override
-	public void getFromServer(Object message) {
+	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
-
-		clientRequestFromServer request = (clientRequestFromServer) message; // msg is array of
-																				// objects first is from // where
-		switch (request.getRequest()) {
-		case getAll:
-			if (request.getObj() instanceof ArrayList<?>) { // TODO: test if the element is correct ?
-				ReqListForClient = (ArrayList<Requirement>) request.getObj();
-			} else
-				throw new IllegalArgumentException(message.getClass() + " is not correct type");
-			break;
-		case updateStatus:
-			ReqListForClient = (ArrayList<Requirement>) request.getObj();
-			break;
-		default:
-			throw new IllegalArgumentException("the request " + request + " not implemented in the client.");
+		clientRequestFromServer request = (clientRequestFromServer) message;
+		// msg is ArrayLost of Requirement classes
+		ReqListForClient = request.getObj();
+		//ReqListForClient.addAll((Collection<? extends Requirement>) request.getObj());
+		switch(request.getRequest()) {
+			//TODO some actions to prompt message to client about answer from server
+			case getAll:
+				break;
+			case updateStatus:
+				break;
+			case getRequirement:
+				break;
+			default: throw new NotImplementedException();
 		}
-
-	} // END of public void getFromServer(Object message) {
+	}
 
 	// setting up the combo boxes
-
 	private void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		for (Requirement req : ReqListForClient) {
@@ -110,7 +105,7 @@ public class FormController implements Initializable, IcmForm {
 
 		listFor_cmbRequests = FXCollections.observableArrayList(al);
 		cmbRequests.setItems(listFor_cmbRequests);
-	} // END OF private void setRequestsComboBox()
+	}
 
 	// cmbStatus
 	private void setStatusComboBox() {
@@ -126,69 +121,50 @@ public class FormController implements Initializable, IcmForm {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setRequestsComboBox();
 		setStatusComboBox();
-
 	}
 	// end of setting up combo boxes
 
 	// ActionEvent event methods
 
-	/**
-	 * @param event //TODO what event?
-	 * @throws Exception the user has chosen an a user , all data boxes will be
-	 *                   updated accordingly
-	 */
-	public void RequestsComboBoxUsed(ActionEvent event) throws Exception {
-		getRequests();
-
-		String s = cmbRequests.getSelectionModel().getSelectedItem();
-
+	public void RequestsComboBoxUsed() {
+		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
 		for (Requirement req : ReqListForClient) {
-
-			if (s.equals(Integer.toString((req.getID())))) {
+			if (s == req.getID()) {
 				this.txtInitiator.setText(req.getReqInitiator());
 				this.txtCurrentSituationDetails.setText(req.getCurrentSituationDetails());
 				this.txtRequestDetails.setText(req.getRequestDetails());
 				this.txtStageSupervisor.setText(req.getStageSupervisor());
-				// added by ofek: 
-				setRequestsComboBox(); // if get added to DB new Requirment.
-				/*
-				 * 
-				 * --------- fix to combo status!!! ---------------------- by ofek
-				 */
-				//this.cmbStatus.setPromptText((req.getStatus()).name()); // --- old by yonathan
 				this.cmbStatus.setValue((req.getStatus()).name());
+				this.cmbStatus.setPromptText((req.getStatus()).name());
 				break;
 			}
 		}
+	}
+		// END of RequestsComboBoxUsed();
 
-	} // END of RequestsComboBoxUsed();
-
-	// TODO:connect the button to the method
+	// TODO: connect the button to the method
 	
 	/**
-	 * @param event //TODO what event?
 	 * @throws Exception
 	 * 
 	 * when the update button will be pressed the server will be sent 
 	 */
-	public void PressedUpdate(ActionEvent event) throws Exception {
+	public void PressedUpdate() throws Exception {
 		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
-		String sRequests = cmbRequests.getSelectionModel().getSelectedItem();
-
-		for (Requirement r:ReqListForClient) {
-			if (sRequests.equals(Integer.toString(r.getID()))) {
-				r.setStatus(sStatus);
-				clientRequestFromServer commend = new clientRequestFromServer(requestOptions.updateStatus,r);
-				ClientLauncher.client.handleMessageFromClientUI(commend);
+		int sRequests = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
+		ArrayList<Requirement> to = new ArrayList<>();
+		for (Requirement req : ReqListForClient) {
+			if (sRequests == req.getID()) {
+				to.add(req);
+				req.setStatus(sStatus);
+				clientRequestFromServer msg = new clientRequestFromServer(requestOptions.updateStatus, to);
+				ClientLauncher.client.handleMessageFromClientUI(msg);
 				break;
 			}
 		}
-
-		
 	}
-	
-	
-	public void ExitBtn(ActionEvent event) throws Exception {
+
+	public void ExitBtn() {
 		System.exit(0);			
 	}
 
@@ -200,7 +176,13 @@ public class FormController implements Initializable, IcmForm {
 	private void getRequests() {
 		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getAll);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
-
 	}
+
+/*
+	private void selectRequriement(Requirement req) {
+		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getRequirement, req);
+		ClientLauncher.client.handleMessageFromClientUI(commend);
+	}
+*/
 
 }// end of FormController class

@@ -1,5 +1,6 @@
 package WindowApp;
 
+import Entity.clientRequestFromServer;
 import client.*;
 import java.io.*;
 
@@ -29,8 +30,7 @@ public class IcmClient extends AbstractClient {
 	 * @param msg The message from the server.
 	 */
 	public void handleMessageFromServer(Object msg) {
-
-		clientUI.getFromServer( msg);
+		clientUI.getFromServer(msg);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class IcmClient extends AbstractClient {
 	public void handleMessageFromClientUI(Object message) {
 		try {
 			sendToServer(message);
-		} catch (IOException e) {//TODO: display some messge ?
+		} catch (IOException e) {//TODO: display some message ?
 			//clientUI.display("Could not send message to server.  Terminating client.");
 			quit();
 		}

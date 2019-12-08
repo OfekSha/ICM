@@ -37,7 +37,7 @@ public class ClientLauncher extends Application {
 	 *
 	 * @param args ????
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		launch(args);      //Wait for  data
 	}
 
@@ -46,19 +46,17 @@ public class ClientLauncher extends Application {
 	 */
 	@Override
 	public void start(Stage arg0) throws Exception {
-		String host="localhost";
+		String host;// = "localhost";
 		
 		
 		// START ----insert server ip to connect from client console----
-		
 		System.out.println("Insert Server IP:");
 		Scanner ip = new Scanner(System.in);
-		host=ip.nextLine();
+		host = ip.nextLine();
 		
 		// END ---- insert server ip to connect from client console----
 		aFrame = new FormController(); // create the frame
-		
-		
+
 		try {
 			client = new IcmClient(host, DEFAULT_PORT, aFrame);
 			System.out.println("Connection established!\n" //to be removed/changed

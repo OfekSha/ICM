@@ -88,12 +88,12 @@ public class Requirement implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ID = " + ID +
-				", reqInitiator = '" + reqInitiator + '\'' +
-				", stageSupervisor = '" + stageSupervisor + '\'' +
-				", status = '" + status + '\'' +
-				", requestDetails = '" + requestDetails + '\'' +
-				", currentSituationDetails = '" + currentSituationDetails + '\'';
+		return "\tID = " + ID +
+				"\n\treqInitiator = '" + reqInitiator + '\'' +
+				"\n\tstageSupervisor = '" + stageSupervisor + '\'' +
+				"\n\tstatus = '" + status + '\'' +
+				"\n\trequestDetails = '" + requestDetails + '\'' +
+				"\n\tcurrentSituationDetails = '" + currentSituationDetails + '\'';
 	}
 
 	@Override

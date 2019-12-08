@@ -103,13 +103,13 @@
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin></Label>
-                        <TextArea fx:id="txtRequestDetails" prefHeight="200.0" prefWidth="200.0">
+                        <TextArea fx:id="txtRequestDetails" prefHeight="200.0" prefWidth="200.0" wrapText="true">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </TextArea>
                         <Label alignment="CENTER" text="Current situation details" />
-                        <TextArea fx:id="txtCurrentSituationDetails" prefHeight="200.0" prefWidth="600.0" />
+                        <TextArea fx:id="txtCurrentSituationDetails" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
                      </children>
                   </VBox>
                </children>

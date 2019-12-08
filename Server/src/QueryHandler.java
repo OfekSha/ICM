@@ -1,29 +1,24 @@
-import Entity.Requirement;
-
-import java.io.PrintStream;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-
 import static Entity.Requirement.*;
 
 public class QueryHandler {
-    private mysqlConnection mysqlConn;
+    private final mysqlConnection mysqlConn;
 
-    public QueryHandler() {
-        mysqlConn = new mysqlConnection();
+    public QueryHandler(mysqlConnection mysqlConn) {
+        this.mysqlConn = mysqlConn;
     }
 
     /**
      * for prototype.
      * insert new requirement in icm.requirement.
-     * @param reqInitiator Initiator of request
-     * @param currentSituationDetails details of current situation
-     * @param requestDetails details of request
-     * @param stageSupervisor Supervisor of request
+     * @param reqInitiator              Initiator of request
+     * @param currentSituationDetails   Details of current situation
+     * @param requestDetails            Details of request
+     * @param stageSupervisor           Supervisor of request
      */
 
-    public void insertRequirment(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor,statusOptions status) { // send the use details.
+    public void insertRequirement(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor, statusOptions status) { // send the use details.
         int count = 0;
         try {
             Statement numTest = mysqlConn.getConn().createStatement();
@@ -56,9 +51,7 @@ public class QueryHandler {
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            
         }
-
     }
 
     /**
@@ -71,14 +64,9 @@ public class QueryHandler {
      */
     public void updateStatus(int id, String status) throws IllegalArgumentException {
         PreparedStatement updStatus;
-      //  int ordinalStatus = statusOptions.valueOf(status).ordinal() + 1;
-       // if (ordinalStatus < 1 || ordinalStatus > 3) throw new IllegalArgumentException();
         try {
             updStatus = mysqlConn.getConn().prepareStatement(
-                    "UPDATE `icm`.`requirement` "
-                    + "SET `Status` = ? " +
-                            "WHERE `RequestID` = ?;");
-           // updStatus.setInt(1, ordinalStatus);
+                    "UPDATE icm.requirement SET Status = ? WHERE RequestID = ?;");
             updStatus.setNString(1, status);
             updStatus.setInt(2, id);
             updStatus.execute();
@@ -109,18 +97,6 @@ public class QueryHandler {
                         re.getNString(5),
                         re.getNString(6)
                 };
-                /*toReturn[0] = re.getNString(1);
-                toReturn[1] = re.getInt(2) + "";
-                toReturn[2] = re.getNString(3);
-                toReturn[3] = re.getNString(4);
-                toReturn[4] = re.getNString(5);
-                toReturn[5] = re.getNString(6);*/
-                /*toReturn.add(re.getNString(1));
-                toReturn.add(re.getInt(2));
-                toReturn.add(re.getNString(3));
-                toReturn.add(re.getNString(4));
-                toReturn.add(re.getNString(5));
-                toReturn.add(re.getNString(6));*/
             }
             stmt.close();
         } catch (SQLException e) {

@@ -1,8 +1,7 @@
 
 import java.io.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
-
-import javax.naming.directory.InvalidAttributesException;
 
 import Entity.Requirement;
 import Entity.Requirement.statusOptions;
@@ -27,7 +26,8 @@ public class EchoServer extends AbstractServer {
 	 * The default port to listen on.
 	 */
 	final public static int DEFAULT_PORT = 5555;
-
+	private mysqlConnection mysqlConn;
+	private QueryHandler queryHandler;
 	// Constructors ****************************************************
 
 	/**
@@ -43,83 +43,44 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * This method handles any messages received from the client.
-	 *
 	 * @param msg    The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		QueryHandler query = new QueryHandler();
-		//String asStr = String.valueOf(msg); // kostya
-		//String[] splittedMsg = asStr.split(" "); //kostya
-		//clientRequestFromServer request = new clientRequestFromServer(splittedMsg[0]); // kostya
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from client
-		//System.out.println("Message received: " + splittedMsg[0] + " = [" + request.getRequest() + ']' +
-		//		" from " + client);
+		System.out.println(LocalTime.now() + ": Message received: " + msg + " of \n[" + request.getObj() + "\t]" + " from " + client.getInetAddress());
 		try {
-			if (!mysqlConnection.checkExistence()) {
-				mysqlConnection.buildDB();
-				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny",statusOptions.ongoing);
+			ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+			switch (request.getRequest()) {
+				// read all requirement data
+				case getAll:
+					getAllRequest(ReqListForClient);
+					break;
+				// read data from some id in requirement
+				case updateStatus:
+					Requirement updateStatus = request.getObj().get(0);
+					queryHandler.updateStatus(updateStatus.getID(), updateStatus.getStatus().name());
+					getAllRequest(ReqListForClient);
+					break;
+				case getRequirement:
+					Requirement getReq = request.getObj().get(0);
+					String[] result = queryHandler.selectRequirement(getReq.getID());
+					ReqListForClient.add(packageRequirement(result));
+					break;
+				default:
+					throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
 			}
-			else {
-				
-				ArrayList<Requirement> ReqListForClient = new ArrayList<>();
-				switch (request.getRequest()) {
-					// read all requirement data
-					case getAll:
-						ArrayList<String[]> reqList = query.selectAll();
-						for (String[] arr : reqList) {
-							ReqListForClient.add(packageRequirement(arr));
-						}
-						break;
-					// read data from some id in requirement
-					case updateStatus:
-						/*ID = Integer.parseInt(splittedMsg[1]);
-						String status = splittedMsg[2];
-						query.updateStatus(ID, status);*/
-					// no break because we want to see the changes!
-						
-						
-						// jonny  - i disabled it cus it makes everything crush 
-						//	to ofeck: ? 
-
-						Requirement updateStatus=(Requirement) (request.getObj());
-						query.updateStatus(updateStatus.getID(), (updateStatus.getStatus()).name());
-						reqList = query.selectAll();
-						for (String[] arr : reqList) {
-							ReqListForClient.add(packageRequirement(arr));
-						}
-						
-						
-						
-					case getRequirement:
-						//kostya
-						/*int ID = Integer.parseInt(splittedMsg[1]);
-						String[] getReq = query.selectRequirement(ID);
-							try {
-								ReqListForClient.add(packageRequirement(getReq));
-							} catch (InvalidAttributesException e) {
-								e.printStackTrace();
-							}*/
-
-						break;
-					// insert new line to requirement
-					/*case 3: query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");//TODO insert
-							client.sendToClient(query.selectAll());
-						break;
-						//Update status in requirement.
-					case 4:
-						break;*/
-					default:
-						throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
-				}
-				//Object[] answer = new Object[] { request, ReqListForClient }; // kostya
-				clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(),ReqListForClient); // answer to the client
-				client.sendToClient(answer);
-			}
+			clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(), ReqListForClient); // answer to the client
+			client.sendToClient(answer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		mysqlConnection.closeConnection();
+	}
+
+	private void getAllRequest(ArrayList<Requirement> reqListForClient) {
+		for (String[] arr : queryHandler.selectAll()) {
+			reqListForClient.add(packageRequirement(arr));
+		}
 	}
 
 	/**
@@ -128,6 +89,12 @@ public class EchoServer extends AbstractServer {
 	 */
 	protected void serverStarted() {
 		System.out.println("Server listening for connections on port " + getPort());
+		mysqlConn = new mysqlConnection();
+		queryHandler = new QueryHandler(mysqlConn);
+		if (!mysqlConnection.checkExistence()) {
+			mysqlConnection.buildDB();
+			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", statusOptions.closed);
+		}
 	}
 
 	/**
@@ -135,6 +102,7 @@ public class EchoServer extends AbstractServer {
 	 * listening for connections.
 	 */
 	protected void serverStopped() {
+		mysqlConnection.closeConnection();
 		System.out.println("Server has stopped listening for connections.");
 	}
 /**
@@ -144,7 +112,6 @@ public class EchoServer extends AbstractServer {
  * @author Ofek
  * @param reqLine ?????
  * @return newReq
- * @throws InvalidAttributesException ????
  */
 
 private Requirement packageRequirement (String[] reqLine) {
