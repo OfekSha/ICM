@@ -16,32 +16,25 @@
 <BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
             <ImageView fitHeight="200.0" fitWidth="200.0">
-               <image>
                   <Image url="/img/ICMlogo.png" />
-               </image>
             </ImageView>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
-               <children>
+
                   <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" text="Exit">
                      <VBox.margin>
                         <Insets right="20.0" top="20.0" />
                      </VBox.margin>
                   </Button>
-               </children>
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </VBox>
-         </children>
       </HBox>
    </top>
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
-        <items>
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-               <children>
                   <Button mnemonicParsing="false" prefWidth="175.0" text="Requests">
                      <VBox.margin>
                         <Insets bottom="20.0" top="30.0" />
@@ -57,12 +50,9 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </Button>
-               </children>
             </VBox>
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
-               <children>
                   <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="172.0">
-                     <children>
                         <Label text="Requests">
                            <VBox.margin>
                               <Insets top="15.0" />
@@ -95,10 +85,9 @@
                               <Insets />
                            </VBox.margin>
                         </Button>
-                     </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
-                     <children>
+
                         <Label text="Request details ">
                            <VBox.margin>
                               <Insets top="15.0" />
@@ -110,11 +99,8 @@
                         </TextArea>
                         <Label alignment="CENTER" text="Current situation details" />
                         <TextArea fx:id="txtCurrentSituationDetails" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
-                     </children>
                   </VBox>
-               </children>
             </HBox>
-        </items>
       </SplitPane>
    </center>
 </BorderPane>
