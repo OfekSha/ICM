@@ -81,16 +81,14 @@ public class EchoServer extends AbstractServer {
 						
 						// jonny  - i disabled it cus it makes everything crush 
 						//	to ofeck: ? 
-						/*
-						 * -----------------------DISABELED------------------------------
-						Requirement updateStatus=(Requirement) request.getObj();
-						query.updateStatus(updateStatus.getID(), updateStatus.getStatus().name());
+
+						Requirement updateStatus=(Requirement) (request.getObj());
+						query.updateStatus(updateStatus.getID(), (updateStatus.getStatus()).name());
 						reqList = query.selectAll();
 						for (String[] arr : reqList) {
 							ReqListForClient.add(packageRequirement(arr));
 						}
-							-----------------------DISABELED------------------------------
-						*/
+						
 						
 						
 					case getRequirement:

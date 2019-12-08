@@ -56,19 +56,20 @@ public class QueryHandler {
      * for prototype.
      * update status to some id in requirement table.
      *
-     * @param id id of Request going to Update
-     * @param status current status
+     * @param id id of Request going to Update as a Num in DataBase
+     * @param status current status  going to Update as a Status in DataBase
      */
     public void updateStatus(int id, String status) throws IllegalArgumentException {
         PreparedStatement updStatus;
-        int ordinalStatus = statusOptions.valueOf(status).ordinal() + 1;
-        if (ordinalStatus < 1 || ordinalStatus > 3) throw new IllegalArgumentException();
+      //  int ordinalStatus = statusOptions.valueOf(status).ordinal() + 1;
+       // if (ordinalStatus < 1 || ordinalStatus > 3) throw new IllegalArgumentException();
         try {
             updStatus = mysqlConn.getConn().prepareStatement(
-                    "UPDATE icm.requirement " +
-                            "SET Status = ? " +
-                            "WHERE RequestID = ?;");
-            updStatus.setInt(1, ordinalStatus);
+                    "UPDATE `icm`.`requirement` "
+                    + "SET `Status` = ? " +
+                            "WHERE `Num` = ?;");
+           // updStatus.setInt(1, ordinalStatus);
+            updStatus.setNString(1, status);
             updStatus.setInt(2, id);
             updStatus.execute();
             updStatus.close();
