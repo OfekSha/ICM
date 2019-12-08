@@ -1,5 +1,6 @@
 import Entity.Requirement;
 
+import java.io.PrintStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +23,40 @@ public class QueryHandler {
      * @param stageSupervisor Supervisor of request
      */
 
-    public void insertRequirment(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor) { // send the use details.
+    public void insertRequirment(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor,statusOptions status) { // send the use details.
         int count = 0;
         try {
             Statement numTest = mysqlConn.getConn().createStatement();
+            try {
             ResultSet re = numTest.executeQuery("SELECT count(*) FROM icm.requirement;");// get all numbers submissions.
             numTest.close();
             while (re.next()) { // generate number for submission.
                 count = re.getInt(1) + 1;
             }
+            }catch(SQLException e){
+            	e.printStackTrace();
+            	System.out.println("empty list");
+            	count=0;
+            }
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.requirement " +
-                    "(Initiator," +
-                    "RequestID," +
-                    "CurrentSituationDetails," +
-                    "RequestDetails," +
-                    "StageSupervisor)" +
-                    "VALUES(?, ?, ?, ?, ?);");
+                    "(Initiator, " +
+                    "RequestID, " +
+                    "CurrentSituationDetails, " +
+                    "RequestDetails, " +
+                    "StageSupervisor, " +
+                    "Status) " +
+                    "VALUES(?, ?, ?, ?, ?,?) ; ");
             stmt.setNString(1, reqInitiator);
             stmt.setInt(2, count);
             stmt.setNString(3, currentSituationDetails);
             stmt.setNString(4, requestDetails);
             stmt.setNString(5, stageSupervisor);
+            stmt.setNString(6, status.name());
             stmt.execute(); // insert new row to requirement table.
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            
         }
 
     }
@@ -67,7 +77,7 @@ public class QueryHandler {
             updStatus = mysqlConn.getConn().prepareStatement(
                     "UPDATE `icm`.`requirement` "
                     + "SET `Status` = ? " +
-                            "WHERE `Num` = ?;");
+                            "WHERE `RequestID` = ?;");
            // updStatus.setInt(1, ordinalStatus);
             updStatus.setNString(1, status);
             updStatus.setInt(2, id);

@@ -58,7 +58,7 @@ public class EchoServer extends AbstractServer {
 		try {
 			if (!mysqlConnection.checkExistence()) {
 				mysqlConnection.buildDB();
-				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny");
+				query.insertRequirment("Bob", "Cataclysm", "Fix it!", "Johny",statusOptions.ongoing);
 			}
 			else {
 				
