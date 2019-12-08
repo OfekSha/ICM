@@ -143,6 +143,7 @@ public class FormController implements Initializable, IcmForm {
 	// ActionEvent event methods
 
 	public void RequestsComboBoxUsed() {
+		getRequests();
 		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
 		for (Requirement req : ReqListForClient) {
 			if (s == req.getID()) {
