@@ -40,7 +40,6 @@ public class FormController implements Initializable, IcmForm {
 	private TextArea txtRequestDetails;
 	@FXML
 	private TextField txtStageSupervisor;
-
 	// buttons
 	@FXML
 	private Button btnExit;
@@ -99,12 +98,12 @@ public class FormController implements Initializable, IcmForm {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		// msg is ArrayLost of Requirement classes
 		ReqListForClient = request.getObj();
-		//ReqListForClient.addAll((Collection<? extends Requirement>) request.getObj());
 		switch(request.getRequest()) {
 			//TODO some actions to prompt message to client about answer from server
 			case getAll:
 				break;
 			case updateStatus:
+				System.out.println("Status updated to " + ReqListForClient.get(0).getStatus().toString());
 				break;
 			case getRequirement:
 				break;
@@ -143,7 +142,6 @@ public class FormController implements Initializable, IcmForm {
 	// ActionEvent event methods
 
 	public void RequestsComboBoxUsed() {
-		getRequests();
 		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
 		for (Requirement req : ReqListForClient) {
 			if (s == req.getID()) {
@@ -169,12 +167,12 @@ public class FormController implements Initializable, IcmForm {
 	public void PressedUpdate() throws Exception {
 		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
 		int sRequests = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
-		ArrayList<Requirement> to = new ArrayList<>();
+		ArrayList<Requirement> toThisReq = new ArrayList<>();
 		for (Requirement req : ReqListForClient) {
 			if (sRequests == req.getID()) {
-				to.add(req);
+				toThisReq.add(req);
 				req.setStatus(sStatus);
-				clientRequestFromServer msg = new clientRequestFromServer(requestOptions.updateStatus, to);
+				clientRequestFromServer msg = new clientRequestFromServer(requestOptions.updateStatus, toThisReq);
 				ClientLauncher.client.handleMessageFromClientUI(msg);
 				break;
 			}
@@ -190,7 +188,7 @@ public class FormController implements Initializable, IcmForm {
 	/**
 	 * @author Yonathan gets all requests with all the details to
 	 */
-	private void getRequests() {
+	public void getRequests() {
 		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getAll);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}

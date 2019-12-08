@@ -1,5 +1,7 @@
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -60,12 +62,14 @@ public class EchoServer extends AbstractServer {
 				case updateStatus:
 					Requirement updateStatus = request.getObj().get(0);
 					queryHandler.updateStatus(updateStatus.getID(), updateStatus.getStatus().name());
+					String[] selected = queryHandler.selectRequirement(updateStatus.getID());
+					packageRequirement(selected);
 					getAllRequest(ReqListForClient);
 					break;
 				case getRequirement:
 					Requirement getReq = request.getObj().get(0);
 					String[] result = queryHandler.selectRequirement(getReq.getID());
-					ReqListForClient.add(packageRequirement(result));
+					packageRequirement(result);
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
@@ -87,8 +91,8 @@ public class EchoServer extends AbstractServer {
 	 * This method overrides the one in the superclass. Called when the server
 	 * starts listening for connections.
 	 */
-	protected void serverStarted() {
-		System.out.println("Server listening for connections on port " + getPort());
+	protected void serverStarted() throws UnknownHostException {
+		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
 		mysqlConn = new mysqlConnection();
 		queryHandler = new QueryHandler(mysqlConn);
 		if (!mysqlConnection.checkExistence()) {
@@ -122,8 +126,7 @@ private Requirement packageRequirement (String[] reqLine) {
 			statusOptions.valueOf(reqLine[5]),
 			Integer.parseInt(reqLine[1]));
 }
-	// Class methods ***************************************************
-	/**
+/**
 	 * This method is responsible for the creation of the server instance (there is
 	 * no UI in this phase).
 	 *
