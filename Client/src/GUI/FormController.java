@@ -149,7 +149,8 @@ public class FormController implements Initializable, IcmForm {
 				this.txtCurrentSituationDetails.setText(req.getCurrentSituationDetails());
 				this.txtRequestDetails.setText(req.getRequestDetails());
 				this.txtStageSupervisor.setText(req.getStageSupervisor());
-				
+				// added by ofek: 
+				setRequestsComboBox(); // if get added to DB new Requirment.
 				/*
 				 * 
 				 * --------- fix to combo status!!! ---------------------- by ofek
