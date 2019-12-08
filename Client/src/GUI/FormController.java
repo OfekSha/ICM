@@ -1,32 +1,34 @@
 package GUI;
 
+import WindowApp.IcmForm;
+import WindowApp.ClientLauncher;
+
+//java
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.ResourceBundle;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import Entity.Requirement;
-import Entity.Requirement.statusOptions;
-import Entity.clientRequestFromServer;
-import Entity.clientRequestFromServer.requestOptions;
+//javafx
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import WindowApp.IcmForm;
-import WindowApp.ClientLauncher;
 import javafx.scene.control.*;
 import javafx.stage.StageStyle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+
+//ENTITY IMPORT
+//TODO check if it is possible and right to do?
+import Entity.*;
+import Entity.Requirement.statusOptions;
+import Entity.clientRequestFromServer.requestOptions;
 
 public class FormController implements Initializable, IcmForm {
 	// text fields
@@ -52,9 +54,9 @@ public class FormController implements Initializable, IcmForm {
 	@FXML
 	private ComboBox<String> cmbStatus;
 
-	//
+	//Variables
 	private ArrayList<String> names = new ArrayList<>();
-	static private ArrayList<Requirement> ReqListForClient = null;
+	private static ArrayList<Requirement> ReqListForClient = null;
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
@@ -84,7 +86,6 @@ public class FormController implements Initializable, IcmForm {
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
 		primaryStage.setScene(scene);
-
 		primaryStage.show();
 	}
 
