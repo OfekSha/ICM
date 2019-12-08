@@ -11,6 +11,7 @@ import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,10 +20,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import WindowApp.IcmForm;
 import WindowApp.ClientLauncher;
 import javafx.scene.control.*;
+import javafx.stage.StageStyle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class FormController implements Initializable, IcmForm {
@@ -55,6 +58,9 @@ public class FormController implements Initializable, IcmForm {
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
+	//UNDECORATED
+	private double xOffset = 0;
+	private double yOffset = 0;
 
 	/**
 	 * @param primaryStage ????
@@ -65,11 +71,20 @@ public class FormController implements Initializable, IcmForm {
 		getRequests();
 		// scene
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
+		primaryStage.initStyle(StageStyle.UNDECORATED);
+		root.setOnMousePressed(event -> {
+				xOffset = event.getSceneX();
+				yOffset = event.getSceneY();
+		});
+		root.setOnMouseDragged(event ->{
+				primaryStage.setX(event.getScreenX() - xOffset);
+				primaryStage.setY(event.getScreenY() - yOffset);
+		});
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
 		primaryStage.setScene(scene);
-		//primaryStage.initStyle(StageStyle.UNDECORATED);
+
 		primaryStage.show();
 	}
 
