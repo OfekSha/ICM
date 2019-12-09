@@ -19,19 +19,18 @@ public class QueryHandler {
      */
 
     public void insertRequirement(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor, statusOptions status) { // send the use details.
-        int count = 0;
+
         try {
+            int count = 0;
             Statement numTest = mysqlConn.getConn().createStatement();
             try {
-            ResultSet re = numTest.executeQuery("SELECT count(*) FROM icm.requirement;");// get all numbers submissions.
-            numTest.close();
-            while (re.next()) { // generate number for submission.
-                count = re.getInt(1) + 1;
-            }
-            }catch(SQLException e){
-            	e.printStackTrace();
-            	System.out.println("empty list");
-            	count=0;
+                ResultSet re = numTest.executeQuery("SELECT MAX(RequestID) FROM icm.requirement WHERE RequestID;");// get all numbers submissions.
+                while (re.next()) { // generate number for submission.
+                    count = re.getInt(1);
+                }
+            } catch (SQLException e) {
+                System.out.println("Database is empty, or no schema for ICM");
+                count = 0;
             }
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.requirement " +
                     "(Initiator, " +
@@ -42,13 +41,15 @@ public class QueryHandler {
                     "Status) " +
                     "VALUES(?, ?, ?, ?, ?,?) ; ");
             stmt.setNString(1, reqInitiator);
-            stmt.setInt(2, count);
+            stmt.setInt(2, count + 1);
             stmt.setNString(3, currentSituationDetails);
             stmt.setNString(4, requestDetails);
             stmt.setNString(5, stageSupervisor);
             stmt.setNString(6, status.name());
             stmt.execute(); // insert new row to requirement table.
+
             stmt.close();
+            numTest.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
