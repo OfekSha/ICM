@@ -97,9 +97,12 @@ public class FormController implements Initializable, IcmForm {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		// msg is ArrayLost of Requirement classes
 		ReqListForClient = request.getObj();
+		System.out.println("\nMessage from server Received:");
 		switch(request.getRequest()) {
 			//TODO some actions to prompt message to client about answer from server
 			case getAll:
+				System.out.print("Load list of requests: ");
+				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
 				break;
 			case updateStatus:
 				ReqListForClient.forEach(e -> System.out.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
