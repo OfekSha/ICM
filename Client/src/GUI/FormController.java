@@ -102,7 +102,7 @@ public class FormController implements Initializable, IcmForm {
 			case getAll:
 				break;
 			case updateStatus:
-				System.out.println("Status updated to " + ReqListForClient.get(0).getStatus().toString());
+				ReqListForClient.forEach(e -> System.out.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
 				break;
 			case getRequirement:
 				break;

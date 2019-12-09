@@ -51,7 +51,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from client
-		System.out.println(LocalTime.now() + ": Message received [" + msg + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
+		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		try {
 			ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 			Requirement reqReceived;

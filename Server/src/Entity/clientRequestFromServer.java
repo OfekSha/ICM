@@ -25,9 +25,11 @@ public class clientRequestFromServer implements Serializable {
 
     @Override
     public String toString() {
-        return request.name();
+        return request.name() + " " + obj;
     }
 	public ArrayList<Requirement> getObj() {
 		return obj;
 	}
+
+	public String getName() { return request.name(); }
 }
