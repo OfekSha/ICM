@@ -19,7 +19,6 @@ public class QueryHandler {
      */
 
     public void insertRequirement(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor, statusOptions status) { // send the use details.
-
         try {
             int count = 0;
             Statement numTest = mysqlConn.getConn().createStatement();
@@ -39,7 +38,7 @@ public class QueryHandler {
                     "RequestDetails, " +
                     "StageSupervisor, " +
                     "Status) " +
-                    "VALUES(?, ?, ?, ?, ?,?) ; ");
+                    "VALUES(?, ?, ?, ?, ?,?);");
             stmt.setNString(1, reqInitiator);
             stmt.setInt(2, count + 1);
             stmt.setNString(3, currentSituationDetails);

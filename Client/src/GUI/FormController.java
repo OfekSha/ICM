@@ -1,5 +1,7 @@
 package GUI;
 
+import Entity.Requirement;
+import Entity.clientRequestFromServer;
 import WindowApp.IcmForm;
 import WindowApp.ClientLauncher;
 
@@ -26,7 +28,6 @@ import javafx.stage.StageStyle;
 
 //ENTITY IMPORT
 //TODO check if it is possible and right to do?
-import Entity.*;
 import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer.requestOptions;
 
@@ -119,7 +120,6 @@ public class FormController implements Initializable, IcmForm {
 		for (Requirement req : ReqListForClient) {
 			al.add(Integer.toString((req.getID())));
 		}
-
 		listFor_cmbRequests = FXCollections.observableArrayList(al);
 		cmbRequests.setItems(listFor_cmbRequests);
 	}

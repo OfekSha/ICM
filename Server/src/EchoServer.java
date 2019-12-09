@@ -29,7 +29,6 @@ public class EchoServer extends AbstractServer {
 	 * The default port to listen on.
 	 */
 	final public static int DEFAULT_PORT = 5555;
-	private mysqlConnection mysqlConn;
 	private QueryHandler queryHandler;
 	// Constructors ****************************************************
 
@@ -98,7 +97,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	protected void serverStarted() throws UnknownHostException {
 		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
-		mysqlConn = new mysqlConnection();
+		mysqlConnection mysqlConn = new mysqlConnection();
 		queryHandler = new QueryHandler(mysqlConn);
 		if (!mysqlConnection.checkExistence()) {
 			mysqlConnection.buildDB();
