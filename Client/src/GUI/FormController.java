@@ -152,7 +152,8 @@ public class FormController implements Initializable, IcmForm {
 				this.txtRequestDetails.setText(req.getRequestDetails());
 				this.txtStageSupervisor.setText(req.getStageSupervisor());
 				this.cmbStatus.setValue((req.getStatus()).name());
-				this.cmbStatus.setPromptText((req.getStatus()).name());
+				//this.cmbStatus.setPromptText((req.getStatus()).name());
+				setRequestsComboBox();
 				break;
 			}
 		}
