@@ -110,7 +110,7 @@ public class QueryHandler {
     /**
      *
      * get all requirement data.
-     * send it to server as ArrayList of array of strings.
+     * send it to osf.server as ArrayList of array of strings.
      *
      * the array:
      * place 1: Initiator

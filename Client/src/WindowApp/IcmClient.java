@@ -1,6 +1,7 @@
 package WindowApp;
 
-import client.*;
+import ocsf.client.AbstractClient;
+
 import java.io.*;
 
 public class IcmClient extends AbstractClient {
@@ -10,9 +11,9 @@ public class IcmClient extends AbstractClient {
 	//Constructors ****************************************************
 
 	/**
-	 * Constructs an instance of the chat client.
+	 * Constructs an instance of the chat ocf.client.
 	 *
-	 * @param host     The server to connect to.
+	 * @param host     The osf.server to connect to.
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
 	 */
@@ -24,9 +25,9 @@ public class IcmClient extends AbstractClient {
 
 
 	/**
-	 * This method handles all data that comes in from the server.
+	 * This method handles all data that comes in from the osf.server.
 	 *
-	 * @param msg The message from the server.
+	 * @param msg The message from the osf.server.
 	 */
 	public void handleMessageFromServer(Object msg) {
 		clientUI.getFromServer(msg);
@@ -41,13 +42,13 @@ public class IcmClient extends AbstractClient {
 		try {
 			sendToServer(message);
 		} catch (IOException e) {//TODO: display some message ?
-			//clientUI.display("Could not send message to server.  Terminating client.");
+			//clientUI.display("Could not send message to osf.server.  Terminating ocf.client.");
 			quit();
 		}
 	}
 
 	/**
-	 * This method terminates the client.
+	 * This method terminates the ocf.client.
 	 */
 	public void quit() {
 		try {

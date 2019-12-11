@@ -24,7 +24,7 @@ public class ClientLauncher extends Application {
 
 	//Instance variables **********************************************
 	/**
-	 * The instance of the client that created this ConsoleChat.
+	 * The instance of the ocf.client that created this ConsoleChat.
 	 */
 	public static IcmClient client;
 	/**
@@ -49,12 +49,12 @@ public class ClientLauncher extends Application {
 		String host;// = "localhost";
 		
 		
-		// START ----insert server ip to connect from client console----
+		// START ----insert osf.server ip to connect from ocf.client console----
 		System.out.println("Insert Server IP: ");
 		Scanner ip = new Scanner(System.in);
 		host = ip.nextLine();
 		
-		// END ---- insert server ip to connect from client console----
+		// END ---- insert osf.server ip to connect from ocf.client console----
 		aFrame = new FormController(); // create the frame
 
 		try {
@@ -63,11 +63,9 @@ public class ClientLauncher extends Application {
 					+ "Welcome to ICM.");
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection!" // to be removed/changed
-					+ " Terminating client.");
+					+ " Terminating ocf.client.");
 			System.exit(1);
 		}
 		aFrame.start(arg0);
-		
-		
 	}
 }

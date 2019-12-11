@@ -1,20 +1,22 @@
 
-import java.io.*;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
+
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Entity.Requirement;
-import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer;
+import static Entity.Requirement.statusOptions.*;
+import static Entity.Requirement.statusOptions.suspended;
 
-import server.AbstractServer;
-import server.ConnectionToClient;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
- * to give more functionality to the server.
+ * to give more functionality to the osf.server.
  *
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Lagani&egrave;re
@@ -33,7 +35,7 @@ public class EchoServer extends AbstractServer {
 	// Constructors ****************************************************
 
 	/**
-	 * Constructs an instance of the echo server.
+	 * Constructs an instance of the echo osf.server.
 	 *
 	 * @param port The port number to connect on.
 	 */
@@ -44,12 +46,12 @@ public class EchoServer extends AbstractServer {
 	// Instance methods ************************************************
 
 	/**
-	 * This method handles any messages received from the client.
-	 * @param msg    The message received from the client.
+	 * This method handles any messages received from the ocf.client.
+	 * @param msg    The message received from the ocf.client.
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		clientRequestFromServer request = (clientRequestFromServer)msg; // request from client
+		clientRequestFromServer request = (clientRequestFromServer)msg; // request from ocf.client
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		try {
 			ArrayList<Requirement> ReqListForClient = new ArrayList<>();
@@ -70,9 +72,9 @@ public class EchoServer extends AbstractServer {
 					selectRequirement(ReqListForClient, reqReceived);
 					break;
 				default:
-					throw new IllegalArgumentException("the request " + request + " not implemented in the server.");
+					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
-			clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(), ReqListForClient); // answer to the client
+			clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(), ReqListForClient); // answer to the ocf.client
 			client.sendToClient(answer);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -92,7 +94,7 @@ public class EchoServer extends AbstractServer {
 	}
 
 	/**
-	 * This method overrides the one in the superclass. Called when the server
+	 * This method overrides the one in the superclass. Called when the osf.server
 	 * starts listening for connections.
 	 */
 	protected void serverStarted() throws UnknownHostException {
@@ -101,14 +103,14 @@ public class EchoServer extends AbstractServer {
 		queryHandler = new QueryHandler(mysqlConn);
 		if (!mysqlConnection.checkExistence()) {
 			mysqlConnection.buildDB();
-			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", statusOptions.closed);
-			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", statusOptions.ongoing);
-			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", statusOptions.suspended);
+			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
+			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
+			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
 		}
 	}
 
 	/**
-	 * This method overrides the one in the superclass. Called when the server stops
+	 * This method overrides the one in the superclass. Called when the osf.server stops
 	 * listening for connections.
 	 */
 	protected void serverStopped() {
@@ -116,7 +118,7 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Server has stopped listening for connections.");
 	}
 /**
-	 * This method is responsible for the creation of the server instance (there is
+	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).
 	 *
 	 * @param args The port number to listen on. Defaults to 5555 if no argument

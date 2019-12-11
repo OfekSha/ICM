@@ -25,11 +25,10 @@ import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.stage.StageStyle;
 
+import static Entity.Requirement.statusOptions.*;
+import static Entity.clientRequestFromServer.requestOptions.*;
 
 //ENTITY IMPORT
-//TODO check if it is possible and right to do?
-import Entity.Requirement.statusOptions;
-import Entity.clientRequestFromServer.requestOptions;
 
 public class FormController implements Initializable, IcmForm {
 	// text fields
@@ -96,11 +95,11 @@ public class FormController implements Initializable, IcmForm {
 	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		// msg is ArrayLost of Requirement classes
+		// msg is ArrayLost of Entity.Requirement classes
 		ReqListForClient = request.getObj();
-		System.out.println("\nMessage from server Received:");
+		System.out.println("\nMessage from osf.server Received:");
 		switch(request.getRequest()) {
-			//TODO some actions to prompt message to client about answer from server
+			//TODO some actions to prompt message to ocf.client about answer from osf.server
 			case getAll:
 				System.out.print("Load list of requests: ");
 				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
@@ -127,9 +126,9 @@ public class FormController implements Initializable, IcmForm {
 	// cmbStatus
 	private void setStatusComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		al.add(statusOptions.ongoing.name());
-		al.add(statusOptions.suspended.name());
-		al.add(statusOptions.closed.name());
+		al.add(ongoing.name());
+		al.add(suspended.name());
+		al.add(closed.name());
 		listFor_cmbStatus = FXCollections.observableArrayList(al);
 		cmbStatus.setItems(listFor_cmbStatus);
 	}
@@ -163,7 +162,7 @@ public class FormController implements Initializable, IcmForm {
 	
 	/**
 	 * @throws Exception
-	 * when the update button will be pressed the server will be sent 
+	 * when the update button will be pressed the osf.server will be sent
 	 */
 	public void PressedUpdate() throws Exception {
 		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
@@ -173,7 +172,7 @@ public class FormController implements Initializable, IcmForm {
 			if (sRequests == req.getID()) {
 				toThisReq.add(req);
 				req.setStatus(sStatus);
-				clientRequestFromServer msg = new clientRequestFromServer(requestOptions.updateStatus, toThisReq);
+				clientRequestFromServer msg = new clientRequestFromServer(updateStatus, toThisReq);
 				ClientLauncher.client.handleMessageFromClientUI(msg);
 				break;
 			}
@@ -190,14 +189,14 @@ public class FormController implements Initializable, IcmForm {
 	 * @author Yonathan gets all requests with all the details to
 	 */
 	public void getRequests() {
-		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getAll);
+		clientRequestFromServer commend = new clientRequestFromServer(getAll);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 
 /*
-	private void selectRequriement(Requirement req) {
-		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getRequirement, req);
-		ClientLauncher.client.handleMessageFromClientUI(commend);
+	private void selectRequriement(Entity.Requirement req) {
+		Entity.clientRequestFromServer commend = new Entity.clientRequestFromServer(requestOptions.getRequirement, req);
+		ClientLauncher.ocf.client.handleMessageFromClientUI(commend);
 	}
 */
 
