@@ -2,17 +2,33 @@ package Entity;
 
 public class ActivitiesReport extends StatisticalReport implements IReport {
 
+	//  class variables  
+	private int numRequests;
+	private int numDenied;
+	private int requestsTimeMap;
+	
+	
 	@Override
 	public void createReport() {
 		// TODO Auto-generated method stub
 
 	}
 	
-	//TODO: the following  methods are from the class diagram:  
+	// get class variables
+	// if changes are to be made make sure to update the DB creation 
 
-	public void numRequests(){}
-	public void  numDenied() {}
-	public void requestsTimeMap() {}
+	public int getNumRequests(){
+		return numRequests;
+	}
+	
+	public int  getNumDenied() {
+		return numDenied;
+	}
+	
+	
+	public int getRequestsTimeMap() {
+		return requestsTimeMap;
+	}
 	
 
 }

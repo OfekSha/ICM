@@ -7,6 +7,6 @@ public class DelayReport  extends StatisticalReport implements IReport  {
 		// TODO Auto-generated method stub
 
 	}
-	//TODO: the following  methods are from the class diagram:  
+	// TODO: from class 
 	public void systemsStatisticalReport() {}
 }
