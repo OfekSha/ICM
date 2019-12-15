@@ -1,6 +1,6 @@
 package Entity;
 
-public class ActivitiesReport extends StatisticalReport implements IReport {
+public class ActivitiesReport extends   StatisticalReport {
 
 	//  class variables  
 	private int numRequests;

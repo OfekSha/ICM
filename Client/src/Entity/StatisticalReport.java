@@ -1,6 +1,6 @@
 package Entity;
 //SS
-public class StatisticalReport implements IReport {
+public class StatisticalReport extends IReport {
 // class variables
 	protected int median;
 	protected int standardDeviation;
