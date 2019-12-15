@@ -1,5 +1,5 @@
 package Entity;
-
+//SS
 public class StatisticalReport implements IReport {
 // class variables
 	protected int median;
