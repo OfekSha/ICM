@@ -2,6 +2,7 @@ package Entity;
 
 import javax.naming.directory.InvalidAttributesException;
 import java.io.Serializable;
+import java.sql.Date;
 
 /**
  * 
@@ -13,17 +14,24 @@ import java.io.Serializable;
  *
  */
 public class Requirement implements Serializable {
-	public enum statusOptions {
+	public enum statusOptions { //
 		ongoing,
 		suspended,
 		closed
 	}
 
+	//private requestStatus_enum status; // original in class diagram.
 	private statusOptions status;
 	private String reqInitiator, currentSituationDetails, requestDetails, stageSupervisor;
 	private int ID;
 
-
+	
+	//added from change request
+	private Date dueTime; // until when? 
+	private String closingDocumentation; // only when finish handling the change request (level 5)
+	private int[] timeDeviations; // what is it?
+	
+	
 	/*public Entity.Requirement(String reqInitiator, String currentSituationDetails, String requestDetails,
 			String stageSupervisor, statusOptions status, int ID) {
 		this.reqInitiator = reqInitiator;
