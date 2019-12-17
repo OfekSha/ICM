@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
+   <top>
+      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="200.0" fitWidth="200.0">
+                  <Image url="/img/ICMlogo.png" />
+            </ImageView>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" text="Exit">
+                     <VBox.margin>
+                        <Insets right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+      </HBox>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" />
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="172.0" spacing="20.0">
+                        <Label text="Requests">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin></Label>
+                        <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+               <Button mnemonicParsing="false" text=" Determining Due Time" />
+               <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="140.0" text="Approve Execution" />
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
+                        <Label alignment="CENTER" text="initiator request" />
+                        <TextArea fx:id="txtCurrentSituationDetails" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+               <Label alignment="CENTER" text="Exeminers Report" />
+               <TextArea fx:id="txtCurrentSituationDetails1" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+                  </VBox>
+            </HBox>
+      </SplitPane>
+   </center>
+</BorderPane>
