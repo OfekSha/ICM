@@ -11,7 +11,7 @@ public abstract class IReport {
 		this.requestID = requestID;
 	}
 
-	//TODO: the following  methods are from the class diagram:  
+	//TODO: the following methods are from the class diagram:
 	public abstract void createReport();
 	
 }
