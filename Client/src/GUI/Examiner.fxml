@@ -29,7 +29,7 @@
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
             <children>
-                     <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefHeight="25.0" prefWidth="136.0" text="Back">
+                     <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefHeight="25.0" prefWidth="123.0" text="Back">
                         <VBox.margin>
                            <Insets right="20.0" top="20.0" />
                         </VBox.margin>
@@ -46,15 +46,14 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </ComboBox>
-               <Button mnemonicParsing="false" text=" Determining Due Time" />
                <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="140.0" text="Approve Execution" />
+               <Button mnemonicParsing="false" text="Disapprove Execution " />
                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Get extention" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
-                        <Label alignment="CENTER" text="initiator request" />
-                        <TextArea fx:id="txtCurrentSituationDetails" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
                <Label alignment="CENTER" text="Exeminers Report" />
-               <TextArea fx:id="txtCurrentSituationDetails1" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+               <TextArea fx:id="txtCurrentSituationDetails1" layoutX="10.0" layoutY="27.0" prefHeight="228.0" prefWidth="600.0" wrapText="true" />
+               <Button mnemonicParsing="false" text="submit And disapprove" />
                   </VBox>
             </HBox>
       </SplitPane>
