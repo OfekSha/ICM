@@ -11,17 +11,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RequestForm">
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainMenuForm">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
                   <Image url="@../img/ICMlogo.png" />
             </ImageView>
-            <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </VBox>
+         <VBox alignment="TOP_RIGHT" prefWidth="824.0">
+               <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" text="Exit">
+                  <VBox.margin>
+                     <Insets right="20.0" top="20.0" />
+                  </VBox.margin>
+               </Button>
+         </VBox>
       </HBox>
    </top>
    <center>
@@ -45,7 +47,7 @@
                   </Button>
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="200.0">
-                        <Button mnemonicParsing="false" prefWidth="175.0" text="Log out">
+                        <Button fx:id="btnLogout" mnemonicParsing="false" text="Log out">
                            <VBox.margin>
                               <Insets bottom="20.0" top="20.0" />
                            </VBox.margin>

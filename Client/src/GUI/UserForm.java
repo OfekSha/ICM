@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class UserForm  implements   MainForm, IcmForm, Initializable{
+public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
