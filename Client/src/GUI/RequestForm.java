@@ -30,7 +30,7 @@ import static Entity.clientRequestFromServer.requestOptions.*;
 
 //ENTITY IMPORT
 
-public class FormController implements Initializable, IcmForm {
+public class RequestForm implements Initializable, IcmForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;

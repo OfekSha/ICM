@@ -29,6 +29,8 @@ public class UserForm  implements   MainForm, IcmForm, Initializable{
 	
 	//TODO: the following  methods are from the class diagram:  
 	
-	public void GetRequest() {}
+	public void getRequest() {
+
+	}
 
 }
