@@ -17,7 +17,7 @@ public class CCCChairmanForm extends StageSupervisorForm implements IcmForm, Ini
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+
 
 	}
 
