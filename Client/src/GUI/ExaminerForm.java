@@ -29,7 +29,7 @@ public class ExaminerForm extends StageSupervisorForm {
 	
 	//TODO: the following  methods are from the class diagram:  
 
-	public  void ExecApproved() {}
+	public void ExecApproved() {}
 	public void ExecDesapproved() {}
 
 }

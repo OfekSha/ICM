@@ -26,7 +26,7 @@ public class stdForm implements MainForm {
     }
 
     @FXML
-    void logout(ActionEvent event) {
+    void userLogout(ActionEvent event) {
 
     }
 

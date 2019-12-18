@@ -163,10 +163,6 @@ public class RequestForm extends stdForm {
 		}
 	}
 
-	public void ExitBtn() {
-		System.exit(0);			
-	}
-
 	// private methods
 
 	/**

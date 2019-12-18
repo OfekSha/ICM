@@ -2,9 +2,39 @@ package GUI;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class UserForm extends stdForm {
+
+	@FXML
+	private HBox makeRequestBox;
+
+	@FXML
+	private Label InformationSystem;
+
+	@FXML
+	private Label RequestID;
+
+	@FXML
+	private Button watchRequests;
+
+	@FXML
+	private TextArea taRequestDetails;
+
+	@FXML
+	private TextArea taRequestReason;
+
+	@FXML
+	private TextArea taComment;
+
+	@FXML
+	private Button btnSubmit;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -30,4 +60,7 @@ public class UserForm extends stdForm {
 
 	}
 
+	public void watchRequests() {
+
+	}
 }

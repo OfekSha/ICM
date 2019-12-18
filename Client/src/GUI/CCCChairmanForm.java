@@ -26,11 +26,23 @@ public class CCCChairmanForm extends StageSupervisorForm {
 		// TODO Auto-generated method stub
 
 	}
-	//TODO: the following  methods are from the class diagram:  
-public void  getUserID() {}
-public void getExecApproved() {}
-public void getDisapproved() {}
-public void getMoreDetails() {}
-public void getCommiteeMemvers() {}
-public void getAssessmentReport() {}
+
+	//TODO: the following  methods are from the class diagram:
+	public void getUserID() {
+	}
+
+	public void getExecApproved() {
+	}
+
+	public void getDisapproved() {
+	}
+
+	public void getMoreDetails() {
+	}
+
+	public void getCommiteeMemvers() {
+	}
+
+	public void getAssessmentReport() {
+	}
 }

@@ -64,43 +64,67 @@ DO NOT TOUCH: Exit & Logout buttons-->
                   </Button>
             </VBox>
             </VBox>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="makeRequestBox" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
             <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="172.0">
-                  <Label text="Information System">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox prefWidth="150.0">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </ComboBox>
+               <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="172.0">
+                        <Label fx:id="InformationSystem" alignment="CENTER" contentDisplay="BOTTOM" prefHeight="58.0" prefWidth="172.0" text="Information System" visible="false">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        <graphic>
+                              <ComboBox prefWidth="150.0" />
+                        </graphic>
+                        </Label>
+                     <Label fx:id="RequestID" contentDisplay="BOTTOM" text="Request ID:">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <graphic>
+                           <ComboBox prefWidth="150.0" />
+                        </graphic>
+                     </Label>
+                     <Button fx:id="watchRequests" mnemonicParsing="false" text="Watch Submitted Requests" textAlignment="CENTER" wrapText="true">
+                        <VBox.margin>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </VBox.margin>
+                     </Button>
+               </VBox>
+               <VBox alignment="BOTTOM_CENTER" prefHeight="270.0" prefWidth="172.0">
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
+               </VBox>
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
-                  <Label text="Change request details">
+                  <Label contentDisplay="BOTTOM" text="Change request details">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
+                  <graphic>
+                        <TextArea fx:id="taRequestDetails" prefHeight="100.0" wrapText="true">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </TextArea>
+                  </graphic>
                   </Label>
-                  <TextArea prefHeight="100.0" wrapText="true">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </TextArea>
-                  <Label alignment="CENTER" text="Change request reason">
+                  <Label alignment="CENTER" contentDisplay="BOTTOM" text="Change request reason">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
+                  <graphic>
+                        <TextArea fx:id="taRequestReason" prefHeight="100.0" wrapText="true" />
+                  </graphic>
                   </Label>
-                  <TextArea prefHeight="100.0" wrapText="true" />
-                  <Label alignment="CENTER" text="Your comment (optional)">
+                  <Label alignment="CENTER" contentDisplay="BOTTOM" text="Your comment (optional)">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
+                  <graphic>
+                        <TextArea fx:id="taComment" prefHeight="100.0" wrapText="true" />
+                  </graphic>
                   </Label>
-                  <TextArea prefHeight="100.0" wrapText="true" />
-                  <Button mnemonicParsing="false" text="Submit Change Request">
+                  <Button fx:id="btnSubmit" contentDisplay="CENTER" mnemonicParsing="false" text="Submit Change Request" visible="false">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
