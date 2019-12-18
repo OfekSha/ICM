@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class StageSupervisorForm extends UserForm implements IcmForm, Initializable, MainForm {
+public class StageSupervisorForm extends UserForm {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
