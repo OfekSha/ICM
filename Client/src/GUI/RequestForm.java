@@ -30,7 +30,7 @@ import static Entity.clientRequestFromServer.requestOptions.*;
 
 //ENTITY IMPORT
 
-public class RequestForm implements Initializable, IcmForm {
+public class RequestForm extends stdForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -40,11 +40,6 @@ public class RequestForm implements Initializable, IcmForm {
 	private TextArea txtRequestDetails;
 	@FXML
 	private TextField txtStageSupervisor;
-	// buttons
-	@FXML
-	private Button btnExit;
-	@FXML
-	private Button btnUpdateStatus;
 
 	// Combo Boxes
 	@FXML
@@ -58,9 +53,7 @@ public class RequestForm implements Initializable, IcmForm {
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
-	//UNDECORATED
-	private double xOffset = 0;
-	private double yOffset = 0;
+
 
 	/**
 	 * @param primaryStage ????
@@ -70,16 +63,7 @@ public class RequestForm implements Initializable, IcmForm {
 		// request DB
 		getRequests();
 		// scene
-		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
-		primaryStage.initStyle(StageStyle.UNDECORATED);
-		root.setOnMousePressed(event -> {
-				xOffset = event.getSceneX();
-				yOffset = event.getSceneY();
-		});
-		root.setOnMouseDragged(event ->{
-				primaryStage.setX(event.getScreenX() - xOffset);
-				primaryStage.setY(event.getScreenY() - yOffset);
-		});
+		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Request.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");

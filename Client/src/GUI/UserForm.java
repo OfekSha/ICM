@@ -2,12 +2,9 @@ package GUI;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import WindowApp.IcmForm;
-import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initializable {
+public class UserForm extends stdForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

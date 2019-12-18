@@ -5,8 +5,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
-public class MainMenuForm {
+public class MainMenuForm extends stdForm {
 
     @FXML
     private ResourceBundle resources;
@@ -15,17 +16,25 @@ public class MainMenuForm {
     private URL location;
 
     @FXML
-    private Button btnExit;
-
-    @FXML
     private Button btnLogout;
 
     @FXML
     void initialize() {
-        assert btnExit != null : "fx:id=\"btnExit\" was not injected: check your FXML file 'MainMenu.fxml'.";
+
     }
 
-    public void ExitBtn() {
-        System.exit(0);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        throw new Exception(); //buttplug remove warning, can be deleted
+    }
+
+    @Override
+    public void getFromServer(Object message) {
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }
