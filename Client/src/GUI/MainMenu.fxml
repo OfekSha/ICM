@@ -15,7 +15,7 @@
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
-                  <Image url="/img/ICMlogo.png" />
+                  <Image url="@../img/ICMlogo.png" />
             </ImageView>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
@@ -27,14 +27,33 @@
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="15.0">
-                  <Button mnemonicParsing="false" prefWidth="175.0" text="Log out">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                  <Button mnemonicParsing="false" prefWidth="175.0" text="Messages">
                      <VBox.margin>
-                        <Insets bottom="20.0" top="30.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
-            <Button mnemonicParsing="false" prefWidth="175.0" text="Make  a change request" />
-            <Button mnemonicParsing="false" prefWidth="175.0" text="Watch request" />
-            <Button mnemonicParsing="false" prefWidth="175.0" text="Messges" />
+                  <Button mnemonicParsing="false" prefWidth="175.0" text="Watch request">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefWidth="175.0" text="Make a change request">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="200.0">
+                        <Button mnemonicParsing="false" prefWidth="175.0" text="Log out">
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </VBox.margin>
+                        </Button>
+               <VBox.margin>
+                  <Insets top="350.0" />
+               </VBox.margin>
+            </VBox>
             </VBox>
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
                   <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="524.0" spacing="15.0">
@@ -50,10 +69,11 @@
                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="266.0" text="Change Control Committee Chairman" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
-               <children>
                   <Label text="Your Permissions" />
-                  <TextArea prefHeight="200.0" prefWidth="354.0" />
-               </children>
+                  <TextArea prefHeight="200.0" prefWidth="354.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin></TextArea>
                   </VBox>
             </HBox>
       </SplitPane>
