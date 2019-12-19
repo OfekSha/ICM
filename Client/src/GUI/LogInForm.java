@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class LogInForm extends stdForm {
+public class LogInForm extends stdForm implements MainForm {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

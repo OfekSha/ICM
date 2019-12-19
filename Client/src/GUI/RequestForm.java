@@ -30,7 +30,7 @@ import static Entity.clientRequestFromServer.requestOptions.*;
 
 //ENTITY IMPORT
 
-public class RequestForm extends stdForm {
+public class RequestForm extends stdForm implements MainForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -53,8 +53,6 @@ public class RequestForm extends stdForm {
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
-
-
 	/**
 	 * @param primaryStage ????
 	 * @throws Exception ????
@@ -75,7 +73,7 @@ public class RequestForm extends stdForm {
 	 * @param message is array of objects where where message[0] is requested action
 	 *                and message[1] is answer
 	 */
-	@Override
+
 	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
 		clientRequestFromServer request = (clientRequestFromServer) message;
@@ -117,7 +115,6 @@ public class RequestForm extends stdForm {
 		cmbStatus.setItems(listFor_cmbStatus);
 	}
 
-	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setRequestsComboBox();
 		setStatusComboBox();

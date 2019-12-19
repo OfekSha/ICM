@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class InformationTechnologiesDepartmentManagerForm extends UserForm {
+public class InformationTechnologiesDepartmentManagerForm extends UserForm implements MainForm {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

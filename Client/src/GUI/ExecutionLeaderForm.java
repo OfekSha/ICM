@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class ExecutionLeaderForm extends EstimatorExecutorForm {
+public class ExecutionLeaderForm extends EstimatorExecutorForm implements MainForm {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

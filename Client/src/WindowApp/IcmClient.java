@@ -1,12 +1,13 @@
 package WindowApp;
 
+import GUI.MainForm;
 import ocsf.client.AbstractClient;
 
 import java.io.*;
 
 public class IcmClient extends AbstractClient {
 
-	public IcmForm clientUI; // the UI currently in serves
+	public MainForm clientUI; // the UI currently in serves
 
 	//Constructors ****************************************************
 
@@ -17,12 +18,11 @@ public class IcmClient extends AbstractClient {
 	 * @param port     The port number to connect on.
 	 * @param clientUI The interface type variable.
 	 */
-	public IcmClient(String host, int port, IcmForm clientUI) throws IOException {
+	public IcmClient(String host, int port, MainForm clientUI) throws IOException {
 		super(host, port);
 		this.clientUI = clientUI;
 		openConnection();
 	}
-
 
 	/**
 	 * This method handles all data that comes in from the osf.server.

@@ -10,7 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class UserForm extends stdForm {
+public class UserForm extends stdForm implements MainForm {
 
 	@FXML
 	private HBox makeRequestBox;

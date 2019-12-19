@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class SubmitRequestForm  extends UserForm {
+public class SubmitRequestForm implements MainForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
