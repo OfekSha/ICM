@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class ExaminerForm extends StageSupervisorForm implements IcmForm, Initializable, MainForm {
+public class ExaminerForm  extends StageSupervisorForm implements IcmForm, Initializable, MainForm {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class CCCChairmanForm extends StageSupervisorForm implements IcmForm, Initializable, MainForm {
+public class CCCChairmanForm  extends StageSupervisorForm implements IcmForm, Initializable, MainForm {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

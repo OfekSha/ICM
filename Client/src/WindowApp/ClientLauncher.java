@@ -2,7 +2,7 @@ package WindowApp;
 import java.io.IOException;
 import java.util.Scanner;
 
-import GUI.RequestForm;
+import GUI.FormController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -30,7 +30,7 @@ public class ClientLauncher extends Application {
 	/**
 	 * The instance of the frame
 	 */
-	public RequestForm aFrame;
+	public FormController aFrame;
 
 	/**
 	 * the  real main method
@@ -55,7 +55,7 @@ public class ClientLauncher extends Application {
 		host = ip.nextLine();
 		
 		// END ---- insert osf.server ip to connect from ocf.client console----
-		aFrame = new RequestForm(); // create the frame
+		aFrame = new FormController(); // create the frame
 
 		try {
 			client = new IcmClient(host, DEFAULT_PORT, aFrame);

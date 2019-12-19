@@ -93,9 +93,7 @@ public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initial
 	
 	//TODO: the following  methods are from the class diagram:  
 	
-	public void getRequest() {
-
-	}
+	public void GetRequest() {}
 
 	public void watchRequests() {
 
