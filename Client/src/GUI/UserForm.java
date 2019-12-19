@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,6 +41,13 @@ public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initial
 
 	@FXML
 	private Button btnSubmit;
+=======
+import WindowApp.IcmForm;
+import javafx.fxml.Initializable;
+import javafx.stage.Stage;
+
+public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initializable {
+>>>>>>> parent of 38280db... MainForm now extends Initializable, so you dont need to duplicate extends everywhere
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
