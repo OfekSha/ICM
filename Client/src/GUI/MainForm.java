@@ -1,15 +1,9 @@
 package GUI;
 
+import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public interface MainForm extends Initializable {
-
+public interface MainForm {
 	void start(Stage primaryStage) throws Exception ;
-
-	/**
-	 * getFromServer moved here from IcmForm
-	 * @param message received from server
-	 */
-	void getFromServer(Object message);
 }

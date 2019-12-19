@@ -3,14 +3,19 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+<<<<<<< HEAD
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+=======
+import WindowApp.IcmForm;
+import javafx.fxml.Initializable;
+>>>>>>> parent of 38280db... MainForm now extends Initializable, so you dont need to duplicate extends everywhere
 import javafx.stage.Stage;
 
-public class UserForm extends stdForm {
+public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initializable {
 
 	@FXML
 	private HBox makeRequestBox;
