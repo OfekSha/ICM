@@ -2,8 +2,8 @@ package WindowApp;
 import java.io.IOException;
 import java.util.Scanner;
 
-import GUI.MainForm;
-import GUI.RequestForm;
+import GUI.FormController;
+import GUI.LogInForm;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -25,13 +25,13 @@ public class ClientLauncher extends Application {
 
 	//Instance variables **********************************************
 	/**
-	 * The instance of the ocf.client that created this ConsoleChat.
+	 * The instance of the client that created this ConsoleChat.
 	 */
 	public static IcmClient client;
 	/**
 	 * The instance of the frame
 	 */
-	public MainForm aFrame;
+	public  LogInForm aFrame;
 
 	/**
 	 * the  real main method
@@ -47,26 +47,10 @@ public class ClientLauncher extends Application {
 	 */
 	@Override
 	public void start(Stage arg0) throws Exception {
-		String host;// = "localhost";
-		
-		
-		// START ----insert osf.server ip to connect from ocf.client console----
-		System.out.println("Insert Server IP: ");
-		Scanner ip = new Scanner(System.in);
-		host = ip.nextLine();
-		
-		// END ---- insert osf.server ip to connect from ocf.client console----
-		aFrame = new RequestForm(); // create the frame
-
-		try {
-			client = new IcmClient(host, DEFAULT_PORT, aFrame);
-			System.out.println("Connection established!\n" //to be removed/changed
-					+ "Welcome to ICM.");
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" // to be removed/changed
-					+ " Terminating ocf.client.");
-			System.exit(1);
-		}
+	
+		aFrame = new LogInForm(); // create the frame
 		aFrame.start(arg0);
+		
+		
 	}
 }
