@@ -37,7 +37,7 @@ public class stdForm implements MainForm {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
+    /*    Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
@@ -51,7 +51,7 @@ public class stdForm implements MainForm {
         //scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
         primaryStage.setTitle("IT Control Management");
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
     @Override
@@ -59,7 +59,6 @@ public class stdForm implements MainForm {
 
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }

@@ -61,11 +61,12 @@ public class RequestForm extends stdForm implements MainForm {
 	 * @param primaryStage ????
 	 * @throws Exception ????
 	 */
+	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// request DB
 		getRequests();
 		// scene
-		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/GUI/User.fxml"));
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		root.setOnMousePressed(event -> {
 				xOffset = event.getSceneX();
