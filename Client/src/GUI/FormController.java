@@ -53,6 +53,10 @@ public class RequestForm extends stdForm implements MainForm {
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
+	//UNDECORATED
+	private double xOffset = 0;
+	private double yOffset = 0;
+
 	/**
 	 * @param primaryStage ????
 	 * @throws Exception ????
@@ -61,7 +65,16 @@ public class RequestForm extends stdForm implements MainForm {
 		// request DB
 		getRequests();
 		// scene
-		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Request.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
+		primaryStage.initStyle(StageStyle.UNDECORATED);
+		root.setOnMousePressed(event -> {
+				xOffset = event.getSceneX();
+				yOffset = event.getSceneY();
+		});
+		root.setOnMouseDragged(event ->{
+				primaryStage.setX(event.getScreenX() - xOffset);
+				primaryStage.setY(event.getScreenY() - yOffset);
+		});
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
@@ -73,7 +86,7 @@ public class RequestForm extends stdForm implements MainForm {
 	 * @param message is array of objects where where message[0] is requested action
 	 *                and message[1] is answer
 	 */
-
+	@Override
 	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
 		clientRequestFromServer request = (clientRequestFromServer) message;
@@ -115,6 +128,7 @@ public class RequestForm extends stdForm implements MainForm {
 		cmbStatus.setItems(listFor_cmbStatus);
 	}
 
+	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setRequestsComboBox();
 		setStatusComboBox();

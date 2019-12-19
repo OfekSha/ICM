@@ -9,13 +9,10 @@ package WindowApp;
  * @author Dr Timothy C. Lethbridge
  * @version July 2000
  */
-
-//******************* DEPRECATED (CAN BE DELETED SAFELY) *********************//
 public interface IcmForm {
 	/**
 	   * Method that when overriden is used to display objects onto
 	   * a UI.
 	   */
 	void getFromServer(Object message);
-
 }
