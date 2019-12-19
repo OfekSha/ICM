@@ -4,4 +4,10 @@
 
 #if you want to own any code contect yonathan
 /CODEOWNERS/@JonnyGov
+
 #yonathan owes:
+/Client/src/WindowApp/@JonnyGov
+/Client/src/GUI/MainMenu.fxml/@JonnyGov
+/Client/src/GUI/MainMenuForm.java/@JonnyGov
+/Client/src/GUI/LogInForm.fxml/@JonnyGov
+/Client/src/GUI/LogInForm.java/@JonnyGov
