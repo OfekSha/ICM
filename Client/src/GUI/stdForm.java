@@ -1,9 +1,11 @@
 package GUI;
 
 import WindowApp.IcmClient;
+import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +15,7 @@ import javafx.stage.StageStyle;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class stdForm implements MainForm {
+public class stdForm implements Initializable, IcmForm {
 
     @FXML
     private Button btnExit;

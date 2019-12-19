@@ -1,7 +1,5 @@
 package GUI;
 
-import Entity.Requirement;
-import Entity.clientRequestFromServer;
 import WindowApp.IcmForm;
 import WindowApp.ClientLauncher;
 
@@ -25,12 +23,14 @@ import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.stage.StageStyle;
 
-import static Entity.Requirement.statusOptions.*;
-import static Entity.clientRequestFromServer.requestOptions.*;
 
 //ENTITY IMPORT
+//TODO check if it is possible and right to do?
+import Entity.*;
+import Entity.Requirement.statusOptions;
+import Entity.clientRequestFromServer.requestOptions;
 
-public class RequestForm implements Initializable, IcmForm {
+public class FormController implements Initializable, IcmForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -40,6 +40,11 @@ public class RequestForm implements Initializable, IcmForm {
 	private TextArea txtRequestDetails;
 	@FXML
 	private TextField txtStageSupervisor;
+	// buttons
+	@FXML
+	private Button btnExit;
+	@FXML
+	private Button btnUpdateStatus;
 
 	// Combo Boxes
 	@FXML
@@ -61,12 +66,11 @@ public class RequestForm implements Initializable, IcmForm {
 	 * @param primaryStage ????
 	 * @throws Exception ????
 	 */
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// request DB
 		getRequests();
 		// scene
-		Parent root = FXMLLoader.load(getClass().getResource("/GUI/User.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		root.setOnMousePressed(event -> {
 				xOffset = event.getSceneX();
@@ -91,11 +95,11 @@ public class RequestForm implements Initializable, IcmForm {
 	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		// msg is ArrayLost of Entity.Requirement classes
+		// msg is ArrayLost of Requirement classes
 		ReqListForClient = request.getObj();
-		System.out.println("\nMessage from osf.server Received:");
+		System.out.println("\nMessage from server Received:");
 		switch(request.getRequest()) {
-			//TODO some actions to prompt message to ocf.client about answer from osf.server
+			//TODO some actions to prompt message to client about answer from server
 			case getAll:
 				System.out.print("Load list of requests: ");
 				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
@@ -115,6 +119,7 @@ public class RequestForm implements Initializable, IcmForm {
 		for (Requirement req : ReqListForClient) {
 			al.add(Integer.toString((req.getID())));
 		}
+
 		listFor_cmbRequests = FXCollections.observableArrayList(al);
 		cmbRequests.setItems(listFor_cmbRequests);
 	}
@@ -122,9 +127,9 @@ public class RequestForm implements Initializable, IcmForm {
 	// cmbStatus
 	private void setStatusComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		al.add(ongoing.name());
-		al.add(suspended.name());
-		al.add(closed.name());
+		al.add(statusOptions.ongoing.name());
+		al.add(statusOptions.suspended.name());
+		al.add(statusOptions.closed.name());
 		listFor_cmbStatus = FXCollections.observableArrayList(al);
 		cmbStatus.setItems(listFor_cmbStatus);
 	}
@@ -147,7 +152,8 @@ public class RequestForm implements Initializable, IcmForm {
 				this.txtRequestDetails.setText(req.getRequestDetails());
 				this.txtStageSupervisor.setText(req.getStageSupervisor());
 				this.cmbStatus.setValue((req.getStatus()).name());
-				this.cmbStatus.setPromptText((req.getStatus()).name());
+				//this.cmbStatus.setPromptText((req.getStatus()).name());
+				setRequestsComboBox();
 				break;
 			}
 		}
@@ -158,7 +164,7 @@ public class RequestForm implements Initializable, IcmForm {
 	
 	/**
 	 * @throws Exception
-	 * when the update button will be pressed the osf.server will be sent
+	 * when the update button will be pressed the server will be sent 
 	 */
 	public void PressedUpdate() throws Exception {
 		String sStatus = cmbStatus.getSelectionModel().getSelectedItem();
@@ -168,11 +174,15 @@ public class RequestForm implements Initializable, IcmForm {
 			if (sRequests == req.getID()) {
 				toThisReq.add(req);
 				req.setStatus(sStatus);
-				clientRequestFromServer msg = new clientRequestFromServer(updateStatus, toThisReq);
+				clientRequestFromServer msg = new clientRequestFromServer(requestOptions.updateStatus, toThisReq);
 				ClientLauncher.client.handleMessageFromClientUI(msg);
 				break;
 			}
 		}
+	}
+
+	public void ExitBtn() {
+		System.exit(0);			
 	}
 
 	// private methods
@@ -181,14 +191,14 @@ public class RequestForm implements Initializable, IcmForm {
 	 * @author Yonathan gets all requests with all the details to
 	 */
 	public void getRequests() {
-		clientRequestFromServer commend = new clientRequestFromServer(getAll);
+		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getAll);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 
 /*
-	private void selectRequriement(Entity.Requirement req) {
-		Entity.clientRequestFromServer commend = new Entity.clientRequestFromServer(requestOptions.getRequirement, req);
-		ClientLauncher.ocf.client.handleMessageFromClientUI(commend);
+	private void selectRequriement(Requirement req) {
+		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getRequirement, req);
+		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 */
 
