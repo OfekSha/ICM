@@ -7,7 +7,7 @@ import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
-public class InspectorForm extends UserForm {
+public class InspectorForm extends UserForm implements  MainForm, IcmForm, Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
