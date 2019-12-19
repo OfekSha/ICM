@@ -3,64 +3,28 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import WindowApp.IcmForm;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class UserForm extends stdForm implements MainForm {
+public  abstract class UserForm  implements Initializable, IcmForm {
 
-	@FXML
-	private HBox makeRequestBox;
-
-	@FXML
-	private Label InformationSystem;
-
-	@FXML
-	private Label RequestID;
-
-	@FXML
-	private Button watchRequests;
-
-	@FXML
-	private TextArea taRequestDetails;
-
-	@FXML
-	private TextArea taRequestReason;
-
-	@FXML
-	private TextArea taComment;
-
-	@FXML
-	private Button btnSubmit;
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void getFromServer(Object message) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	//TODO: the following  methods are from the class diagram:  
 	
+	
+	
+	//TODO:  to be implemented 
+	/** all forms will use to get the requests 
+	 * 
+	 * 
+	 */
 	public void getRequest() {
-
-	}
-
-	public void watchRequests() {
 
 	}
 }
