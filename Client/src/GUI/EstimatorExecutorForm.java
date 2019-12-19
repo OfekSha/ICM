@@ -10,7 +10,11 @@ import javafx.fxml.Initializable;
  *   only exists so that  EstimatorForm and  EcecutionLeaderForm Classes  have the same getDueTime 
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 public abstract class EstimatorExecutorForm extends StageSupervisorForm {
+=======
+public abstract  class EstimatorExecutorForm extends StageSupervisorForm  {
+>>>>>>> parent of ea4c239... Form.fxml is basic form for our usage
 =======
 public abstract  class EstimatorExecutorForm extends StageSupervisorForm  {
 >>>>>>> parent of ea4c239... Form.fxml is basic form for our usage

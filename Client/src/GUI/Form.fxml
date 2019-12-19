@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!--THIS IS BASIC ALMOST EMPTY FORM, PLEASE USE IT TO BUILD YOURS
 DO NOT TOUCH: Exit & Logout buttons-->
 
+=======
+>>>>>>> parent of ea4c239... Form.fxml is basic form for our usage
 =======
 >>>>>>> parent of ea4c239... Form.fxml is basic form for our usage
 <?import javafx.geometry.Insets?>
@@ -59,11 +62,19 @@ DO NOT TOUCH: Exit & Logout buttons-->
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
                   <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="172.0">
                         <Label text="Requests">
+<<<<<<< HEAD
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin></Label>
                         <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0">
                            <VBox.margin>
+=======
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin></Label>
+                        <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0">
+                           <VBox.margin>
+>>>>>>> parent of ea4c239... Form.fxml is basic form for our usage
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </ComboBox>
@@ -81,12 +92,21 @@ DO NOT TOUCH: Exit & Logout buttons-->
                         </TextField>
                         <Label text="Status" />
                         <ComboBox fx:id="cmbStatus" prefWidth="150.0">
+<<<<<<< HEAD
                            <VBox.margin>
                               <Insets bottom="20.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </ComboBox>
                         <Button fx:id="btnUpdateStatus" mnemonicParsing="false" onAction="#PressedUpdate" text="Update status">
                            <VBox.margin>
+=======
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <Button fx:id="btnUpdateStatus" mnemonicParsing="false" onAction="#PressedUpdate" text="Update status">
+                           <VBox.margin>
+>>>>>>> parent of ea4c239... Form.fxml is basic form for our usage
                               <Insets />
                            </VBox.margin>
                         </Button>

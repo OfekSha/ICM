@@ -94,8 +94,11 @@ public class UserForm extends MainMenuForm implements MainForm, IcmForm, Initial
 	//TODO: the following  methods are from the class diagram:  
 	
 	public void GetRequest() {}
+<<<<<<< HEAD
 
 	public void watchRequests() {
+=======
+>>>>>>> parent of ea4c239... Form.fxml is basic form for our usage
 
 	}
 }
