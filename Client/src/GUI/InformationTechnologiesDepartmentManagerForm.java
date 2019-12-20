@@ -9,11 +9,7 @@ import javafx.stage.Stage;
 
 public class InformationTechnologiesDepartmentManagerForm extends UserForm implements Initializable, IcmForm {
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

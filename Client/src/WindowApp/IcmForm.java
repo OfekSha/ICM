@@ -11,5 +11,4 @@ import javafx.stage.Stage;
  */
 public interface IcmForm {
 	void getFromServer(Object message);
-	void start(Stage primaryStage) throws Exception ;
 }
