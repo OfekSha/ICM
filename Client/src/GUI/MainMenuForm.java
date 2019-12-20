@@ -3,6 +3,7 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,17 +52,34 @@ public class MainMenuForm implements Initializable, IcmForm{
 	
 	public void  LogOutButton(ActionEvent event) throws Exception  {
 		
-		((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-		Stage primaryStage = new Stage();
-		FXMLLoader loader = new FXMLLoader();
-		Pane root = loader.load(getClass().getResource("/GUI/LogInForm.fxml").openStream());
-		Scene scene = new Scene(root);			
-		primaryStage.setScene(scene);		
-		primaryStage.show();
+		ClientLauncher.SnextWindowLuncher(event, "/GUI/LogInForm.fxml", this, new LogInForm(), true);
+		
+	}
+	public void WatchrRequest(ActionEvent event) throws Exception {
+		
+	}
+	public void MakeAChangeRequest(ActionEvent event) throws Exception {
 		
 	}
 	
-	public void InspectorMenue() {
+	public void InformationTechnologiesDepartmentManagerMenue(ActionEvent event) throws Exception {
+		
+	}
+	
+	public void InspectorMenue(ActionEvent event) throws Exception {
+		
+	}
+	
+	public void EstimatorMenue(ActionEvent event) throws Exception {
+		
+	}
+	public void ExecutionleaderMenue(ActionEvent event) throws Exception {
+		
+	}
+	public void ExaminerMenue(ActionEvent event) throws Exception {
+		
+	}
+	public void ChangeControlCommitteeChairmanMenue(ActionEvent event) throws Exception {
 		
 	}
 	

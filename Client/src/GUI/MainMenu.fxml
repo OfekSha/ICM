@@ -29,12 +29,12 @@
                               <Insets bottom="20.0" top="20.0" />
                            </VBox.margin>
                         </Button>
-                  <Button fx:id="WatchRequest" mnemonicParsing="false" prefWidth="175.0" text="Watch request">
+                  <Button fx:id="WatchRequest" mnemonicParsing="false" onAction="#WatchrRequest" prefWidth="175.0" text="Watch request">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="MakeAChangeEequest" mnemonicParsing="false" prefWidth="175.0" text="Make a change request">
+                  <Button fx:id="MakeAChangeEequest" mnemonicParsing="false" onAction="#MakeAChangeRequest" prefWidth="175.0" text="Make a change request">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
@@ -52,12 +52,12 @@
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin></Label>
-               <Button fx:id="InformationTechnologiesDepartmentManager" mnemonicParsing="false" text="Information Technologies Department Manager" />
-               <Button fx:id="Inspector" mnemonicParsing="false" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
-               <Button fx:id="Estimator" mnemonicParsing="false" prefHeight="25.0" prefWidth="268.0" text="Estimator" />
-               <Button fx:id="ExecutionLeader" mnemonicParsing="false" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
-               <Button fx:id="Examiner" mnemonicParsing="false" prefHeight="25.0" prefWidth="267.0" text="Examiner" />
-               <Button fx:id="ChangeControlCommitteeChairman" mnemonicParsing="false" prefHeight="25.0" prefWidth="266.0" text="Change Control Committee Chairman" />
+               <Button fx:id="InformationTechnologiesDepartmentManager" mnemonicParsing="false" onAction="#InformationTechnologiesDepartmentManagerMenue" text="Information Technologies Department Manager" />
+               <Button fx:id="Inspector" mnemonicParsing="false" onAction="#InspectorMenue" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
+               <Button fx:id="Estimator" mnemonicParsing="false" onAction="#EstimatorMenue" prefHeight="25.0" prefWidth="268.0" text="Estimator" />
+               <Button fx:id="ExecutionLeader" mnemonicParsing="false" onAction="#ExecutionleaderMenue" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
+               <Button fx:id="Examiner" mnemonicParsing="false" onAction="#ExaminerMenue" prefHeight="25.0" prefWidth="267.0" text="Examiner" />
+               <Button fx:id="ChangeControlCommitteeChairman" mnemonicParsing="false" onAction="#ChangeControlCommitteeChairmanMenue" prefHeight="25.0" prefWidth="266.0" text="Change Control Committee Chairman" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
                   <Label text="messges" />
