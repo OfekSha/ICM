@@ -7,7 +7,7 @@ public class IcmClient extends AbstractClient {
 
 	public IcmForm clientUI; // the UI currently in serves
 
-	//Constructors ****************************************************
+	//Constructors 
 
 	/**
 	 * Constructs an instance of the chat client.
@@ -40,7 +40,8 @@ public class IcmClient extends AbstractClient {
 	public void handleMessageFromClientUI(Object message) {
 		try {
 			sendToServer(message);
-		} catch (IOException e) {//TODO: display some message ?
+		} catch (IOException e) {
+			//TODO: display some message ?
 			//clientUI.display("Could not send message to server.  Terminating client.");
 			quit();
 		}

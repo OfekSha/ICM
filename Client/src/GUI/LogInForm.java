@@ -25,12 +25,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * @author Yonathan
+ *
+ * -is the controller for LogInForm.fxml
+ * -connects to the server
+ */
 public class LogInForm implements Initializable, IcmForm {
 
 	// Variables
-	private static ArrayList<Requirement> ReqListForClient = null;
-	ObservableList<String> listFor_cmbRequests;
-	ObservableList<String> listFor_cmbStatus;
+	private static ArrayList<Requirement> ReqListForClient = null; //TO DO : change to whatever entity will have the username and password
 	MainMenuForm TheMainMenuForm2;
 	// text fields
 	@FXML
@@ -51,7 +55,6 @@ public class LogInForm implements Initializable, IcmForm {
 	private double yOffset = 0;
 
 	public void start(Stage primaryStage) throws Exception {
-
 		// scene
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/LogInForm.fxml"));
 		primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -68,7 +71,6 @@ public class LogInForm implements Initializable, IcmForm {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	// TODO Auto-generated method stub
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -80,13 +82,14 @@ public class LogInForm implements Initializable, IcmForm {
 	public void getFromServer(Object message) {
 		// TODO Auto-generated method stub
 
-	}
+	} //END of getFromServer(Object message)
 
-	// TODO: the following methods are from the class diagram:
-
+	/** connects to ip , tests user name and password
+	 * @param event
+	 * @throws Exception
+	 */
 	public void getInput(ActionEvent event) throws Exception {
 		connectToServer();
-		// lunching main
 		ClientLauncher.SnextWindowLuncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
 		// TODO: test password / user name is correct
 	}
@@ -100,7 +103,9 @@ public class LogInForm implements Initializable, IcmForm {
 	/**
 	 * connects to the server
 	 * 
-	 * -the ip is from the texfiled IP - Default port is from the client luncher
+	 * -the ip is from the texfiled IP 
+	 * 
+	 * - Default port is from the client luncher
 	 */
 	private void connectToServer() {
 		String host = IP.getAccessibleText();
@@ -109,10 +114,10 @@ public class LogInForm implements Initializable, IcmForm {
 			host = "localhost";
 		try {
 			ClientLauncher.client = new IcmClient(host, ClientLauncher.DEFAULT_PORT, this);
-			System.out.println("Connection established!\n" // to be removed/changed
+			System.out.println("Connection established!\n" //  TODO: to be removed/changed
 					+ "Welcome to ICM.");
 		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" // to be removed/changed
+			System.out.println("Error: Can't setup connection!" // TODO: to be removed/changed
 					+ " Terminating client.");
 			System.exit(1);
 		}
