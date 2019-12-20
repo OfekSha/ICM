@@ -21,6 +21,8 @@ public class MainMenuForm implements Initializable, IcmForm{
 			@FXML
 			private Button Log_out;
 			@FXML
+			private Button exit;
+			@FXML
 			private Button WatchRequest;
 			@FXML
 			private Button MakeAChangeEequest;
@@ -48,6 +50,10 @@ public class MainMenuForm implements Initializable, IcmForm{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void ExitBtn() {
+		System.exit(0);
 	}
 	
 	public void  LogOutButton(ActionEvent event) throws Exception  {
