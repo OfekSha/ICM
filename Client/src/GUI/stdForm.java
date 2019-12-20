@@ -37,7 +37,6 @@ public class stdForm implements Initializable, IcmForm {
     private double xOffset = 0;
     private double yOffset = 0;
 
-    @Override
     public void start(Stage primaryStage) throws Exception {
     /*    Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
         primaryStage.initStyle(StageStyle.UNDECORATED);
