@@ -11,16 +11,21 @@ import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
 import WindowApp.IcmForm;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+
 
 
 
@@ -31,7 +36,7 @@ public class LogInForm implements Initializable, IcmForm {
 		private static ArrayList<Requirement> ReqListForClient = null;
 		ObservableList<String> listFor_cmbRequests;
 		ObservableList<String> listFor_cmbStatus;
-		
+		 MainMenuForm TheMainMenuForm2 ;
 		// text fields
 		@FXML
 		private TextField IP;
@@ -50,7 +55,6 @@ public class LogInForm implements Initializable, IcmForm {
 		private double xOffset = 0;
 		private double yOffset = 0;
 
-	@Override
 	public void start(Stage primaryStage) throws Exception  {
 		
 			// scene
@@ -90,17 +94,17 @@ public class LogInForm implements Initializable, IcmForm {
 	
 	//TODO: the following  methods are from the class diagram:  
 	
-	 public void getInput(){
+	 public void getInput(ActionEvent event)throws Exception {
 			
 		 String host;// = "localhost";
 			
 			
 			// START ----insert server ip to connect from client console----
 			System.out.println("Insert Server IP: ");
-			Scanner ip = new Scanner(System.in);
-			host = ip.nextLine();
+			host = IP.getText();
+			System.out.println(host);
 			// END ---- insert server ip to connect from client console----
-
+			host ="localhost";
 			try {
 				ClientLauncher.client = new IcmClient(host, ClientLauncher.DEFAULT_PORT, this);
 				System.out.println("Connection established!\n" //to be removed/changed
@@ -112,13 +116,27 @@ public class LogInForm implements Initializable, IcmForm {
 			}
 			
 			
-			// request DB
+			// lunching main 
+			
+			((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
+			///-----------------------------------------------
+			Stage stage = new Stage();
+			Parent root;
+		    root = (Parent) FXMLLoader.load(getClass().getResource("/GUI/MainMenu.fxml"));
+		    Scene scene = new Scene(root);
+		    scene.setRoot(root);
+		    FXMLLoader fxmlLoader = new FXMLLoader();
+		    //        FooController fooController = (FooController) fxmlLoader.getController();
+		    MainMenuForm MainMenuFormController = (MainMenuForm) fxmlLoader.getController();
+		    stage.setScene(scene);
+		    stage.show();
+			///---------------------------------------------------
+			
+			// TO DO : request DB clients 
 						//getRequests();
 			
-			//TODO: test password is correct
-		 
+			//TODO: test password / user name  is correct	 
 	 }
-	 
 	 
 	 public void ExitBtn() {
 			System.exit(0);			

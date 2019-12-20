@@ -46,7 +46,7 @@
                <TextField fx:id="UserName" prefHeight="25.0" prefWidth="416.0" />
                <Label alignment="CENTER" text="Enter Password:" />
                <TextField fx:id="Password" prefHeight="25.0" prefWidth="416.0" />
-               <Button fx:id="btnLogin" mnemonicParsing="false" text="Log in" />
+               <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#getInput" text="Log in" />
                   </VBox>
             </HBox>
       </SplitPane>

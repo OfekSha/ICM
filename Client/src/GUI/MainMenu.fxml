@@ -17,41 +17,30 @@
             <ImageView fitHeight="200.0" fitWidth="200.0">
                   <Image url="@../img/ICMlogo.png" />
             </ImageView>
-         <VBox alignment="TOP_RIGHT" prefWidth="824.0">
-               <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" text="Exit">
-                  <VBox.margin>
-                     <Insets right="20.0" top="20.0" />
-                  </VBox.margin>
-               </Button>
-         </VBox>
+         <VBox alignment="TOP_RIGHT" prefWidth="824.0" />
       </HBox>
    </top>
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="15.0">
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                  <Button mnemonicParsing="false" prefWidth="175.0" text="Messages">
+                        <Button fx:id="Log_out" mnemonicParsing="false" onAction="#LogOutButton" prefHeight="25.0" prefWidth="176.0" text="Log out">
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </VBox.margin>
+                        </Button>
+                  <Button fx:id="WatchRequest" mnemonicParsing="false" prefWidth="175.0" text="Watch request">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="175.0" text="Watch request">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefWidth="175.0" text="Make a change request">
+                  <Button fx:id="MakeAChangeEequest" mnemonicParsing="false" prefWidth="175.0" text="Make a change request">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="200.0">
-                        <Button fx:id="btnLogout" mnemonicParsing="false" text="Log out">
-                           <VBox.margin>
-                              <Insets bottom="20.0" top="20.0" />
-                           </VBox.margin>
-                        </Button>
                <VBox.margin>
                   <Insets top="350.0" />
                </VBox.margin>
@@ -63,15 +52,15 @@
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin></Label>
-               <Button mnemonicParsing="false" text="Information Technologies Department Manager" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="268.0" text="Estimator" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="267.0" text="Examiner" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="266.0" text="Change Control Committee Chairman" />
+               <Button fx:id="InformationTechnologiesDepartmentManager" mnemonicParsing="false" text="Information Technologies Department Manager" />
+               <Button fx:id="Inspector" mnemonicParsing="false" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
+               <Button fx:id="Estimator" mnemonicParsing="false" prefHeight="25.0" prefWidth="268.0" text="Estimator" />
+               <Button fx:id="ExecutionLeader" mnemonicParsing="false" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
+               <Button fx:id="Examiner" mnemonicParsing="false" prefHeight="25.0" prefWidth="267.0" text="Examiner" />
+               <Button fx:id="ChangeControlCommitteeChairman" mnemonicParsing="false" prefHeight="25.0" prefWidth="266.0" text="Change Control Committee Chairman" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
-                  <Label text="Your Permissions" />
+                  <Label text="messges" />
                   <TextArea prefHeight="200.0" prefWidth="354.0">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
