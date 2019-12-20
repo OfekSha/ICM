@@ -6,9 +6,9 @@
 /CODEOWNERS/@JonnyGov
 
 #yonathan owes:
-/Client/src/WindowApp/@JonnyGov
-/Client/src/GUI/MainMenu.fxml/@JonnyGov
-/Client/src/GUI/MainMenuForm.java/@JonnyGov
-/Client/src/GUI/LogInForm.fxml/@JonnyGov
-/Client/src/GUI/LogInForm.java/@JonnyGov
+#/Client/src/WindowApp/@JonnyGov
+#/Client/src/GUI/MainMenu.fxml/@JonnyGov
+#/Client/src/GUI/MainMenuForm.java/@JonnyGov
+#/Client/src/GUI/LogInForm.fxml/@JonnyGov
+#/Client/src/GUI/LogInForm.java/@JonnyGov
 #comment
