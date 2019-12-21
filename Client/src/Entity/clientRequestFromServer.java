@@ -5,9 +5,10 @@ import java.util.ArrayList;
 
 public class clientRequestFromServer implements Serializable {
     public enum requestOptions {
-        getAll,
-        updateStatus,
-        getRequirement
+        getAll, // for now need to change not good name get all requirements
+        updateStatus, // change requirement status (ongoing ,closed,etc)
+        getRequirement, // get requirement from DB by his id.
+        getUser // get user from DB by his id.
     }
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.
     private requestOptions request; // request

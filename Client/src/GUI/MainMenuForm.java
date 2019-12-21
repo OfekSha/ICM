@@ -67,7 +67,8 @@ public class MainMenuForm extends UserForm implements Initializable, IcmForm {
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
+		ClientLauncher.SnextWindowLuncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
+
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {

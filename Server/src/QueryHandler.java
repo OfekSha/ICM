@@ -75,8 +75,37 @@ public class QueryHandler {
             e.printStackTrace();
         }
     }
+public Object[] selectUser(int UserID) { // @!building by ofek not finished.
+	 Object[] toReturn = null;
+     try {
+         PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user WHERE ID = ?");
+         stmt.setInt(1, UserID);
+         ResultSet re = stmt.executeQuery();
 
+         while (re.next()) {
+             toReturn = new Object[] {
+                     re.getInt(1), // ID
+                     re.getNString(2), // userName
+                     re.getNString(3), //password
+                     re.getNString(4), //firstName
+                     re.getNString(5), //lastName
+                     re.getBoolean(6), //is already login
+                     re.getNString(7), //status
+                     re.getNString(8), //email
+                     re.getBoolean(9) //is inspector permission
+             };
+         }
+         stmt.close();
+     } catch (SQLException e) {
+         e.printStackTrace();
+     }
+
+     return toReturn;
+}
     /**
+     *
+     *for prototype.
+     *get all details of one requirement by it's ID
      *
      * @param reqID input request ID
      * @return list

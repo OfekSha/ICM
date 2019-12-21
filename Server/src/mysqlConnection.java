@@ -45,7 +45,21 @@ public class mysqlConnection {
 					"\tRequestDetails LONGTEXT NULL,\n" +
 					"\tStageSupervisor VARCHAR(45) NULL,\n" +
 					"\tStatus ENUM('ongoing', 'suspended', 'closed') NOT NULL DEFAULT 'ongoing',\n" +
-					"\tPRIMARY KEY (RequestID));"); // create table
+					"\tPRIMARY KEY (RequestID));"); // create requirement table
+			
+			
+			// @!building by ofek not finished.
+			stmt.execute("CREATE TABLE `icm`.`user` (" + 
+					"  `id` INT NOT NULL," + 
+					"  `userName` VARCHAR(45) NOT NULL," + 
+					"  `password` VARCHAR(45) NOT NULL," + 
+					"  `firstName` VARCHAR(45) NULL," + 
+					"  `lastName` VARCHAR(45) NULL," + 
+					"  `login` BINARY(1) NOT NULL," + 
+					"  `status` VARCHAR(45) NULL," + 
+					"  `email` VARCHAR(45) NULL," + 
+					"  `inspectorPermission` BINARY(1) NOT NULL," + 
+					"  PRIMARY KEY (`id`));"); // create user table
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
