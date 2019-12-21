@@ -22,6 +22,14 @@ public class IcmClient extends AbstractClient {
 		openConnection();
 	}
 
+	/**
+	 * @author Kostya
+	 * @param clientUI receives as object new Scene
+	 *                 to understand where send answers from server
+	 */
+	public void setClientUI(IcmForm clientUI) {
+		this.clientUI = clientUI;
+	}
 
 	/**
 	 * This method handles all data that comes in from the server.
@@ -41,8 +49,8 @@ public class IcmClient extends AbstractClient {
 		try {
 			sendToServer(message);
 		} catch (IOException e) {
-			//TODO: display some message ?
-			//clientUI.display("Could not send message to server.  Terminating client.");
+			System.out.println("Could not send message to server.\tTerminating client.");
+			e.printStackTrace();
 			quit();
 		}
 	}
