@@ -58,19 +58,20 @@ public class EchoServer extends AbstractServer {
 			Requirement reqReceived;
 			switch (request.getRequest()) {
 				// read all requirement data
-				case getAll:
+				case getAll: // get all requirements need to change!!!!!!!!!
 					getAllRequest(ReqListForClient);
 					break;
 				// read data from some id in requirement
-				case updateStatus:
+				case updateStatus: // change status of one requirement.
 					reqReceived = request.getObj().get(0);
 					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
 					selectRequirement(ReqListForClient, reqReceived);
 					break;
 				case getRequirement:
-					reqReceived = request.getObj().get(0);
+					reqReceived = request.getObj().get(0); // get the requirement id
 					selectRequirement(ReqListForClient, reqReceived);
 					break;
+					//getUser not implemented.
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
