@@ -1,10 +1,12 @@
 package GUI;
 
+import Entity.Requirement;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class WatchRequestForm extends UserForm {
@@ -15,6 +17,8 @@ public class WatchRequestForm extends UserForm {
 	public TextArea taRequestReason;
 	public TextArea taComment;
 
+	//Variables
+	private static ArrayList<Requirement> ReqListForClient = null;
 
 	@Override
 	public void getFromServer(Object message) {
@@ -29,7 +33,7 @@ public class WatchRequestForm extends UserForm {
 
 
 //	///** Variables */
-//	//private static ArrayList<Requirement> ReqListForClient = null;
+//	//
 //
 //	@Override
 //	public void initialize(URL location, ResourceBundle resources) {
