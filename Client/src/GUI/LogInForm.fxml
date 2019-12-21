@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LogInForm">
+<BorderPane prefHeight="450.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LogInForm">
    <top>
-      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
                   <Image url="@../img/ICMlogo.png" />
             </ImageView>
@@ -20,22 +20,21 @@
    </top>
    <center>
          <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-               <VBox alignment="TOP_CENTER" prefHeight="226.0" prefWidth="46.0" />
-               <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="211.0">
+               <VBox alignment="TOP_CENTER" prefWidth="200.0">
 
-                     <Label text="Enter IP:">
+                     <Label text="Server IP:">
                         <VBox.margin>
                            <Insets top="15.0" />
                         </VBox.margin>
             </Label>
-            <TextField fx:id="IP" prefHeight="25.0" prefWidth="416.0" />
-                     <Label alignment="CENTER" text="Enter User Name:">
+            <TextField fx:id="tfIP" prefWidth="400.0" text="127.0.0.1" />
+                     <Label alignment="CENTER" text="Username:">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </Label>
-            <TextField fx:id="tfUserName" prefHeight="25.0" prefWidth="416.0" />
-            <Label alignment="CENTER" text="Enter Password:">
+            <TextField fx:id="tfUserName" prefHeight="25.0" prefWidth="400.0" />
+            <Label alignment="CENTER" text="Password:">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>

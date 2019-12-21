@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.WatchRequestForm">
+<BorderPane maxHeight="768.0" maxWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.WatchRequestForm">
    <top>
-      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
                 <Image url="@../img/ICMlogo.png" />
             </ImageView>
@@ -27,7 +27,7 @@
       </HBox>
    </top>
    <center>
-      <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.2" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
             <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="200.0">
@@ -54,7 +54,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                      <graphic>
-                        <ComboBox fx:id="cmbRequestID" prefWidth="150.0" />
+                        <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0" />
                      </graphic>
                   </Label>
                <Label alignment="CENTER" contentDisplay="BOTTOM" text="Status:">
@@ -62,7 +62,7 @@
                      <Insets left="10.0" right="10.0" top="10.0" />
                   </VBox.margin>
                </Label>
-               <TextField fx:id="tfRequestStatus">
+               <TextField fx:id="tfRequestStatus" alignment="CENTER" editable="false" style="-fx-font-weight: bold;">
                   <VBox.margin>
                      <Insets left="10.0" right="10.0" />
                   </VBox.margin>
@@ -74,7 +74,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taRequestDetails" prefHeight="100.0" wrapText="true">
+                        <TextArea fx:id="taRequestDetails" editable="false" prefHeight="100.0" wrapText="true">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -86,15 +86,15 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taRequestReason" prefHeight="100.0" wrapText="true" />
+                        <TextArea fx:id="taRequestReason" editable="false" prefHeight="100.0" wrapText="true" />
                   </graphic>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="BOTTOM" text="Your comment (optional)">
+                  <Label alignment="CENTER" contentDisplay="BOTTOM" text="Change request commentary">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taComment" prefHeight="100.0" wrapText="true" />
+                        <TextArea fx:id="taComment" editable="false" prefHeight="100.0" wrapText="true" />
                   </graphic>
                   </Label>
             </VBox>

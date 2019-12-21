@@ -56,13 +56,13 @@
                            <VBox.margin>
                               <Insets bottom="-10.0" top="10.0" />
                            </VBox.margin></Label>
-               <Button fx:id="btnInformationTechnologiesDepartmentManager" mnemonicParsing="false" onAction="#InformationTechnologiesDepartmentManagerMenue" text="Information Technologies Department Manager">
+               <Button fx:id="btnInformationTechnologiesDepartmentManager" mnemonicParsing="false" onAction="#InformationTechnologiesDepartmentManagerMenu" text="Information Technologies Department Manager">
                   <VBox.margin>
                      <Insets />
                   </VBox.margin></Button>
                <Button fx:id="btnInspector" mnemonicParsing="false" onAction="#InspectorMenu" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
                <Button fx:id="btnEstimator" mnemonicParsing="false" onAction="#EstimatorMenu" prefHeight="25.0" prefWidth="268.0" text="Estimator" />
-               <Button fx:id="btnExecutionLeader" mnemonicParsing="false" onAction="#ExecutionleaderMenu" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
+               <Button fx:id="btnExecutionLeader" mnemonicParsing="false" onAction="#ExecutionLeaderMenu" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
                <Button fx:id="btnExaminer" mnemonicParsing="false" onAction="#ExaminerMenu" prefHeight="25.0" prefWidth="267.0" text="Examiner" />
                <Button fx:id="btnChangeControlCommitteeChairman" mnemonicParsing="false" onAction="#ChangeControlCommitteeChairmanMenu" prefHeight="25.0" prefWidth="266.0" text="Change Control Committee Chairman" />
                   </VBox>
