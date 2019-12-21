@@ -18,7 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * @author Yonathan
@@ -26,13 +25,13 @@ import javafx.stage.StageStyle;
  * -is the controller for LogInForm.fxml
  * -connects to the server
  */
-public class LogInForm extends UserForm implements Initializable, IcmForm {
+public class LogInForm extends UserForm {
 
 	//Variables
 	private static ArrayList<Requirement> ReqListForClient = null; //TO DO : change to whatever entity will have the username and password
 	//Text fields
 	@FXML
-	private TextField IP;
+	private TextField tfIP;
 	@FXML
 	private TextField tfUserName;
 	@FXML
@@ -56,19 +55,19 @@ public class LogInForm extends UserForm implements Initializable, IcmForm {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
+	/*@Override
 	public void getFromServer(Object message) {
 		// TODO Auto-generated method stub
 
 	} //END of getFromServer(Object message)
-
+*/
 	/** connects to ip , tests user name and password
 	 * @param event ??
 	 * @throws Exception ??
 	 */
 	public void getInput(ActionEvent event) throws Exception {
 		connectToServer();
-		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
 		// TODO: test password / user name is correct
 	}
 
@@ -76,13 +75,13 @@ public class LogInForm extends UserForm implements Initializable, IcmForm {
 
 	/**
 	 * connects to the server
-	 * 
-	 * -the ip is from the texfiled IP 
-	 * 
+	 *
+	 * -the ip is from the texfiled IP
+	 *
 	 * - Default port is from the client luncher
 	 */
 	private void connectToServer() {
-		String host = IP.getAccessibleText();
+		String host = tfIP.getAccessibleText();
 		// System.out.println("This is host: "+host);
 		if (host == null)
 			host = "localhost";
