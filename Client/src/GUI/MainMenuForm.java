@@ -80,7 +80,8 @@ public class MainMenuForm implements Initializable, IcmForm {
 
 	}
 
-	public void InspectorMenue(ActionEvent event) throws Exception {
+	public void InspectorMenu(ActionEvent event) throws Exception {
+		ClientLauncher.SnextWindowLuncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
 
 	}
 

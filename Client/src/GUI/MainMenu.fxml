@@ -56,7 +56,7 @@
                               <Insets top="15.0" />
                            </VBox.margin></Label>
                <Button fx:id="InformationTechnologiesDepartmentManager" mnemonicParsing="false" onAction="#InformationTechnologiesDepartmentManagerMenue" text="Information Technologies Department Manager" />
-               <Button fx:id="Inspector" mnemonicParsing="false" onAction="#InspectorMenue" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
+               <Button fx:id="Inspector" mnemonicParsing="false" onAction="#InspectorMenu" prefHeight="25.0" prefWidth="269.0" text="Inspector" />
                <Button fx:id="Estimator" mnemonicParsing="false" onAction="#EstimatorMenue" prefHeight="25.0" prefWidth="268.0" text="Estimator" />
                <Button fx:id="ExecutionLeader" mnemonicParsing="false" onAction="#ExecutionleaderMenue" prefHeight="25.0" prefWidth="268.0" text="Execution leader" />
                <Button fx:id="Examiner" mnemonicParsing="false" onAction="#ExaminerMenue" prefHeight="25.0" prefWidth="267.0" text="Examiner" />
