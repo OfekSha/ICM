@@ -29,23 +29,7 @@
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                        <Button mnemonicParsing="false" prefWidth="175.0" text="&lt;Something 0&gt;">
-                           <VBox.margin>
-                              <Insets bottom="20.0" top="30.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button disable="true" mnemonicParsing="false" prefWidth="175.0" text="&lt;Something 1&gt;">
-                           <VBox.margin>
-                              <Insets bottom="20.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button disable="true" mnemonicParsing="false" prefWidth="175.0" text="&lt;Something N&gt;">
-                           <VBox.margin>
-                              <Insets bottom="20.0" />
-                           </VBox.margin>
-                        </Button>
-            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
             <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="200.0">
                   <Button fx:id="btnBack" mnemonicParsing="false" onAction="#BackScene" prefWidth="180.0" text="Back" />
                   <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LogOutButton" prefHeight="25.0" prefWidth="180.0" text="Log out">

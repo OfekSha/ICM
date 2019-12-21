@@ -1,20 +1,13 @@
 package GUI;
 
-import Entity.Requirement;
-import Entity.clientRequestFromServer;
-import WindowApp.ClientLauncher;
-import WindowApp.IcmForm;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class WatchRequestForm extends UserForm implements IcmForm {
+public class WatchRequestForm extends UserForm {
 	@FXML
 	public ComboBox<String> cmbRequestID;
 	public TextField tfRequestStatus;
