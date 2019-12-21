@@ -23,6 +23,7 @@
          <children>
             <ComboBox prefWidth="150.0" />
             <Button mnemonicParsing="false" text="Approve" />
+            <Button mnemonicParsing="false" text="Cancel" />
          </children>
       </HBox>
    </children>
