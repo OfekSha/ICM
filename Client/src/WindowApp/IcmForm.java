@@ -1,14 +1,11 @@
 package WindowApp;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
 
 /**
  * This interface implements the abstract method used to display
  * objects onto the client or server UIs.
  */
-public interface IcmForm {
+public interface IcmForm extends Initializable {
 	void getFromServer(Object message);
 }

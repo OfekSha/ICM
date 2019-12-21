@@ -7,12 +7,8 @@ import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -24,81 +20,67 @@ import javafx.stage.Stage;
  * 
  *         -opens user ablites
  */
-public class MainMenuForm implements Initializable, IcmForm {
+public class MainMenuForm extends UserForm implements Initializable, IcmForm {
 
 	// buttons
 	@FXML
-	private Button Log_out;
+	private Button btnWatchRequest;
 	@FXML
-	private Button exit;
+	private Button btnMakeAChangeRequest;
 	@FXML
-	private Button WatchRequest;
+	private Button btnInformationTechnologiesDepartmentManager;
 	@FXML
-	private Button MakeAChangeEequest;
+	private Button btnInspector;
 	@FXML
-	private Button InformationTechnologiesDepartmentManager;
+	private Button btnEstimator;
 	@FXML
-	private Button Inspector;
+	private Button btnExecutionLeader;
 	@FXML
-	private Button Estimator;
+	private Button btnExaminer;
 	@FXML
-	private Button ExecutionLeader;
-	@FXML
-	private Button Examiner;
-	@FXML
-	private Button ChangeControlCommitteeChairman;
+	private Button btnChangeControlCommitteeChairman;
 
 	@Override
 	public void getFromServer(Object message) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
 	}
 
-	public void ExitBtn() {
-		System.exit(0);
-	}
-
-	public void LogOutButton(ActionEvent event) throws Exception {
-		ClientLauncher.SnextWindowLuncher(event, "/GUI/LogInForm.fxml", this, new LogInForm(), true);
-	}
-
-	public void WatchrRequest(ActionEvent event) throws Exception {
-
+	public void WatchRequest(ActionEvent event) throws Exception {
+		ClientLauncher.NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
-
+		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenue(ActionEvent event) throws Exception {
-
+		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-		ClientLauncher.SnextWindowLuncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
+		ClientLauncher.NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
 
 	}
 
-	public void EstimatorMenue(ActionEvent event) throws Exception {
-
+	public void EstimatorMenu(ActionEvent event) throws Exception {
+		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
-	public void ExecutionleaderMenue(ActionEvent event) throws Exception {
-
+	public void ExecutionleaderMenu(ActionEvent event) throws Exception {
+		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
-	public void ExaminerMenue(ActionEvent event) throws Exception {
-
+	public void ExaminerMenu(ActionEvent event) throws Exception {
+		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
-	public void ChangeControlCommitteeChairmanMenue(ActionEvent event) throws Exception {
-
+	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
+		ClientLauncher.NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 }//END of MainMenuForm
