@@ -89,9 +89,9 @@ public class LogInForm implements Initializable, IcmForm {
 	 * @throws Exception
 	 */
 	public void getInput(ActionEvent event) throws Exception {
-		connectToServer();
+		connectToServer(); // move to the scurity controller
 		ClientLauncher.SnextWindowLuncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
-		// TODO: test password / user name is correct
+		// TODO: test password / user name is correct- do it in the securty controller
 	}
 
 	public void ExitBtn() {
