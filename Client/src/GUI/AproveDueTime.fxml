@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,11 +18,25 @@
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="25.0" prefWidth="315.0">
+      <HBox alignment="CENTER">
          <children>
-            <DatePicker />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Approve" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Cancel" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Approve">
+               <opaqueInsets>
+                  <Insets left="50.0" right="50.0" />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="25.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Disapprove" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="25.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
    </children>
