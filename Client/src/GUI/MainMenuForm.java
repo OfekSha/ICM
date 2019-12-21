@@ -23,10 +23,6 @@ import javafx.stage.Stage;
 public class MainMenuForm extends UserForm implements Initializable, IcmForm {
 
 	// buttons
-	/*@FXML
-	private Button btnLogout;
-	@FXML
-	private Button btnExit;*/
 	@FXML
 	private Button btnWatchRequest;
 	@FXML
@@ -67,7 +63,7 @@ public class MainMenuForm extends UserForm implements Initializable, IcmForm {
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-		ClientLauncher.SnextWindowLuncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
+		ClientLauncher.NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
 
 	}
 
