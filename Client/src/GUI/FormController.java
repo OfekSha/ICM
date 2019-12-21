@@ -30,7 +30,7 @@ import Entity.*;
 import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer.requestOptions;
 
-public class FormController implements Initializable, IcmForm {
+public class FormController extends UserForm implements Initializable, IcmForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -58,10 +58,6 @@ public class FormController implements Initializable, IcmForm {
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
-	//UNDECORATED
-	private double xOffset = 0;
-	private double yOffset = 0;
-
 	/**
 	 * @param primaryStage ????
 	 * @throws Exception ????
@@ -71,18 +67,10 @@ public class FormController implements Initializable, IcmForm {
 		getRequests();
 		// scene
 		Parent root = FXMLLoader.load(getClass().getResource("/GUI/Form.fxml"));
-		primaryStage.initStyle(StageStyle.UNDECORATED);
-		root.setOnMousePressed(event -> {
-				xOffset = event.getSceneX();
-				yOffset = event.getSceneY();
-		});
-		root.setOnMouseDragged(event ->{
-				primaryStage.setX(event.getScreenX() - xOffset);
-				primaryStage.setY(event.getScreenY() - yOffset);
-		});
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
+		setUndecorated(primaryStage, root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

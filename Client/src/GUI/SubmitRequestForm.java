@@ -4,10 +4,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import WindowApp.IcmForm;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
+
+	public TextArea taRequestDetails;
+	public TextArea taRequestReason;
+	public TextArea taComment;
+	@FXML
+	private Button btnSubmit;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

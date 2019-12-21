@@ -19,18 +19,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
-import javafx.stage.StageStyle;
 
 import static Entity.Requirement.statusOptions.*;
 import static Entity.clientRequestFromServer.requestOptions.*;
 
 //ENTITY IMPORT
 
-public class RequestForm implements Initializable, IcmForm {
+public class RequestForm extends UserForm implements Initializable, IcmForm {
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -53,10 +51,6 @@ public class RequestForm implements Initializable, IcmForm {
 	ObservableList<String> listFor_cmbRequests;
 	ObservableList<String> listFor_cmbStatus;
 
-	//UNDECORATED
-	private double xOffset = 0;
-	private double yOffset = 0;
-
 	/**
 	 * @param primaryStage ????
 	 * @throws Exception ????
@@ -65,16 +59,7 @@ public class RequestForm implements Initializable, IcmForm {
 		// request DB
 		getRequests();
 		// scene
-		Parent root = FXMLLoader.load(getClass().getResource("/GUI/User.fxml"));
-		primaryStage.initStyle(StageStyle.UNDECORATED);
-		root.setOnMousePressed(event -> {
-				xOffset = event.getSceneX();
-				yOffset = event.getSceneY();
-		});
-		root.setOnMouseDragged(event ->{
-				primaryStage.setX(event.getScreenX() - xOffset);
-				primaryStage.setY(event.getScreenY() - yOffset);
-		});
+		Parent root = FXMLLoader.load(getClass().getResource("/GUI/SubmitRequest.fxml"));
 		Scene scene = new Scene(root);
 		//scene.getStylesheets().add(getClass().getResource("/GUI/Form.css").toExternalForm());
 		primaryStage.setTitle("Update Tool");
