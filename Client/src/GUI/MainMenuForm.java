@@ -47,7 +47,9 @@ public class MainMenuForm extends UserForm {
 		ClientLauncher.client.setClientUI(this);
 	}
 
+	//TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {
+		getRequests();
 		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, new WatchRequestForm(), true);
 	}
 
@@ -73,7 +75,7 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/Form.fxml", this, new RequestForm(), true);
+		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new RequestForm(), true);
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {

@@ -22,9 +22,6 @@ public class WatchRequestForm extends UserForm {
 	public TextArea taRequestReason;
 	public TextArea taComment;
 
-	//Variables
-	//private static ArrayList<Requirement> ReqListForClient = null;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
@@ -50,13 +47,5 @@ public class WatchRequestForm extends UserForm {
 				break;
 			}
 		}
-	}
-
-	@Override
-	public void getFromServer(Object message) {
-		clientRequestFromServer request = (clientRequestFromServer) message;
-		// msg is ArrayLost of Entity.Requirement classes
-		ReqListForClient = request.getObj();
-		System.out.println("\nMessage from osf.server Received:");
 	}
 }

@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -62,12 +63,11 @@ public abstract class UserForm implements IcmForm {
 	/**
 	 * loads new Scene
 	 *
-	 * @param event       - ActionEvent event
-	 * @param path        - the path of the fxml : example :"/GUI/MainMenu.fxml"
-	 * @param launcherClass - the class witch is creating the new Scene (pleas send
-	 *                    :this)
-	 * @param controller  - the class than is the controller of the sent fxml
-	 * @param hide        - true if you want to hide the launching window
+	 * @param event       	- ActionEvent event
+	 * @param path        	- the path of the fxml : example :"/GUI/MainMenu.fxml"
+	 * @param launcherClass - the class which is creating the new Scene (please send: this)
+	 * @param controller  	- the class that is the controller of the sent fxml
+	 * @param hide        	- true if you want to hide the launching window
 	 * @throws Exception ???
 	 */
 	public void NextWindowLauncher(ActionEvent event,
@@ -78,7 +78,7 @@ public abstract class UserForm implements IcmForm {
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
-		getRequests();
+
 		Stage stage = new Stage();
 		Parent root = FXMLLoader.load(launcherClass.getClass().getResource(path));
 		Scene scene = new Scene(root);
@@ -88,10 +88,22 @@ public abstract class UserForm implements IcmForm {
 	}
 
 	@Override
-	public void getFromServer(Object message) {
+	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		// msg is ArrayLost of Entity.Requirement classes
 		ReqListForClient = request.getObj();
 		System.out.println("\nMessage from osf.server Received:");
+		switch(request.getRequest()) {
+			case getAll:
+				System.out.print("Load list of requests: ");
+				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
+				break;
+			case updateStatus:
+				ReqListForClient.forEach(e -> System.out.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
+				break;
+			case getRequirement:
+				break;
+			default:
+				throw new NotImplementedException();
+		}
 	}
 }

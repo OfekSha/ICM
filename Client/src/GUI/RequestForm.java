@@ -67,10 +67,10 @@ public class RequestForm extends UserForm implements Initializable, IcmForm {
 		primaryStage.show();
 	}
 
-	/**
+	/*
 	 * @param message is array of objects where where message[0] is requested action
 	 *                and message[1] is answer
-	 */
+
 	@Override
 	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
@@ -79,7 +79,6 @@ public class RequestForm extends UserForm implements Initializable, IcmForm {
 		ReqListForClient = request.getObj();
 		System.out.println("\nMessage from osf.server Received:");
 		switch(request.getRequest()) {
-			//TODO some actions to prompt message to ocf.client about answer from osf.server
 			case getAll:
 				System.out.print("Load list of requests: ");
 				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
@@ -91,7 +90,7 @@ public class RequestForm extends UserForm implements Initializable, IcmForm {
 				break;
 			default: throw new NotImplementedException();
 		}
-	}
+	}*/
 
 	// setting up the combo boxes
 	private void setRequestsComboBox() {
