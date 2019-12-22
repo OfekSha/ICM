@@ -50,36 +50,36 @@ public class MainMenuForm extends UserForm {
 	//TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {
 		getRequests();
-		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, new WatchRequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
+	//	NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
 
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
+	//	NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new RequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new RequestForm(), true);
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new WatchRequestForm(), true);
 	}
 
 }//END of MainMenuForm
