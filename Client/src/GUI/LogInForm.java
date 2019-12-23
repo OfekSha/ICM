@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Controllers.SecurityController;
 import Entity.Requirement;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
@@ -66,7 +67,8 @@ public class LogInForm extends UserForm {
 	 * @throws Exception ??
 	 */
 	public void getInput(ActionEvent event) throws Exception {
-		connectToServer();
+		SecurityController securityController =new SecurityController ();
+		securityController.connectToServer(tfIP.getAccessibleText(),this);
 		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 		// TODO: test password / user name is correct
 	}
@@ -80,19 +82,5 @@ public class LogInForm extends UserForm {
 	 *
 	 * - Default port is from the client luncher
 	 */
-	private void connectToServer() {
-		String host = tfIP.getAccessibleText();
-		// System.out.println("This is host: "+host);
-		if (host == null)
-			host = "localhost";
-		try {
-			ClientLauncher.client = new IcmClient(host, ClientLauncher.DEFAULT_PORT, this);
-			System.out.println("Connection established!\n" //  TODO: to be removed/changed
-					+ "Welcome to ICM.");
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" // TODO: to be removed/changed
-					+ " Terminating client.");
-			System.exit(1);
-		}
-	} // END connectToServer()
+	
 }// End of LogInForm
