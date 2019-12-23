@@ -26,7 +26,7 @@ public abstract class UserForm implements IcmForm {
 	public Button btnLogout;
 	public Button btnBack;
 
-	//UNDECORATED
+	// UNDECORATED
 	private static double xOffset = 0;
 	private static double yOffset = 0;
 	static ArrayList<Requirement> ReqListForClient = null;
@@ -37,23 +37,26 @@ public abstract class UserForm implements IcmForm {
 			xOffset = event.getSceneX();
 			yOffset = event.getSceneY();
 		});
-		root.setOnMouseDragged(event ->{
+		root.setOnMouseDragged(event -> {
 			primaryStage.setX(event.getScreenX() - xOffset);
 			primaryStage.setY(event.getScreenY() - yOffset);
 		});
 	}
-	//END UNDECORATED
-	//Standard buttons for each scene
+
+	// END UNDECORATED
+	// Standard buttons for each scene
 	public void BackScene(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 	}
+
 	public void LogOutButton(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, new LogInForm(), true);
+		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 	}
+
 	public void ExitBtn() {
 		ClientLauncher.client.quit();
 	}
-	//End of standard buttons for each scene
+	// End of standard buttons for each scene
 
 	public void getRequests() {
 		clientRequestFromServer commend = new clientRequestFromServer(getAll);
@@ -63,18 +66,14 @@ public abstract class UserForm implements IcmForm {
 	/**
 	 * loads new Scene
 	 *
-	 * @param event       	- ActionEvent event
-	 * @param path        	- the path of the fxml : example :"/GUI/MainMenu.fxml"
-	 * @param launcherClass - the class which is creating the new Scene (please send: this)
-	 * @param controller  	- the class that is the controller of the sent fxml
-	 * @param hide        	- true if you want to hide the launching window
+	 * @param event         - ActionEvent event
+	 * @param path          - the path of the fxml : example :"/GUI/MainMenu.fxml"
+	 * @param launcherClass - the class which is creating the new Scene (please
+	 *                      send: this)
+	 * @param hide          - true if you want to hide the launching window
 	 * @throws Exception ???
 	 */
-	public void NextWindowLauncher(ActionEvent event,
-								   String path,
-								   IcmForm launcherClass,
-								   IcmForm controller, //what is this for?
-								   boolean hide) throws Exception {
+	public void NextWindowLauncher(ActionEvent event, String path, IcmForm launcherClass, boolean hide) throws Exception {
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
@@ -87,7 +86,7 @@ public abstract class UserForm implements IcmForm {
 		stage.show();
 	}
 
-	//TODO: to be implemented
+	// TODO: to be implemented
 	/* all forms will use to get the request */
 
 	@Override
@@ -95,21 +94,22 @@ public abstract class UserForm implements IcmForm {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		ReqListForClient = request.getObj();
 
-		//TODO Only for testing, delete it before assignment
+		// TODO Only for testing, delete it before assignment
 		System.out.println("\nMessage from osf.server Received:");
-		switch(request.getRequest()) {
-			case getAll:
-				System.out.print("Load list of requests: ");
-				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
-				break;
-			case updateStatus:
-				ReqListForClient.forEach(e -> System.out.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
-				break;
-			case getRequirement:
-				break;
-			default:
-				throw new NotImplementedException();
+		switch (request.getRequest()) {
+		case getAll:
+			System.out.print("Load list of requests: ");
+			ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
+			break;
+		case updateStatus:
+			ReqListForClient.forEach(e -> System.out
+					.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
+			break;
+		case getRequirement:
+			break;
+		default:
+			throw new NotImplementedException();
 		}
-		//TODO End of todo
+		// TODO End of todo
 	}
 }

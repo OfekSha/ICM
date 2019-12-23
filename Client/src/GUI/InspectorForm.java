@@ -33,11 +33,11 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 	
 	public void BackButton(ActionEvent event) throws Exception { 
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this,  true);
 	}
 	
-	public void LogOutButton(ActionEvent event) throws Exception { // by Yonathan
-		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, new LogInForm(), true);
+	public void LogOutButton(ActionEvent event) throws Exception { 
+		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this,  true);
 	}
 	public void ExitBtn() { //by Yonathan
 		System.exit(0);

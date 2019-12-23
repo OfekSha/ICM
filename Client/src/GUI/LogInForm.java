@@ -67,7 +67,7 @@ public class LogInForm extends UserForm {
 	 */
 	public void getInput(ActionEvent event) throws Exception {
 		connectToServer();
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 		// TODO: test password / user name is correct
 	}
 
