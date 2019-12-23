@@ -37,11 +37,6 @@ public class MainMenuForm extends UserForm {
 	@FXML
 	private Button btnChangeControlCommitteeChairman;
 
-	/*@Override
-	public void getFromServer(Object message) {
-		// TODO Auto-generated method stub
-	}*/
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ClientLauncher.client.setClientUI(this);
@@ -50,7 +45,7 @@ public class MainMenuForm extends UserForm {
 	//TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {
 		getRequests();
-		//NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, new WatchRequestForm(), true);
+		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, new WatchRequestForm(), true);
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
@@ -62,7 +57,7 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-	//	NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
+		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, new InspectorForm(), true);
 
 	}
 

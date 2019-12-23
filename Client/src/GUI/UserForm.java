@@ -42,14 +42,8 @@ public abstract class UserForm implements IcmForm {
 			primaryStage.setY(event.getScreenY() - yOffset);
 		});
 	}
-
-	//TODO: to be implemented
-	/* all forms will use to get the request */
-	public void getRequests() {
-		clientRequestFromServer commend = new clientRequestFromServer(getAll);
-		ClientLauncher.client.handleMessageFromClientUI(commend);
-	}
-
+	//END UNDECORATED
+	//Standard buttons for each scene
 	public void BackScene(ActionEvent event) throws Exception {
 		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
 	}
@@ -57,7 +51,13 @@ public abstract class UserForm implements IcmForm {
 		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, new LogInForm(), true);
 	}
 	public void ExitBtn() {
-		System.exit(0);
+		ClientLauncher.client.quit();
+	}
+	//End of standard buttons for each scene
+
+	public void getRequests() {
+		clientRequestFromServer commend = new clientRequestFromServer(getAll);
+		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
 
 	/**
@@ -87,10 +87,15 @@ public abstract class UserForm implements IcmForm {
 		stage.show();
 	}
 
+	//TODO: to be implemented
+	/* all forms will use to get the request */
+
 	@Override
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		ReqListForClient = request.getObj();
+
+		//TODO Only for testing, delete it before assignment
 		System.out.println("\nMessage from osf.server Received:");
 		switch(request.getRequest()) {
 			case getAll:
@@ -105,5 +110,6 @@ public abstract class UserForm implements IcmForm {
 			default:
 				throw new NotImplementedException();
 		}
+		//TODO End of todo
 	}
 }
