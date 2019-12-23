@@ -40,6 +40,7 @@ public class LogInForm extends UserForm {
 	//Buttons
 	@FXML
 	private Button btnLogin;
+	
 
 	public void start(Stage primaryStage) throws Exception {
 		// scene
