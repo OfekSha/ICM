@@ -1,9 +1,5 @@
 package GUI;
 
-import WindowApp.IcmForm;
-import javafx.fxml.Initializable;
-
-
 /**
  * @author Yonathan
  * abstract because it should not be a window,

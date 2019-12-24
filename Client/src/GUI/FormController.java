@@ -86,7 +86,7 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 		// msg is ArrayLost of Requirement classes
 		ReqListForClient = request.getObj();
 		System.out.println("\nMessage from server Received:");
-		switch(request.getRequest()) {
+		switch (request.getRequest()) {
 			//TODO some actions to prompt message to client about answer from server
 			case getAll:
 				System.out.print("Load list of requests: ");
@@ -97,17 +97,15 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 				break;
 			case getRequirement:
 				break;
-			default: throw new NotImplementedException();
+			default:
+				throw new NotImplementedException();
 		}
 	}
 
 	// setting up the combo boxes
 	private void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		for (Requirement req : ReqListForClient) {
-			al.add(Integer.toString((req.getID())));
-		}
-
+		ReqListForClient.forEach(c -> al.add(Integer.toString((c.getID()))));
 		listFor_cmbRequests = FXCollections.observableArrayList(al);
 		cmbRequests.setItems(listFor_cmbRequests);
 	}

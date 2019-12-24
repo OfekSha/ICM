@@ -9,11 +9,8 @@ import javafx.stage.Stage;
 
 public class CCCChairmanForm extends StageSupervisorForm  implements Initializable, IcmForm {
 
-
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 
 	}
 

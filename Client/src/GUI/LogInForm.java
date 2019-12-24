@@ -44,7 +44,6 @@ public class LogInForm extends UserForm {
 	//Buttons
 	@FXML
 	private Button btnLogin;
-	
 
 	public void start(Stage primaryStage) throws Exception {
 		// scene
@@ -72,28 +71,28 @@ public class LogInForm extends UserForm {
 	 * @throws Exception ??
 	 */
 	public void getInput(ActionEvent event) throws Exception {
-		SecurityController securityController =new SecurityController ();
-		securityController.connectToServer(tfIP.getAccessibleText(),this);
-		String username=tfUserName.getText();
+		SecurityController securityController = new SecurityController();
+		securityController.connectToServer(tfIP.getAccessibleText(), this);
+		String username = tfUserName.getText();
 		clientRequestFromServer msg = new clientRequestFromServer(requestOptions.getUser, username);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
-		
+
 		// temp till testing is done ;
-		 boolean temp = true;
+		boolean temp = true;
 		// TODO: test password / user name is correct
-		 temp =securityController.checkLogin( tfPassword.getText(), user);
-		 // if you want to log in set temp to true now 
-		temp =true;
-		
-		
-		 if (temp)NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
-		 else {
-			 Alert alert = new Alert(AlertType.ERROR);
-			 alert.setTitle("Information Dialog");
-			 alert.setHeaderText(null);
-			 alert.setContentText("password or user name is incorrect");
-			 alert.showAndWait();
-		 }	}
+		temp = securityController.checkLogin(tfPassword.getText(), user);
+		// if you want to log in set temp to true now
+		temp = true;
+
+		if (temp) NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("password or user name is incorrect");
+			alert.showAndWait();
+		}
+	}
 
 	// private methods
 

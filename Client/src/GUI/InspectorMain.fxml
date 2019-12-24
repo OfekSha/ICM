@@ -33,13 +33,11 @@
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
             <VBox prefHeight="684.0" prefWidth="200.0">
-               <children>
-                           <Button fx:id="btnBack" mnemonicParsing="false" onAction="#BackButton" prefHeight="25.0" prefWidth="123.0" text="Back">
-                              <VBox.margin>
-                                 <Insets right="20.0" top="20.0" />
-                              </VBox.margin>
-                           </Button>
-               </children>
+                <Button fx:id="btnBack" mnemonicParsing="false" onAction="#BackButton" prefHeight="25.0" prefWidth="123.0" text="Back">
+                    <VBox.margin>
+                        <Insets right="20.0" top="20.0" />
+                    </VBox.margin>
+                </Button>
                <padding>
                   <Insets left="30.0" right="30.0" />
                </padding>
@@ -48,22 +46,18 @@
                <padding>
                   <Insets left="30.0" right="30.0" />
                </padding>
-               <children>
                   <Button fx:id="Log_out" mnemonicParsing="false" onAction="#LogOutButton" prefHeight="9.0" prefWidth="120.0" text="Log out" />
                   <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefHeight="9.0" prefWidth="120.0" text="Exit">
                      <VBox.margin>
                         <Insets right="20.0" top="20.0" />
                      </VBox.margin>
                   </Button>
-               </children>
             </VBox>
             </VBox>
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
                   <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="87.0" spacing="20.0">
                <AnchorPane prefHeight="564.0" prefWidth="87.0">
-                  <children>
-                              <Label layoutX="19.0" layoutY="253.0" text="Inspector" />
-                  </children>
+                   <Label layoutX="19.0" layoutY="253.0" text="Inspector" />
                </AnchorPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="731.0">
@@ -95,14 +89,12 @@
                  </columns>
                </TableView>
                <HBox prefHeight="36.0" prefWidth="600.0">
-                  <children>
-                     <Button mnemonicParsing="false" text="Get Details" />
-                     <Button mnemonicParsing="false" text="Freeze / Unfreeze" />
-                     <Button disable="true" mnemonicParsing="false" text="Role Approve" />
-                     <Button disable="true" mnemonicParsing="false" text="Due Time Approve" />
-                     <Button disable="true" mnemonicParsing="false" text="Extension Approve " />
-                     <Button disable="true" mnemonicParsing="false" text="Close Request" />
-                  </children>
+                   <Button mnemonicParsing="false" text="Get Details" />
+                   <Button mnemonicParsing="false" text="Freeze / Unfreeze" />
+                   <Button disable="true" mnemonicParsing="false" text="Role Approve" />
+                   <Button disable="true" mnemonicParsing="false" text="Due Time Approve" />
+                   <Button disable="true" mnemonicParsing="false" text="Extension Approve " />
+                   <Button disable="true" mnemonicParsing="false" text="Close Request" />
                </HBox>
                   </VBox>
             </HBox>

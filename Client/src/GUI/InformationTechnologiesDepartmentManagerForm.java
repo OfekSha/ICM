@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import WindowApp.IcmForm;
 import javafx.fxml.Initializable;
-import javafx.stage.Stage;
 
 public class InformationTechnologiesDepartmentManagerForm extends UserForm implements Initializable, IcmForm {
 
