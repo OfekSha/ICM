@@ -15,11 +15,11 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	//buttons
 	@FXML
-	private Button btnExit; // by Yonathan
+	private Button btnExit; 
 	@FXML
 	private Button btnBack;
 	@FXML
-	private Button Log_out; // by Yonathan
+	private Button Log_out; 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -33,13 +33,13 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 	
 	public void BackButton(ActionEvent event) throws Exception { 
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, new MainMenuForm(), true);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this,  true);
 	}
 	
-	public void LogOutButton(ActionEvent event) throws Exception { // by Yonathan
-		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, new LogInForm(), true);
+	public void LogOutButton(ActionEvent event) throws Exception { 
+		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this,  true);
 	}
-	public void ExitBtn() { //by Yonathan
+	public void ExitBtn() { 
 		System.exit(0);
 	}
 	
