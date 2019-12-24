@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 
 import Controllers.SecurityController;
 import Entity.Requirement;
+import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
 import WindowApp.IcmForm;
@@ -16,6 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -70,9 +74,26 @@ public class LogInForm extends UserForm {
 	public void getInput(ActionEvent event) throws Exception {
 		SecurityController securityController =new SecurityController ();
 		securityController.connectToServer(tfIP.getAccessibleText(),this);
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
+		String username=tfUserName.getText();
+		clientRequestFromServer msg = new clientRequestFromServer(requestOptions.getUser, username);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
+		
+		// temp till testing is done ;
+		 boolean temp = true;
 		// TODO: test password / user name is correct
-	}
+		 temp =securityController.checkLogin( tfPassword.getText(), user);
+		 // if you want to log in set temp to true now 
+		temp =true;
+		
+		
+		 if (temp)NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
+		 else {
+			 Alert alert = new Alert(AlertType.ERROR);
+			 alert.setTitle("Information Dialog");
+			 alert.setHeaderText(null);
+			 alert.setContentText("password or user name is incorrect");
+			 alert.showAndWait();
+		 }	}
 
 	// private methods
 
