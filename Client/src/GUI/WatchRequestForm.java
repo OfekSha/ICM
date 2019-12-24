@@ -26,6 +26,7 @@ public class WatchRequestForm extends UserForm {
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		setRequestsComboBox();
+
 	}
 
 	private void setRequestsComboBox() {
