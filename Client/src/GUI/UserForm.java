@@ -1,6 +1,7 @@
 package GUI;
 
 import Entity.Requirement;
+import Entity.User;
 import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 import static Entity.clientRequestFromServer.requestOptions.getAll;
 
 public abstract class UserForm implements IcmForm {
+	
+	// vars
+		protected static User user = null ; //connected user;
 	@FXML
 	public Button btnExit;
 	public Button btnLogout;
@@ -42,7 +46,7 @@ public abstract class UserForm implements IcmForm {
 			primaryStage.setY(event.getScreenY() - yOffset);
 		});
 	}
-
+	
 	// END UNDECORATED
 	// Standard buttons for each scene
 	public void BackScene(ActionEvent event) throws Exception {
@@ -96,7 +100,7 @@ public abstract class UserForm implements IcmForm {
 
 		// TODO Only for testing, delete it before assignment
 		System.out.println("\nMessage from osf.server Received:");
-		
+		//
 		
 		switch (request.getRequest()) {
 		case getAll:
@@ -108,6 +112,9 @@ public abstract class UserForm implements IcmForm {
 					.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
 			break;
 		case getRequirement:
+			break;
+		case getUser:
+			user=(User)request.getObject();
 			break;
 		default:
 			throw new NotImplementedException();
