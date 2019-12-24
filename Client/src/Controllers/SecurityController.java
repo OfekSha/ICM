@@ -1,13 +1,24 @@
 package Controllers;
 
 import java.io.IOException;
+
+import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
 import WindowApp.IcmForm;
 
+/**
+ * @author Yonathan TODO : needs testing
+ *
+ */
 public class SecurityController {
 
-	public void checkLogin(String userName,String password) {}
+	public boolean checkLogin(String password, User user) {
+		if (!(user ==null ) ) {
+		if (!(password.equals(user.getPassword()))) return true;
+		}
+		return false;
+	}// End of checkLogin()
 	
 	
 	
@@ -27,5 +38,5 @@ public class SecurityController {
 		}
 	} // END connectToServer()
 	
-}
+} // End of SecurityController class
 	
