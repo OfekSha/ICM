@@ -53,8 +53,9 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from ocf.client
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
+		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		try {
-			ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+		
 			Requirement reqReceived;
 			switch (request.getRequest()) {
 				// read all requirement data
@@ -72,12 +73,20 @@ public class EchoServer extends AbstractServer {
 					selectRequirement(ReqListForClient, reqReceived);
 					break;
 					//getUser not implemented.
+				case getUser:
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
-			clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(), ReqListForClient); // answer to the ocf.client
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		
+		clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(), ReqListForClient); // answer to the ocf.client
+		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
