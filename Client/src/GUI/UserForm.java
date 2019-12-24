@@ -96,6 +96,8 @@ public abstract class UserForm implements IcmForm {
 
 		// TODO Only for testing, delete it before assignment
 		System.out.println("\nMessage from osf.server Received:");
+		
+		
 		switch (request.getRequest()) {
 		case getAll:
 			System.out.print("Load list of requests: ");
