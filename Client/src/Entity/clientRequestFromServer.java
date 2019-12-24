@@ -10,13 +10,22 @@ public class clientRequestFromServer implements Serializable {
         getRequirement, // get requirement from DB by his id.
         getUser // get user from DB by his id.
     }
+    //  is needed?
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.
+    private Object object;
     private requestOptions request; // request
 
     public clientRequestFromServer(requestOptions request) {
     	this.obj = null;
     	this.request = request;
     }
+    
+    public clientRequestFromServer(requestOptions request, Object obj) {
+    	this.object = obj;
+    	this.request = request;
+    }
+    
+     //is needed?
     public clientRequestFromServer(requestOptions request, ArrayList<Requirement> obj) {
     	this.obj = obj;
     	this.request = request;
@@ -27,10 +36,15 @@ public class clientRequestFromServer implements Serializable {
 
     @Override
     public String toString() {
-        return request.name() + " " + obj;
+        return request.name() + " ArrayList<Requirement>: " + obj +" object: "+object ;
     }
+    // is needed ?
 	public ArrayList<Requirement> getObj() {
 		return obj;
+	}
+	
+	public Object getObject() {
+		return object;
 	}
 
 	public String getName() { return request.name(); }
