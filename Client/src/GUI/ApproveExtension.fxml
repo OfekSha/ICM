@@ -16,21 +16,24 @@
             </Label>
       </HBox>
       <HBox alignment="CENTER">
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Approve">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Approve">
                <opaqueInsets>
                   <Insets left="50.0" right="50.0" />
                </opaqueInsets>
                <HBox.margin>
-                  <Insets right="25.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="121.0" text="Disapprove" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel">
+            <Button mnemonicParsing="false" text="Disapprove">
+         <HBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </HBox.margin></Button>
+            <Button mnemonicParsing="false" text="Cancel">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <HBox.margin>
-                  <Insets left="25.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
       </HBox>

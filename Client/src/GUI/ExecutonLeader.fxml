@@ -27,37 +27,39 @@
    </top>
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
-            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="17.0">
-                     <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefHeight="25.0" prefWidth="136.0" text="Back">
+            <VBox alignment="BOTTOM_CENTER" spacing="17.0">
+                     <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Back">
                         <VBox.margin>
-                           <Insets right="20.0" top="20.0" />
+                           <Insets />
                         </VBox.margin>
                      </Button>
-            <VBox prefHeight="402.0" prefWidth="200.0" />
-            <VBox prefHeight="90.0" prefWidth="200.0" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="127.0" text="Logout" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Exit" />
+            <Button mnemonicParsing="false" prefWidth="180.0" text="Logout" />
+            <Button mnemonicParsing="false" prefWidth="180.0" text="Exit" />
             </VBox>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
-                  <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="172.0" spacing="20.0">
-                        <Label text="Requests">
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                  <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0">
+                        <Label contentDisplay="BOTTOM" text="Requests">
                            <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin></Label>
-                        <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
-                        </ComboBox>
-               <Button mnemonicParsing="false" text=" Determining Due Time" />
-               <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="140.0" text="Approve Execution" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Get extention" />
+                  <graphic>
+                              <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="180.0" />
+                  </graphic></Label>
+               <Button mnemonicParsing="false" prefWidth="180.0" text=" Determining Due Time" />
+               <Button mnemonicParsing="false" prefWidth="180.0" text="Approve Execution" />
+               <Button mnemonicParsing="false" prefWidth="180.0" text="Get extention" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
-                        <Label alignment="CENTER" text="initiator request" />
-                        <TextArea fx:id="txtCurrentSituationDetails" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
-               <Label alignment="CENTER" text="Exeminers Report" />
-               <TextArea fx:id="txtCurrentSituationDetails1" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+                        <Label alignment="CENTER" text="Initiator Request">
+                  <VBox.margin>
+                     <Insets top="10.0" />
+                  </VBox.margin></Label>
+                        <TextArea fx:id="taInitiatorRequest" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+               <Label alignment="CENTER" text="Examiners Report">
+                  <VBox.margin>
+                     <Insets top="10.0" />
+                  </VBox.margin></Label>
+               <TextArea fx:id="taExaminersReport" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
                   </VBox>
             </HBox>
       </SplitPane>

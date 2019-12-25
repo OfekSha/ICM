@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
@@ -10,7 +9,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -31,73 +29,57 @@
    </top>
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
-            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
-            <VBox prefHeight="684.0" prefWidth="200.0">
-                <Button fx:id="btnBack" mnemonicParsing="false" onAction="#BackButton" prefHeight="25.0" prefWidth="123.0" text="Back">
-                    <VBox.margin>
-                        <Insets right="20.0" top="20.0" />
-                    </VBox.margin>
-                </Button>
-               <padding>
-                  <Insets left="30.0" right="30.0" />
-               </padding>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <padding>
-                  <Insets left="30.0" right="30.0" />
-               </padding>
-                  <Button fx:id="Log_out" mnemonicParsing="false" onAction="#LogOutButton" prefHeight="9.0" prefWidth="120.0" text="Log out" />
-                  <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefHeight="9.0" prefWidth="120.0" text="Exit">
-                     <VBox.margin>
-                        <Insets right="20.0" top="20.0" />
-                     </VBox.margin>
-                  </Button>
-            </VBox>
-            </VBox>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
-                  <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="87.0" spacing="20.0">
-               <AnchorPane prefHeight="564.0" prefWidth="87.0">
-                   <Label layoutX="19.0" layoutY="253.0" text="Inspector" />
-               </AnchorPane>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="731.0">
-               <MenuButton mnemonicParsing="false" popupSide="RIGHT" prefHeight="30.0" prefWidth="80.0" text="Watch" textAlignment="CENTER">
-                 <items>
-                   <MenuItem mnemonicParsing="false" text="Freeze Requests" />
-                   <MenuItem mnemonicParsing="false" text="Unfreeze Requests" />
-                     <MenuItem mnemonicParsing="false" text="Approve Estimator" />
-                     <MenuItem mnemonicParsing="false" text="Approve Execution Leader" />
-                     <MenuItem mnemonicParsing="false" text="Approve Due Time" />
-                     <MenuItem mnemonicParsing="false" text="Waiting for close" />
-                     <MenuItem mnemonicParsing="false" text="Waiting for Extension" />
-                 </items>
+            <VBox alignment="BOTTOM_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+             <Button fx:id="btnBack" mnemonicParsing="false" onAction="#BackScene" prefHeight="0.0" prefWidth="180.0" text="Back">
+                 <VBox.margin>
+                     <Insets />
+                 </VBox.margin>
+             </Button>
+               <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LogOutButton" prefWidth="180.0" text="Log out" />
+               <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Exit">
                   <VBox.margin>
-                     <Insets top="10.0" />
+                     <Insets bottom="10.0" />
                   </VBox.margin>
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </MenuButton>
-               <Label alignment="CENTER" prefHeight="23.0" prefWidth="48.0" text="Requests" />
-               <TableView prefHeight="466.0" prefWidth="730.0">
-                 <columns>
-                   <TableColumn prefWidth="75.0" text="ID" />
-                   <TableColumn prefWidth="75.0" text="Status" />
-                     <TableColumn prefWidth="75.0" text="Stage" />
-                     <TableColumn prefWidth="75.0" text="Due Time" />
-                     <TableColumn prefWidth="429.0" text="Message" />
-                 </columns>
-               </TableView>
-               <HBox prefHeight="36.0" prefWidth="600.0">
-                   <Button mnemonicParsing="false" text="Get Details" />
-                   <Button mnemonicParsing="false" text="Freeze / Unfreeze" />
-                   <Button disable="true" mnemonicParsing="false" text="Role Approve" />
-                   <Button disable="true" mnemonicParsing="false" text="Due Time Approve" />
-                   <Button disable="true" mnemonicParsing="false" text="Extension Approve " />
-                   <Button disable="true" mnemonicParsing="false" text="Close Request" />
-               </HBox>
-                  </VBox>
-            </HBox>
+               </Button>
+            </VBox>
+         <HBox alignment="TOP_CENTER">
+                     <VBox alignment="TOP_CENTER" prefWidth="795.0">
+                  <MenuButton alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefWidth="200.0" text="Watch" textAlignment="CENTER">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Freeze Requests" />
+                      <MenuItem mnemonicParsing="false" text="Unfreeze Requests" />
+                        <MenuItem mnemonicParsing="false" text="Approve Estimator" />
+                        <MenuItem mnemonicParsing="false" text="Approve Execution Leader" />
+                        <MenuItem mnemonicParsing="false" text="Approve Due Time" />
+                        <MenuItem mnemonicParsing="false" text="Waiting for close" />
+                        <MenuItem mnemonicParsing="false" text="Waiting for Extension" />
+                    </items>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </MenuButton>
+                  <TableView>
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="ID" />
+                      <TableColumn prefWidth="75.0" text="Status" />
+                        <TableColumn prefWidth="75.0" text="Stage" />
+                        <TableColumn prefWidth="75.0" text="Due Time" />
+                        <TableColumn prefWidth="429.0" text="Message" />
+                    </columns>
+                  </TableView>
+                  <HBox alignment="CENTER" spacing="10.0">
+                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Get Details" />
+                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Freeze / Unfreeze" />
+                      <Button alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Role Approve" />
+                      <Button alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Due Time Approve" />
+                      <Button alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Extension Approve " />
+                      <Button alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" prefWidth="114.0" text="Close Request" />
+                  </HBox>
+                     </VBox>
+         </HBox>
       </SplitPane>
    </center>
 </BorderPane>

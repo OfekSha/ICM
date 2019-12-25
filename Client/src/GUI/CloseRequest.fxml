@@ -15,21 +15,21 @@
                </font>
             </Label>
       </HBox>
-      <HBox alignment="CENTER">
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="OK">
+      <HBox alignment="CENTER" spacing="25.0">
+            <Button mnemonicParsing="false" prefWidth="92.0" text="OK">
                <opaqueInsets>
                   <Insets left="50.0" right="50.0" />
                </opaqueInsets>
                <HBox.margin>
-                  <Insets right="25.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel">
+            <Button mnemonicParsing="false" prefWidth="90.0" text="Cancel">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <HBox.margin>
-                  <Insets left="25.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
       </HBox>

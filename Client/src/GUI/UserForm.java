@@ -24,6 +24,8 @@ public abstract class UserForm implements IcmForm {
 
 	// vars
 	protected static User user = null; //connected user;
+	static ArrayList<Requirement> ReqListForClient = null;
+
 	@FXML
 	public Button btnExit;
 	public Button btnLogout;
@@ -32,7 +34,7 @@ public abstract class UserForm implements IcmForm {
 	// UNDECORATED
 	private static double xOffset = 0;
 	private static double yOffset = 0;
-	static ArrayList<Requirement> ReqListForClient = null;
+
 
 	public static void setUndecorated(Stage primaryStage, Parent root) {
 		primaryStage.initStyle(StageStyle.UNDECORATED);

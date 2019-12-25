@@ -4,36 +4,27 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="117.0" prefWidth="291.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
-   <center>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="323.0" spacing="10.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
-            <HBox alignment="CENTER" style="-fx-background-color: grey;">
-                  <Label prefHeight="53.0" prefWidth="213.0" text="Enter your due time:" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-            </HBox>
-            <DatePicker />
-            <HBox alignment="CENTER">
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Done" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </Button>
-            </HBox>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-      </VBox>
-   </center>
-</BorderPane>
+
+<VBox alignment="CENTER" prefHeight="156.0" prefWidth="323.0" spacing="10.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
+         <Label alignment="CENTER" text="Enter your due time:" textAlignment="CENTER" textFill="WHITE">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+      <DatePicker prefWidth="150.0" />
+      <HBox alignment="CENTER" spacing="25.0">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Done" />
+            <Button mnemonicParsing="false" text="Cancel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+      </HBox>
+</VBox>

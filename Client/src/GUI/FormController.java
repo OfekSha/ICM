@@ -31,6 +31,8 @@ import Entity.Requirement.statusOptions;
 import Entity.clientRequestFromServer.requestOptions;
 
 public class FormController extends UserForm implements Initializable, IcmForm {
+	public TextArea taInitiatorRequest;
+	public TextArea taExaminersReport;
 	// text fields
 	@FXML
 	private TextField txtInitiator;
@@ -40,9 +42,6 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 	private TextArea txtRequestDetails;
 	@FXML
 	private TextField txtStageSupervisor;
-	// buttons
-	@FXML
-	private Button btnExit;
 	@FXML
 	private Button btnUpdateStatus;
 
@@ -166,20 +165,17 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 			}
 		}
 	}
-
-	public void ExitBtn() {
-		System.exit(0);			
-	}
-
+	
 	// private methods
+/*
 
-	/**
-	 * @author Yonathan gets all requests with all the details to
-	 */
+
+	@author Yonathan gets all requests with all the details to
 	public void getRequests() {
 		clientRequestFromServer commend = new clientRequestFromServer(requestOptions.getAll);
 		ClientLauncher.client.handleMessageFromClientUI(commend);
 	}
+*/
 
 /*
 	private void selectRequriement(Requirement req) {

@@ -13,17 +13,9 @@ import javafx.stage.Stage;
 
 public class InspectorForm extends UserForm implements IcmForm {
 
-	//buttons
-	@FXML
-	private Button btnExit; 
-	@FXML
-	private Button btnBack;
-	@FXML
-	private Button Log_out; 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -31,18 +23,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void BackButton(ActionEvent event) throws Exception { 
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this,  true);
-	}
-	
-	public void LogOutButton(ActionEvent event) throws Exception { 
-		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this,  true);
-	}
-	public void ExitBtn() { 
-		System.exit(0);
-	}
-	
+
 	//TODO: the following  methods are from the class diagram:  
 	
 	public void getUserId() {}
