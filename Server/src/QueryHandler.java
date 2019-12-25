@@ -1,7 +1,12 @@
 import java.sql.*;
 import java.util.ArrayList;
-import static Entity.Requirement.*;
+import java.util.EnumSet;
 
+import Entity.User.ICMPermissions;
+import Entity.User.Job;
+
+import static Entity.Requirement.*;
+import Entity.Requirement;
 public class QueryHandler {
     private final mysqlConnection mysqlConn;
 
@@ -45,6 +50,91 @@ public class QueryHandler {
             stmt.setNString(4, requestDetails);
             stmt.setNString(5, stageSupervisor);
             stmt.setNString(6, status.name());
+            stmt.execute(); // insert new row to requirement table.
+
+            stmt.close();
+            numTest.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * @param userName
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param Permissions
+     * @param job
+     * @param logedIn
+     */
+    public void insertUser(String userName, String password, String firstName, String lastName,String email ,EnumSet<ICMPermissions> Permissions,Job job,boolean logedIn) { // send the use details.
+        try {
+            int count = 0;
+            Statement numTest = mysqlConn.getConn().createStatement();
+            try {
+                ResultSet re = numTest.executeQuery("SELECT(user) FROM icm.requirement;");// get all numbers submissions.
+                while (re.next()) { // generate number for submission.
+                    count = re.getInt(1);
+                }
+            } catch (SQLException e) {
+                System.out.println("Database is empty, or no schema for ICM");
+                count = 0;
+            }
+            
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO `icm`.`user`\n" + 
+            		"(`userName`,\n" + 
+            		"`password`,\n" + 
+            		"`firstName`,\n" + 
+            		"`lastName`,\n" + 
+            		"`login`,\n" + 
+            		"`job`,\n" + 
+            		"`email`,\n" + 
+            		"`informationTecnologiesDeparmentMangerPermission`,\n" + 
+            		"`inspectorPermission`,\n" + 
+            		"`estimatorPermission`,\n" + 
+            		"`exeutionLeaderPermission`,\n" + 
+            		"`examinerPermission`,\n" + 
+            		"`changeControlCommitteeChairmant`)"+
+                    "VALUES(?, ?, ?, ?, ?,?,?, ?, ?, ?, ?,?,?);");
+            stmt.setNString(1, userName);
+            stmt.setNString(2, password);
+            stmt.setNString(3, firstName);
+            stmt.setNString(4, lastName);
+            stmt.setBoolean(5, logedIn);
+            stmt.setNString(6, job.name());
+            stmt.setNString(7, email);  
+            stmt.setInt(8, 0);
+            stmt.setInt(9, 0);
+            stmt.setInt(10, 0);
+            stmt.setInt(11, 0);
+            stmt.setInt(12, 0);
+            stmt.setInt(13, 0);
+           
+            for(ICMPermissions e: Permissions) {
+            	switch(e) {
+            	case informationTecnologiesDeparmentManger:
+            	     stmt.setInt(8, 1);
+            		break;
+            	case inspector:
+            		 stmt.setInt(9, 1);
+            		break;
+            	case estimator:
+            		  stmt.setInt(10, 1);
+            		break;
+            	case exeutionLeader:
+            		 stmt.setInt(11, 1);
+            		break;
+            	case examiner:
+            		stmt.setInt(12, 1);
+            		break;
+            	case changeControlCommitteeChairman:
+            		stmt.setInt(13, 1);
+            	break;
+            	}
+            }
+           
             stmt.execute(); // insert new row to requirement table.
 
             stmt.close();

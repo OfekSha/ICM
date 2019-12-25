@@ -48,18 +48,22 @@ public class mysqlConnection {
 					"\tPRIMARY KEY (RequestID));"); // create requirement table
 			
 			
-			// @!building by ofek not finished.
-			stmt.execute("CREATE TABLE `icm`.`user` (" + 
-					"  `id` INT NOT NULL," + 
-					"  `userName` VARCHAR(45) NOT NULL," + 
-					"  `password` VARCHAR(45) NOT NULL," + 
-					"  `firstName` VARCHAR(45) NULL," + 
-					"  `lastName` VARCHAR(45) NULL," + 
-					"  `login` BINARY(1) NOT NULL," + 
-					"  `status` VARCHAR(45) NULL," + 
-					"  `email` VARCHAR(45) NULL," + 
-					"  `inspectorPermission` BINARY(1) NOT NULL," + 
-					"  PRIMARY KEY (`id`));"); // create user table
+			// @building by yonathan - changes are coming !, maybe...
+			stmt.execute("CREATE TABLE icm.user (" + 
+					"\tuserName VARCHAR(45) NOT NULL," +  									//[1]
+					"\tpassword VARCHAR(45) NOT NULL," + 										//[2]
+					"\tfirstName VARCHAR(45) NULL," + 										//[3]
+					"\tlastName VARCHAR(45) NULL," + 											//[4]
+					"\tlogin TINYINT(1) NOT NULL," + 											//[5]
+					"\tjob VARCHAR(45) NULL," + 												//[6]
+					"\temail VARCHAR(45) NULL," + 											//[7]
+					"\tinformationTecnologiesDeparmentMangerPermission TINYINT(1) NOT NULL,"+	//[8]
+					"\tinspectorPermission TINYINT(1) NOT NULL,"+								//[9]			
+					"\testimatorPermission TINYINT(1) NOT NULL,"+								//[10]
+					"\texeutionLeaderPermission TINYINT(1) NOT NULL,"+							//[11]
+					"\texaminerPermission TINYINT(1) NOT NULL," + 								//[12]
+					"\tchangeControlCommitteeChairmant TINYINT(1) NOT NULL," +					//[13]
+					"\tPRIMARY KEY (userName));"); // create user table
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -7,8 +7,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
+import Entity.User.ICMPermissions;
+import Entity.User.Job;
 import Entity.Requirement;
+import Entity.User;
 import Entity.clientRequestFromServer;
 import static Entity.Requirement.statusOptions.*;
 import static Entity.Requirement.statusOptions.suspended;
@@ -116,6 +120,8 @@ public class EchoServer extends AbstractServer {
 			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
 			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
 			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
+			EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
+			queryHandler.insertUser("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Permissions, User.Job.informationEngineer, false);
 		}
 	}
 
