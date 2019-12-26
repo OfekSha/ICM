@@ -7,6 +7,7 @@ import Entity.User.Job;
 
 import static Entity.Requirement.*;
 import Entity.Requirement;
+import Entity.User;
 public class QueryHandler {
     private final mysqlConnection mysqlConn;
 
@@ -59,7 +60,7 @@ public class QueryHandler {
         }
     }
     
-    /**
+    /**insert new user in icm.user.
      * @param userName
      * @param password
      * @param firstName
@@ -74,7 +75,7 @@ public class QueryHandler {
             int count = 0;
             Statement numTest = mysqlConn.getConn().createStatement();
             try {
-                ResultSet re = numTest.executeQuery("SELECT(user) FROM icm.requirement;");// get all numbers submissions.
+                ResultSet re = numTest.executeQuery("SELECT(user) FROM icm.user;");// get all numbers submissions.
                 while (re.next()) { // generate number for submission.
                     count = re.getInt(1);
                 }
@@ -142,7 +143,7 @@ public class QueryHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    } //END of insertUser()
 
     /**
      *
@@ -165,33 +166,78 @@ public class QueryHandler {
             e.printStackTrace();
         }
     }
-public Object[] selectUser(int UserID) { // @!building by ofek not finished.
-	 Object[] toReturn = null;
-     try {
-         PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user WHERE ID = ?");
-         stmt.setInt(1, UserID);
+    
+    
+/** returns a user form db  by username
+ * @param username
+ * @return
+ */
+public User selectUser(String username) { // @building by yonathan not finished.
+	User toReturn = null;
+	String userName = null ;
+	  String password = null;
+	  String firstName = null;
+	  String lastName = null;
+	  int intLogin = 0 ;
+	  String jobString = null;
+	  String email = null ;
+	  int informationTecnologiesDeparmentMangerPermission = 0;
+	  int inspectorPermission = 0 ;
+	  int estimatorPermission = 0 ;
+	  int exeutionLeaderPermission = 0 ;
+	  int examinerPermission = 0 ;
+	  int changeControlCommitteeChairmant = 0 ;  
+     try { 
+    	 //TODO: is PreparedStatement needed ?>
+         PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where userName = \""+username+"\";" );
+        // stmt.setString(1, username);
          ResultSet re = stmt.executeQuery();
-
          while (re.next()) {
-             toReturn = new Object[] {
-                     re.getInt(1), // ID
-                     re.getNString(2), // userName
-                     re.getNString(3), //password
-                     re.getNString(4), //firstName
-                     re.getNString(5), //lastName
-                     re.getBoolean(6), //is already login
-                     re.getNString(7), //status
-                     re.getNString(8), //email
-                     re.getBoolean(9) //is inspector permission
-             };
-         }
+        	   userName =re.getNString(1);
+        	   password=re.getNString(2);
+        	   firstName=re.getNString(3);
+        	   lastName=re.getNString(4);
+        	   intLogin = re.getInt(5);
+        	   jobString=re.getNString(6);
+        	   email =re.getNString(7);
+        	   informationTecnologiesDeparmentMangerPermission = re.getInt(8);
+        	   inspectorPermission = re.getInt(9);
+        	   estimatorPermission = re.getInt(10);
+        	   exeutionLeaderPermission = re.getInt(11);
+        	   examinerPermission = re.getInt(12);
+        	   changeControlCommitteeChairmant = re.getInt(13);  
+         } 
          stmt.close();
      } catch (SQLException e) {
          e.printStackTrace();
      }
+     
+  // convertin log in to bloolean vulue
+     boolean logIn=false;
+     if(intLogin == 1) logIn=true;
+     // convering job to enum 
+     EnumSet<Job> Jobs =EnumSet.allOf(User.Job.class);
+     Job job =null ;
+     for(Job e :Jobs) {
+    	 if ( jobString.equals(e.name()))  job=e;
+     }
+     // converting to premissions set
+   ArrayList<ICMPermissions> PermissionsArrayList =new ArrayList<>() ;
+     if(informationTecnologiesDeparmentMangerPermission==1)  PermissionsArrayList.add(ICMPermissions.informationTecnologiesDeparmentManger);
+     if(inspectorPermission==1)  PermissionsArrayList.add(ICMPermissions.inspector);
+     if(estimatorPermission==1)  PermissionsArrayList.add(ICMPermissions.estimator);
+     if(exeutionLeaderPermission==1)  PermissionsArrayList.add(ICMPermissions.exeutionLeader);
+     if(examinerPermission==1)  PermissionsArrayList.add(ICMPermissions.examiner);
+     if(changeControlCommitteeChairmant==1)  PermissionsArrayList.add(ICMPermissions.changeControlCommitteeChairman);
+    EnumSet<ICMPermissions> Permissions=EnumSet.copyOf(PermissionsArrayList); 
 
+    
+    toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, logIn);
      return toReturn;
-}
+}//END ofselectUser
+
+
+
     /**
      *
      *for prototype.
