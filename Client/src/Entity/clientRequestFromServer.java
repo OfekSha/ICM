@@ -20,6 +20,10 @@ public class clientRequestFromServer implements Serializable {
     	this.request = request;
     }
     
+    /** request from server and send an object
+     * @param request
+     * @param obj
+     */
     public clientRequestFromServer(requestOptions request, Object obj) {
     	this.object = obj;
     	this.request = request;
@@ -43,6 +47,9 @@ public class clientRequestFromServer implements Serializable {
 		return obj;
 	}
 	
+	/** returns the held object
+	 * @return
+	 */
 	public Object getObject() {
 		return object;
 	}

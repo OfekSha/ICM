@@ -1,5 +1,6 @@
 package Entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -7,7 +8,7 @@ import java.util.EnumSet;
  * @author Yonathan -TODO: test it 
  *
  */
-public class User {
+public class User implements Serializable {
 	
 	// enums*********************************************
 	public  static enum ICMPermissions{

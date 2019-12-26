@@ -58,6 +58,7 @@ public class EchoServer extends AbstractServer {
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from ocf.client
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+		Object sendBackobject =null;
 		try {
 		
 			Requirement reqReceived;
@@ -65,19 +66,23 @@ public class EchoServer extends AbstractServer {
 				// read all requirement data
 				case getAll: // get all requirements need to change!!!!!!!!!
 					getAllRequest(ReqListForClient);
+					sendBackobject=ReqListForClient;
 					break;
 				// read data from some id in requirement
 				case updateStatus: // change status of one requirement.
 					reqReceived = request.getObj().get(0);
 					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
 					selectRequirement(ReqListForClient, reqReceived);
+					sendBackobject=ReqListForClient;
 					break;
 				case getRequirement:
 					reqReceived = request.getObj().get(0); // get the requirement id
 					selectRequirement(ReqListForClient, reqReceived);
+					sendBackobject=ReqListForClient;
 					break;
 					//getUser not implemented.
-				case getUser:
+				case getUser:	
+					sendBackobject=queryHandler.selectUser(((String)request.getObject()));
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
@@ -86,7 +91,7 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		}
 		
-		clientRequestFromServer answer = new clientRequestFromServer(request.getRequest(), ReqListForClient); // answer to the ocf.client
+		Object answer = new clientRequestFromServer(request.getRequest(), sendBackobject); // answer to the ocf.client
 		try {
 			client.sendToClient(answer);
 		} catch (IOException e) {
