@@ -3,6 +3,7 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Entity.User;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,7 +41,17 @@ public class MainMenuForm extends UserForm {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ClientLauncher.client.setClientUI(this);
+		
+		/*  @yonathan -work in proggress 
+		//TODO: move to sec controller 
+		
+		
+		User.ICMPermissions[] perArr = user.getICMPermissions();
+		for( User.ICMPermissions p: perArr) {}
+		//
+		 */
 	}
+	
 
 	//TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {

@@ -57,7 +57,10 @@ public class LogInForm extends UserForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		//TODO remove befor final :
+		tfUserName.setText("admin");
+		tfPassword.setText("admin");
+		//----
 	}
 
 	/*@Override
@@ -74,15 +77,16 @@ public class LogInForm extends UserForm {
 		SecurityController securityController = new SecurityController();
 		securityController.connectToServer(tfIP.getAccessibleText(), this);
 		String username = tfUserName.getText();
-		clientRequestFromServer msg = new clientRequestFromServer(requestOptions.getUser, username);
+		Object msg = new clientRequestFromServer(requestOptions.getUser, username);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 
 		// temp till testing is done ;
 		boolean temp = true;
-		// TODO: test password / user name is correct
+		//TODO: maybe switch to be notified by the server?> --then handling of lost connection and such problomes
+		 Thread.sleep(2000);
 		temp = securityController.checkLogin(tfPassword.getText(), user);
 		// if you want to log in set temp to true now
-		temp = true;
+		//temp = true;
 
 		if (temp) NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 		else {

@@ -15,7 +15,7 @@ public class SecurityController {
 
 	public boolean checkLogin(String password, User user) {
 		if (!(user ==null ) ) {
-		if (!(password.equals(user.getPassword()))) return true;
+		if (password.equals(user.getPassword())) return true;
 		}
 		return false;
 	}// End of checkLogin()
