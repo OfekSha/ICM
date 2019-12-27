@@ -88,7 +88,7 @@ public class User implements Serializable {
 	}
 
 	//TODO test this  method
-	/** adding a Permission to user entity 
+	/** adding a Permission to user entity  [NOT YET TESTED]
 	 * @param Permission
 	 * @return  - returns true if permission is in the collection
 	 */
@@ -117,15 +117,21 @@ public class User implements Serializable {
 
 	}  // END of  addPremmision()
 	
-	
-	/** removes the Permission from the user
+	//TODO test this  method
+	/** removes the Permission from the user [NOT YET TESTED]
 	 * @param Permission
 	 */
 	public void removePermission(ICMPermissions Permission) {
 		if (Permission == null || this.Permissions == null) return ; 
 		if (this.Permissions.contains(Permission)) this.Permissions.remove(Permission); 
 	}// END of removePermission()
-
+	
+ /** changes the log in value to the given value
+ * @param bool
+ */
+public  void changeLoginStaus(boolean bool) {
+	 logedIn =bool;
+ }//END changeLoginStaus
 //output
 	public String getUserName() {
 		return userName;

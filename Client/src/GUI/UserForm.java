@@ -3,6 +3,7 @@ package GUI;
 import Entity.Requirement;
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
@@ -55,10 +56,26 @@ public abstract class UserForm implements IcmForm {
 	}
 
 	public void LogOutButton(ActionEvent event) throws Exception {
+				//updating  server user is logged out
+				user.changeLoginStaus(false);
+				Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
+				ClientLauncher.client.handleMessageFromClientUI(msg);
+				// lunching main menu
 		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 	}
 
-	public void ExitBtn() {
+	public void ExitBtn()  {
+		
+		/*  @yonathan - in the works 
+		if (user != null &&  !(this instanceof LogInForm)) {
+		//updating  server user is logged out
+		user.changeLoginStaus(false);
+		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
+
+		}
+		*/
+		
 		ClientLauncher.client.quit();
 	}
 	// End of standard buttons for each scene
@@ -113,8 +130,14 @@ public abstract class UserForm implements IcmForm {
 			case getUser:
 				user = (User) request.getObject();
 				break;
+			case updateUser:
+				break;
 			default:
-				throw new NotImplementedException();
+				try {
+				throw new IllegalArgumentException("unknown ReqListForClient");
+				}catch(NotImplementedException e) {
+					e.printStackTrace();
+				}
 		}
 		// TODO End of todo
 	}

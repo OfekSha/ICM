@@ -8,7 +8,8 @@ public class clientRequestFromServer implements Serializable {
         getAll, // for now need to change not good name get all requirements
         updateStatus, // change requirement status (ongoing ,closed,etc)
         getRequirement, // get requirement from DB by his id.
-        getUser // get user from DB by his id.
+        getUser ,// get one user from DB by his user name.
+        updateUser // updates all users details 
     }
     //  is needed?
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.

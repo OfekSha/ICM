@@ -84,6 +84,9 @@ public class EchoServer extends AbstractServer {
 				case getUser:	
 					sendBackobject=queryHandler.selectUser(((String)request.getObject()));
 					break;
+				case updateUser:	
+					queryHandler.updateAllUserFileds((User)request.getObject());
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}

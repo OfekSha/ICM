@@ -103,7 +103,8 @@ public class QueryHandler {
             stmt.setNString(2, user.getPassword());
             stmt.setNString(3, user.getFirstName());
             stmt.setNString(4, user.getLastName());
-            stmt.setBoolean(5, user.getlogedIn());
+            if( user.getlogedIn())  stmt.setInt(5, 1);
+            else stmt.setInt(5, 0);
             stmt.setNString(6, user.getJob().name());
             stmt.setNString(7, user.getEmail());  
             stmt.setInt(8, 0);
@@ -162,6 +163,73 @@ public class QueryHandler {
                     "UPDATE icm.requirement SET Status = ? WHERE RequestID = ?;");
             updStatus.setNString(1, status);
             updStatus.setInt(2, id);
+            updStatus.execute();
+            updStatus.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateAllUserFileds(User user) throws IllegalArgumentException {
+        PreparedStatement updStatus;
+        try {
+            updStatus = mysqlConn.getConn().prepareStatement(
+                    "UPDATE `icm`.`user`\n" + 
+                    "SET\n" + 
+                    "`userName` = ?,\n" + 
+                    "`password` = ?,\n" + 
+                    "`firstName` = ?,\n" + 
+                    "`lastName` = ?,\n" + 
+                    "`login` = ?,\n" + 
+                    "`job` = ?,\n" + 
+                    "`email` = ?,\n" + 
+                    "`informationTecnologiesDeparmentMangerPermission` = ?,\n" + 
+                    "`inspectorPermission` = ?,\n" + 
+                    "`estimatorPermission` = ?,\n" + 
+                    "`exeutionLeaderPermission` = ?,\n" + 
+                    "`examinerPermission` = ?,\n" + 
+                    "`changeControlCommitteeChairmant` = ?\n" + 
+                    "WHERE `userName` = ?;\n" + 
+                    "");
+            updStatus.setNString(14, user.getUserName());
+            updStatus.setNString(1, user.getUserName());
+            updStatus.setNString(2, user.getPassword());
+            updStatus.setNString(3, user.getFirstName());
+            updStatus.setNString(4, user.getLastName());
+            if( user.getlogedIn())  updStatus.setInt(5, 1);
+            else updStatus.setInt(5, 0);
+            updStatus.setNString(6, user.getJob().name());
+            updStatus.setNString(7, user.getEmail());  
+            updStatus.setInt(8, 0);
+            updStatus.setInt(9, 0);
+            updStatus.setInt(10, 0);
+            updStatus.setInt(11, 0);
+            updStatus.setInt(12, 0);
+            updStatus.setInt(13, 0);
+            EnumSet<ICMPermissions> Permissions =user.getICMPermissions();
+           if(Permissions!=null) {
+            for(ICMPermissions e: Permissions) {
+            	switch(e) {
+            	case informationTecnologiesDeparmentManger:
+            		updStatus.setInt(8, 1);
+            		break;
+            	case inspector:
+            		updStatus.setInt(9, 1);
+            		break;
+            	case estimator:
+            		updStatus.setInt(10, 1);
+            		break;
+            	case exeutionLeader:
+            		updStatus.setInt(11, 1);
+            		break;
+            	case examiner:
+            		updStatus.setInt(12, 1);
+            		break;
+            	case changeControlCommitteeChairman:
+            		updStatus.setInt(13, 1);
+            	break;
+            	}
+            }
+           }
             updStatus.execute();
             updStatus.close();
         } catch (SQLException e) {

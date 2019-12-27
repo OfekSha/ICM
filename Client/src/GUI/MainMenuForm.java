@@ -5,7 +5,9 @@ import java.util.EnumSet;
 import java.util.ResourceBundle;
 
 import Entity.User;
+import Entity.clientRequestFromServer;
 import Entity.User.ICMPermissions;
+import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +45,10 @@ public class MainMenuForm extends UserForm {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ClientLauncher.client.setClientUI(this);
-
+		//updating server user is logged in
+		user.changeLoginStaus(true);
+		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
