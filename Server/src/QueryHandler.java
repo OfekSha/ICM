@@ -70,7 +70,7 @@ public class QueryHandler {
      * @param job
      * @param logedIn
      */
-    public void insertUser(String userName, String password, String firstName, String lastName,String email ,EnumSet<ICMPermissions> Permissions,Job job,boolean logedIn) { // send the use details.
+    public void insertUser(User user) { // send the use details.
         try {
             int count = 0;
             Statement numTest = mysqlConn.getConn().createStatement();
@@ -99,20 +99,21 @@ public class QueryHandler {
             		"`examinerPermission`,\n" + 
             		"`changeControlCommitteeChairmant`)"+
                     "VALUES(?, ?, ?, ?, ?,?,?, ?, ?, ?, ?,?,?);");
-            stmt.setNString(1, userName);
-            stmt.setNString(2, password);
-            stmt.setNString(3, firstName);
-            stmt.setNString(4, lastName);
-            stmt.setBoolean(5, logedIn);
-            stmt.setNString(6, job.name());
-            stmt.setNString(7, email);  
+            stmt.setNString(1, user.getUserName());
+            stmt.setNString(2, user.getPassword());
+            stmt.setNString(3, user.getFirstName());
+            stmt.setNString(4, user.getLastName());
+            stmt.setBoolean(5, user.getlogedIn());
+            stmt.setNString(6, user.getJob().name());
+            stmt.setNString(7, user.getEmail());  
             stmt.setInt(8, 0);
             stmt.setInt(9, 0);
             stmt.setInt(10, 0);
             stmt.setInt(11, 0);
             stmt.setInt(12, 0);
             stmt.setInt(13, 0);
-           
+            EnumSet<ICMPermissions> Permissions =user.getICMPermissions();
+           if(Permissions!=null) {
             for(ICMPermissions e: Permissions) {
             	switch(e) {
             	case informationTecnologiesDeparmentManger:
@@ -135,6 +136,7 @@ public class QueryHandler {
             	break;
             	}
             }
+           }
            
             stmt.execute(); // insert new row to requirement table.
 
@@ -222,17 +224,15 @@ public User selectUser(String username) { // @building by yonathan not finished.
     	 if ( jobString.equals(e.name()))  job=e;
      }
      // converting to premissions set
-   ArrayList<ICMPermissions> PermissionsArrayList =new ArrayList<>() ;
-     if(informationTecnologiesDeparmentMangerPermission==1)  PermissionsArrayList.add(ICMPermissions.informationTecnologiesDeparmentManger);
-     if(inspectorPermission==1)  PermissionsArrayList.add(ICMPermissions.inspector);
-     if(estimatorPermission==1)  PermissionsArrayList.add(ICMPermissions.estimator);
-     if(exeutionLeaderPermission==1)  PermissionsArrayList.add(ICMPermissions.exeutionLeader);
-     if(examinerPermission==1)  PermissionsArrayList.add(ICMPermissions.examiner);
-     if(changeControlCommitteeChairmant==1)  PermissionsArrayList.add(ICMPermissions.changeControlCommitteeChairman);
-    EnumSet<ICMPermissions> Permissions=EnumSet.copyOf(PermissionsArrayList); 
-
-    
-    toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, logIn);
+   EnumSet<ICMPermissions> all =EnumSet.allOf(User.ICMPermissions.class);
+   EnumSet<ICMPermissions> Permissions =EnumSet.complementOf(all);
+     if(informationTecnologiesDeparmentMangerPermission==1)  Permissions.add(ICMPermissions.informationTecnologiesDeparmentManger);
+     if(inspectorPermission==1)  Permissions.add(ICMPermissions.inspector);
+     if(estimatorPermission==1)  Permissions.add(ICMPermissions.estimator);
+     if(exeutionLeaderPermission==1)  Permissions.add(ICMPermissions.exeutionLeader);
+     if(examinerPermission==1)  Permissions.add(ICMPermissions.examiner);
+     if(changeControlCommitteeChairmant==1)  Permissions.add(ICMPermissions.changeControlCommitteeChairman); 
+     toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, logIn);
      return toReturn;
 }//END ofselectUser
 

@@ -125,8 +125,8 @@ public class EchoServer extends AbstractServer {
 			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
 			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
 			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
-			EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
-			queryHandler.insertUser("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Permissions, User.Job.informationEngineer, false);
+			enterUsersToDB();
+
 		}
 	}
 
@@ -138,6 +138,46 @@ public class EchoServer extends AbstractServer {
 		mysqlConnection.closeConnection();
 		System.out.println("Server has stopped listening for connections.");
 	}
+	
+	private void enterUsersToDB() {
+		// creating admin
+		EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
+		User newUser =new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
+		queryHandler.insertUser(newUser);
+		// creating  information Tecnologies DeparmentManger
+		EnumSet<ICMPermissions> lessPermissions =EnumSet.complementOf(Permissions);		//empty enum set
+		lessPermissions.add(User.ICMPermissions.informationTecnologiesDeparmentManger);
+		newUser= new User("informationTecnologiesDeparmentManger", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		queryHandler.insertUser(newUser);
+		//creating inspector
+		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.inspector);
+		newUser= new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		queryHandler.insertUser(newUser);
+		//creating estimator
+		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.estimator);
+		newUser= new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		queryHandler.insertUser(newUser);
+		//creating exeution Leader
+		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.exeutionLeader);
+		newUser= new User("exeutionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		queryHandler.insertUser(newUser);
+		//creating examiner
+		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.examiner);
+		newUser= new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		queryHandler.insertUser(newUser);
+		//creating change Control Committee Chairman
+		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
+		newUser= new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		queryHandler.insertUser(newUser);
+		//creating student
+		//newUser= new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
+		//queryHandler.insertUser(newUser);
+	}// END of  enterUsersToDB() 
 /**
 	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).

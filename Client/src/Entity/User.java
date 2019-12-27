@@ -34,7 +34,7 @@ private String password;
 private String firstName;
 private String lastName;
 private String email ;
-private EnumSet<ICMPermissions> Permissions ;
+private EnumSet<ICMPermissions> Permissions =null;
 //private ICMPermissions[] Permissions;
 private Job job ;
 private boolean logedIn;
@@ -59,7 +59,12 @@ private boolean logedIn;
 public User(String userName ,String password,String firstName,String lastName ,String email,Job job,EnumSet<ICMPermissions> Permissions,boolean logedIn) {
 	
 	this.job=job;
-	if (!updatePremiisions(Permissions))  throw new IllegalArgumentException("Students dont have Permissions in the system");
+	try {
+	if (!(updatePremiisions(Permissions)))  throw new IllegalArgumentException("Students dont have Permissions in the system");
+	}
+	catch(IllegalArgumentException e) {
+		 e.printStackTrace();
+	}
 	this.userName =userName;
 	this.password =password;
 	this.firstName =firstName;
@@ -80,9 +85,8 @@ public User(String userName ,String password,String firstName,String lastName ,S
  */
 public  boolean updatePremiisions(EnumSet<ICMPermissions> Permissions) {
 	if(Permissions==null || job==Job.student) return false;
-	 this.Permissions=Permissions;
+	 this.Permissions=Permissions; 
 	 return true;
-	
 }
 
 public void updateLoging(boolean logedIn) {
