@@ -12,19 +12,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static Entity.clientRequestFromServer.requestOptions.getAll;
 
 public abstract class UserForm implements IcmForm {
 
 	// vars
-	protected static User user = null; //connected user;
+	protected static User user = null; // connected user;
 	static ArrayList<Requirement> ReqListForClient = null;
 
 	@FXML
@@ -35,7 +39,6 @@ public abstract class UserForm implements IcmForm {
 	// UNDECORATED
 	private static double xOffset = 0;
 	private static double yOffset = 0;
-
 
 	public static void setUndecorated(Stage primaryStage, Parent root) {
 		primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -56,27 +59,38 @@ public abstract class UserForm implements IcmForm {
 	}
 
 	public void LogOutButton(ActionEvent event) throws Exception {
-				//updating  server user is logged out
-				user.changeLoginStaus(false);
-				Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
-				ClientLauncher.client.handleMessageFromClientUI(msg);
-				// lunching main menu
+		// updating server user is logged out
+		user.changeLoginStaus(false);
+		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
+		// lunching main menu
 		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 	}
 
-	public void ExitBtn()  {
+	public void ExitBtn() {
 		
-		/*  @yonathan - in the works 
-		if (user != null &&  !(this instanceof LogInForm)) {
-		//updating  server user is logged out
-		user.changeLoginStaus(false);
-		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
-		ClientLauncher.client.handleMessageFromClientUI(msg);
+		if (user != null && !(this instanceof LogInForm)) {
+			// making sure the user wants to exit
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("");
+			alert.setHeaderText("You are exiting the ICM");
+			alert.setContentText("Are you sure you want to do that?");
+			Optional<ButtonType> result = alert.showAndWait();
 
+			if (result.get() == ButtonType.OK) { // the user pressed ok
+				// updating server user is logged out
+				user.changeLoginStaus(false);
+				Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
+				ClientLauncher.client.handleMessageFromClientUI(msg);
+				//
+				ClientLauncher.client.quit();
+
+			}
+		} else { // if we are at the log in screen
+			if (ClientLauncher.client == null)
+				System.exit(0);
+			ClientLauncher.client.quit();
 		}
-		*/
-		
-		ClientLauncher.client.quit();
 	}
 	// End of standard buttons for each scene
 
@@ -95,7 +109,8 @@ public abstract class UserForm implements IcmForm {
 	 * @param hide          - true if you want to hide the launching window
 	 * @throws Exception ???
 	 */
-	public void NextWindowLauncher(ActionEvent event, String path, IcmForm launcherClass, boolean hide) throws Exception {
+	public void NextWindowLauncher(ActionEvent event, String path, IcmForm launcherClass, boolean hide)
+			throws Exception {
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
@@ -117,27 +132,27 @@ public abstract class UserForm implements IcmForm {
 		//
 
 		switch (request.getRequest()) {
-			case getAll:
-				System.out.print("Load list of requests: ");
-				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
-				break;
-			case updateStatus:
-				ReqListForClient.forEach(e -> System.out.println("Status of request ID:["
-						+ e.getID() + "] updated to " + e.getStatus().toString()));
-				break;
-			case getRequirement:
-				break;
-			case getUser:
-				user = (User) request.getObject();
-				break;
-			case updateUser:
-				break;
-			default:
-				try {
+		case getAll:
+			System.out.print("Load list of requests: ");
+			ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
+			break;
+		case updateStatus:
+			ReqListForClient.forEach(e -> System.out
+					.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
+			break;
+		case getRequirement:
+			break;
+		case getUser:
+			user = (User) request.getObject();
+			break;
+		case updateUser:
+			break;
+		default:
+			try {
 				throw new IllegalArgumentException("unknown ReqListForClient");
-				}catch(NotImplementedException e) {
-					e.printStackTrace();
-				}
+			} catch (NotImplementedException e) {
+				e.printStackTrace();
+			}
 		}
 		// TODO End of todo
 	}

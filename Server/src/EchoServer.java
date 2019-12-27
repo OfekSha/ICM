@@ -59,6 +59,7 @@ public class EchoServer extends AbstractServer {
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackobject =null;
+		Boolean iWantResponce =true;
 		try {
 		
 			Requirement reqReceived;
@@ -80,11 +81,14 @@ public class EchoServer extends AbstractServer {
 					selectRequirement(ReqListForClient, reqReceived);
 					sendBackobject=ReqListForClient;
 					break;
-					//getUser not implemented.
 				case getUser:	
 					sendBackobject=queryHandler.selectUser(((String)request.getObject()));
 					break;
 				case updateUser:	
+					queryHandler.updateAllUserFileds((User)request.getObject());
+					break;
+				case changeInLogIn:	
+					iWantResponce =false;
 					queryHandler.updateAllUserFileds((User)request.getObject());
 					break;
 				default:
@@ -96,7 +100,7 @@ public class EchoServer extends AbstractServer {
 		
 		Object answer = new clientRequestFromServer(request.getRequest(), sendBackobject); // answer to the ocf.client
 		try {
-			client.sendToClient(answer);
+			if (iWantResponce)client.sendToClient(answer);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

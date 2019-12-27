@@ -9,10 +9,12 @@ public class clientRequestFromServer implements Serializable {
         updateStatus, // change requirement status (ongoing ,closed,etc)
         getRequirement, // get requirement from DB by his id.
         getUser ,// get one user from DB by his user name.
-        updateUser // updates all users details 
+        updateUser, // updates all users details 
+        changeInLogIn // used to update log in/out
     }
     //  is needed?
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.
+    //
     private Object object;
     private requestOptions request; // request
 
@@ -35,6 +37,7 @@ public class clientRequestFromServer implements Serializable {
     	this.obj = obj;
     	this.request = request;
     }
+    //
     public requestOptions getRequest() {
         return request;
     }
@@ -47,6 +50,7 @@ public class clientRequestFromServer implements Serializable {
 	public ArrayList<Requirement> getObj() {
 		return obj;
 	}
+	//
 	
 	/** returns the held object
 	 * @return
