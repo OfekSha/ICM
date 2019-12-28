@@ -64,6 +64,45 @@ public class mysqlConnection {
 					"\texaminerPermission TINYINT(1) NOT NULL," + 								//[12]
 					"\tchangeControlCommitteeChairmant TINYINT(1) NOT NULL," +					//[13]
 					"\tPRIMARY KEY (userName));"); // create user table
+			
+			//
+			stmt.execute("CREATE TABLE `icm`.`initiator` (\n" + 
+					"  `requestID` VARCHAR(45) NOT NULL,\n" + 
+					"  `userName` VARCHAR(45)  NOT NULL,\n" + 
+					"  PRIMARY KEY (`requestID`));\n" + 
+					"");
+			stmt.execute("CREATE TABLE `icm`.`stage` (\n" + 
+					"  `requestID` VARCHAR(45) NOT NULL,\n" + 
+					"  `currentStage` VARCHAR(45) NULL,\n" + 
+					"  `StageSupervisor` VARCHAR(45) NULL,\n" + 
+					"  `EstimatorReport` VARCHAR(45) NULL,\n" + 
+					"  `ExeminorFailReport` VARCHAR(45) NULL,\n" + 
+					"  `inspectorDocumention` VARCHAR(45) NULL,\n" + 
+					"  `meaningEvaluationStartDate` VARCHAR(45) NULL,\n" + 
+					"  `meaningEvaluationDueDate` VARCHAR(45) NULL,\n" + 
+					"  `meaningEvaluationEndDate` VARCHAR(45) NULL,\n" + 
+					"  `examinationAndDecisionStartDate` VARCHAR(45) NULL,\n" + 
+					"  `stagecolexaminationAndDecisionDueDate` VARCHAR(45) NULL,\n" + 
+					"  `examinationAndDecisionEndDate` VARCHAR(45) NULL,\n" + 
+					"  `ExecutionStartDate` VARCHAR(45) NULL,\n" + 
+					"  `ExecutionDueDate` VARCHAR(45) NULL,\n" + 
+					"  `ExecutionEndtDate` VARCHAR(45) NULL,\n" + 
+					"  `examinationStartDate` VARCHAR(45) NULL,\n" + 
+					"  `examinationDueDate` VARCHAR(45) NULL,\n" + 
+					"  `examinationEndDate` VARCHAR(45) NULL,\n" + 
+					"  `closureStarDate` VARCHAR(45) NULL,\n" + 
+					"  `closureEndDate` VARCHAR(45) NULL,\n" + 
+					"  PRIMARY KEY (`requestID`));\n" + 
+					"");
+			stmt.execute("CREATE TABLE `icm`.`changerequest` (\n" + 
+					"  `requestID` VARCHAR(45) NOT NULL,\n" + 
+					"  `startDate` VARCHAR(45) NULL,\n" + 
+					"  `system` VARCHAR(45) NULL,\n" + 
+					"  `problomeDescription` TEXT NULL,\n" + 
+					"  `whyChange` TEXT NULL,\n" + 
+					"  `status` VARCHAR(45) NULL,\n" + 
+					"  PRIMARY KEY (`requestID`));\n" + 
+					"");
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

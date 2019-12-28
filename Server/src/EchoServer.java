@@ -5,12 +5,17 @@ import ocsf.server.ConnectionToClient;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
+import Entity.ChangeRequest;
+import Entity.Initiator;
+import Entity.ProcessStage;
 import Entity.Requirement;
 import Entity.User;
 import Entity.clientRequestFromServer;
@@ -132,7 +137,8 @@ public class EchoServer extends AbstractServer {
 			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
 			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
 			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
-			enterUsersToDB();
+			enterUsersToDB();	
+			enterChangeRequestToDB();
 			System.out.println("\nNew DB ready for use");
 		}
 		
@@ -186,6 +192,20 @@ public class EchoServer extends AbstractServer {
 		newUser= new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
 		queryHandler.insertUser(newUser);
 	}// END of  enterUsersToDB() 
+	
+	private void enterChangeRequestToDB() {
+		EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
+		User newUser =new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
+		Initiator init = new Initiator(newUser,null);
+		LocalDate start =  LocalDate.now();
+		ChangeRequest chang = new ChangeRequest(init, start, "test", "test", null);
+		chang.changeRequestID(queryHandler.InsertChangeRequest(chang));
+		init.setrequest(chang);
+		queryHandler.insertInitiator(init);
+		queryHandler.InsertProcessStage(chang.stage);
+		
+	}// END of enterChangeRequestToDB
+	
 /**
 	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).

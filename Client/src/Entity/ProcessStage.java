@@ -1,5 +1,8 @@
 package Entity;
 
+import java.io.Serializable;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.EnumSet;
 
 import Entity.User.ICMPermissions;
@@ -7,7 +10,8 @@ import Entity.User.ICMPermissions;
 /**
  * @author Yonathan in progress
  */
-public class Stage {
+public class ProcessStage implements Serializable{
+	
 	public enum ChargeRequestStages { //
 		meaningEvaluation, // stage 1
 		examinationAndDecision, // stage 2
@@ -15,15 +19,44 @@ public class Stage {
 		examination, // stage 4
 		closure // stage 5
 	}
+
 // vars
-	private ChargeRequestStages currentStage = ChargeRequestStages.meaningEvaluation;
+	private ChangeRequest Request;
+	private ChargeRequestStages currentStage = ChargeRequestStages.meaningEvaluation; // starting in the first stage
 	private User StageSupervisor = null;
 	private EnumSet<ICMPermissions> Permissions = null;
 	private String EstimatorReport = "";
 	private String ExeminorFailReport = "";
 	private String inspectorDocumention = "";
 
+	/**
+	 *  startEndArray is -an array with the start date and end date for each stage
+	 * 
+	 * [stage number -1 ][0] - start date for stage
+	 * 
+	 * [stage number -1 ][1] - due date for stage
+	 * 
+	 * [stage number -1 ][2] - ending date of stage
+	 * 
+	 */
+	private LocalDate[][] startEndArray = new LocalDate[5][3]; //
+	
+	public ProcessStage(ChangeRequest Request) {
+		this.Request=Request;
+	}
 	// input methods
+	//  TODO: add constraints to date methods 
+	public void addStartDate (LocalDate start) {
+		startEndArray[currentStage.ordinal()][0] =start;
+		}
+	public void addDueDate (LocalDate due) {
+		startEndArray[currentStage.ordinal()][1] =due;
+		}
+	public void addEndDate (LocalDate end) {
+		startEndArray[currentStage.ordinal()][2] =end;
+		}
+	
+	
 	public void newStageSupervisor(User supervisor) {
 		EnumSet<ICMPermissions> supervisorPermissions = supervisor.getICMPermissions();
 		User.ICMPermissions requiredPermission = null;
@@ -47,9 +80,10 @@ public class Stage {
 
 		try {
 			if (!(supervisorPermissions.contains(requiredPermission)))
-				throw new IllegalArgumentException("StageSupervisor must have Permission the current stage Permission- " +requiredPermission.name());
+				throw new IllegalArgumentException("StageSupervisor must have Permission the current stage Permission- "
+						+ requiredPermission.name());
 			StageSupervisor = supervisor;
-			Permissions=supervisorPermissions;
+			Permissions = supervisorPermissions;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -94,25 +128,33 @@ public class Stage {
 			e.printStackTrace();
 		}
 	}// End addExeminorFailReport;
-	
-	//output
-	public  ChargeRequestStages getCurrentStage() {
+
+	// output
+	public  ChangeRequest getRequest(){
+		return Request ;
+	}
+	public ChargeRequestStages getCurrentStage() {
 		return currentStage;
 	}
+
 	public User getStageSupervisor() {
 		return StageSupervisor;
 	}
+
 	public String getEstimatorReport() {
 		return EstimatorReport;
 	}
-	
+
 	public String getExeminorFailReport() {
 		return ExeminorFailReport;
 	}
+
 	public String getInspectorDocumention() {
 		return inspectorDocumention;
 	}
 
-	
+	public LocalDate[][] getDates() {
+		return startEndArray;
+	}
 
 }// END of Stage

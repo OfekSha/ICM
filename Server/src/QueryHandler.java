@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -6,8 +7,12 @@ import Entity.User.ICMPermissions;
 import Entity.User.Job;
 
 import static Entity.Requirement.*;
+
+import Entity.ChangeRequest;
+import Entity.Initiator;
 import Entity.Requirement;
 import Entity.User;
+import Entity.ProcessStage;
 public class QueryHandler {
     private final mysqlConnection mysqlConn;
 
@@ -132,6 +137,148 @@ public class QueryHandler {
             e.printStackTrace();
         }
     } //END of insertUser()
+    
+    public void insertInitiator(Initiator initiator) {
+    	try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO `icm`.`initiator`\n" + 
+            		"(`requestID`,\n" + 
+            		"`userName`)\n" + 
+            		"VALUES\n" + 
+            		"(?,\n" + 
+            		"?);\n" + 
+            		"");
+            stmt.setNString(1, initiator.getrequest().getRequestID());  
+            stmt.setNString(2, initiator.getTheInitiator().getUserName());  
+
+            stmt.execute(); // insert new row to requirement table
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	
+    }// END insertInitiator()
+    
+    
+    public void InsertProcessStage(ProcessStage newStag) {
+    	try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO `icm`.`stage`\n" + 
+            		"(`requestID`,\n" + 									//[1]
+            		"`currentStage`,\n" + 									//[2]
+            		"`StageSupervisor`,\n" + 								//[3]
+            		"`EstimatorReport`,\n" + 								//[4]
+            		"`ExeminorFailReport`,\n" + 							//[5]
+            		"`inspectorDocumention`,\n" + 							//[6]
+            		"`meaningEvaluationStartDate`,\n" + 					//[7]
+            		"`meaningEvaluationDueDate`,\n" + 						//[8]
+            		"`meaningEvaluationEndDate`,\n" +          				//[9]
+            		"`examinationAndDecisionStartDate`,\n" + 				//[10]
+            		"`stagecolexaminationAndDecisionDueDate`,\n" + 			//[11]
+            		"`examinationAndDecisionEndDate`,\n" + 					//[12]
+            		"`ExecutionStartDate`,\n" +								//[13] 
+            		"`ExecutionDueDate`,\n" + 								//[14]
+            		"`ExecutionEndtDate`,\n" + 								//[15]
+            		"`examinationStartDate`,\n" + 							//[16]
+            		"`examinationDueDate`,\n" + 							//[17]
+            		"`examinationEndDate`,\n" + 							//[18]
+            		"`closureStarDate`,\n" + 								//[19]
+            		"`closureEndDate`)\n" + 								//[20]
+            		"VALUES\n" + 											
+            		"(?,\n" + 								
+            		"?,\n" + 								
+            		"?,\n" + 							
+            		"?,\n" + 							
+            		"?,\n" + 						
+            		"?,\n" + 						
+            		"?,\n" + 							
+            		"?,\n" + 					
+            		"?,\n" + 					
+            		"?,\n" + 			
+            		"?,\n" + 		
+            		"?,\n" + 				
+            		"?,\n" + 						
+            		"?,\n" + 							
+            		"?,\n" + 							
+            		"?,\n" + 						
+            		"?,\n" + 						
+            		"?,\n" + 						
+            		"?,\n" + 							
+            		"?);\n" + 							//[41]
+            		"");								
+            stmt.setNString(1, newStag.getRequest().getRequestID());  
+            stmt.setNString(2, newStag.getCurrentStage().name()); 
+            if (newStag.getStageSupervisor()== null)stmt.setNString(3, null);  
+            else stmt.setNString(3, newStag.getStageSupervisor().getUserName());  
+            stmt.setNString(4, newStag.getEstimatorReport());  
+            stmt.setNString(5, newStag.getExeminorFailReport());  
+            stmt.setNString(6, newStag.getInspectorDocumention()); 
+            LocalDate [][] date=newStag.getDates();
+            int u =7;
+            for(int i =0 ;i<4; i++)
+            {
+            	for (int j=0 ;j<3;j++) {
+            		if( date[i][j]==null)stmt.setNString(u, null);
+            		else stmt.setNString(u, date[i][j].toString());
+            		u++;
+            	}
+            }
+            if( date[4][0]==null) stmt.setNString(19, null);
+            else stmt.setNString(19, date[4][0].toString());
+            if( date[4][2]==null) stmt.setNString(20, null);
+            else stmt.setNString(20, date[4][2].toString());         
+            stmt.execute(); 
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public String InsertChangeRequest(ChangeRequest newRequest) {
+    	
+    	int count = 0;
+    
+        try {
+            Statement numTest = mysqlConn.getConn().createStatement();
+            ResultSet re = numTest.executeQuery("SELECT `requestID` FROM `icm`.`changerequest`;\n" + 
+            		"");// get all numbers submissions.
+            while (re.next()) { // generate number for submission.
+                count++;
+            }
+        } catch (SQLException e) {
+            System.out.println("Database is empty, or no schema for ICM - InsertChangeRequest");
+            count = 0;
+        }
+        count ++;
+    	try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO `icm`.`changerequest`\n" + 
+            		"(`requestID`,\n" + 
+            		"`startDate`,\n" + 
+            		"`system`,\n" + 
+            		"`problomeDescription`,\n" + 
+            		"`whyChange`,\n" + 
+            		"`status`)\n" + 
+            		"VALUES\n" + 
+            		"(?,\n" + 
+            		"?,\n" + 
+            		"?,\n" + 
+            		"?,\n" + 
+            		"?,\n" + 
+            		"?);\n" + 
+            		"");
+
+            stmt.setNString(1, String.valueOf(count));  
+            stmt.setNString(2, newRequest.getStarDate().toString());
+            stmt.setNString(3,newRequest.getSystem() );  
+            stmt.setNString(4,newRequest.getProblomeDescription() );  
+            stmt.setNString(5,newRequest.getWhyChange());  
+            stmt.setNString(6,newRequest.getStatus().name());     
+            stmt.execute(); // insert new row to requirement table
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return String.valueOf(count);
+    } // end of InsertChangeRequest()
+
+    
 
     /**
      *
