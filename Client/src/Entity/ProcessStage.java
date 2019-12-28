@@ -68,7 +68,7 @@ public class ProcessStage implements Serializable{
 			requiredPermission = ICMPermissions.changeControlCommitteeChairman;
 			break;
 		case Execution:
-			requiredPermission = ICMPermissions.exeutionLeader;
+			requiredPermission = ICMPermissions.executionLeader;
 			break;
 		case examination:
 			requiredPermission = ICMPermissions.examiner;

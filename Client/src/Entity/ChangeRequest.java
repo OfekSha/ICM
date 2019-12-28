@@ -1,10 +1,7 @@
 package Entity;
 
-import java.io.File;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * @author Yonathan in proggress
@@ -18,26 +15,26 @@ public class ChangeRequest implements Serializable {
 	private Initiator initiator;
 	private LocalDate starDate;
 	private String system;
-	private String problomeDescription;
+	private String problemDescription;
 	private String whyChange;
 	private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
 	private Document doc;
 	public ProcessStage stage = new ProcessStage(this);
 
-	public ChangeRequest(Initiator initiator, LocalDate starDate, String problomeDescription, String whyChange,
-			Document doc) {
+	public ChangeRequest(Initiator initiator, LocalDate starDate, String problemDescription, String whyChange,
+						 Document doc) {
 		this.initiator = initiator;
 		this.starDate = starDate;
-		this.problomeDescription = problomeDescription;
+		this.problemDescription = problemDescription;
 		this.whyChange = whyChange;
 		this.doc = doc;
 	}
 	// input
-	public void changeStatus(ChangeRequestStatus newStat) {
-		status=newStat;
+	public void setStatus(ChangeRequestStatus newStat) {
+		status = newStat;
 	}
-	public void changeRequestID(String id) {
-		RequestID= id;
+	public void setRequestID(String id) {
+		RequestID = id;
 	}
 	// output
 	public  String getRequestID(){
@@ -49,7 +46,6 @@ public class ChangeRequest implements Serializable {
 
 	public LocalDate getStarDate() {
 		return starDate;
-
 	}
 
 	public String getSystem() {
@@ -57,8 +53,8 @@ public class ChangeRequest implements Serializable {
 
 	}
 
-	public String getProblomeDescription() {
-		return problomeDescription;
+	public String getProblemDescription() {
+		return problemDescription;
 
 	}
 

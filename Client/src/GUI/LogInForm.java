@@ -1,21 +1,15 @@
 package GUI;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Controllers.SecurityController;
-import Entity.Requirement;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
-import WindowApp.IcmClient;
-import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -62,51 +56,29 @@ public class LogInForm extends UserForm {
 		//----
 	}
 
-	/*@Override
-	public void getFromServer(Object message) {
-		// TODO Auto-generated method stub
-
-	} //END of getFromServer(Object message)
-*/
 	/** connects to ip , tests user name and password
 	 * @param event ??
 	 * @throws Exception ??
 	 */
 	public void getInput(ActionEvent event) throws Exception {
-		
+
 		SecurityController securityController = new SecurityController();
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
-		String username = tfUserName.getText();
-		Object msg = new clientRequestFromServer(requestOptions.getUser, username);
-		ClientLauncher.client.handleMessageFromClientUI(msg);
+			String username = tfUserName.getText();
+			Object msg = new clientRequestFromServer(requestOptions.getUser, username);
+			ClientLauncher.client.handleMessageFromClientUI(msg);
+			//TODO: maybe switch to be notified by the server?> --then handling of lost connection and such problems
+			Thread.sleep(2000);
+			boolean temp = securityController.checkLogin(pfPassword.getText(), user);
 
-		// TODO: remove  temp when testing is done ;
-		boolean temp = true;
-		//TODO: maybe switch to be notified by the server?> --then handling of lost connection and such problomes
-		 Thread.sleep(2000);
-		temp = securityController.checkLogin(pfPassword.getText(), user);
-		// if you want to log in set temp to true now
-		//temp = true;
-
-		if (temp) NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
-		else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("password or user name is incorrect");
-			alert.showAndWait();
-		}
+			if (temp) NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
+			else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Password or Username is incorrect");
+				alert.showAndWait();
+			}
 		}
 	}
-
-	// private methods
-
-	/**
-	 * connects to the server
-	 *
-	 * -the ip is from the texfiled IP
-	 *
-	 * - Default port is from the client luncher
-	 */
-	
 }// End of LogInForm

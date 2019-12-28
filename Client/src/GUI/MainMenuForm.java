@@ -46,7 +46,7 @@ public class MainMenuForm extends UserForm {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ClientLauncher.client.setClientUI(this);
 		//updating server user is logged in
-		user.changeLoginStaus(true);
+		user.changeLoginStatus(true);
 		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 		// access according to Permissions
@@ -60,27 +60,26 @@ public class MainMenuForm extends UserForm {
 		EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
 		for (User.ICMPermissions p : Permissions) {
 			switch (p) {
-			case informationTecnologiesDeparmentManger:
-				btnInformationTechnologiesDepartmentManager.setDisable(false);
-				break;
-			case inspector:
-				btnInspector.setDisable(false);
-				break;
-			case estimator:
-				btnEstimator.setDisable(false);
-				break;
-			case exeutionLeader:
-				btnExecutionLeader.setDisable(false);
-				break;
-			case examiner:
-				btnExaminer.setDisable(false);
-				break;
-			case changeControlCommitteeChairman:
-				btnChangeControlCommitteeChairman.setDisable(false);
-				break;
+				case informationTechnologiesDepartmentManger:
+					btnInformationTechnologiesDepartmentManager.setDisable(false);
+					break;
+				case inspector:
+					btnInspector.setDisable(false);
+					break;
+				case estimator:
+					btnEstimator.setDisable(false);
+					break;
+				case executionLeader:
+					btnExecutionLeader.setDisable(false);
+					break;
+				case examiner:
+					btnExaminer.setDisable(false);
+					break;
+				case changeControlCommitteeChairman:
+					btnChangeControlCommitteeChairman.setDisable(false);
+					break;
 			}
 		}
-
 	} // END of initialize();
 
 	// TODO: Load suitable list for each new form
@@ -94,33 +93,23 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
 		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, true);
-
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
+		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true);
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new RequestForm(),
-		// true);
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
 	}
 
 }// END of MainMenuForm
