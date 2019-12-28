@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -32,15 +33,13 @@ import javafx.stage.Stage;
  */
 public class LogInForm extends UserForm {
 
-	//Variables
-	private static ArrayList<Requirement> ReqListForClient = null; //TO DO : change to whatever entity will have the username and password
 	//Text fields
 	@FXML
 	private TextField tfIP;
 	@FXML
 	private TextField tfUserName;
 	@FXML
-	private TextField tfPassword;
+	private PasswordField pfPassword;
 	//Buttons
 	@FXML
 	private Button btnLogin;
@@ -57,9 +56,9 @@ public class LogInForm extends UserForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//TODO remove befor final :
+		//TODO remove before final :
 		tfUserName.setText("admin");
-		tfPassword.setText("admin");
+		pfPassword.setText("admin");
 		//----
 	}
 
@@ -74,17 +73,18 @@ public class LogInForm extends UserForm {
 	 * @throws Exception ??
 	 */
 	public void getInput(ActionEvent event) throws Exception {
+		
 		SecurityController securityController = new SecurityController();
-		securityController.connectToServer(tfIP.getAccessibleText(), this);
+		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
 		String username = tfUserName.getText();
 		Object msg = new clientRequestFromServer(requestOptions.getUser, username);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 
-		// temp till testing is done ;
+		// TODO: remove  temp when testing is done ;
 		boolean temp = true;
 		//TODO: maybe switch to be notified by the server?> --then handling of lost connection and such problomes
 		 Thread.sleep(2000);
-		temp = securityController.checkLogin(tfPassword.getText(), user);
+		temp = securityController.checkLogin(pfPassword.getText(), user);
 		// if you want to log in set temp to true now
 		//temp = true;
 
@@ -95,6 +95,7 @@ public class LogInForm extends UserForm {
 			alert.setHeaderText(null);
 			alert.setContentText("password or user name is incorrect");
 			alert.showAndWait();
+		}
 		}
 	}
 

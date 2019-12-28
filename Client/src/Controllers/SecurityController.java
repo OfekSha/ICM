@@ -6,6 +6,8 @@ import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
 import WindowApp.IcmForm;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * @author Yonathan TODO : needs testing
@@ -21,7 +23,7 @@ public class SecurityController {
 		return false;
 	}// End of checkLogin()
 
-	public void connectToServer(String host, IcmForm form) {
+	public boolean connectToServer(String host, IcmForm form) {
 		// System.out.println("This is host: "+host);
 		if (host == null)
 			host = "localhost";
@@ -29,10 +31,14 @@ public class SecurityController {
 			ClientLauncher.client = new IcmClient(host, ClientLauncher.DEFAULT_PORT, form);
 			System.out.println("Connection established!\n" // TODO: to be removed/changed
 					+ "Welcome to ICM.");
+			return true;
 		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" // TODO: to be removed/changed
-					+ " Terminating client.");
-			System.exit(1);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText("Error: Can't setup connection!");
+			alert.setContentText("things you can do : \nmake sure the server is runnig\nask  for the server ip ");
+			alert.showAndWait();
+			return false;		
 		}
 	} // END connectToServer()
 
