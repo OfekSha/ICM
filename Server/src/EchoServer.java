@@ -55,41 +55,40 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		clientRequestFromServer request = (clientRequestFromServer)msg; // request from ocf.client
+		clientRequestFromServer request = (clientRequestFromServer) msg; // request from ocf.client
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
-		Object sendBackobject =null;
-		Boolean iWantResponce =true;
+		Object sendBackObject = null;
+		boolean iWantResponse = true;
 		try {
-		
 			Requirement reqReceived;
 			switch (request.getRequest()) {
 				// read all requirement data
 				case getAll: // get all requirements need to change!!!!!!!!!
 					getAllRequest(ReqListForClient);
-					sendBackobject=ReqListForClient;
+					sendBackObject = ReqListForClient;
 					break;
 				// read data from some id in requirement
 				case updateStatus: // change status of one requirement.
 					reqReceived = request.getObj().get(0);
 					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
 					selectRequirement(ReqListForClient, reqReceived);
-					sendBackobject=ReqListForClient;
+					sendBackObject = ReqListForClient;
 					break;
 				case getRequirement:
 					reqReceived = request.getObj().get(0); // get the requirement id
 					selectRequirement(ReqListForClient, reqReceived);
-					sendBackobject=ReqListForClient;
+					sendBackObject = ReqListForClient;
 					break;
-				case getUser:	
-					sendBackobject=queryHandler.selectUser(((String)request.getObject()));
+				case getUser:
+					sendBackObject = queryHandler.selectUser(((String) request.getObject()));
 					break;
-				case updateUser:	
-					queryHandler.updateAllUserFileds((User)request.getObject());
+				case updateUser:
+					queryHandler.updateAllUserFileds((User) request.getObject());
 					break;
-				case changeInLogIn:	
-					iWantResponce =false;
-					queryHandler.updateAllUserFileds((User)request.getObject());
+				case changeInLogIn:
+					iWantResponse = false;
+					queryHandler.updateAllUserFileds((User) request.getObject());
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
@@ -97,10 +96,10 @@ public class EchoServer extends AbstractServer {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-		
-		Object answer = new clientRequestFromServer(request.getRequest(), sendBackobject); // answer to the ocf.client
+
+		Object answer = new clientRequestFromServer(request.getRequest(), sendBackObject); // answer to the ocf.client
 		try {
-			if (iWantResponce)client.sendToClient(answer);
+			if (iWantResponse) client.sendToClient(answer);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,9 +113,7 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private void getAllRequest(ArrayList<Requirement> reqListForClient) {
-		for (String[] arr : queryHandler.selectAll()) {
-			reqListForClient.add(new Requirement(arr));
-		}
+		queryHandler.selectAll().forEach(arr -> reqListForClient.add(new Requirement(arr)));
 	}
 
 	/**
@@ -135,7 +132,6 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			System.out.println("\nNew DB ready for use");
 		}
-		
 	}
 
 	/**
@@ -149,43 +145,43 @@ public class EchoServer extends AbstractServer {
 	
 	private void enterUsersToDB() {
 		// creating admin
-		EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
-		User newUser =new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
+		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
 		queryHandler.insertUser(newUser);
-		// creating  information Tecnologies DeparmentManger
-		EnumSet<ICMPermissions> lessPermissions =EnumSet.complementOf(Permissions);		//empty enum set
+		// creating  information Technologies Department Manager
+		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
 		lessPermissions.add(User.ICMPermissions.informationTecnologiesDeparmentManger);
-		newUser= new User("informationTecnologiesDeparmentManger", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating inspector
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.inspector);
-		newUser= new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating estimator
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.estimator);
-		newUser= new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating exeution Leader
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.exeutionLeader);
-		newUser= new User("exeutionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating examiner
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
-		newUser= new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating change Control Committee Chairman
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
-		newUser= new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating student
-		newUser= new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
+		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
 		queryHandler.insertUser(newUser);
-	}// END of  enterUsersToDB() 
+	}// END of  enterUsersToDB()
 /**
 	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).

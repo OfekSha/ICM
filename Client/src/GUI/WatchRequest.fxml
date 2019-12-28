@@ -54,7 +54,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                      <graphic>
-                        <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0" />
+                        <ComboBox fx:id="cmbRequests" onAction="#requestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="150.0" />
                      </graphic>
                   </Label>
                <Label alignment="CENTER" contentDisplay="BOTTOM" text="Status:">
