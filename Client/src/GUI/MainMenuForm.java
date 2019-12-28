@@ -90,8 +90,7 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
+		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true);
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {

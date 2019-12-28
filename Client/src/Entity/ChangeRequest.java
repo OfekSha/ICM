@@ -1,43 +1,42 @@
 package Entity;
 
 import java.io.File;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
 
-public class ChangeRequest {
-	private class Initiator {
-		private int id;
-		private String name;
-		private String lastName;
-		//private userStatus_enum Status;
-		private String Email;
+/**
+ * @author Yonathan
+ * in proggress
+ */
+public class ChangeRequest implements Serializable {
 
+	
+	public enum ChangeRequestStatus { //
+		ongoing,
+		suspended,
+		closed
 	}
-
-	public class Document {
-
-		private int OwnerID;
-		private String filename;
-		private int FileID;
-		File file;
-
-	}
+	
+	
+	
 	private Initiator initiator;
+	private  Date date;
+	private  String system;
+	private String problomeDescription;
+	private String whyChange;
+	private ChangeRequestStatus status;
+	private Document doc;
+	private Stage stage;
+	
+	public ChangeRequest(Initiator initiator, Date date,String problomeDescription,String whyChange ,Document doc) {
+		
+	}
+	
+	
 	
 
-	private  Date date;
-	private int informationSystem;
-
-	private String currentSituationDetails;
-
-	private String expectedResult;
-
-	private String explanation;
-
-	private String notes;
-	private ArrayList<Document> documents;
-	private int requestID;
 	
 	//moved to requirement.
 	//private int dueTime;
