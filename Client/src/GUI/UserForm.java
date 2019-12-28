@@ -125,11 +125,8 @@ public abstract class UserForm implements IcmForm {
 	@Override
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		ReqListForClient = request.getObj();
-
-		// TODO Only for testing, delete it before assignment
 		System.out.println("\nMessage from osf.server Received:");
-		//
+		ReqListForClient = (ArrayList<Requirement>)request.getObject();
 
 		switch (request.getRequest()) {
 		case getAll:

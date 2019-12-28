@@ -23,6 +23,14 @@ public class WatchRequestForm extends UserForm {
 	public TextArea taComment;
 
 	@Override
+	public void getFromServer(Object message) {
+		System.out.print("\nMessage from osf.server Received:\nLoad list of requests: ");
+		clientRequestFromServer request = (clientRequestFromServer) message;
+		ReqListForClient = (ArrayList<Requirement>)request.getObject();
+		ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
+	}
+
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		setRequestsComboBox();
@@ -31,11 +39,10 @@ public class WatchRequestForm extends UserForm {
 	private void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
-		ObservableList<String> listFor_cmbRequests = FXCollections.observableArrayList(al);
-		cmbRequests.setItems(listFor_cmbRequests);
+		cmbRequests.setItems(FXCollections.observableArrayList(al));
 	}
 
-	public void RequestsComboBoxUsed() {
+	public void requestsComboBoxUsed() {
 		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
 		for (Requirement req : ReqListForClient) {
 			if (s == req.getID()) {
