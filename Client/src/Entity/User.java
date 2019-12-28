@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
- * @author Yonathan 
- *  entity containing all of the users details  
- *  Also enforces some of the story's constraints 
+ * @author Yonathan entity containing all of the users details Also enforces
+ *         some of the story's constraints
  *
  */
 public class User implements Serializable {
@@ -52,14 +51,8 @@ public class User implements Serializable {
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, Job job,
 			EnumSet<ICMPermissions> Permissions, boolean logedIn) {
-
 		this.job = job;
-		try {
-			if (!(updatePremiisions(Permissions)))
-				throw new IllegalArgumentException("Students dont have Permissions in the system");
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
+		updatePremiisions(Permissions);
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
@@ -87,52 +80,69 @@ public class User implements Serializable {
 		this.logedIn = logedIn;
 	}
 
-	//TODO test this  method
-	/** adding a Permission to user entity  [NOT YET TESTED]
+	// TODO test this method
+	/**
+	 * adding a Permission to user entity [NOT YET TESTED]
+	 * 
 	 * @param Permission
-	 * @return  - returns true if permission is in the collection
+	 * @return - returns true if permission is in the collection
 	 */
-	public boolean addPremmision(ICMPermissions Permission) {
+	public void addPremmision(ICMPermissions Permission) {
 
-		if (job == Job.student)
-			return false;
+		if (job == Job.student && Permission == null)
+			return;
+		else if (job == Job.student && Permission != null) {			
+			try {
+					throw new IllegalArgumentException("Students dont have Permissions in the system");
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}	
+			return ;
+		}
 		try {
 			if (Permission == null)
 				throw new IllegalArgumentException("null  is not a Permission");
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			System.exit(0);				// must exit -EnumSet cannot receive null
+			System.exit(0); // must exit -EnumSet cannot receive null
 		}
 
 		if (this.Permissions == null) {
 			EnumSet<ICMPermissions> all = EnumSet.allOf(ICMPermissions.class);
 			this.Permissions = EnumSet.complementOf(all);
 			this.Permissions.add(Permission);
-			return true;
+			return ;
 		}
 		if (this.Permissions.contains(Permission))
-			return true;
+			return ;
 		this.Permissions.add(Permission);
-		return true;
+		return ;
 
-	}  // END of  addPremmision()
-	
-	//TODO test this  method
-	/** removes the Permission from the user [NOT YET TESTED]
+	} // END of addPremmision()
+
+	// TODO test this method
+	/**
+	 * removes the Permission from the user [NOT YET TESTED]
+	 * 
 	 * @param Permission
 	 */
 	public void removePermission(ICMPermissions Permission) {
-		if (Permission == null || this.Permissions == null) return ; 
-		if (this.Permissions.contains(Permission)) this.Permissions.remove(Permission); 
+		if (Permission == null || this.Permissions == null)
+			return;
+		if (this.Permissions.contains(Permission))
+			this.Permissions.remove(Permission);
 	}// END of removePermission()
-	
- /** changes the log in value to the given value
- * @param bool
- */
-public  void changeLoginStaus(boolean bool) {
-	 logedIn =bool;
- }//END changeLoginStaus
+
+	/**
+	 * changes the log in value to the given value
+	 * 
+	 * @param bool
+	 */
+	public void changeLoginStaus(boolean bool) {
+		logedIn = bool;
+	}// END changeLoginStaus
 //output
+
 	public String getUserName() {
 		return userName;
 	}

@@ -34,7 +34,7 @@ public class QueryHandler {
                     count = re.getInt(1);
                 }
             } catch (SQLException e) {
-                System.out.println("Database is empty, or no schema for ICM");
+                System.out.println("Database is empty, or no schema for ICM - insertRequirement");
                 count = 0;
             }
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.requirement " +
@@ -72,18 +72,6 @@ public class QueryHandler {
      */
     public void insertUser(User user) { // send the use details.
         try {
-            int count = 0;
-            Statement numTest = mysqlConn.getConn().createStatement();
-            try {
-                ResultSet re = numTest.executeQuery("SELECT(user) FROM icm.user;");// get all numbers submissions.
-                while (re.next()) { // generate number for submission.
-                    count = re.getInt(1);
-                }
-            } catch (SQLException e) {
-                System.out.println("Database is empty, or no schema for ICM");
-                count = 0;
-            }
-            
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO `icm`.`user`\n" + 
             		"(`userName`,\n" + 
             		"`password`,\n" + 
@@ -137,12 +125,9 @@ public class QueryHandler {
             	break;
             	}
             }
-           }
-           
-            stmt.execute(); // insert new row to requirement table.
-
+           }  
+            stmt.execute(); // insert new row to requirement table
             stmt.close();
-            numTest.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

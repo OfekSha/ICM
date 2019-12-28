@@ -133,8 +133,9 @@ public class EchoServer extends AbstractServer {
 			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
 			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
 			enterUsersToDB();
-
+			System.out.println("\nNew DB ready for use");
 		}
+		
 	}
 
 	/**
@@ -182,8 +183,8 @@ public class EchoServer extends AbstractServer {
 		newUser= new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating student
-		//newUser= new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
-		//queryHandler.insertUser(newUser);
+		newUser= new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
+		queryHandler.insertUser(newUser);
 	}// END of  enterUsersToDB() 
 /**
 	 * This method is responsible for the creation of the osf.server instance (there is
