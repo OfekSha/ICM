@@ -14,47 +14,40 @@ public class clientRequestFromServer implements Serializable {
         addRequest
     }
     //  is needed?
-    private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.
+    //private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.
     //
     private Object object;
     private requestOptions request; // request
 
     public clientRequestFromServer(requestOptions request) {
-    	this.obj = null;
     	this.request = request;
     }
     
     /** request from server and send an object
-     * @param request
-     * @param obj
+     * @param request ?
+     * @param obj ?
      */
     public clientRequestFromServer(requestOptions request, Object obj) {
     	this.object = obj;
     	this.request = request;
     }
     
-     //is needed?
+    /* //is needed?
     public clientRequestFromServer(requestOptions request, ArrayList<Requirement> obj) {
     	this.obj = obj;
     	this.request = request;
-    }
+    }*/
     //
     public requestOptions getRequest() {
         return request;
     }
 
-    @Override
+    /*@Override
     public String toString() {
-        return request.name() + " ArrayList<Requirement>: " + obj +" object: "+object ;
-    }
-    // is needed ?
-	public ArrayList<Requirement> getObj() {
-		return obj;
-	}
-	//
-	
+        return request.name() + " ArrayList<Requirement>: " + object +" object: "+ object ;
+    }*/
 	/** returns the held object
-	 * @return
+	 * @return ?
 	 */
 	public Object getObject() {
 		return object;

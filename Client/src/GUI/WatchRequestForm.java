@@ -1,7 +1,6 @@
 package GUI;
 
 import Entity.Requirement;
-import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

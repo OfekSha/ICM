@@ -20,8 +20,8 @@ public class StageSupervisorForm extends UserForm implements Initializable, IcmF
 
 	}
 
-	
-	//TODO: the following  methods are from the class diagram:  
+
+	//TODO: the following  methods are from the class diagram:
 	 public void getExtension(){}
 	
 }

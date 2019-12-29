@@ -16,11 +16,11 @@ import javafx.scene.control.Alert.AlertType;
 public class SecurityController {
 
 	public boolean checkLogin(String password, User user) {
-		if (!(user == null)) {
-			if (password.equals(user.getPassword()))
-				return true;
+		return user != null && password.equals(user.getPassword());
+		/*if (!(user == null)) {
+			return password.equals(user.getPassword());
 		}
-		return false;
+		return false;*/
 	}// End of checkLogin()
 
 	public boolean connectToServer(String host, IcmForm form) {
