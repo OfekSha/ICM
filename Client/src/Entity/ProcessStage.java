@@ -59,6 +59,20 @@ public class ProcessStage implements Serializable{
 			WasThereAnExtentionRequest[i] =false;
 		}
 	}
+	
+	public ProcessStage(ChargeRequestStages currentStagei, subStages currentSubStage, User StageSupervisor,
+			String EstimatorReport, String ExeminorFailReport, String inspectorDocumention, LocalDate[][] startEndArray,
+			boolean[] WasThereAnExtentionRequest) {
+		this.currentStage = currentStagei;
+		this.currentSubStage = currentSubStage;
+		this.StageSupervisor =StageSupervisor;
+		this.EstimatorReport = EstimatorReport;
+		this.ExeminorFailReport = ExeminorFailReport;
+		this.inspectorDocumention = inspectorDocumention;
+		this.startEndArray = startEndArray;
+		this.WasThereAnExtentionRequest = WasThereAnExtentionRequest;
+	}
+
 	// input methods
 	//  TODO: add constraints to date methods 
 

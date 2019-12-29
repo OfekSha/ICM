@@ -131,6 +131,7 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
 		mysqlConnection mysqlConn = new mysqlConnection();
 		queryHandler = new QueryHandler(mysqlConn);
+		ArrayList<ChangeRequest> c =queryHandler.getAllChangeRequest();
 		if (!mysqlConnection.checkExistence()) {
 			mysqlConnection.buildDB();
 			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
@@ -138,6 +139,11 @@ public class EchoServer extends AbstractServer {
 			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
 			enterUsersToDB();
 			enterChangeRequestToDB();
+			
+			//tests
+
+			
+			//
 			System.out.println("\nNew DB ready for use");
 		}
 	}
