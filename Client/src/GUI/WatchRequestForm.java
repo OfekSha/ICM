@@ -1,6 +1,5 @@
 package GUI;
 
-import Entity.Requirement;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -26,13 +25,23 @@ public class WatchRequestForm extends UserForm {
 
 	protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
+		changeRequests.forEach(cR -> al.add(cR.getRequestID()));
+		/*ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));*/
 		cmbRequests.setItems(FXCollections.observableArrayList(al));
 	}
 
 	public void RequestsComboBoxUsed() {
-		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
-		for (Requirement req : ReqListForClient) {
+		//int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
+		String selected = cmbRequests.getSelectionModel().getSelectedItem();
+		changeRequests.forEach(cR -> {
+			if (selected.equals(cR.getRequestID())) {
+				this.tfRequestStatus.setText(cR.getStatus().name());
+				this.taRequestDetails.setText(cR.getProblemDescription());
+				this.taRequestReason.setText(cR.getWhyChange());
+				this.taComment.setText(cR.getComment());
+			}
+		});
+		/*for (Requirement req : ReqListForClient) {
 			if (s == req.getID()) {
 				this.tfRequestStatus.setPromptText((req.getStatus()).name());
 				this.taRequestDetails.setText(req.getRequestDetails());
@@ -41,6 +50,6 @@ public class WatchRequestForm extends UserForm {
 				//this.taComment.setText(req.getRequestComment());
 				break;
 			}
-		}
+		}*/
 	}
 }

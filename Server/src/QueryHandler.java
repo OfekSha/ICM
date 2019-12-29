@@ -1,11 +1,5 @@
-import Entity.ChangeRequest;
-import Entity.Document;
-import Entity.Initiator;
-import Entity.ProcessStage;
-import Entity.User;
+import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
-import Entity.ProcessStage.ChargeRequestStages;
-import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
 
@@ -18,7 +12,11 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import static Entity.Requirement.statusOptions;
+import static Entity.ProcessStage.ChargeRequestStages;
+import static Entity.ProcessStage.subStages;
+
 public class QueryHandler {
+
     private final mysqlConnection mysqlConn;
 
     public QueryHandler(mysqlConnection mysqlConn) {
@@ -34,7 +32,9 @@ public class QueryHandler {
      * @param stageSupervisor           Supervisor of request
      */
 
-    public void insertRequirement(String reqInitiator, String currentSituationDetails, String requestDetails, String stageSupervisor, statusOptions status) { // send the use details.
+    public void insertRequirement(String reqInitiator, String currentSituationDetails,
+                                  String requestDetails, String stageSupervisor,
+                                  statusOptions status) { // send the use details.
         try {
             int count = 0;
             Statement numTest = mysqlConn.getConn().createStatement();
@@ -71,7 +71,6 @@ public class QueryHandler {
     }
 
     /**
-     *
      * @param user ?
      */
     public void insertUser(User user) { // send the use details.
@@ -97,6 +96,11 @@ public class QueryHandler {
         }
     } //END of insertUser()
 
+    /**
+     * @param user ?
+     * @param stmt ?
+     * @throws SQLException ?
+     */
     private void setUserStatement(User user, PreparedStatement stmt) throws SQLException {
         stmt.setNString(1, user.getUserName());
         stmt.setNString(2, user.getPassword());
@@ -105,9 +109,7 @@ public class QueryHandler {
         if (user.getLoggedIn()) {
             stmt.setInt(5, 1);
         }
-        else {
-            stmt.setInt(5, 0);
-        }
+        else stmt.setInt(5, 0);
         stmt.setNString(6, user.getJob().name());
         stmt.setNString(7, user.getEmail());
         stmt.setInt(8, 0);
@@ -145,6 +147,9 @@ public class QueryHandler {
         stmt.close();
     }
 
+    /**
+     * @param initiator ?
+     */
     public void insertInitiator(Initiator initiator) {
     	try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.initiator " +
@@ -158,7 +163,9 @@ public class QueryHandler {
         }
     }// END insertInitiator()
 
-
+    /**
+     * @param newStage ?
+     */
     public void InsertProcessStage(ProcessStage newStage) {
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.stage " +
@@ -237,6 +244,11 @@ public class QueryHandler {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param newRequest ?
+     * @return string
+     */
     public String InsertChangeRequest(ChangeRequest newRequest) {
     	int count = 0;
         try {
@@ -274,6 +286,7 @@ public class QueryHandler {
         }
     	return String.valueOf(count);
     } // end of InsertChangeRequest()
+
     /**
      *
      * for prototype.
@@ -295,6 +308,12 @@ public class QueryHandler {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     * @param user ?
+     * @throws IllegalArgumentException ?
+     */
     public void updateAllUserFields(User user) throws IllegalArgumentException {
         PreparedStatement updStatus;
         try {
@@ -320,13 +339,12 @@ public class QueryHandler {
             e.printStackTrace();
         }
     }
-    
-    
-/** returns a user form db  by username
- * @param username ?
- * @return ?
- */
-    public User selectUser(String username) { 
+
+    /** returns a user form db  by username
+     * @param username ?
+     * @return ?
+    */
+    public User selectUser(String username) { // @building by yonathan not finished.
         User toReturn;
         String userName = null;
         String password = null;
@@ -403,68 +421,67 @@ public class QueryHandler {
         return toReturn;
     }//END of selectUser
 
-    
     // methode in building
-public ArrayList<ChangeRequest> getAllChangeRequest(){
-	ArrayList<ChangeRequest> toReturn = new ArrayList<>();
-	
-	
-	Statement stmt;
-    ResultSet re;
-    try {
-        stmt = mysqlConn.getConn().createStatement();
-        re = stmt.executeQuery("SELECT * FROM icm.changerequest;");
-        
-        while (re.next()) {
-        	ChangeRequest toPut ;	
-        	 String RequestID= re.getString(1); 
-              LocalDate starDate ;
-           if(re.getString(2)!=null)   starDate=LocalDate.parse(re.getString(2)); 
-           else starDate =null;
-             String system = re.getString(3);
-             String problemDescriptionrString =re.getString(4);
-             String whyChange=re.getString(5);
-             String comment=re.getString(6);
-             String statusString =re.getString(7);
-             Initiator  theInitiator =getInitiator(RequestID);
-          // TODO:
-             Document doc =null; 	
-           //
-             ProcessStage stage =getProcessStage(RequestID);         
-             ChangeRequestStatus status =null;     
-             
-             
-             String ongoingString =ChangeRequestStatus.ongoing.name();
-             String suspendedString =ChangeRequestStatus.suspended.name();
-             String closedString =ChangeRequestStatus.closed.name();
-             
-            	 if(statusString.equals(ChangeRequestStatus.ongoing.name())) status=ChangeRequestStatus.ongoing;
-            	 if(statusString.equals(ChangeRequestStatus.suspended.name())) status=ChangeRequestStatus.suspended;
-            	 if(statusString.equals(ChangeRequestStatus.closed.name()))status=ChangeRequestStatus.closed ;
-  
-            	 toPut=new ChangeRequest(theInitiator,starDate,system,problemDescriptionrString,whyChange,comment,doc);
-            	 toPut.setStatus(status);
-            	 toPut.setRequestID(RequestID);
-            	 toPut.updateInitiatorRequest();
-            	 toPut.updateStage();
-            	 toReturn.add(toPut);    	 
-             }
-      
-           
+    public ArrayList<ChangeRequest> getAllChangeRequest() {
+        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
+        Statement stmt;
+        ResultSet re;
+        try {
+            stmt = mysqlConn.getConn().createStatement();
+            re = stmt.executeQuery("SELECT * FROM icm.changerequest;");
 
-             stmt.close();  
+            while (re.next()) {
+                ChangeRequest toPut;
+                String RequestID = re.getString(1);
+                LocalDate startDate;
+                if (re.getString(2) != null) {
+                    startDate = LocalDate.parse(re.getString(2));
+                } else startDate = null;
+                String system = re.getString(3);
+                String problemDescriptionString = re.getString(4);
+                String whyChange = re.getString(5);
+                String comment = re.getString(6);
+                String statusString = re.getString(7);
+                Initiator theInitiator = getInitiator(RequestID);
+                // TODO:
+                Document doc = null;
+                //
+                ProcessStage stage = getProcessStage(RequestID);
+                ChangeRequestStatus status = null;
+
+
+                String ongoingString = ChangeRequestStatus.ongoing.name();
+                String suspendedString = ChangeRequestStatus.suspended.name();
+                String closedString = ChangeRequestStatus.closed.name();
+
+                if (statusString.equals(ChangeRequestStatus.ongoing.name())) {
+                    status = ChangeRequestStatus.ongoing;
+                }
+                if (statusString.equals(ChangeRequestStatus.suspended.name())) {
+                    status = ChangeRequestStatus.suspended;
+                }
+                if (statusString.equals(ChangeRequestStatus.closed.name())) {
+                    status = ChangeRequestStatus.closed;
+                }
+
+                toPut = new ChangeRequest(theInitiator, startDate, system, problemDescriptionString, whyChange, comment, doc);
+                toPut.setStatus(status);
+                toPut.setRequestID(RequestID);
+                toPut.updateInitiatorRequest();
+                toPut.updateStage();
+                toReturn.add(toPut);
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        
-    catch (SQLException e) {
-        e.printStackTrace();
-    }
-   
-	return toReturn;
-} // END of getAllChangeRequest();
+
+        return toReturn;
+    } // END of getAllChangeRequest();
 
 	/** gets processStage without the change request
-	 * @param RequestID
-	 * @return
+	 * @param RequestID ?
+	 * @return ?
 	 */
 	public ProcessStage getProcessStage(String RequestID) {
 		ProcessStage returnProcessStage = null;
@@ -477,96 +494,101 @@ public ArrayList<ChangeRequest> getAllChangeRequest(){
 
 				ChargeRequestStages currentStage = null;
 				String currentStageString = re.getNString(2);
-				if (currentStageString.equals(ChargeRequestStages.meaningEvaluation.name()))
-					currentStage = ChargeRequestStages.meaningEvaluation;
-				if (currentStageString.equals(ChargeRequestStages.examinationAndDecision.name()))
-					currentStage = ChargeRequestStages.examinationAndDecision;
-				if (currentStageString.equals(ChargeRequestStages.Execution.name()))
-					currentStage = ChargeRequestStages.Execution;
-				if (currentStageString.equals(ChargeRequestStages.examination.name()))
-					currentStage = ChargeRequestStages.examination;
-				if (currentStageString.equals(ChargeRequestStages.closure.name()))
-					currentStage = ChargeRequestStages.closure;
+				if (currentStageString.equals(ChargeRequestStages.meaningEvaluation.name())) {
+                    currentStage = ChargeRequestStages.meaningEvaluation;
+                }
+				if (currentStageString.equals(ChargeRequestStages.examinationAndDecision.name())) {
+                    currentStage = ChargeRequestStages.examinationAndDecision;
+                }
+				if (currentStageString.equals(ChargeRequestStages.Execution.name())) {
+                    currentStage = ChargeRequestStages.Execution;
+                }
+				if (currentStageString.equals(ChargeRequestStages.examination.name())) {
+                    currentStage = ChargeRequestStages.examination;
+                }
+				if (currentStageString.equals(ChargeRequestStages.closure.name())) {
+                    currentStage = ChargeRequestStages.closure;
+                }
 				subStages currentSubStage = null;
 				String currentSubStageString = re.getNString(26);
-				if (currentSubStageString.equals(subStages.supervisorAllocation.name()))
-					currentSubStage = subStages.supervisorAllocation;
-				if (currentSubStageString.equals(subStages.DeterminingDueTime.name()))
-					currentSubStage = subStages.DeterminingDueTime;
-				if (currentSubStageString.equals(subStages.supervisorAction.name()))
-					currentSubStage = subStages.supervisorAction;
+				if (currentSubStageString.equals(subStages.supervisorAllocation.name())) {
+                    currentSubStage = subStages.supervisorAllocation;
+                }
+				if (currentSubStageString.equals(subStages.DeterminingDueTime.name())) {
+                    currentSubStage = subStages.DeterminingDueTime;
+                }
+				if (currentSubStageString.equals(subStages.supervisorAction.name())) {
+                    currentSubStage = subStages.supervisorAction;
+                }
 				User StageSupervisor = selectUser(re.getString(3));
 
 				String EstimatorReport = re.getString(4);
-				String ExeminorFailReport = re.getString(5);
-				String inspectorDocumention = re.getString(6);
+				String ExaminerFailReport = re.getString(5);
+				String inspectorDocumentation = re.getString(6);
 
 				LocalDate[][] startEndArray = new LocalDate[5][3];
 				int u = 7;
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 3; j++) {
-						
-						if(re.getString(u)!=null)startEndArray[i][j] = LocalDate.parse(re.getString(u));
+						if(re.getString(u) != null) {
+						    startEndArray[i][j] = LocalDate.parse(re.getString(u));
+                        }
 						else startEndArray[i][j] = null;
 						u++;
 					}
 				}
-				if(re.getString(u)!=null)startEndArray[4][0] = LocalDate.parse(re.getString(19));
+				if(re.getString(u) != null) {
+				    startEndArray[4][0] = LocalDate.parse(re.getString(19));
+                }
 				else startEndArray[4][0] = null;
-				
-				if(re.getString(u)!=null)startEndArray[4][2] = LocalDate.parse(re.getString(20));
+
+				if(re.getString(u) != null) {
+				    startEndArray[4][2] = LocalDate.parse(re.getString(20));
+                }
 				else startEndArray[4][2] = null;
 
-				boolean[] WasThereAnExtentionRequest = new boolean[5];
+				boolean[] WasThereAnExtensionRequest = new boolean[5];
 				u = 21;
 				for (int k = 0; k < 5; k++) {
-					if (re.getInt(u) == 1)
-						WasThereAnExtentionRequest[k] = true;
-					else
-						WasThereAnExtentionRequest[k] = false;
+                    WasThereAnExtensionRequest[k] = re.getInt(u) == 1;
 					u++;
 				}
-
 				returnProcessStage = new ProcessStage(currentStage, currentSubStage, StageSupervisor, EstimatorReport,
-						ExeminorFailReport, inspectorDocumention, startEndArray, WasThereAnExtentionRequest);
-
+						ExaminerFailReport, inspectorDocumentation, startEndArray, WasThereAnExtensionRequest);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return returnProcessStage;
 	}// END getProcessStage()
- 
-/** get the  Initiator without change request
- * @param RequestID
- * @return
- */
-public Initiator getInitiator(String RequestID) {
-	Initiator returnInitiator = null;
-    try {
-		PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.initiator where initiator.RequestID = ?;");
-		stmt.setNString(1, RequestID);
-        ResultSet re = stmt.executeQuery();
-        while (re.next()) {
-        	String Username= re.getString(2);
-        	User user=selectUser(Username);
-        	returnInitiator =new Initiator(user,null);
-        }
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
 
-	return returnInitiator;
-}
+    /** get the  Initiator without change request
+     * @param RequestID ?
+     * @return ?
+    */
+    public Initiator getInitiator(String RequestID) {
+        Initiator returnInitiator = null;
+        try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.initiator where initiator.RequestID = ?;");
+            stmt.setNString(1, RequestID);
+            ResultSet re = stmt.executeQuery();
+            while (re.next()) {
+                String Username = re.getString(2);
+                User user = selectUser(Username);
+                returnInitiator = new Initiator(user, null);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return returnInitiator;
+    }
 
     /**
      *
      *for prototype.
      *get all details of one requirement by it's ID
-     *
      * @param reqID input request ID
      * @return list
      */
@@ -592,7 +614,6 @@ public Initiator getInitiator(String RequestID) {
         }
         return toReturn;
     }
-
 
     /**
      *

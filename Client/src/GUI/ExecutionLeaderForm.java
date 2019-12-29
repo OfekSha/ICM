@@ -30,6 +30,7 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		for (Requirement req : ReqListForClient) {
 			if (s == req.getID()) {
 				this.taInitiatorRequest.setText(req.getRequestDetails());
+
 				//TODO Implement this in Request Entity
 				//this.taRequestReason.setText(req.getRequestReason());
 				//this.taComment.setText(req.getRequestComment());

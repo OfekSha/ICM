@@ -6,11 +6,8 @@ import javafx.stage.Stage;
 
 /**
  * @author Yonathan
- * 
  *         1) creates the connection, and holds it
- * 
  *         2) launches the login
- * 
  *         3) holds useful static methods
  */
 public class ClientLauncher extends Application {
@@ -32,7 +29,6 @@ public class ClientLauncher extends Application {
 
 	/**
 	 * the real main method
-	 *
 	 * @param args ????
 	 */
 	public static void main(String[] args) {
@@ -47,5 +43,4 @@ public class ClientLauncher extends Application {
 		aFrame = new LogInForm(); // create the frame
 		aFrame.start(arg0);
 	}
-	 // END of nextWindowLauncher
 }

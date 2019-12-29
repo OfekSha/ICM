@@ -1,10 +1,7 @@
 package Entity;
 
-import java.io.File;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * @author Yonathan in proggress
@@ -54,7 +51,7 @@ public class ChangeRequest implements Serializable {
         stage.setRequest(this);
     }
     // output
-    public  String getRequestID(){
+    public String getRequestID(){
         return RequestID ;
     }
     public Initiator getInitiator() {

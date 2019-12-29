@@ -1,5 +1,6 @@
 package GUI;
 
+import Entity.ChangeRequest;
 import Entity.Requirement;
 import Entity.User;
 import Entity.clientRequestFromServer;
@@ -31,7 +32,7 @@ public abstract class UserForm implements IcmForm {
 	// vars
 	protected static User user = null; // connected user;
 	static ArrayList<Requirement> ReqListForClient = null;
-
+	static ArrayList<ChangeRequest> changeRequests = null;
 	@FXML
 	public Button btnExit;
 	public Button btnLogout;
@@ -135,8 +136,11 @@ public abstract class UserForm implements IcmForm {
 		System.out.println("\nMessage from server received: ");
 		switch (request.getRequest()) {
 			case getAll:
-				ReqListForClient = (ArrayList<Requirement>) request.getObject();
+				/*ReqListForClient = (ArrayList<Requirement>) request.getObject();
 				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
+				*/
+				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
+				changeRequests.forEach(e -> System.out.print("[" + e.getRequestID() + "] "));
 				break;
 			case updateStatus:
 				ReqListForClient = (ArrayList<Requirement>) request.getObject();

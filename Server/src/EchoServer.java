@@ -37,7 +37,6 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * Constructs an instance of the echo osf.server.
-	 *
 	 * @param port The port number to connect on.
 	 */
 	public EchoServer(int port) {
@@ -62,8 +61,9 @@ public class EchoServer extends AbstractServer {
 			switch (request.getRequest()) {
 				// read all requirement data
 				case getAll: // get all requirements need to change!!!!!!!!!
-					getAllRequest(ReqListForClient);
-					sendBackObject = ReqListForClient;
+					//getAllRequest(ReqListForClient);
+					//sendBackObject = ReqListForClient;
+					sendBackObject = queryHandler.getAllChangeRequest();
 					break;
 				// read data from some id in requirement, doesn't work yet
 				case updateStatus: // change status of one requirement.
@@ -122,40 +122,6 @@ public class EchoServer extends AbstractServer {
 	private void getAllRequest(ArrayList<Requirement> reqListForClient) {
 		queryHandler.selectAll().forEach(arr -> reqListForClient.add(new Requirement(arr)));
 	}
-
-	/**
-	 * This method overrides the one in the superclass. Called when the osf.server
-	 * starts listening for connections.
-	 */
-	protected void serverStarted() throws UnknownHostException {
-		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
-		mysqlConnection mysqlConn = new mysqlConnection();
-		queryHandler = new QueryHandler(mysqlConn);
-		ArrayList<ChangeRequest> c =queryHandler.getAllChangeRequest();
-		if (!mysqlConnection.checkExistence()) {
-			mysqlConnection.buildDB();
-			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
-			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
-			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
-			enterUsersToDB();
-			enterChangeRequestToDB();
-			
-			//tests
-
-			
-			//
-			System.out.println("\nNew DB ready for use");
-		}
-	}
-
-	/**
-	 * This method overrides the one in the superclass. Called when the osf.server stops
-	 * listening for connections.
-	 */
-	protected void serverStopped() {
-		mysqlConnection.closeConnection();
-		System.out.println("Server has stopped listening for connections.");
-	}
 	
 	private void enterUsersToDB() {
 		// creating admin
@@ -209,12 +175,10 @@ public class EchoServer extends AbstractServer {
 		queryHandler.InsertProcessStage(changeRequest.stage);
 	}// END of enterChangeRequestToDB
 
-/**
+	/**
 	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).
-	 *
-	 * @param args The port number to listen on. Defaults to 5555 if no argument
-	 *                is entered.
+	 * @param args The port number to listen on. Defaults to 5555 if no argument is entered.
 	 **/
 	public static void main(String[] args) {
 		int port; // Port to listen on
@@ -232,6 +196,35 @@ public class EchoServer extends AbstractServer {
 		} catch (Exception ex) {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
+	}
+
+	/**
+	 * This method overrides the one in the superclass. Called when the osf.server
+	 * starts listening for connections.
+	 */
+	protected void serverStarted() throws UnknownHostException {
+		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
+		mysqlConnection mysqlConn = new mysqlConnection();
+		queryHandler = new QueryHandler(mysqlConn);
+		//ArrayList<ChangeRequest> c = queryHandler.getAllChangeRequest();
+		if (!mysqlConnection.checkExistence()) {
+			mysqlConnection.buildDB();
+			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
+			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
+			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
+			enterUsersToDB();
+			enterChangeRequestToDB();
+			System.out.println("New DB ready for use");
+		}
+	}
+
+	/**
+	 * This method overrides the one in the superclass. Called when the osf.server stops
+	 * listening for connections.
+	 */
+	protected void serverStopped() {
+		mysqlConnection.closeConnection();
+		System.out.println("Server has stopped listening for connections.");
 	}
 }
 //End of EchoServer class
