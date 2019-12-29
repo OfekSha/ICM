@@ -10,10 +10,6 @@ import java.util.EnumSet;
  * @author Yonathan in progress
  */
 public class ProcessStage implements Serializable{
-
-	public void setRequest(Entity.ChangeRequest changeRequest) {
-	}
-
 	public enum ChargeRequestStages { //
 		meaningEvaluation, // stage 1
 		examinationAndDecision, // stage 2
@@ -61,7 +57,7 @@ public class ProcessStage implements Serializable{
 	
 	public void newStageSupervisor(User supervisor) {
 		EnumSet<ICMPermissions> supervisorPermissions = supervisor.getICMPermissions();
-		User.ICMPermissions requiredPermission = null;
+		ICMPermissions requiredPermission = null;
 		switch (currentStage) {
 		case meaningEvaluation:
 			requiredPermission = ICMPermissions.estimator;
@@ -70,7 +66,7 @@ public class ProcessStage implements Serializable{
 			requiredPermission = ICMPermissions.changeControlCommitteeChairman;
 			break;
 		case Execution:
-			requiredPermission = ICMPermissions.exeutionLeader;
+			requiredPermission = ICMPermissions.executionLeader;
 			break;
 		case examination:
 			requiredPermission = ICMPermissions.examiner;

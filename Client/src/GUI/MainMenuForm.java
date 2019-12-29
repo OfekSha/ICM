@@ -60,7 +60,7 @@ public class MainMenuForm extends UserForm {
 		EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
 		for (User.ICMPermissions p : Permissions) {
 			switch (p) {
-				case informationTechnologiesDepartmentManger:
+				case informationTechnologiesDepartmentManager:
 					btnInformationTechnologiesDepartmentManager.setDisable(false);
 					break;
 				case inspector:

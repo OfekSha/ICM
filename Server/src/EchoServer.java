@@ -158,7 +158,7 @@ public class EchoServer extends AbstractServer {
 		queryHandler.insertUser(newUser);
 		// creating  information Technologies Department Manager
 		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
-		lessPermissions.add(User.ICMPermissions.informationTechnologiesDepartmentManger);
+		lessPermissions.add(User.ICMPermissions.informationTechnologiesDepartmentManager);
 		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating inspector

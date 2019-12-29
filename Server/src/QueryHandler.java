@@ -116,7 +116,7 @@ public class QueryHandler {
         if (Permissions != null) {
             for (ICMPermissions e : Permissions) {
                 switch (e) {
-                    case informationTechnologiesDepartmentManger:
+                    case informationTechnologiesDepartmentManager:
                         stmt.setInt(8, 1);
                         break;
                     case inspector:
@@ -366,7 +366,7 @@ public class QueryHandler {
         EnumSet<ICMPermissions> all = EnumSet.allOf(User.ICMPermissions.class);
         EnumSet<ICMPermissions> Permissions = EnumSet.complementOf(all);
         if (informationTechnologiesDepartmentManagerPermission == 1) {
-            Permissions.add(ICMPermissions.informationTechnologiesDepartmentManger);
+            Permissions.add(ICMPermissions.informationTechnologiesDepartmentManager);
         }
         if (inspectorPermission == 1) {
             Permissions.add(ICMPermissions.inspector);

@@ -1,12 +1,10 @@
 package GUI;
 
 import Entity.Requirement;
-import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -16,7 +14,6 @@ import java.util.ResourceBundle;
 
 public class WatchRequestForm extends UserForm {
 	@FXML
-	public ComboBox<String> cmbRequests;
 	public TextField tfRequestStatus;
 	public TextArea taRequestDetails;
 	public TextArea taRequestReason;
