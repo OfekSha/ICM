@@ -19,7 +19,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,7 +28,7 @@ import static Entity.clientRequestFromServer.requestOptions.getAll;
 public abstract class UserForm implements IcmForm {
 
 	// vars
-	protected static User user = null; // connected user;
+	static User user = null; // connected user;
 	static ArrayList<Requirement> ReqListForClient = null;
 
 	@FXML
@@ -56,7 +55,7 @@ public abstract class UserForm implements IcmForm {
 	// END UNDECORATED
 
 	// Standard buttons for each scene
-	public void BackScene(ActionEvent event) throws Exception {
+	public void MainScene(ActionEvent event) throws Exception {
 		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 	}
 
@@ -93,11 +92,6 @@ public abstract class UserForm implements IcmForm {
 	}
 	// End of standard buttons for each scene
 
-	public void getRequests() {
-		clientRequestFromServer commend = new clientRequestFromServer(getAll);
-		ClientLauncher.client.handleMessageFromClientUI(commend);
-	}
-
 	/**
 	 * loads new Scene
 	 *
@@ -115,41 +109,44 @@ public abstract class UserForm implements IcmForm {
 		}
 		Stage stage = new Stage();
 		Parent root = FXMLLoader.load(launcherClass.getClass().getResource(path));
+
 		Scene scene = new Scene(root);
 		setUndecorated(stage, root);
 		stage.setScene(scene);
 		stage.show();
 	}
 
+	public void getRequests() {
+		clientRequestFromServer newRequest = new clientRequestFromServer(getAll);
+		ClientLauncher.client.handleMessageFromClientUI(newRequest);
+	}
+
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		System.out.println("\nMessage from osf.server Received:");
-
+		System.out.println("\nMessage from server received: ");
 		switch (request.getRequest()) {
 			case getAll:
 				ReqListForClient = (ArrayList<Requirement>) request.getObject();
-				System.out.print("Load list of requests: ");
 				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
 				break;
 			case updateStatus:
 				ReqListForClient = (ArrayList<Requirement>) request.getObject();
-				ReqListForClient.forEach(e -> System.out
-						.println("Status of request ID:[" + e.getID() + "] updated to " + e.getStatus().toString()));
-				break;
-			case getRequirement:
+				ReqListForClient.forEach(e ->
+						System.out.println("Status of request ID:[" + e.getID() + "] updated to "
+								+ e.getStatus().toString()));
 				break;
 			case getUser:
 				user = (User) request.getObject();
+				System.out.println("User entity received: [" + user.getUserName() + "]");
 				break;
-			case updateUser:
+/*			case getRequirement:
 				break;
+			case updateUser: break;*/
 			default:
-				try {
-					throw new IllegalArgumentException("unknown ReqListForClient");
-				} catch (NotImplementedException e) {
-					e.printStackTrace();
-				}
+				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
 		}
 		// TODO End of todo
 	}

@@ -28,6 +28,7 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		setRequestsComboBox();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void getFromServer(Object message) {
 		System.out.print("\nMessage from osf.server Received:\nLoad list of requests: ");
@@ -66,8 +67,5 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	}
 
 	public void openExtension(ActionEvent actionEvent) {
-	}
-
-	public void requestsComboBoxUsed(ActionEvent actionEvent) {
 	}
 }
