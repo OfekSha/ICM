@@ -1,7 +1,6 @@
 package GUI;
 
 import Entity.Requirement;
-import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -28,14 +27,14 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		setRequestsComboBox();
 	}
 
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	@Override
 	public void getFromServer(Object message) {
 		System.out.print("\nMessage from osf.server Received:\nLoad list of requests: ");
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		ReqListForClient = (ArrayList<Requirement>)request.getObject();
 		ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
-	}
+	}*/
 
 	private void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();

@@ -120,7 +120,6 @@ public abstract class UserForm implements IcmForm {
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
 	}
 
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes

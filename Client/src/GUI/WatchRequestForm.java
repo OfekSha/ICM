@@ -3,7 +3,6 @@ package GUI;
 import Entity.Requirement;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -28,8 +27,7 @@ public class WatchRequestForm extends UserForm {
 	private void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
-		ObservableList<String> listFor_cmbRequests = FXCollections.observableArrayList(al);
-		cmbRequests.setItems(listFor_cmbRequests);
+		cmbRequests.setItems(FXCollections.observableArrayList(al));
 	}
 
 	public void RequestsComboBoxUsed() {
