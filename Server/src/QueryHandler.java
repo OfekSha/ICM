@@ -242,7 +242,7 @@ public class QueryHandler {
             		"status)" +
             		"VALUES(?, ?, ?, ?, ?, ?);");
             stmt.setNString(1, String.valueOf(count));
-            stmt.setNString(2, newRequest.getStarDate().toString());
+            stmt.setNString(2, newRequest.getStartDate().toString());
             stmt.setNString(3,newRequest.getSystem() );
             stmt.setNString(4,newRequest.getProblemDescription() );
             stmt.setNString(5,newRequest.getWhyChange());

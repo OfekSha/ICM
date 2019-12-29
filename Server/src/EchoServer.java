@@ -58,7 +58,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer) msg; // request from ocf.client
-		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
+		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObject() + "\t" + " from " + client.getInetAddress());
 		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackObject = null;
 		boolean iWantResponse = true;
@@ -72,14 +72,14 @@ public class EchoServer extends AbstractServer {
 					break;
 				// read data from some id in requirement
 				case updateStatus: // change status of one requirement.
-					reqReceived = request.getObj().get(0);
-					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
-					selectRequirement(ReqListForClient, reqReceived);
+					//reqReceived = request.getObject().get(0);
+				//	queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
+					//selectRequirement(ReqListForClient, reqReceived);
 					sendBackObject = ReqListForClient;
 					break;
 				case getRequirement:
-					reqReceived = request.getObj().get(0); // get the requirement id
-					selectRequirement(ReqListForClient, reqReceived);
+					//reqReceived = request.getObject().get(0); // get the requirement id
+					//selectRequirement(ReqListForClient, reqReceived);
 					sendBackObject = ReqListForClient;
 					break;
 				case getUser:
