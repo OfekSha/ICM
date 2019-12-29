@@ -322,9 +322,10 @@ public class QueryHandler {
         int examinerPermission = 0;
         int changeControlCommitteeChairman = 0;
         try {
-            //TODO: is PreparedStatement needed ?>
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where userName = username;");
-            //TODO check please: Warning:(326, 105) Condition 'userName = username' is always 'true'
+            //TODO: is PreparedStatement needed ?> yes
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where user.userName = ?;");
+            stmt.setNString(1, username);
+
             ResultSet re = stmt.executeQuery();
             while (re.next()) {
                 userName = re.getNString(1);

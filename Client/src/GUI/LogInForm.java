@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controllers.SecurityController;
+import Entity.User;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -49,6 +50,12 @@ public class LogInForm extends UserForm {
 	}
 
 	@Override
+	public void getFromServer(Object message) {
+		clientRequestFromServer request = (clientRequestFromServer) message;
+		user = (User) request.getObject();
+	}
+
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//TODO remove before final :
 		tfUserName.setText("admin");
@@ -61,7 +68,6 @@ public class LogInForm extends UserForm {
 	 * @throws Exception ??
 	 */
 	public void getInput(ActionEvent event) throws Exception {
-
 		SecurityController securityController = new SecurityController();
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
 			String username = tfUserName.getText();
