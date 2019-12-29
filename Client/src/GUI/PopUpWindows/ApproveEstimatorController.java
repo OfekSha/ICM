@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
-public class PopUpEstimatorController extends AbstractPopUp {
+public class ApproveEstimatorController extends AbstractPopUp {
 
     @FXML
     private ComboBox<String> cmbEstimator;

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
-public class PopUpExecutionLeaderController extends AbstractPopUp {
+public class ApproveExecutionLeaderController extends AbstractPopUp {
 
     @FXML
     private Button btnApprove;
