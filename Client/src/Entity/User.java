@@ -80,8 +80,8 @@ public class User implements Serializable {
 		return true;
 	}
 
-	public void updateLogin(boolean logedIn) {
-		this.loggedIn = logedIn;
+	public void updateLogin(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 
 	// TODO test this method
@@ -95,8 +95,8 @@ public class User implements Serializable {
 
 		if (job == Job.student && Permission == null) {
 			return;
-		}
-		else if (job == Job.student && Permission != null) { //Permission != null is always true when reached
+		}//TODO Permission != null is always true when reached
+		if (job == Job.student && Permission != null) {
 			try {
 				throw new IllegalArgumentException("Students dont have Permissions in the system");
 			} catch (IllegalArgumentException e) {
@@ -105,8 +105,9 @@ public class User implements Serializable {
 			return;
 		}
 		try {
-			if (Permission == null)
+			if (Permission == null) {
 				throw new IllegalArgumentException("null  is not a Permission");
+			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			System.exit(0); // must exit -EnumSet cannot receive null

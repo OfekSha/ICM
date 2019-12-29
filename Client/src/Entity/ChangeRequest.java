@@ -44,32 +44,27 @@ public class ChangeRequest implements Serializable {
 		return initiator;
 	}
 
-	public LocalDate getStarDate() {
+	public LocalDate getStartDate() {
 		return starDate;
 	}
 
 	public String getSystem() {
-		return system;
-
+		return this.system;
 	}
 
 	public String getProblemDescription() {
 		return problemDescription;
-
 	}
 
 	public String getWhyChange() {
 		return whyChange;
-
 	}
 
 	public ChangeRequestStatus getStatus() {
 		return status;
-
 	}
 
 	public Document getDoc() {
 		return doc;
-
 	}
 } // END of ChangeRequest class
