@@ -74,8 +74,8 @@ public class mysqlConnection {
 					"StageSupervisor VARCHAR(45) NULL," +
 					"EstimatorReport VARCHAR(45) NULL," +
 					"ExaminerFailReport VARCHAR(45) NULL," +
-					"inspectorDocument VARCHAR(45) NULL," +
-					"meaningEvaluationStartDate VARCHAR(45) NULL," +
+					"inspectorDocument VARCHAR(45) NULL," +				//6
+					"meaningEvaluationStartDate VARCHAR(45) NULL," + //[7]
 					"meaningEvaluationDueDate VARCHAR(45) NULL," +
 					"meaningEvaluationEndDate VARCHAR(45) NULL," +
 					"examinationAndDecisionStartDate VARCHAR(45) NULL," +
