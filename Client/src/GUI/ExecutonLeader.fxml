@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ExecutionLeaderForm">
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
@@ -27,17 +27,14 @@
    </top>
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
-            <VBox alignment="BOTTOM_CENTER" spacing="10.0">
-                     <Button fx:id="btnBack" mnemonicParsing="false" onAction="#MainScene" prefWidth="180.0" text="Back">
+            <VBox alignment="BOTTOM_CENTER" spacing="17.0">
+                     <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Back">
                         <VBox.margin>
                            <Insets />
                         </VBox.margin>
                      </Button>
-            <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LogOutButton" prefWidth="180.0" text="Logout" />
-            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Exit">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></Button>
+            <Button mnemonicParsing="false" prefWidth="180.0" text="Logout" />
+            <Button mnemonicParsing="false" prefWidth="180.0" text="Exit" />
             </VBox>
             <HBox alignment="CENTER_LEFT" prefWidth="200.0">
                   <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0">
@@ -46,11 +43,11 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                   <graphic>
-                      <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="180.0" />
+                              <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="180.0" />
                   </graphic></Label>
-               <Button fx:id="btnDueTime" mnemonicParsing="false" onAction="#openDueTime" prefWidth="180.0" text="Determining Due Time" />
-               <Button fx:id="btnApprove" mnemonicParsing="false" onAction="#openApproveExecution" prefWidth="180.0" text="Approve Execution" />
-               <Button fx:id="btnGetExtension" mnemonicParsing="false" onAction="#openExtension" prefWidth="180.0" text="Get Extension" />
+               <Button mnemonicParsing="false" prefWidth="180.0" text=" Determining Due Time" />
+               <Button mnemonicParsing="false" prefWidth="180.0" text="Approve Execution" />
+               <Button mnemonicParsing="false" prefWidth="180.0" text="Get extention" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
                         <Label alignment="CENTER" text="Initiator Request">
@@ -62,7 +59,7 @@
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin></Label>
-               <TextArea fx:id="taExaminerReport" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+               <TextArea fx:id="taExaminersReport" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
                   </VBox>
             </HBox>
       </SplitPane>

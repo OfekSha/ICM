@@ -61,7 +61,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer)msg; // request from ocf.client
-		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObject() + "\t" + " from " + client.getInetAddress());
+		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
 		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackobject =null;
 		Boolean iWantResponce =true;
@@ -76,14 +76,14 @@ public class EchoServer extends AbstractServer {
 					break;
 				// read data from some id in requirement
 				case updateStatus: // change status of one requirement.
-					//reqReceived = request.getObject().get(0);
-					//queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
-					//(ReqListForClient, reqReceived);
+					reqReceived = request.getObj().get(0);
+					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
+					selectRequirement(ReqListForClient, reqReceived);
 					sendBackobject=ReqListForClient;
 					break;
 				case getRequirement:
-					//reqReceived = request.getObject().get(0); // get the requirement id
-					//selectRequirement(ReqListForClient, reqReceived);
+					reqReceived = request.getObj().get(0); // get the requirement id
+					selectRequirement(ReqListForClient, reqReceived);
 					sendBackobject=ReqListForClient;
 					break;
 				case getUser:	
@@ -169,7 +169,7 @@ public class EchoServer extends AbstractServer {
 		queryHandler.insertUser(newUser);
 		// creating  information Tecnologies DeparmentManger
 		EnumSet<ICMPermissions> lessPermissions =EnumSet.complementOf(Permissions);		//empty enum set
-		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
+		lessPermissions.add(User.ICMPermissions.informationTecnologiesDeparmentManger);
 		newUser= new User("informationTecnologiesDeparmentManger", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating inspector
@@ -184,7 +184,7 @@ public class EchoServer extends AbstractServer {
 		queryHandler.insertUser(newUser);
 		//creating exeution Leader
 		lessPermissions=EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.ICMPermissions.executionLeader);
+		lessPermissions.add(User.ICMPermissions.exeutionLeader);
 		newUser= new User("exeutionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating examiner

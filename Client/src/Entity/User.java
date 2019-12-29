@@ -1,6 +1,7 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
@@ -11,19 +12,15 @@ import java.util.EnumSet;
 public class User implements Serializable {
 
 	// enums*********************************************
-	public enum ICMPermissions {
-		informationTechnologiesDepartmentManger,
-		inspector,
-		estimator,
-		executionLeader,
-		examiner,
+	public static enum ICMPermissions {
+		informationTecnologiesDeparmentManger, inspector, estimator, exeutionLeader, examiner,
 		changeControlCommitteeChairman
 	}
 
 	// wil be used to determan who can be allocted ICMPermissions
 	public enum Job {
-		student,
-		informationEngineer
+		student, informationEngineer
+
 	}
 
 	// Variables
@@ -35,33 +32,33 @@ public class User implements Serializable {
 	private EnumSet<ICMPermissions> Permissions = null;
 //private ICMPermissions[] Permissions;
 	private Job job;
-	private boolean loggedIn;
+	private boolean logedIn;
 
 // Contractors
 
 	/**
 	 * creates user entity while enforcing constraints
 	 * 
-	 * @param userName ?
-	 * @param password ?
-	 * @param firstName ?
-	 * @param lastName ?
-	 * @param email ?
+	 * @param userName
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param email
 	 * @param job         -(enum-Job)
 	 * @param Permissions - (enum-ICMPermissions)if the user is is a student send
 	 *                    null
-	 * @param loggedIn     - represents if the user is logged in
+	 * @param logedIn     - represents if the user is logged in
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, Job job,
-			EnumSet<ICMPermissions> Permissions, boolean loggedIn) {
+			EnumSet<ICMPermissions> Permissions, boolean logedIn) {
 		this.job = job;
-		updatePermissions(Permissions);
+		updatePremiisions(Permissions);
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.loggedIn = loggedIn;
+		this.logedIn = logedIn;
 	}
 
 // input 
@@ -72,42 +69,39 @@ public class User implements Serializable {
 	 * @param Permissions - EnumSet of the Permissions the user has
 	 * @return - returns true if the update was done
 	 */
-	public boolean updatePermissions(EnumSet<ICMPermissions> Permissions) {
-		if (Permissions == null || job == Job.student) {
+	public boolean updatePremiisions(EnumSet<ICMPermissions> Permissions) {
+		if (Permissions == null || job == Job.student)
 			return false;
-		}
 		this.Permissions = Permissions;
 		return true;
 	}
 
-	public void updateLogin(boolean loggedIn) {
-		this.loggedIn = loggedIn;
+	public void updateLoging(boolean logedIn) {
+		this.logedIn = logedIn;
 	}
 
 	// TODO test this method
 	/**
 	 * adding a Permission to user entity [NOT YET TESTED]
 	 * 
-	 * @param Permission ??
-	 * Does not return anything!!!! @return - returns true if permission is in the collection
+	 * @param Permission
+	 * @return - returns true if permission is in the collection
 	 */
-	public void addPermmission(ICMPermissions Permission) {
+	public void addPremmision(ICMPermissions Permission) {
 
-		if (job == Job.student && Permission == null) {
+		if (job == Job.student && Permission == null)
 			return;
-		}//TODO Permission != null is always true when reached
-		if (job == Job.student && Permission != null) {
+		else if (job == Job.student && Permission != null) {			
 			try {
-				throw new IllegalArgumentException("Students dont have Permissions in the system");
+					throw new IllegalArgumentException("Students dont have Permissions in the system");
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
-			}
-			return;
+			}	
+			return ;
 		}
 		try {
-			if (Permission == null) {
+			if (Permission == null)
 				throw new IllegalArgumentException("null  is not a Permission");
-			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			System.exit(0); // must exit -EnumSet cannot receive null
@@ -117,35 +111,36 @@ public class User implements Serializable {
 			EnumSet<ICMPermissions> all = EnumSet.allOf(ICMPermissions.class);
 			this.Permissions = EnumSet.complementOf(all);
 			this.Permissions.add(Permission);
-			return;
+			return ;
 		}
-		if (this.Permissions.contains(Permission)) {
-			return;
-		}
+		if (this.Permissions.contains(Permission))
+			return ;
 		this.Permissions.add(Permission);
+		return ;
+
 	} // END of addPremmision()
 
 	// TODO test this method
 	/**
 	 * removes the Permission from the user [NOT YET TESTED]
 	 * 
-	 * @param Permission ?
+	 * @param Permission
 	 */
 	public void removePermission(ICMPermissions Permission) {
-		if (this.Permissions != null && Permission != null){
+		if (Permission == null || this.Permissions == null)
+			return;
+		if (this.Permissions.contains(Permission))
 			this.Permissions.remove(Permission);
-		}
-
 	}// END of removePermission()
 
 	/**
 	 * changes the log in value to the given value
 	 * 
-	 * @param bool ??
+	 * @param bool
 	 */
-	public void changeLoginStatus(boolean bool) {
-		loggedIn = bool;
-	}// END changeLoginStatus
+	public void changeLoginStaus(boolean bool) {
+		logedIn = bool;
+	}// END changeLoginStaus
 //output
 
 	public String getUserName() {
@@ -176,8 +171,8 @@ public class User implements Serializable {
 		return job;
 	}
 
-	public boolean getLoggedIn() {
-		return loggedIn;
+	public boolean getlogedIn() {
+		return logedIn;
 	}
 
 }// End of User

@@ -96,7 +96,7 @@ public class QueryHandler {
             stmt.setNString(2, user.getPassword());
             stmt.setNString(3, user.getFirstName());
             stmt.setNString(4, user.getLastName());
-            if( user.getLoggedIn())  stmt.setInt(5, 1);
+            if( user.getlogedIn())  stmt.setInt(5, 1);
             else stmt.setInt(5, 0);
             stmt.setNString(6, user.getJob().name());
             stmt.setNString(7, user.getEmail());  
@@ -110,7 +110,7 @@ public class QueryHandler {
            if(Permissions!=null) {
             for(ICMPermissions e: Permissions) {
             	switch(e) {
-            	case informationTechnologiesDepartmentManger:
+            	case informationTecnologiesDeparmentManger:
             	     stmt.setInt(8, 1);
             		break;
             	case inspector:
@@ -119,7 +119,7 @@ public class QueryHandler {
             	case estimator:
             		  stmt.setInt(10, 1);
             		break;
-            	case executionLeader:
+            	case exeutionLeader:
             		 stmt.setInt(11, 1);
             		break;
             	case examiner:
@@ -330,7 +330,7 @@ public class QueryHandler {
             updStatus.setNString(2, user.getPassword());
             updStatus.setNString(3, user.getFirstName());
             updStatus.setNString(4, user.getLastName());
-            if( user.getLoggedIn())  updStatus.setInt(5, 1);
+            if( user.getlogedIn())  updStatus.setInt(5, 1);
             else updStatus.setInt(5, 0);
             updStatus.setNString(6, user.getJob().name());
             updStatus.setNString(7, user.getEmail());  
@@ -344,7 +344,7 @@ public class QueryHandler {
            if(Permissions!=null) {
             for(ICMPermissions e: Permissions) {
             	switch(e) {
-            	case informationTechnologiesDepartmentManger:
+            	case informationTecnologiesDeparmentManger:
             		updStatus.setInt(8, 1);
             		break;
             	case inspector:
@@ -353,7 +353,7 @@ public class QueryHandler {
             	case estimator:
             		updStatus.setInt(10, 1);
             		break;
-            	case executionLeader:
+            	case exeutionLeader:
             		updStatus.setInt(11, 1);
             		break;
             	case examiner:
@@ -429,10 +429,10 @@ public User selectUser(String username) { // @building by yonathan not finished.
      // converting to premissions set
    EnumSet<ICMPermissions> all =EnumSet.allOf(User.ICMPermissions.class);
    EnumSet<ICMPermissions> Permissions =EnumSet.complementOf(all);
-     if(informationTecnologiesDeparmentMangerPermission==1)  Permissions.add(ICMPermissions.informationTechnologiesDepartmentManger);
+     if(informationTecnologiesDeparmentMangerPermission==1)  Permissions.add(ICMPermissions.informationTecnologiesDeparmentManger);
      if(inspectorPermission==1)  Permissions.add(ICMPermissions.inspector);
      if(estimatorPermission==1)  Permissions.add(ICMPermissions.estimator);
-     if(exeutionLeaderPermission==1)  Permissions.add(ICMPermissions.executionLeader);
+     if(exeutionLeaderPermission==1)  Permissions.add(ICMPermissions.exeutionLeader);
      if(examinerPermission==1)  Permissions.add(ICMPermissions.examiner);
      if(changeControlCommitteeChairmant==1)  Permissions.add(ICMPermissions.changeControlCommitteeChairman); 
      toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, logIn);
