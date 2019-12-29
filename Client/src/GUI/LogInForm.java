@@ -49,11 +49,11 @@ public class LogInForm extends UserForm {
 		primaryStage.show();
 	}
 
-	/*@Override
+	@Override
 	public void getFromServer(Object message) {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		user = (User) request.getObject();
-	}*/
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -77,7 +77,7 @@ public class LogInForm extends UserForm {
 			Thread.sleep(2000);
 			boolean temp = securityController.checkLogin(pfPassword.getText(), user);
 
-			if (temp) MainScene(event);
+			if (temp) NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 			else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Information Dialog");

@@ -47,10 +47,8 @@ public class MainMenuForm extends UserForm {
 		ClientLauncher.client.setClientUI(this);
 		//updating server user is logged in
 		user.changeLoginStatus(true);
-		//TODO Implement it before use
-		// [Waste on found this little shit like 4 hours]
-		/*Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
-		ClientLauncher.client.handleMessageFromClientUI(msg);*/
+		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
@@ -105,7 +103,6 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
-		getRequests();
 		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true);
 	}
 

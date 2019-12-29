@@ -17,11 +17,12 @@ public class ChangeRequest implements Serializable {
 	private String system;
 	private String problemDescription;
 	private String whyChange;
-	private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
 	private Document doc;
+	private ChangeRequestStatus status;
 	public ProcessStage stage = new ProcessStage(this);
 
-	public ChangeRequest(Initiator initiator, LocalDate starDate, String problemDescription, String whyChange,
+	public ChangeRequest(Initiator initiator, LocalDate starDate,
+						 String problemDescription, String whyChange,
 						 Document doc) {
 		this.initiator = initiator;
 		this.starDate = starDate;

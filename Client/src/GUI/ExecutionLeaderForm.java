@@ -1,9 +1,5 @@
 package GUI;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.ArrayList;
-
 import Entity.Requirement;
 import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
@@ -12,6 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
@@ -67,5 +67,8 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	}
 
 	public void openExtension(ActionEvent actionEvent) {
+	}
+
+	public void requestsComboBoxUsed(ActionEvent actionEvent) {
 	}
 }
