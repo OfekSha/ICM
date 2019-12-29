@@ -1,6 +1,5 @@
 package GUI;
 
-import Entity.Requirement;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,11 +12,11 @@ import java.util.ResourceBundle;
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
 	@FXML
-	public TextArea taInitiatorRequest;
 	public Button btnDueTime;
 	public Button btnApprove;
 	public Button btnGetExtension;
 	public TextArea taExaminerReport;
+	public TextArea taInitiatorRequest;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -26,29 +25,28 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	}
 
 	public void RequestsComboBoxUsed() {
-		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
-		for (Requirement req : ReqListForClient) {
-			if (s == req.getID()) {
-				this.taInitiatorRequest.setText(req.getRequestDetails());
-
-				//TODO Implement this in Request Entity
-				//this.taRequestReason.setText(req.getRequestReason());
-				//this.taComment.setText(req.getRequestComment());
-				break;
+		String selected = cmbRequests.getSelectionModel().getSelectedItem();
+		changeRequests.forEach(cR -> {
+			if (selected.equals(cR.getRequestID())) {
+				this.taInitiatorRequest.setText(cR.getProblemDescription());
+				this.taExaminerReport.setText(cR.getComment());
 			}
-		}
+		});
 	}
 
 	//TODO: the following  methods are from the class diagram:
 	public void getExecutionApproved() {}
 	public void getReport() {}
 
-	public void openDueTime(ActionEvent actionEvent) {
+	public void openDueTime(ActionEvent actionEvent) throws Exception {
+		NextWindowLauncher(actionEvent, "/GUI/PopUpWindows/DeterminingDueTime.fxml", this, false);
 	}
 
-	public void openApproveExecution(ActionEvent actionEvent) {
+	public void openApproveExecution(ActionEvent actionEvent) throws Exception {
+		NextWindowLauncher(actionEvent, "/GUI/PopUpWindows/ApproveExecutionLeader.fxml", this, false);
 	}
 
-	public void openExtension(ActionEvent actionEvent) {
+	public void openExtension(ActionEvent actionEvent) throws Exception {
+		NextWindowLauncher(actionEvent, "/GUI/PopUpWindows/ApproveExtension.fxml", this, false);
 	}
 }

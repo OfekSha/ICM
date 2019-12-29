@@ -1,13 +1,11 @@
 package GUI;
 
 import WindowApp.ClientLauncher;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class WatchRequestForm extends UserForm {
@@ -23,12 +21,11 @@ public class WatchRequestForm extends UserForm {
 		setRequestsComboBox();
 	}
 
-	protected void setRequestsComboBox() {
+	/*protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		changeRequests.forEach(cR -> al.add(cR.getRequestID()));
-		/*ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));*/
 		cmbRequests.setItems(FXCollections.observableArrayList(al));
-	}
+	}*/
 
 	public void RequestsComboBoxUsed() {
 		//int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());

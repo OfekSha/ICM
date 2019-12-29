@@ -125,7 +125,7 @@ public abstract class UserForm implements IcmForm {
 
 	protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
+		changeRequests.forEach(cR -> al.add(cR.getRequestID()));
 		cmbRequests.setItems(FXCollections.observableArrayList(al));
 	}
 
