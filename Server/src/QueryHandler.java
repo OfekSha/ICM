@@ -156,54 +156,52 @@ public class QueryHandler {
 
 
     public void InsertProcessStage(ProcessStage newStage) {
-    	try {
+        try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.stage " +
-            		"(RequestID," + 							//[1]
-            		"currentStage," + 							//[2]
-            		"StageSupervisor," + 						//[3]
-            		"EstimatorReport," + 						//[4]
-            		"ExaminerFailReport," + 					//[5]
-            		"inspectorDocument," + 					    //[6]
-            		"meaningEvaluationStartDate," + 			//[7]
-            		"meaningEvaluationDueDate," + 				//[8]
-            		"meaningEvaluationEndDate," +          		//[9]
-            		"examinationAndDecisionStartDate," + 		//[10]
-            		"stageColExaminationAndDecisionDueDate," +  //[11]
-            		"examinationAndDecisionEndDate," + 			//[12]
-            		"ExecutionStartDate," +						//[13]
-            		"ExecutionDueDate," + 						//[14]
-            		"ExecutionEndDate," + 						//[15]
-            		"examinationStartDate," + 					//[16]
-            		"examinationDueDate," + 					//[17]
-            		"examinationEndDate," + 					//[18]
-            		"closureStarDate," + 						//[19]
-            		"closureEndDate,"							//[20]
-            		+ "stage1extention,"
-            		+ "stage2extention,"
-            		+ "stage3extention,"
-            		+ "stage4extention,"
-            		+ "stage5extention,"
-            		+ "currentSubStage)" + 						
-            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "(RequestID," +                            //[1]
+                    "currentStage," +                            //[2]
+                    "StageSupervisor," +                        //[3]
+                    "EstimatorReport," +                        //[4]
+                    "ExaminerFailReport," +                    //[5]
+                    "inspectorDocument," +                        //[6]
+                    "meaningEvaluationStartDate," +            //[7]
+                    "meaningEvaluationDueDate," +                //[8]
+                    "meaningEvaluationEndDate," +                //[9]
+                    "examinationAndDecisionStartDate," +        //[10]
+                    "stageColExaminationAndDecisionDueDate," +  //[11]
+                    "examinationAndDecisionEndDate," +            //[12]
+                    "ExecutionStartDate," +                        //[13]
+                    "ExecutionDueDate," +                        //[14]
+                    "ExecutionEndDate," +                        //[15]
+                    "examinationStartDate," +                    //[16]
+                    "examinationDueDate," +                    //[17]
+                    "examinationEndDate," +                    //[18]
+                    "closureStarDate," +                        //[19]
+                    "closureEndDate," +                         //[20]
+                    "stage1extension," +                      //[21]
+                    "stage2extension," +                      //[22]
+                    "stage3extension," +                      //[23]
+                    "stage4extension," +                      //[24]
+                    "stage5extension," +                      //[25]
+                    "currentSubStage)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setNString(1, newStage.getRequest().getRequestID());
             stmt.setNString(2, newStage.getCurrentStage().name());
             if (newStage.getStageSupervisor() == null) {
                 stmt.setNString(3, null);
-            }
-            else  {
+            } else {
                 stmt.setNString(3, newStage.getStageSupervisor().getUserName());
             }
             stmt.setNString(4, newStage.getEstimatorReport());
             stmt.setNString(5, newStage.getExeminorFailReport());
             stmt.setNString(6, newStage.getInspectorDocumention());
-            LocalDate [][] date = newStage.getDates();
+            LocalDate[][] date = newStage.getDates();
             int u = 7;
-            for (int i = 0 ; i < 4; i++) {
+            for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (date[i][j] == null) {
                         stmt.setNString(u, null);
-                    }
-                    else {
+                    } else {
                         stmt.setNString(u, date[i][j].toString());
                     }
                     u++;
@@ -211,26 +209,24 @@ public class QueryHandler {
             }
             if (date[4][0] == null) {
                 stmt.setNString(19, null);
-            }
-            else {
+            } else {
                 stmt.setNString(19, date[4][0].toString());
             }
-            if(date[4][2] == null) {
+            if (date[4][2] == null) {
                 stmt.setNString(20, null);
-            }
-            else {
+            } else {
                 stmt.setNString(20, date[4][2].toString());
             }
-            boolean[] bool =newStage.getWasThereAnExtentionRequest();
-            int v= 21;
-			for (int j = 0; j < 5; j++) {
-				if (bool[j] == true)
-					stmt.setInt(v, 1);
-				else
-					stmt.setInt(v, 0);
-				v++;
-			}
-			stmt.setString(26, newStage.getCurrentSubStage().name());
+            boolean[] bool = newStage.getWasThereAnExtentionRequest();
+            int v = 21;
+            for (int j = 0; j < 5; j++) {
+                if (bool[j])
+                    stmt.setInt(v, 1);
+                else
+                    stmt.setInt(v, 0);
+                v++;
+            }
+            stmt.setString(26, newStage.getCurrentSubStage().name());
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -420,7 +416,7 @@ public class QueryHandler {
             stmt.setInt(1, reqID);
             ResultSet re = stmt.executeQuery();
             while (re.next()) {
-                toReturn = new String[] {
+                toReturn = new String[]{
                         re.getNString(1),
                         re.getInt(2) + "",
                         re.getNString(3),
