@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 public class clientRequestFromServer implements Serializable {
     public enum requestOptions {
-        getAll, // for now need to change not good name get all requirements
-        updateStatus, // change requirement status (ongoing ,closed,etc)
+        getAll,         // for now need to change not good name get all requirements
+        updateStatus,   // change requirement status (ongoing ,closed,etc)
         getRequirement, // get requirement from DB by his id.
-        getUser ,// get one user from DB by his user name.
-        updateUser, // updates all users details 
-        changeInLogIn, // used to update log in/out
+        getUser ,       // get one user from DB by his user name.
+        updateUser,     // updates all users details
+        changeInLogIn,  // used to update log in/out
         addRequest
     }
     //  is needed?
@@ -25,8 +25,8 @@ public class clientRequestFromServer implements Serializable {
     }
     
     /** request from server and send an object
-     * @param request
-     * @param obj
+     * @param request ?
+     * @param obj ?
      */
     public clientRequestFromServer(requestOptions request, Object obj) {
     	this.object = obj;
@@ -54,7 +54,7 @@ public class clientRequestFromServer implements Serializable {
 	//
 	
 	/** returns the held object
-	 * @return
+	* nothing is @return
 	 */
 	public Object getObject() {
 		return object;

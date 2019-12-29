@@ -2,14 +2,12 @@ package GUI;
 
 import Entity.Requirement;
 import WindowApp.ClientLauncher;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
@@ -25,21 +23,6 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		setRequestsComboBox();
-	}
-
-/*	@SuppressWarnings("unchecked")
-	@Override
-	public void getFromServer(Object message) {
-		System.out.print("\nMessage from osf.server Received:\nLoad list of requests: ");
-		clientRequestFromServer request = (clientRequestFromServer) message;
-		ReqListForClient = (ArrayList<Requirement>)request.getObject();
-		ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
-	}*/
-
-	private void setRequestsComboBox() {
-		ArrayList<String> al = new ArrayList<>();
-		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
-		cmbRequests.setItems(FXCollections.observableArrayList(al));
 	}
 
 	public void RequestsComboBoxUsed() {

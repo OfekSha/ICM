@@ -6,6 +6,7 @@ import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,7 +73,7 @@ public abstract class UserForm implements IcmForm {
 		if (user != null && !(this instanceof LogInForm)) {
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("");
+			alert.setTitle("Exit");
 			alert.setHeaderText("You are exiting the ICM");
 			alert.setContentText("Are you sure you want to do that?");
 			Optional<ButtonType> result = alert.showAndWait();
@@ -102,8 +103,8 @@ public abstract class UserForm implements IcmForm {
 	 * @param hide          - true if you want to hide the launching window
 	 * @throws Exception ???
 	 */
-	public void NextWindowLauncher(ActionEvent event, String path, IcmForm launcherClass, boolean hide)
-			throws Exception {
+	public void NextWindowLauncher(ActionEvent event, String path,
+								   IcmForm launcherClass, boolean hide) throws Exception {
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
@@ -118,6 +119,12 @@ public abstract class UserForm implements IcmForm {
 	public void getRequests() {
 		clientRequestFromServer newRequest = new clientRequestFromServer(getAll);
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
+	}
+
+	protected void setRequestsComboBox() {
+		ArrayList<String> al = new ArrayList<>();
+		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
+		cmbRequests.setItems(FXCollections.observableArrayList(al));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
 
-	ObservableList<String> list;
 	@FXML
 	public TextArea taRequestDetails;
 	@FXML
@@ -38,9 +37,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-
 		setSystemsComboBox();
-
 	}
 
 	public void setSystemsComboBox() {
@@ -48,7 +45,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		al.add("ICM");
 		al.add("Moodle");
 		al.add("Information Station");
-		list = FXCollections.observableArrayList(al);
+		ObservableList<String> list = FXCollections.observableArrayList(al);
 		cmbSystems.setItems(list);
 	}
 
@@ -75,14 +72,11 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 			ChangeRequest change = new ChangeRequest(init, start, sys, rd, rr, com, null);
 			Object msg = new clientRequestFromServer(requestOptions.addRequest, change);
 			ClientLauncher.client.handleMessageFromClientUI(msg);
-
 		}
-
 	}
 
 	public void getRequestID() {
 	}
-
 }
 
 

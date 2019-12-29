@@ -101,7 +101,7 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 	}
 
 	// setting up the combo boxes
-	private void setRequestsComboBox() {
+	protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		ReqListForClient.forEach(c -> al.add(Integer.toString((c.getID()))));
 		listFor_cmbRequests = FXCollections.observableArrayList(al);

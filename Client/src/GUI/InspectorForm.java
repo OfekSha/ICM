@@ -1,15 +1,9 @@
 package GUI;
 
+import WindowApp.IcmForm;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import WindowApp.ClientLauncher;
-import WindowApp.IcmForm;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 public class InspectorForm extends UserForm implements IcmForm {
 
@@ -31,5 +25,4 @@ public class InspectorForm extends UserForm implements IcmForm {
 	public void getRequestId() {}
 	public void getDoneReport() {}
 	public void getTalkeApprove() {}
-
 }

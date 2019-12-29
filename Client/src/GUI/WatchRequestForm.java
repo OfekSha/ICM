@@ -24,7 +24,7 @@ public class WatchRequestForm extends UserForm {
 		setRequestsComboBox();
 	}
 
-	private void setRequestsComboBox() {
+	protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
 		cmbRequests.setItems(FXCollections.observableArrayList(al));
