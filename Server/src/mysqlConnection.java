@@ -112,17 +112,16 @@ public class mysqlConnection {
 	}
 
 	public static boolean checkExistence() {
+		String result = "0";
 		try {
-			String result = "0";
 			Statement stmt = conn.createStatement();
 			ResultSet rs1 = stmt.executeQuery("SELECT count(*) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = 'icm';");
 			while(rs1.next()) {
 				result = rs1.getString(1);
 			}
-			return result.equals("1");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return result.equals("1");
 	}
 }

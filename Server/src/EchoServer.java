@@ -61,8 +61,6 @@ public class EchoServer extends AbstractServer {
 			switch (request.getRequest()) {
 				// read all requirement data
 				case getAll: // get all requirements need to change!!!!!!!!!
-					//getAllRequest(ReqListForClient);
-					//sendBackObject = ReqListForClient;
 					sendBackObject = queryHandler.getAllChangeRequest();
 					break;
 				// read data from some id in requirement, doesn't work yet
@@ -206,7 +204,6 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
 		mysqlConnection mysqlConn = new mysqlConnection();
 		queryHandler = new QueryHandler(mysqlConn);
-		//ArrayList<ChangeRequest> c = queryHandler.getAllChangeRequest();
 		if (!mysqlConnection.checkExistence()) {
 			mysqlConnection.buildDB();
 			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);

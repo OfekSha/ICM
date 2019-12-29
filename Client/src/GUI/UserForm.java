@@ -136,9 +136,6 @@ public abstract class UserForm implements IcmForm {
 		System.out.println("\nMessage from server received: ");
 		switch (request.getRequest()) {
 			case getAll:
-				/*ReqListForClient = (ArrayList<Requirement>) request.getObject();
-				ReqListForClient.forEach(e -> System.out.print("[" + e.getID() + "] "));
-				*/
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
 				changeRequests.forEach(e -> System.out.print("[" + e.getRequestID() + "] "));
 				break;

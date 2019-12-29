@@ -41,15 +41,5 @@ public class WatchRequestForm extends UserForm {
 				this.taComment.setText(cR.getComment());
 			}
 		});
-		/*for (Requirement req : ReqListForClient) {
-			if (s == req.getID()) {
-				this.tfRequestStatus.setPromptText((req.getStatus()).name());
-				this.taRequestDetails.setText(req.getRequestDetails());
-				//TODO Implement this in Request Entity
-				//this.taRequestReason.setText(req.getRequestReason());
-				//this.taComment.setText(req.getRequestComment());
-				break;
-			}
-		}*/
 	}
 }
