@@ -3,12 +3,12 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-file-location
 
 #if you want to own any code contact yonathan
-/CODEOWNERS/@Jonny Gov
+/CODEOWNERS/@JonnyGov
 
 #yonathan owes:
-#/Client/src/WindowApp/@Jonny Gov
-#/Client/src/GUI/MainMenu.fxml/@Jonny Gov
-#/Client/src/GUI/MainMenuForm.java/@Jonny Gov
-#/Client/src/GUI/LogInForm.fxml/@Jonny Gov
-#/Client/src/GUI/LogInForm.java/@Jonny Gov
+#/Client/src/WindowApp/@JonnyGov
+#/Client/src/GUI/MainMenu.fxml/@JonnyGov
+#/Client/src/GUI/MainMenuForm.java/@JonnyGov
+#/Client/src/GUI/LogInForm.fxml/@JonnyGov
+#/Client/src/GUI/LogInForm.java/@JonnyGov
 #comment

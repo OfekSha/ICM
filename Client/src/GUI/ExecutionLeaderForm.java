@@ -68,7 +68,4 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
 	public void openExtension(ActionEvent actionEvent) {
 	}
-
-	public void requestsComboBoxUsed(ActionEvent actionEvent) {
-	}
 }

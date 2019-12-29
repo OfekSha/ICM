@@ -1,17 +1,15 @@
 package GUI;
 
-import java.net.URL;
-import java.util.EnumSet;
-import java.util.ResourceBundle;
-
 import Entity.User;
-import Entity.clientRequestFromServer;
 import Entity.User.ICMPermissions;
-import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
+import java.net.URL;
+import java.util.EnumSet;
+import java.util.ResourceBundle;
 
 /**
  * @author Yonathan
@@ -47,8 +45,10 @@ public class MainMenuForm extends UserForm {
 		ClientLauncher.client.setClientUI(this);
 		//updating server user is logged in
 		user.changeLoginStatus(true);
-		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
-		ClientLauncher.client.handleMessageFromClientUI(msg);
+		//TODO Implement it before use
+		// [Waste on found this little shit like 4 hours]
+		/*Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);*/
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
@@ -93,6 +93,8 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {
+		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
+		// WatchRequestForm(), true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
@@ -100,16 +102,23 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
+		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
+		// WatchRequestForm(), true);
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
+		getRequests();
 		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true);
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
+		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new RequestForm(),
+		// true);
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
+		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
+		// WatchRequestForm(), true);
 	}
 
 }// END of MainMenuForm

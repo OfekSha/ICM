@@ -1,16 +1,21 @@
 package GUI;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Controllers.SecurityController;
-import Entity.User;
+import Entity.Requirement;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
+import WindowApp.IcmClient;
+import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -49,11 +54,11 @@ public class LogInForm extends UserForm {
 		primaryStage.show();
 	}
 
-	@Override
+	/*@Override
 	public void getFromServer(Object message) {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		user = (User) request.getObject();
-	}
+	}*/
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -77,7 +82,7 @@ public class LogInForm extends UserForm {
 			Thread.sleep(2000);
 			boolean temp = securityController.checkLogin(pfPassword.getText(), user);
 
-			if (temp) NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
+			if (temp) MainScene(event);
 			else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Information Dialog");

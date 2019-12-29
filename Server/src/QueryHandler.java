@@ -403,7 +403,6 @@ public class QueryHandler {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.requirement WHERE RequestID = ?");
             stmt.setInt(1, reqID);
             ResultSet re = stmt.executeQuery();
-
             while (re.next()) {
                 toReturn = new String[] {
                         re.getNString(1),

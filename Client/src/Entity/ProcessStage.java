@@ -70,7 +70,7 @@ public class ProcessStage implements Serializable{
 			requiredPermission = ICMPermissions.changeControlCommitteeChairman;
 			break;
 		case Execution:
-			requiredPermission = ICMPermissions.executionLeader;
+			requiredPermission = ICMPermissions.exeutionLeader;
 			break;
 		case examination:
 			requiredPermission = ICMPermissions.examiner;
@@ -130,6 +130,10 @@ public class ProcessStage implements Serializable{
 			e.printStackTrace();
 		}
 	}// End addExeminorFailReport;
+	
+	public void setRequest(ChangeRequest Request) {
+		 this.Request = Request;
+	}
 
 	// output
 	public ChangeRequest getRequest(){

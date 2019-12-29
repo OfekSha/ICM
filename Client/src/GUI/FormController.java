@@ -77,13 +77,12 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 	 * @param message is array of objects where where message[0] is requested action
 	 *                and message[1] is answer
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void getFromServer(Object message) throws NotImplementedException {
 		// TODO Auto-generated method stub
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		// msg is ArrayLost of Requirement classes
-		ReqListForClient = (ArrayList<Requirement>) request.getObject();
+		ReqListForClient = request.getObj();
 		System.out.println("\nMessage from server Received:");
 		switch (request.getRequest()) {
 			//TODO some actions to prompt message to client about answer from server
