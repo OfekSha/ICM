@@ -100,6 +100,7 @@ public class mysqlConnection {
 					"  `system` VARCHAR(45) NULL,\n" + 
 					"  `problomeDescription` TEXT NULL,\n" + 
 					"  `whyChange` TEXT NULL,\n" + 
+					"  `comment` VARCHAR(45) NULL,\n"+
 					"  `status` VARCHAR(45) NULL,\n" + 
 					"  PRIMARY KEY (`requestID`));\n" + 
 					"");

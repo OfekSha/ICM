@@ -128,6 +128,10 @@ public class ProcessStage implements Serializable{
 			e.printStackTrace();
 		}
 	}// End addExeminorFailReport;
+	
+	public void setRequest(ChangeRequest Request) {
+		 this.Request = Request;
+	}
 
 	// output
 	public  ChangeRequest getRequest(){

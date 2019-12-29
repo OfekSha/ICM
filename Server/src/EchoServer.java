@@ -96,6 +96,15 @@ public class EchoServer extends AbstractServer {
 					iWantResponce =false;
 					queryHandler.updateAllUserFileds((User)request.getObject());
 					break;
+				case addRequest:	
+					ChangeRequest change =(ChangeRequest)request.getObject();
+					change.changeRequestID(queryHandler.InsertChangeRequest(change));
+					change.updateInitiatorRequest();
+					change.updateStage();
+					queryHandler.insertInitiator(change.getInitiator());
+					queryHandler.InsertProcessStage(change.stage);
+					iWantResponce =false;
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
@@ -198,7 +207,7 @@ public class EchoServer extends AbstractServer {
 		User newUser =new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
 		Initiator init = new Initiator(newUser,null);
 		LocalDate start =  LocalDate.now();
-		ChangeRequest chang = new ChangeRequest(init, start, "test", "test", null);
+		ChangeRequest chang = new ChangeRequest(init, start,"TheSystme" ,"test", "test", "test",null);
 		chang.changeRequestID(queryHandler.InsertChangeRequest(chang));
 		init.setrequest(chang);
 		queryHandler.insertInitiator(init);

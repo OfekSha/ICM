@@ -10,7 +10,8 @@ public class clientRequestFromServer implements Serializable {
         getRequirement, // get requirement from DB by his id.
         getUser ,// get one user from DB by his user name.
         updateUser, // updates all users details 
-        changeInLogIn // used to update log in/out
+        changeInLogIn, // used to update log in/out
+        addRequest
     }
     //  is needed?
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.

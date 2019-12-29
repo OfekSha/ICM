@@ -253,11 +253,13 @@ public class QueryHandler {
             		"`startDate`,\n" + 
             		"`system`,\n" + 
             		"`problomeDescription`,\n" + 
-            		"`whyChange`,\n" + 
+            		"`whyChange`,\n"+
+            		"`comment`,\n" + 
             		"`status`)\n" + 
             		"VALUES\n" + 
             		"(?,\n" + 
             		"?,\n" + 
+            		"?,\n"+
             		"?,\n" + 
             		"?,\n" + 
             		"?,\n" + 
@@ -269,7 +271,8 @@ public class QueryHandler {
             stmt.setNString(3,newRequest.getSystem() );  
             stmt.setNString(4,newRequest.getProblomeDescription() );  
             stmt.setNString(5,newRequest.getWhyChange());  
-            stmt.setNString(6,newRequest.getStatus().name());     
+            stmt.setNString(6,newRequest.getComment()); 
+            stmt.setNString(7,newRequest.getStatus().name());     
             stmt.execute(); // insert new row to requirement table
             stmt.close();
         } catch (SQLException e) {

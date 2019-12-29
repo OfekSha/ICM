@@ -88,7 +88,7 @@
                         <TextArea fx:id="taComment" prefHeight="100.0" wrapText="true" />
                   </graphic>
                   </Label>
-                  <Button fx:id="btnSubmit" contentDisplay="CENTER" mnemonicParsing="false" text="Submit Change Request">
+                  <Button fx:id="btnSubmit" contentDisplay="CENTER" mnemonicParsing="false" onAction="#getRequestData" text="Submit Change Request">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

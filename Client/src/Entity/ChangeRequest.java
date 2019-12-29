@@ -20,14 +20,17 @@ public class ChangeRequest implements Serializable {
 	private String system;
 	private String problomeDescription;
 	private String whyChange;
+	private String comment;
 	private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
 	private Document doc;
 	public ProcessStage stage = new ProcessStage(this);
 
-	public ChangeRequest(Initiator initiator, LocalDate starDate, String problomeDescription, String whyChange,
+	public ChangeRequest(Initiator initiator, LocalDate starDate,String system, String problomeDescription, String whyChange,String comment,
 			Document doc) {
+		this.comment=comment;
 		this.initiator = initiator;
 		this.starDate = starDate;
+		this.system =system;
 		this.problomeDescription = problomeDescription;
 		this.whyChange = whyChange;
 		this.doc = doc;
@@ -38,6 +41,16 @@ public class ChangeRequest implements Serializable {
 	}
 	public void changeRequestID(String id) {
 		RequestID= id;
+	}
+	//update 
+	/**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
+	 * 
+	 */
+	public void updateInitiatorRequest() {
+		initiator.setrequest(this);
+	}
+	public void updateStage() {
+		stage.setRequest(this);
 	}
 	// output
 	public  String getRequestID(){
@@ -64,6 +77,10 @@ public class ChangeRequest implements Serializable {
 
 	public String getWhyChange() {
 		return whyChange;
+
+	}
+	public String getComment() {
+		return comment;
 
 	}
 
