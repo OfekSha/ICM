@@ -8,64 +8,81 @@ import java.time.LocalDate;
  */
 public class ChangeRequest implements Serializable {
 
-	public enum ChangeRequestStatus { //
-		ongoing, suspended, closed
-	}
-	private String RequestID;
-	private Initiator initiator;
-	private LocalDate starDate;
-	private String system;
-	private String problemDescription;
-	private String whyChange;
-	private Document doc;
-	private ChangeRequestStatus status;
-	public ProcessStage stage = new ProcessStage(this);
+    public enum ChangeRequestStatus { //
+        ongoing, suspended, closed
+    }
+    private String RequestID;
+    private Initiator initiator;
+    private LocalDate starDate;
+    private String system;
+    private String problemDescription;
+    private String whyChange;
+    private String comment;
+    private Document doc;
+    private ChangeRequestStatus status;
+    public ProcessStage stage = new ProcessStage(this);
 
-	public ChangeRequest(Initiator initiator, LocalDate starDate,
-						 String problemDescription, String whyChange,
-						 Document doc) {
-		this.initiator = initiator;
-		this.starDate = starDate;
-		this.problemDescription = problemDescription;
-		this.whyChange = whyChange;
-		this.doc = doc;
-	}
-	// input
-	public void setStatus(ChangeRequestStatus newStat) {
-		status = newStat;
-	}
-	public void setRequestID(String id) {
-		RequestID = id;
-	}
-	// output
-	public  String getRequestID(){
-		return RequestID ;
-	}
-	public Initiator getInitiator() {
-		return initiator;
-	}
+    public ChangeRequest(Initiator initiator, LocalDate starDate,
+                         String system, String problemDescription,
+                         String whyChange, String comment, Document doc) {
+        this.comment = comment;
+        this.initiator = initiator;
+        this.starDate = starDate;
+        this.system = system;
+        this.problemDescription = problemDescription;
+        this.whyChange = whyChange;
+        this.doc = doc;
+    }
+    // input
+    public void setStatus(ChangeRequestStatus newStat) {
+        status = newStat;
+    }
+    public void setRequestID(String id) {
+        RequestID = id;
+    }
+    //update
+    /**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
+     *
+     */
+    public void updateInitiatorRequest() {
+        initiator.setrequest(this);
+    }
+    public void updateStage() {
+        stage.setRequest(this);
+    }
+    // output
+    public  String getRequestID(){
+        return RequestID ;
+    }
+    public Initiator getInitiator() {
+        return initiator;
+    }
 
-	public LocalDate getStartDate() {
-		return starDate;
-	}
+    public LocalDate getStartDate() {
+        return starDate;
+    }
 
-	public String getSystem() {
-		return this.system;
-	}
+    public String getSystem() {
+        return this.system;
+    }
 
-	public String getProblemDescription() {
-		return problemDescription;
-	}
+    public String getProblemDescription() {
+        return problemDescription;
+    }
 
-	public String getWhyChange() {
-		return whyChange;
-	}
+    public String getWhyChange() {
+        return whyChange;
+    }
+    public String getComment() {
+        return comment;
 
-	public ChangeRequestStatus getStatus() {
-		return status;
-	}
+    }
 
-	public Document getDoc() {
-		return doc;
-	}
+    public ChangeRequestStatus getStatus() {
+        return status;
+    }
+
+    public Document getDoc() {
+        return doc;
+    }
 } // END of ChangeRequest class

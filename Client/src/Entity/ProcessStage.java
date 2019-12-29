@@ -1,17 +1,19 @@
 package Entity;
 
+import Entity.User.ICMPermissions;
+
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.EnumSet;
-
-import Entity.User.ICMPermissions;
 
 /**
  * @author Yonathan in progress
  */
 public class ProcessStage implements Serializable{
-	
+
+	public void setRequest(Entity.ChangeRequest changeRequest) {
+	}
+
 	public enum ChargeRequestStages { //
 		meaningEvaluation, // stage 1
 		examinationAndDecision, // stage 2
@@ -130,7 +132,7 @@ public class ProcessStage implements Serializable{
 	}// End addExeminorFailReport;
 
 	// output
-	public  ChangeRequest getRequest(){
+	public ChangeRequest getRequest(){
 		return Request ;
 	}
 	public ChargeRequestStages getCurrentStage() {

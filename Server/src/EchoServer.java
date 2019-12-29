@@ -1,4 +1,6 @@
 
+import Entity.*;
+import Entity.User.ICMPermissions;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -10,14 +12,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import Entity.User.ICMPermissions;
-import Entity.ChangeRequest;
-import Entity.Initiator;
-import Entity.Requirement;
-import Entity.User;
-import Entity.clientRequestFromServer;
 import static Entity.Requirement.statusOptions.*;
-import static Entity.Requirement.statusOptions.suspended;
 
 
 /**
@@ -70,13 +65,14 @@ public class EchoServer extends AbstractServer {
 					getAllRequest(ReqListForClient);
 					sendBackObject = ReqListForClient;
 					break;
-				// read data from some id in requirement
+				// read data from some id in requirement, doesn't work yet
 				case updateStatus: // change status of one requirement.
 					//reqReceived = request.getObject().get(0);
-				//	queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
+					//queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
 					//selectRequirement(ReqListForClient, reqReceived);
 					sendBackObject = ReqListForClient;
 					break;
+				// doesn't work yet
 				case getRequirement:
 					//reqReceived = request.getObject().get(0); // get the requirement id
 					//selectRequirement(ReqListForClient, reqReceived);
@@ -91,6 +87,15 @@ public class EchoServer extends AbstractServer {
 				case changeInLogIn:
 					iWantResponse = false;
 					queryHandler.updateAllUserFields((User) request.getObject());
+					break;
+				case addRequest:
+					ChangeRequest change =(ChangeRequest)request.getObject();
+					change.setRequestID(queryHandler.InsertChangeRequest(change));
+					change.updateInitiatorRequest();
+					change.updateStage();
+					queryHandler.insertInitiator(change.getInitiator());
+					queryHandler.InsertProcessStage(change.stage);
+					iWantResponse = false;
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
@@ -187,16 +192,15 @@ public class EchoServer extends AbstractServer {
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {
-		EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
+		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
 		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
-		Initiator initiator = new Initiator(newUser,null);
+		Initiator initiator = new Initiator(newUser, null);
 		LocalDate start = LocalDate.now();
-		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "test", "test", null);
+		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 		initiator.setrequest(changeRequest);
 		queryHandler.insertInitiator(initiator);
 		queryHandler.InsertProcessStage(changeRequest.stage);
-
 	}// END of enterChangeRequestToDB
 
 /**

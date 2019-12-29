@@ -96,6 +96,7 @@ public class mysqlConnection {
 					"`system` VARCHAR(45) NULL," +
 					"problemDescription TEXT NULL," +
 					"whyChange TEXT NULL," +
+					"comment VARCHAR(45) NULL," +
 					"status VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID));");
 			stmt.close();

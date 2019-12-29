@@ -1,17 +1,19 @@
-import java.sql.*;
+import Entity.ChangeRequest;
+import Entity.Initiator;
+import Entity.ProcessStage;
+import Entity.User;
+import Entity.User.ICMPermissions;
+import Entity.User.Job;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import Entity.ChangeRequest;
-import Entity.Initiator;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
-
-import static Entity.Requirement.*;
-
-import Entity.User;
-import Entity.ProcessStage;
+import static Entity.Requirement.statusOptions;
 public class QueryHandler {
     private final mysqlConnection mysqlConn;
 
@@ -153,7 +155,7 @@ public class QueryHandler {
     }// END insertInitiator()
 
 
-    public void InsertProcessStage(ProcessStage newStag) {
+    public void InsertProcessStage(ProcessStage newStage) {
     	try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.stage " +
             		"(RequestID," + 							//[1]
@@ -177,18 +179,18 @@ public class QueryHandler {
             		"closureStarDate," + 						//[19]
             		"closureEndDate)" + 						//[20]
             		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            stmt.setNString(1, newStag.getRequest().getRequestID());
-            stmt.setNString(2, newStag.getCurrentStage().name());
-            if (newStag.getStageSupervisor() == null) {
+            stmt.setNString(1, newStage.getRequest().getRequestID());
+            stmt.setNString(2, newStage.getCurrentStage().name());
+            if (newStage.getStageSupervisor() == null) {
                 stmt.setNString(3, null);
             }
             else  {
-                stmt.setNString(3, newStag.getStageSupervisor().getUserName());
+                stmt.setNString(3, newStage.getStageSupervisor().getUserName());
             }
-            stmt.setNString(4, newStag.getEstimatorReport());
-            stmt.setNString(5, newStag.getExeminorFailReport());
-            stmt.setNString(6, newStag.getInspectorDocumention());
-            LocalDate [][] date = newStag.getDates();
+            stmt.setNString(4, newStage.getEstimatorReport());
+            stmt.setNString(5, newStage.getExeminorFailReport());
+            stmt.setNString(6, newStage.getInspectorDocumention());
+            LocalDate [][] date = newStage.getDates();
             int u = 7;
             for (int i = 0 ; i < 4; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -239,8 +241,9 @@ public class QueryHandler {
             		"`system`, " +
             		"problemDescription, " +
             		"whyChange, " +
+                    "comment, " +
             		"status)" +
-            		"VALUES(?, ?, ?, ?, ?, ?);");
+            		"VALUES(?, ?, ?, ?, ?, ?, ?);");
             stmt.setNString(1, String.valueOf(count));
             stmt.setNString(2, newRequest.getStartDate().toString());
             stmt.setNString(3,newRequest.getSystem() );
@@ -399,6 +402,7 @@ public class QueryHandler {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.requirement WHERE RequestID = ?");
             stmt.setInt(1, reqID);
             ResultSet re = stmt.executeQuery();
+
             while (re.next()) {
                 toReturn = new String[] {
                         re.getNString(1),
