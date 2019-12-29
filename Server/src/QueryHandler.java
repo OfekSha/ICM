@@ -177,8 +177,14 @@ public class QueryHandler {
             		"examinationDueDate," + 					//[17]
             		"examinationEndDate," + 					//[18]
             		"closureStarDate," + 						//[19]
-            		"closureEndDate)" + 						//[20]
-            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            		"closureEndDate,"							//[20]
+            		+ "stage1extention,"
+            		+ "stage2extention,"
+            		+ "stage3extention,"
+            		+ "stage4extention,"
+            		+ "stage5extention,"
+            		+ "currentSubStage)" + 						
+            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setNString(1, newStage.getRequest().getRequestID());
             stmt.setNString(2, newStage.getCurrentStage().name());
             if (newStage.getStageSupervisor() == null) {
@@ -215,6 +221,16 @@ public class QueryHandler {
             else {
                 stmt.setNString(20, date[4][2].toString());
             }
+            boolean[] bool =newStage.getWasThereAnExtentionRequest();
+            int v= 21;
+			for (int j = 0; j < 5; j++) {
+				if (bool[j] == true)
+					stmt.setInt(v, 1);
+				else
+					stmt.setInt(v, 0);
+				v++;
+			}
+			stmt.setString(26, newStage.getCurrentSubStage().name());
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {

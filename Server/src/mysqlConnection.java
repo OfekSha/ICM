@@ -89,6 +89,12 @@ public class mysqlConnection {
 					"examinationEndDate VARCHAR(45) NULL," +
 					"closureStarDate VARCHAR(45) NULL," +
 					"closureEndDate VARCHAR(45) NULL," +
+					"stage1extention TINYINT(1) NOT NULL,"+
+					"stage2extention TINYINT(1) NOT NULL,"+
+					"stage3extention TINYINT(1) NOT NULL,"+
+					"stage4extention TINYINT(1) NOT NULL,"+
+					"stage5extention TINYINT(1) NOT NULL,"+
+					"currentSubStage VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID, currentStage));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID VARCHAR(45) NOT NULL," +
