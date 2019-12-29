@@ -204,8 +204,8 @@ public class QueryHandler {
                 stmt.setNString(3, newStage.getStageSupervisor().getUserName());
             }
             stmt.setNString(4, newStage.getEstimatorReport());
-            stmt.setNString(5, newStage.getExeminorFailReport());
-            stmt.setNString(6, newStage.getInspectorDocumention());
+            stmt.setNString(5, newStage.getExaminerFailReport());
+            stmt.setNString(6, newStage.getInspectorDocumentation());
             LocalDate[][] date = newStage.getDates();
             int u = 7;
             for (int i = 0; i < 4; i++) {
@@ -228,7 +228,7 @@ public class QueryHandler {
             } else {
                 stmt.setNString(20, date[4][2].toString());
             }
-            boolean[] bool = newStage.getWasThereAnExtentionRequest();
+            boolean[] bool = newStage.getWasThereAnExtensionRequest();
             int v = 21;
             for (int j = 0; j < 5; j++) {
                 if (bool[j])
@@ -500,8 +500,8 @@ public class QueryHandler {
 				if (currentStageString.equals(ChargeRequestStages.examinationAndDecision.name())) {
                     currentStage = ChargeRequestStages.examinationAndDecision;
                 }
-				if (currentStageString.equals(ChargeRequestStages.Execution.name())) {
-                    currentStage = ChargeRequestStages.Execution;
+				if (currentStageString.equals(ChargeRequestStages.execution.name())) {
+                    currentStage = ChargeRequestStages.execution;
                 }
 				if (currentStageString.equals(ChargeRequestStages.examination.name())) {
                     currentStage = ChargeRequestStages.examination;
@@ -514,8 +514,8 @@ public class QueryHandler {
 				if (currentSubStageString.equals(subStages.supervisorAllocation.name())) {
                     currentSubStage = subStages.supervisorAllocation;
                 }
-				if (currentSubStageString.equals(subStages.DeterminingDueTime.name())) {
-                    currentSubStage = subStages.DeterminingDueTime;
+				if (currentSubStageString.equals(subStages.determiningDueTime.name())) {
+                    currentSubStage = subStages.determiningDueTime;
                 }
 				if (currentSubStageString.equals(subStages.supervisorAction.name())) {
                     currentSubStage = subStages.supervisorAction;

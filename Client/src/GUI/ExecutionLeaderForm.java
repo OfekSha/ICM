@@ -3,10 +3,13 @@ package GUI;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
@@ -18,6 +21,8 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public TextArea taExaminerReport;
 	public TextArea taInitiatorRequest;
 
+	private String selected;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
@@ -25,7 +30,7 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	}
 
 	public void RequestsComboBoxUsed() {
-		String selected = cmbRequests.getSelectionModel().getSelectedItem();
+		selected = cmbRequests.getSelectionModel().getSelectedItem();
 		changeRequests.forEach(cR -> {
 			if (selected.equals(cR.getRequestID())) {
 				this.taInitiatorRequest.setText(cR.getProblemDescription());
@@ -42,11 +47,28 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		NextWindowLauncher(actionEvent, "/GUI/PopUpWindows/DeterminingDueTime.fxml", this, false);
 	}
 
-	public void openApproveExecution(ActionEvent actionEvent) throws Exception {
-		NextWindowLauncher(actionEvent, "/GUI/PopUpWindows/ApproveExecutionLeader.fxml", this, false);
+	public void getApproveExecution(ActionEvent actionEvent) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Approve performing change");
+		alert.setHeaderText("Are you perform requested changes?");
+		alert.setContentText("Choose OK if you approve");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent()) {
+			if (result.get() == ButtonType.OK) {
+				changeRequests.forEach(cR -> {
+					if (selected.equals(cR.getRequestID())) {
+						//TODO Change status or stage whatever is needed
+					}
+				});
+			}
+			/*if (result.get() == ButtonType.CANCEL) {
+
+			}*/
+		}
 	}
 
-	public void openExtension(ActionEvent actionEvent) throws Exception {
-		NextWindowLauncher(actionEvent, "/GUI/PopUpWindows/ApproveExtension.fxml", this, false);
+	public void requestExtension(ActionEvent actionEvent) {
+
 	}
 }
