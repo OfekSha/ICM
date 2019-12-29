@@ -90,13 +90,13 @@ public class mysqlConnection {
 					"closureStarDate VARCHAR(45) NULL," +
 					"closureEndDate VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID, currentStage));");
-			stmt.execute("CREATE TABLE icm.changeRequest (" +
+			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID VARCHAR(45) NOT NULL," +
 					"startDate VARCHAR(45) NULL," +
 					"`system` VARCHAR(45) NULL," +
 					"problemDescription TEXT NULL," +
 					"whyChange TEXT NULL," +
-					"comment VARCHAR(45) NULL," +
+					"comment VARCHAR(45)," +
 					"status VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID));");
 			stmt.close();

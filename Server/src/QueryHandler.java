@@ -235,7 +235,7 @@ public class QueryHandler {
         }
         count++;
     	try {
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.changeRequest " +
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.changerequest " +
             		"(RequestID, " +
             		"startDate, " +
             		"`system`, " +
@@ -246,10 +246,11 @@ public class QueryHandler {
             		"VALUES(?, ?, ?, ?, ?, ?, ?);");
             stmt.setNString(1, String.valueOf(count));
             stmt.setNString(2, newRequest.getStartDate().toString());
-            stmt.setNString(3,newRequest.getSystem() );
-            stmt.setNString(4,newRequest.getProblemDescription() );
-            stmt.setNString(5,newRequest.getWhyChange());
-            stmt.setNString(6,newRequest.getStatus().name());
+            stmt.setNString(3, newRequest.getSystem() );
+            stmt.setNString(4, newRequest.getProblemDescription() );
+            stmt.setNString(5, newRequest.getWhyChange());
+            stmt.setNString(6, newRequest.getComment());
+            stmt.setNString(7, newRequest.getStatus().name());
             stmt.execute(); // insert new row to requirement table
             stmt.close();
         } catch (SQLException e) {
