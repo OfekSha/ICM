@@ -23,54 +23,8 @@ public class QueryHandler {
         this.mysqlConn = mysqlConn;
     }
 
-    /**
-     * for prototype.
-     * insert new requirement in icm.requirement.
-     * @param reqInitiator              Initiator of request
-     * @param currentSituationDetails   Details of current situation
-     * @param requestDetails            Details of request
-     * @param stageSupervisor           Supervisor of request
-     */
 
-    public void insertRequirement(String reqInitiator, String currentSituationDetails,
-                                  String requestDetails, String stageSupervisor,
-                                  statusOptions status) { // send the use details.
-        try {
-            int count = 0;
-            Statement numTest = mysqlConn.getConn().createStatement();
-            try {
-                ResultSet re = numTest.executeQuery("SELECT MAX(RequestID) FROM icm.requirement WHERE RequestID;");// get all numbers submissions.
-                while (re.next()) { // generate number for submission.
-                    count = re.getInt(1);
-                }
-            } catch (SQLException e) {
-                System.out.println("Database is empty, or no schema for ICM - insertRequirement");
-                count = 0;
-            }
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.requirement " +
-                    "(Initiator, " +
-                    "RequestID, " +
-                    "CurrentSituationDetails, " +
-                    "RequestDetails, " +
-                    "StageSupervisor, " +
-                    "Status) " +
-                    "VALUES(?, ?, ?, ?, ?,?);");
-            stmt.setNString(1, reqInitiator);
-            stmt.setInt(2, count + 1);
-            stmt.setNString(3, currentSituationDetails);
-            stmt.setNString(4, requestDetails);
-            stmt.setNString(5, stageSupervisor);
-            stmt.setNString(6, status.name());
-            stmt.execute(); // insert new row to requirement table.
-
-            stmt.close();
-            numTest.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
+    /** Inserts a full user entity in to the DB
      * @param user ?
      */
     public void insertUser(User user) { // send the use details.
@@ -90,18 +44,18 @@ public class QueryHandler {
                     "examinerPermission," +
                     "changeControlCommitteeChairman)" +
                     "VALUES(?, ?, ?, ?, ?,?,?, ?, ?, ?, ?,?,?);");
-            setUserStatement(user, stmt);
+            setAllUserFieldsStatement(user, stmt);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     } //END of insertUser()
 
-    /**
+    /** sets up all of the User class fields in to a Prepared Statement
      * @param user ?
      * @param stmt ?
      * @throws SQLException ?
      */
-    private void setUserStatement(User user, PreparedStatement stmt) throws SQLException {
+    private void setAllUserFieldsStatement(User user, PreparedStatement stmt) throws SQLException {
         stmt.setNString(1, user.getUserName());
         stmt.setNString(2, user.getPassword());
         stmt.setNString(3, user.getFirstName());
@@ -147,7 +101,7 @@ public class QueryHandler {
         stmt.close();
     }
 
-    /**
+    /**Inserting Initiator in to DB
      * @param initiator ?
      */
     public void insertInitiator(Initiator initiator) {
@@ -163,7 +117,7 @@ public class QueryHandler {
         }
     }// END insertInitiator()
 
-    /**
+    /** Inserting a ProcessStage in to DB
      * @param newStage ?
      */
     public void InsertProcessStage(ProcessStage newStage) {
@@ -245,9 +199,9 @@ public class QueryHandler {
         }
     }
 
-    /**
+    /**Inserting ChangeRequest
      * @param newRequest ?
-     * @return string
+     * @return string  - given id of the request
      */
     public String InsertChangeRequest(ChangeRequest newRequest) {
     	int count = 0;
@@ -287,34 +241,14 @@ public class QueryHandler {
     	return String.valueOf(count);
     } // end of InsertChangeRequest()
 
-    /**
-     *
-     * for prototype.
-     * update status to some id in requirement table.
-     *
-     * @param id id of Request going to Update as a Num in DataBase
-     * @param status current status  going to Update as a Status in DataBase
-     */
-    public void updateStatus(int id, String status) throws IllegalArgumentException {
-        PreparedStatement updStatus;
-        try {
-            updStatus = mysqlConn.getConn().prepareStatement(
-                    "UPDATE icm.requirement SET Status = ? WHERE RequestID = ?;");
-            updStatus.setNString(1, status);
-            updStatus.setInt(2, id);
-            updStatus.execute();
-            updStatus.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
-    /**
+    /** updates all user fields in the DB
      *
      * @param user ?
-     * @throws IllegalArgumentException ?
+     * 
      */
-    public void updateAllUserFields(User user) throws IllegalArgumentException {
+    public void updateAllUserFields(User user) {
         PreparedStatement updStatus;
         try {
             updStatus = mysqlConn.getConn().prepareStatement(
@@ -334,15 +268,15 @@ public class QueryHandler {
                             "changeControlCommitteeChairman = ?" +
                             "WHERE userName = ?;");
             updStatus.setNString(14, user.getUserName());
-            setUserStatement(user, updStatus);
+            setAllUserFieldsStatement(user, updStatus);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /** returns a user form db  by username
-     * @param username ?
-     * @return ?
+     * @param username 
+     * @return User
     */
     public User selectUser(String username) { // @building by yonathan not finished.
         User toReturn;
@@ -421,7 +355,9 @@ public class QueryHandler {
         return toReturn;
     }//END of selectUser
 
-    // methode in building
+    /** gets all of the change requests in DB
+     * @return -ArrayList<ChangeRequest>
+     */
     public ArrayList<ChangeRequest> getAllChangeRequest() {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
         Statement stmt;
@@ -449,11 +385,6 @@ public class QueryHandler {
                 ProcessStage stage = getProcessStage(RequestID);
                 ChangeRequestStatus status = null;
 
-
-                String ongoingString = ChangeRequestStatus.ongoing.name();
-                String suspendedString = ChangeRequestStatus.suspended.name();
-                String closedString = ChangeRequestStatus.closed.name();
-
                 if (statusString.equals(ChangeRequestStatus.ongoing.name())) {
                     status = ChangeRequestStatus.ongoing;
                 }
@@ -480,6 +411,7 @@ public class QueryHandler {
     } // END of getAllChangeRequest();
 
 	/** gets processStage without the change request
+	 * 	its purpose is to support getAllChangeRequest() 
 	 * @param RequestID ?
 	 * @return ?
 	 */
@@ -564,6 +496,7 @@ public class QueryHandler {
 	}// END getProcessStage()
 
     /** get the  Initiator without change request
+     * its purpose is to support getAllChangeRequest() 
      * @param RequestID ?
      * @return ?
     */
@@ -583,6 +516,80 @@ public class QueryHandler {
             e.printStackTrace();
         }
         return returnInitiator;
+    }
+
+    
+    // all old prototype methods **********************************************************************************
+    
+    
+    
+    /**
+    *
+    * for prototype.
+    * update status to some id in requirement table.
+    *
+    * @param id id of Request going to Update as a Num in DataBase
+    * @param status current status  going to Update as a Status in DataBase
+    */
+   public void updateStatus(int id, String status) throws IllegalArgumentException {
+       PreparedStatement updStatus;
+       try {
+           updStatus = mysqlConn.getConn().prepareStatement(
+                   "UPDATE icm.requirement SET Status = ? WHERE RequestID = ?;");
+           updStatus.setNString(1, status);
+           updStatus.setInt(2, id);
+           updStatus.execute();
+           updStatus.close();
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+   }
+    
+    /**
+     * for prototype.
+     * insert new requirement in icm.requirement.
+     * @param reqInitiator              Initiator of request
+     * @param currentSituationDetails   Details of current situation
+     * @param requestDetails            Details of request
+     * @param stageSupervisor           Supervisor of request
+     */
+
+    public void insertRequirement(String reqInitiator, String currentSituationDetails,
+                                  String requestDetails, String stageSupervisor,
+                                  statusOptions status) { // send the use details.
+        try {
+            int count = 0;
+            Statement numTest = mysqlConn.getConn().createStatement();
+            try {
+                ResultSet re = numTest.executeQuery("SELECT MAX(RequestID) FROM icm.requirement WHERE RequestID;");// get all numbers submissions.
+                while (re.next()) { // generate number for submission.
+                    count = re.getInt(1);
+                }
+            } catch (SQLException e) {
+                System.out.println("Database is empty, or no schema for ICM - insertRequirement");
+                count = 0;
+            }
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.requirement " +
+                    "(Initiator, " +
+                    "RequestID, " +
+                    "CurrentSituationDetails, " +
+                    "RequestDetails, " +
+                    "StageSupervisor, " +
+                    "Status) " +
+                    "VALUES(?, ?, ?, ?, ?,?);");
+            stmt.setNString(1, reqInitiator);
+            stmt.setInt(2, count + 1);
+            stmt.setNString(3, currentSituationDetails);
+            stmt.setNString(4, requestDetails);
+            stmt.setNString(5, stageSupervisor);
+            stmt.setNString(6, status.name());
+            stmt.execute(); // insert new row to requirement table.
+
+            stmt.close();
+            numTest.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
