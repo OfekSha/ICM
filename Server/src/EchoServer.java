@@ -92,10 +92,10 @@ public class EchoServer extends AbstractServer {
 					change.updateInitiatorRequest();
 					change.updateStage();
 					queryHandler.insertInitiator(change.getInitiator());
-					queryHandler.InsertProcessStage(change.stage);
+					queryHandler.InsertProcessStage(change.getProcessStage());
 					iWantResponse = false;
 					break;
-				case updateChangeRequest:
+				case updateChangeRequest: 
 					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
 					iWantResponse = false;
 					break;
@@ -175,7 +175,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest.stage);
+		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
 	}// END of enterChangeRequestToDB
 
 	/**
