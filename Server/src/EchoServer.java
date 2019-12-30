@@ -57,6 +57,7 @@ public class EchoServer extends AbstractServer {
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObject() + "\t" + " from " + client.getInetAddress());
 		//ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackObject = null;
+		Object[] objectArray=null;
 		boolean iWantResponse = true;
 		try {
 		//	Requirement reqReceived;
@@ -105,13 +106,22 @@ public class EchoServer extends AbstractServer {
 					sendBackObject=queryHandler.getAllUsers();
 					break;
 				case getChangeRequestBystatus:
-					sendBackObject=queryHandler.getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
+					objectArray= new Object[2];
+					objectArray[0]=queryHandler.getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
+					objectArray[1]=request.getObject();
+					sendBackObject=objectArray;
 					break;
 				case getUsersByICMPermissions:
-					sendBackObject=queryHandler.getAllUsersWithICMPermissions((ICMPermissions) request.getObject());
+					objectArray= new Object[2];
+					objectArray[0]=queryHandler.getAllUsersWithICMPermissions((ICMPermissions) request.getObject());
+					objectArray[1]=request.getObject();
+					sendBackObject=objectArray;
 					break;
 				case getAllUsersByJob:
-					sendBackObject=queryHandler.getAllUsersByJob((Job) request.getObject());
+					objectArray= new Object[2];
+					objectArray[0]=queryHandler.getAllUsersByJob((Job) request.getObject());
+					objectArray[1]=request.getObject();
+					sendBackObject=objectArray;
 					break;
 					
 				default:

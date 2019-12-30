@@ -1,9 +1,11 @@
 package GUI;
 
 import Entity.ChangeRequest;
+import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.Requirement;
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.User.ICMPermissions;
 import Entity.User.Job;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -35,6 +37,10 @@ public abstract class UserForm implements IcmForm {
 	static ArrayList<Requirement> ReqListForClient = null;
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
+	static ChangeRequestStatus requestStatus;
+	static ICMPermissions  iCMPermission;
+	static Job job;
+	
 	@FXML
 	public Button btnExit;
 	public Button btnLogout;
@@ -136,6 +142,7 @@ public abstract class UserForm implements IcmForm {
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		System.out.println("\nMessage from server received: ");
+		Object[] objectArry= null;
 		switch (request.getRequest()) {
 			case getAll:
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
@@ -155,13 +162,19 @@ public abstract class UserForm implements IcmForm {
 				allUsers= (ArrayList<User>) request.getObject();
 				break;
 			case getChangeRequestBystatus:
-				changeRequests = (ArrayList<ChangeRequest>)request.getObject();
+				objectArry=(Object[]) request.getObject();
+				changeRequests = (ArrayList<ChangeRequest>)objectArry[0];
+				requestStatus=(ChangeRequestStatus) objectArry[1];
 				break;
 			case getUsersByICMPermissions:
-				allUsers= (ArrayList<User>) request.getObject();
+				objectArry=(Object[]) request.getObject();
+				allUsers= (ArrayList<User>) objectArry[0];
+				iCMPermission=(ICMPermissions) objectArry[1];
 				break;
 			case getAllUsersByJob:
-				allUsers= (ArrayList<User>) request.getObject();
+				objectArry=(Object[]) request.getObject();
+				allUsers= (ArrayList<User>) objectArry[0];
+				job=(Job) objectArry[1];
 				break;
 /*			case getRequirement:
 				break;
