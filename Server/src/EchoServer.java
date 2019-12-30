@@ -96,7 +96,7 @@ public class EchoServer extends AbstractServer {
 					iWantResponse = false;
 					break;
 				case updateChangeRequest: 
-					queryHandler.updateChangeRequest((ChangeRequest)request.getObject());
+					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
 					iWantResponse = false;
 					break;
 				default:
