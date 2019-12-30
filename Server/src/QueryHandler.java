@@ -51,6 +51,7 @@ public class QueryHandler {
     } //END of insertUser()
 
     /** sets up all of the User class fields in to a Prepared Statement
+     * 	mainly used to support insets and updates
      * @param user ?
      * @param stmt ?
      * @throws SQLException ?
@@ -108,14 +109,39 @@ public class QueryHandler {
     	try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("INSERT INTO icm.initiator " +
             		"(RequestID, userName) VALUES(?, ?);");
-            stmt.setNString(1, initiator.getrequest().getRequestID());
-            stmt.setNString(2, initiator.getTheInitiator().getUserName());
-            stmt.execute(); // insert new row to requirement table
-            stmt.close();
+            setAllInitiatorFieldsStatement(initiator,stmt);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }// END insertInitiator()
+    
+    /**sets up all of the  Initiator fields in to a Prepared Statement
+     * mainly used to support insets and updates
+     * @param initiator
+     * @param stmt
+     * @throws SQLException
+     */
+    private void setAllInitiatorFieldsStatement(Initiator initiator ,PreparedStatement stmt) throws SQLException {
+    	 stmt.setNString(1, initiator.getrequest().getRequestID());
+         stmt.setNString(2, initiator.getTheInitiator().getUserName());
+         stmt.execute(); // insert new row 
+         stmt.close();
+    }//END setAllInitiatorFieldsStatement();
+    
+    public void updateAllInitiatorFields(Initiator initiator) {
+    	try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("UPDATE `icm`.`initiator`\n" + 
+            		"SET\n" + 
+            		"`requestID` = ?,\n" + 
+            		"`userName` = ?\n" + 
+            		"WHERE `requestID` = ?;\n" + 
+            		"");
+            stmt.setNString(3,initiator.getrequest().getRequestID());
+            setAllInitiatorFieldsStatement(initiator,stmt);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } //End updateAllInitiator()
 
     /** Inserting a ProcessStage in to DB
      * @param newStage ?
@@ -150,55 +176,110 @@ public class QueryHandler {
                     "stage5extension," +                      //[25]
                     "currentSubStage)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            stmt.setNString(1, newStage.getRequest().getRequestID());
-            stmt.setNString(2, newStage.getCurrentStage().name());
-            if (newStage.getStageSupervisor() == null) {
-                stmt.setNString(3, null);
-            } else {
-                stmt.setNString(3, newStage.getStageSupervisor().getUserName());
-            }
-            stmt.setNString(4, newStage.getEstimatorReport());
-            stmt.setNString(5, newStage.getExaminerFailReport());
-            stmt.setNString(6, newStage.getInspectorDocumentation());
-            LocalDate[][] date = newStage.getDates();
-            int u = 7;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (date[i][j] == null) {
-                        stmt.setNString(u, null);
-                    } else {
-                        stmt.setNString(u, date[i][j].toString());
-                    }
-                    u++;
-                }
-            }
-            if (date[4][0] == null) {
-                stmt.setNString(19, null);
-            } else {
-                stmt.setNString(19, date[4][0].toString());
-            }
-            if (date[4][2] == null) {
-                stmt.setNString(20, null);
-            } else {
-                stmt.setNString(20, date[4][2].toString());
-            }
-            boolean[] bool = newStage.getWasThereAnExtensionRequest();
-            int v = 21;
-            for (int j = 0; j < 5; j++) {
-                if (bool[j])
-                    stmt.setInt(v, 1);
-                else
-                    stmt.setInt(v, 0);
-                v++;
-            }
-            stmt.setString(26, newStage.getCurrentSubStage().name());
-            stmt.execute();
-            stmt.close();
+            setAllProcessStageStatement( newStage , stmt);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
+    } //END of InsertProcessStage();
+    
+    /**sets up all of the ProcessStage  fields in to a Prepared Statement
+     * 
+     * ,mainly used to support insets and updates
+     * 
+     * @param newStage
+     * @param stmt
+     * @throws SQLException
+     */
+    private void  setAllProcessStageStatement(ProcessStage newStage ,PreparedStatement stmt) throws SQLException {
+    	 stmt.setNString(1, newStage.getRequest().getRequestID());
+         stmt.setNString(2, newStage.getCurrentStage().name());
+         if (newStage.getStageSupervisor() == null) {
+             stmt.setNString(3, null);
+         } else {
+             stmt.setNString(3, newStage.getStageSupervisor().getUserName());
+         }
+         stmt.setNString(4, newStage.getEstimatorReport());
+         stmt.setNString(5, newStage.getExaminerFailReport());
+         stmt.setNString(6, newStage.getInspectorDocumentation());
+         LocalDate[][] date = newStage.getDates();
+         int u = 7;
+         for (int i = 0; i < 4; i++) {
+             for (int j = 0; j < 3; j++) {
+                 if (date[i][j] == null) {
+                     stmt.setNString(u, null);
+                 } else {
+                     stmt.setNString(u, date[i][j].toString());
+                 }
+                 u++;
+             }
+         }
+         if (date[4][0] == null) {
+             stmt.setNString(19, null);
+         } else {
+             stmt.setNString(19, date[4][0].toString());
+         }
+         if (date[4][2] == null) {
+             stmt.setNString(20, null);
+         } else {
+             stmt.setNString(20, date[4][2].toString());
+         }
+         boolean[] bool = newStage.getWasThereAnExtensionRequest();
+         int v = 21;
+         for (int j = 0; j < 5; j++) {
+             if (bool[j])
+                 stmt.setInt(v, 1);
+             else
+                 stmt.setInt(v, 0);
+             v++;
+         }
+         stmt.setString(26, newStage.getCurrentSubStage().name());
+         stmt.execute();
+         stmt.close();
+    }//END setAllProcessStageStatement()
+    
+    
+     
+ /** Updateds all existing ProcessStage fields 
+ * @param newStage
+ */
+public void updateAllProcessStageFields(ProcessStage newStage) {
+	 try {
+	 PreparedStatement stmt = mysqlConn.getConn().prepareStatement("UPDATE `icm`.`stage` "
+	 		+ "SET `RequestID` = ?, "
+	 		+ "`currentStage` = ?, "
+	 		+ "`StageSupervisor` = ?,"
+	 		+ " `EstimatorReport` = ?,"
+	 		+ " `ExaminerFailReport` = ?,"
+	 		+ " `inspectorDocument` = ?,"
+	 		+ " `meaningEvaluationStartDate` = ?,"
+	 		+ " `meaningEvaluationDueDate` = ?, `meaningEvaluationEndDate` = ?,"
+	 		+ " `examinationAndDecisionStartDate` = ?, "
+	 		+ "`stageColExaminationAndDecisionDueDate` = ?,"
+	 		+ " `examinationAndDecisionEndDate` = ?,"
+	 		+ " `ExecutionStartDate` = ?, "
+	 		+ "`ExecutionDueDate` = ?,"
+	 		+ " `ExecutionEndDate` = ?,"
+	 		+ " `examinationStartDate` = ?, "
+	 		+ "`examinationDueDate` = ?,"
+	 		+ " `examinationEndDate` = ?, "
+	 		+ "`closureStarDate` = ?, "
+	 		+ "`closureEndDate` = ?,"
+	 		+ " `stage1extension` = ?,"
+	 		+ " `stage2extension` = ?,"
+	 		+ " `stage3extension` = ?,"
+	 		+ " `stage4extension` = ?,"
+	 		+ " `stage5extension` = ?,"
+	 		+ " `currentSubStage` = ?"
+	 		+ " WHERE (`RequestID` = ?) and (`currentStage` = ?);\n" + 
+	 		"");
+     stmt.setNString(27,newStage.getRequest().getRequestID());
+     stmt.setNString(28,newStage.getCurrentStage().name());
+     setAllProcessStageStatement(newStage,stmt);
+ } catch (SQLException e) {
+     e.printStackTrace();
+ }// END updateAllProcessStageStatement
+	 
+ }
     /**Inserting ChangeRequest
      * @param newRequest ?
      * @return string  - given id of the request
@@ -241,7 +322,35 @@ public class QueryHandler {
     	return String.valueOf(count);
     } // end of InsertChangeRequest()
 
-    
+    public void updateAllChangeRequestFields(ChangeRequest newRequest) {
+    	try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("UPDATE `icm`.`changerequest` SET "
+            		+ "`RequestID` = ?,"
+            		+ " `startDate` = ?,"
+            		+ " `system` = ?,"
+            		+ " `problemDescription` = ?,"
+            		+ " `whyChange` = ?,"
+            		+ " `comment` = ?,"
+            		+ " `status` = ?"
+            		+ " WHERE (`RequestID` = ?);\n" + 
+            		"");
+            stmt.setNString(1, newRequest.getRequestID());
+            stmt.setNString(2, newRequest.getStartDate().toString());
+            stmt.setNString(3, newRequest.getSystem() );
+            stmt.setNString(4, newRequest.getProblemDescription() );
+            stmt.setNString(5, newRequest.getWhyChange());
+            stmt.setNString(6, newRequest.getComment());
+            stmt.setNString(7, newRequest.getStatus().name());
+            stmt.setNString(8, newRequest.getRequestID());
+
+            stmt.execute(); // insert new row to requirement table
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	updateAllProcessStageFields(newRequest.getProcessStage());
+    	updateAllInitiatorFields(newRequest.getInitiator());
+    }// END updateChangeRequest()
 
     /** updates all user fields in the DB
      *
@@ -518,6 +627,11 @@ public class QueryHandler {
         return returnInitiator;
     }
 
+
+    
+    
+    
+    
     
     // all old prototype methods **********************************************************************************
     

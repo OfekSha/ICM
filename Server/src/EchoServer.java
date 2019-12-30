@@ -168,8 +168,9 @@ public class EchoServer extends AbstractServer {
 		LocalDate start = LocalDate.now();
 		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
-		initiator.setrequest(changeRequest);
-		queryHandler.insertInitiator(initiator);
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.insertInitiator(changeRequest.getInitiator());
 		queryHandler.InsertProcessStage(changeRequest.stage);
 	}// END of enterChangeRequestToDB
 

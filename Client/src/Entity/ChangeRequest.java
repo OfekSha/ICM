@@ -87,4 +87,7 @@ public class ChangeRequest implements Serializable {
     public Document getDoc() {
         return doc;
     }
+    public  ProcessStage getProcessStage() {
+    	return stage;
+    }
 } // END of ChangeRequest class
