@@ -59,8 +59,8 @@ public class EchoServer extends AbstractServer {
 		try {
 			Requirement reqReceived;
 			switch (request.getRequest()) {
-				// read all requirement data
-				case getAll: // get all requirements need to change!!!!!!!!!
+				// read all ChangeRequest data
+				case getAll: 
 					sendBackObject = queryHandler.getAllChangeRequest();
 					break;
 				// read data from some id in requirement, doesn't work yet
@@ -93,6 +93,10 @@ public class EchoServer extends AbstractServer {
 					change.updateStage();
 					queryHandler.insertInitiator(change.getInitiator());
 					queryHandler.InsertProcessStage(change.stage);
+					iWantResponse = false;
+					break;
+				case updateChangeRequest:
+					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
 					iWantResponse = false;
 					break;
 				default:
