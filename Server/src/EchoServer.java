@@ -1,6 +1,8 @@
 
 import Entity.*;
+import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.User.ICMPermissions;
+import Entity.User.Job;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -102,6 +104,16 @@ public class EchoServer extends AbstractServer {
 				case getAllUsers:
 					sendBackObject=queryHandler.getAllUsers();
 					break;
+				case getChangeRequestBystatus:
+					sendBackObject=queryHandler.getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
+					break;
+				case getUsersByICMPermissions:
+					sendBackObject=queryHandler.getAllUsersWithICMPermissions((ICMPermissions) request.getObject());
+					break;
+				case getAllUsersByJob:
+					sendBackObject=queryHandler.getAllUsersByJob((Job) request.getObject());
+					break;
+					
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
@@ -219,6 +231,10 @@ public class EchoServer extends AbstractServer {
 			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
 			enterUsersToDB();
 			enterChangeRequestToDB();
+			//testing
+			 ArrayList<User> a =queryHandler.getAllUsersByJob(Job.informationEngineer);
+			 ArrayList<User> b =queryHandler.getAllUsersByJob(Job.student);
+//
 			System.out.println("New DB ready for use");
 		}
 	}

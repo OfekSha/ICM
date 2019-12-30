@@ -4,6 +4,7 @@ import Entity.ChangeRequest;
 import Entity.Requirement;
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.User.Job;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
@@ -151,6 +152,15 @@ public abstract class UserForm implements IcmForm {
 				System.out.println("User entity received: [" + user.getUserName() + "]");
 				break;
 			case getAllUsers:
+				allUsers= (ArrayList<User>) request.getObject();
+				break;
+			case getChangeRequestBystatus:
+				changeRequests = (ArrayList<ChangeRequest>)request.getObject();
+				break;
+			case getUsersByICMPermissions:
+				allUsers= (ArrayList<User>) request.getObject();
+				break;
+			case getAllUsersByJob:
 				allUsers= (ArrayList<User>) request.getObject();
 				break;
 /*			case getRequirement:
