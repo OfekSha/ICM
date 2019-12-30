@@ -20,7 +20,7 @@ public class ChangeRequest implements Serializable {
     private String comment;
     private Document doc;
     private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
-    public  ProcessStage stage = new ProcessStage(this);
+    private  ProcessStage stage = new ProcessStage(this);
 
     public ChangeRequest(Initiator initiator, LocalDate starDate,
                          String system, String problemDescription,
