@@ -99,6 +99,9 @@ public class EchoServer extends AbstractServer {
 					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
 					iWantResponse = false;
 					break;
+				case getAllUsers:
+					sendBackObject=queryHandler.getAllUsers();
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}

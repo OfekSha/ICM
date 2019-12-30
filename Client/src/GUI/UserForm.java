@@ -33,6 +33,7 @@ public abstract class UserForm implements IcmForm {
 	protected static User user = null; // connected user;
 	static ArrayList<Requirement> ReqListForClient = null;
 	static ArrayList<ChangeRequest> changeRequests = null;
+	static ArrayList<User> allUsers = null;
 	@FXML
 	public Button btnExit;
 	public Button btnLogout;
@@ -148,6 +149,9 @@ public abstract class UserForm implements IcmForm {
 			case getUser:
 				user = (User) request.getObject();
 				System.out.println("User entity received: [" + user.getUserName() + "]");
+				break;
+			case getAllUsers:
+				allUsers= (ArrayList<User>) request.getObject();
 				break;
 /*			case getRequirement:
 				break;

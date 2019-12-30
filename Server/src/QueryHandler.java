@@ -388,20 +388,7 @@ public void updateAllProcessStageFields(ProcessStage newStage) {
      * @return User
     */
     public User selectUser(String username) { // @building by yonathan not finished.
-        User toReturn;
-        String userName = null;
-        String password = null;
-        String firstName = null;
-        String lastName = null;
-        int intLogin = 0;
-        String jobString = null;
-        String email = null;
-        int informationTechnologiesDepartmentManagerPermission = 0;
-        int inspectorPermission = 0;
-        int estimatorPermission = 0;
-        int executionLeaderPermission = 0;
-        int examinerPermission = 0;
-        int changeControlCommitteeChairman = 0;
+        User toReturn = null;
         try {
             //TODO: is PreparedStatement needed ?> yes
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where user.userName = ?;");
@@ -409,60 +396,114 @@ public void updateAllProcessStageFields(ProcessStage newStage) {
 
             ResultSet re = stmt.executeQuery();
             while (re.next()) {
-                userName = re.getNString(1);
-                password = re.getNString(2);
-                firstName = re.getNString(3);
-                lastName = re.getNString(4);
-                intLogin = re.getInt(5);
-                jobString = re.getNString(6);
-                email = re.getNString(7);
-                informationTechnologiesDepartmentManagerPermission = re.getInt(8);
-                inspectorPermission = re.getInt(9);
-                estimatorPermission = re.getInt(10);
-                executionLeaderPermission = re.getInt(11);
-                examinerPermission = re.getInt(12);
-                changeControlCommitteeChairman = re.getInt(13);
+            	toReturn=userStamentgets(re);
             }
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        // convertin log in to bloolean vulue
-        boolean logIn = false;
-        if (intLogin == 1) {
-            logIn = true;
-        }
-        // convering job to enum
-        EnumSet<Job> Jobs = EnumSet.allOf(User.Job.class);
-        Job job = null;
-        for (Job e : Jobs) {
-            if (jobString != null && jobString.equals(e.name())) job = e;
-        }
-        // converting to premissions set
-        EnumSet<ICMPermissions> all = EnumSet.allOf(User.ICMPermissions.class);
-        EnumSet<ICMPermissions> Permissions = EnumSet.complementOf(all);
-        if (informationTechnologiesDepartmentManagerPermission == 1) {
-            Permissions.add(ICMPermissions.informationTechnologiesDepartmentManager);
-        }
-        if (inspectorPermission == 1) {
-            Permissions.add(ICMPermissions.inspector);
-        }
-        if (estimatorPermission == 1) {
-            Permissions.add(ICMPermissions.estimator);
-        }
-        if (executionLeaderPermission == 1) {
-            Permissions.add(ICMPermissions.executionLeader);
-        }
-        if (examinerPermission == 1) {
-            Permissions.add(ICMPermissions.examiner);
-        }
-        if (changeControlCommitteeChairman == 1) {
-            Permissions.add(ICMPermissions.changeControlCommitteeChairman);
-        }
-        toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, logIn);
         return toReturn;
     }//END of selectUser
+    
+     /** takes result set with all the user fields  and converts it to a user
+     * @param re
+     * @return
+     */
+    private  User userStamentgets(ResultSet re) {
+    	 User toReturn;
+         String userName = null;
+         String password = null;
+         String firstName = null;
+         String lastName = null;
+         int intLogin = 0;
+         String jobString = null;
+         String email = null;
+         int informationTechnologiesDepartmentManagerPermission = 0;
+         int inspectorPermission = 0;
+         int estimatorPermission = 0;
+         int executionLeaderPermission = 0;
+         int examinerPermission = 0;
+         int changeControlCommitteeChairman = 0;
+         try {
+         
+             userName = re.getNString(1);
+             password = re.getNString(2);
+             firstName = re.getNString(3);
+             lastName = re.getNString(4);
+             intLogin = re.getInt(5);
+             jobString = re.getNString(6);
+             email = re.getNString(7);
+             informationTechnologiesDepartmentManagerPermission = re.getInt(8);
+             inspectorPermission = re.getInt(9);
+             estimatorPermission = re.getInt(10);
+             executionLeaderPermission = re.getInt(11);
+             examinerPermission = re.getInt(12);
+             changeControlCommitteeChairman = re.getInt(13);
+         
+     } catch (SQLException e) {
+         e.printStackTrace();
+     }
+
+     // convertin log in to bloolean vulue
+     boolean logIn = false;
+     if (intLogin == 1) {
+         logIn = true;
+     }
+     // convering job to enum
+     EnumSet<Job> Jobs = EnumSet.allOf(User.Job.class);
+     Job job = null;
+     for (Job e : Jobs) {
+         if (jobString != null && jobString.equals(e.name())) job = e;
+     }
+     // converting to premissions set
+     EnumSet<ICMPermissions> all = EnumSet.allOf(User.ICMPermissions.class);
+     EnumSet<ICMPermissions> Permissions = EnumSet.complementOf(all);
+     if (informationTechnologiesDepartmentManagerPermission == 1) {
+         Permissions.add(ICMPermissions.informationTechnologiesDepartmentManager);
+     }
+     if (inspectorPermission == 1) {
+         Permissions.add(ICMPermissions.inspector);
+     }
+     if (estimatorPermission == 1) {
+         Permissions.add(ICMPermissions.estimator);
+     }
+     if (executionLeaderPermission == 1) {
+         Permissions.add(ICMPermissions.executionLeader);
+     }
+     if (examinerPermission == 1) {
+         Permissions.add(ICMPermissions.examiner);
+     }
+     if (changeControlCommitteeChairman == 1) {
+         Permissions.add(ICMPermissions.changeControlCommitteeChairman);
+     }
+     toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, logIn);
+     return toReturn;
+  
+     } // end of userStamentgets
+     
+    /** get all the users in the DB
+     * @return
+     */
+    public ArrayList<User> getAllUsers(){
+    	ArrayList<User> toReturn = new ArrayList<>();
+        Statement stmt;
+        ResultSet re;
+        try {
+            stmt = mysqlConn.getConn().createStatement();
+            re = stmt.executeQuery("SELECT * FROM icm.user;");
+
+            while (re.next()) {
+                userStamentgets(re);
+                toReturn.add(userStamentgets(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllUsers
 
     /** gets all of the change requests in DB
      * @return -ArrayList<ChangeRequest>
