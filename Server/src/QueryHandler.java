@@ -491,7 +491,6 @@ public class QueryHandler {
             re = stmt.executeQuery("SELECT * FROM icm.user;");
 
             while (re.next()) {
-                userStamentgets(re);
                 toReturn.add(userStamentgets(re));
             }
             stmt.close();
@@ -501,7 +500,70 @@ public class QueryHandler {
 
         return toReturn;
     } // END of getAllUsers
+    
+    /**  getting all users with the specified job
+     * @param job
+     * @return
+     */
+    public ArrayList<User> getAllUsersByJob(Job job){
+    	ArrayList<User> toReturn = new ArrayList<>();
+    	 try {
+             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where job=?;");
+             stmt.setNString(1,job.name());
+             ResultSet re = stmt.executeQuery();
+            while (re.next()) {
 
+                 toReturn.add(userStamentgets(re));
+             }
+             stmt.close();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+
+         return toReturn;
+    } // END of getAllUsers
+    
+    /** Getting all users with the  specified ICMPermission
+     * @param prem
+     * @return
+     */
+    public ArrayList<User> getAllUsersWithICMPermissions(ICMPermissions prem){
+    	ArrayList<User> toReturn = new ArrayList<>();
+    	Statement stmt;
+        ResultSet re = null ;
+        try {
+            stmt = mysqlConn.getConn().createStatement();
+
+    	switch (prem) {
+    	case informationTechnologiesDepartmentManager :
+            re = stmt.executeQuery("SELECT * FROM icm.user where informationTechnologiesDepartmentMangerPermission=1;");
+    		break;
+    	case inspector:
+            re = stmt.executeQuery("SELECT * FROM icm.user where inspectorPermission=1;");
+    		break;
+    	case estimator:
+            re = stmt.executeQuery("SELECT * FROM icm.user where estimatorPermission=1;");
+    		break;
+    	case executionLeader:
+            re = stmt.executeQuery("SELECT * FROM icm.user where executionLeaderPermission=1;");
+    		break;
+    	case examiner:
+            re = stmt.executeQuery("SELECT * FROM icm.user where examinerPermission=1;");
+    		break;
+    	case changeControlCommitteeChairman :
+            re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeChairman=1;");
+    		break;
+    	}
+            while (re.next()) {
+             toReturn.add(userStamentgets(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllUsersWithRule
     /** gets all of the change requests in DB
      * @return -ArrayList<ChangeRequest>
      */
@@ -514,43 +576,8 @@ public class QueryHandler {
             re = stmt.executeQuery("SELECT * FROM icm.changerequest;");
 
             while (re.next()) {
-                ChangeRequest toPut;
-                String RequestID = re.getString(1);
-                LocalDate startDate;
-                if (re.getString(2) != null) {
-                    startDate = LocalDate.parse(re.getString(2));
-                } else startDate = null;
-                String system = re.getString(3);
-                String problemDescriptionString = re.getString(4);
-                String whyChange = re.getString(5);
-                String comment = re.getString(6);
-                String statusString = re.getString(7);
-                Initiator theInitiator = getInitiator(RequestID);
-                // TODO:
-                Document doc = null;
-                //
-                ProcessStage stage = getProcessStage(RequestID);
 
-//THIS WAS REPLACED
-       /*       if (statusString.equals(ongoing.name())) {
-                    status = ongoing;
-                }
-                if (statusString.equals(ChangeRequestStatus.suspended.name())) {
-                    status = ChangeRequestStatus.suspended;
-                }
-                if (statusString.equals(ChangeRequestStatus.closed.name())) {
-                    status = ChangeRequestStatus.closed;
-                }
-*/
-       //BY THIS:
-                ChangeRequestStatus status = ChangeRequest.ChangeRequestStatus.valueOf(statusString);
-
-                toPut = new ChangeRequest(theInitiator, startDate, system, problemDescriptionString, whyChange, comment, doc);
-                toPut.setStatus(status);
-                toPut.setRequestID(RequestID);
-                toPut.updateInitiatorRequest();
-                toPut.updateStage();
-                toReturn.add(toPut);
+                toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -559,6 +586,70 @@ public class QueryHandler {
 
         return toReturn;
     } // END of getAllChangeRequest();
+    
+    /**getting all requests with the specified status 
+     * @param stat
+     * @return
+     */
+    public ArrayList<ChangeRequest> getAllChangeRequestWithStatus(ChangeRequestStatus stat) {
+        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
+    
+        try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.changerequest where status=?;");
+            stmt.setNString(1,stat.name());
+            ResultSet re = stmt.executeQuery();
+           while (re.next()) {
+
+                toReturn.add(getChangeRequestsFromRes(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllChangeRequest();
+    
+    
+    private ChangeRequest getChangeRequestsFromRes( ResultSet re) throws SQLException {
+        ChangeRequest toPut;
+        String RequestID = re.getString(1);
+        LocalDate startDate;
+        if (re.getString(2) != null) {
+            startDate = LocalDate.parse(re.getString(2));
+        } else startDate = null;
+        String system = re.getString(3);
+        String problemDescriptionString = re.getString(4);
+        String whyChange = re.getString(5);
+        String comment = re.getString(6);
+        String statusString = re.getString(7);
+        Initiator theInitiator = getInitiator(RequestID);
+        // TODO:
+        Document doc = null;
+        //
+        ProcessStage stage = getProcessStage(RequestID);
+
+//THIS WAS REPLACED
+/*       if (statusString.equals(ongoing.name())) {
+            status = ongoing;
+        }
+        if (statusString.equals(ChangeRequestStatus.suspended.name())) {
+            status = ChangeRequestStatus.suspended;
+        }
+        if (statusString.equals(ChangeRequestStatus.closed.name())) {
+            status = ChangeRequestStatus.closed;
+        }
+*/
+//BY THIS:
+        ChangeRequestStatus status = ChangeRequest.ChangeRequestStatus.valueOf(statusString);
+
+        toPut = new ChangeRequest(theInitiator, startDate, system, problemDescriptionString, whyChange, comment, doc);
+        toPut.setStatus(status);
+        toPut.setRequestID(RequestID);
+        toPut.updateInitiatorRequest();
+        toPut.updateStage();
+        return toPut;
+    } //END of getChangeRequestsFromRes()
 
 	/** gets processStage without the change request
 	 * 	its purpose is to support getAllChangeRequest() 
