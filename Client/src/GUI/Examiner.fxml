@@ -28,13 +28,13 @@
    <center>
       <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
             <VBox alignment="BOTTOM_CENTER" spacing="10.0" SplitPane.resizableWithParent="false">
-                     <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Back">
+                     <Button fx:id="btnBack" mnemonicParsing="false" onAction="#MainScene" prefWidth="180.0" text="Back">
                         <VBox.margin>
                            <Insets />
                         </VBox.margin>
                      </Button>
-            <Button mnemonicParsing="false" prefWidth="180.0" text="Logout" />
-            <Button mnemonicParsing="false" prefWidth="180.0" text="Exit">
+            <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LogOutButton" prefWidth="180.0" text="Logout" />
+            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Exit">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></Button>

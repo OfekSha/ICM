@@ -2,16 +2,8 @@ package GUI;
 
 import Entity.Requirement;
 import Entity.clientRequestFromServer;
-import WindowApp.IcmForm;
 import WindowApp.ClientLauncher;
-
-//java
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-//javafx
+import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,11 +12,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import static Entity.Requirement.statusOptions.*;
-import static Entity.clientRequestFromServer.requestOptions.*;
+import static Entity.clientRequestFromServer.requestOptions.getAll;
+import static Entity.clientRequestFromServer.requestOptions.updateStatus;
+
+//java
+//javafx
 
 //ENTITY IMPORT
 
@@ -93,14 +94,14 @@ public class RequestForm extends UserForm implements Initializable, IcmForm {
 	}*/
 
 	// setting up the combo boxes
-	private void setRequestsComboBox() {
+/*	protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		for (Requirement req : ReqListForClient) {
 			al.add(Integer.toString((req.getID())));
 		}
 		listFor_cmbRequests = FXCollections.observableArrayList(al);
 		cmbRequests.setItems(listFor_cmbRequests);
-	}
+	}*/
 
 	// cmbStatus
 	private void setStatusComboBox() {

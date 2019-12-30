@@ -1,15 +1,11 @@
 package GUI;
 
-import WindowApp.IcmForm;
+import Entity.Requirement;
+import Entity.Requirement.statusOptions;
+import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
-
-//java
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-//javafx
+import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,16 +15,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
-import javafx.stage.StageStyle;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
+//java
+//javafx
 //ENTITY IMPORT
 //TODO check if it is possible and right to do?
-import Entity.*;
-import Entity.Requirement.statusOptions;
-import Entity.clientRequestFromServer.requestOptions;
 
 public class FormController extends UserForm implements Initializable, IcmForm {
 	public TextArea taInitiatorRequest;
@@ -102,7 +101,7 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 	}
 
 	// setting up the combo boxes
-	private void setRequestsComboBox() {
+	protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		ReqListForClient.forEach(c -> al.add(Integer.toString((c.getID()))));
 		listFor_cmbRequests = FXCollections.observableArrayList(al);

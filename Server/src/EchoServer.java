@@ -1,4 +1,6 @@
 
+import Entity.*;
+import Entity.User.ICMPermissions;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -8,19 +10,9 @@ import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumSet;
 
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
-import Entity.ChangeRequest;
-import Entity.Initiator;
-import Entity.ProcessStage;
-import Entity.Requirement;
-import Entity.User;
-import Entity.clientRequestFromServer;
 import static Entity.Requirement.statusOptions.*;
-import static Entity.Requirement.statusOptions.suspended;
 
 
 /**
@@ -45,7 +37,6 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * Constructs an instance of the echo osf.server.
-	 *
 	 * @param port The port number to connect on.
 	 */
 	public EchoServer(int port) {
@@ -60,50 +51,56 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		clientRequestFromServer request = (clientRequestFromServer)msg; // request from ocf.client
-		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObj() + "\t" + " from " + client.getInetAddress());
-		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
-		Object sendBackobject =null;
-		Boolean iWantResponce =true;
+		clientRequestFromServer request = (clientRequestFromServer) msg; // request from ocf.client
+		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObject() + "\t" + " from " + client.getInetAddress());
+		//ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+		Object sendBackObject = null;
+		boolean iWantResponse = true;
 		try {
-		
-			Requirement reqReceived;
+		//	Requirement reqReceived;
 			switch (request.getRequest()) {
-				// read all requirement data
-				case getAll: // get all requirements need to change!!!!!!!!!
-					getAllRequest(ReqListForClient);
-					sendBackobject=ReqListForClient;
+				// read all ChangeRequest data
+				case getAll: 
+					sendBackObject = queryHandler.getAllChangeRequest();
 					break;
-				// read data from some id in requirement
+				// read data from some id in requirement, doesn't work yet
 				case updateStatus: // change status of one requirement.
-					reqReceived = request.getObj().get(0);
-					queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
-					selectRequirement(ReqListForClient, reqReceived);
-					sendBackobject=ReqListForClient;
+					//reqReceived = request.getObject().get(0);
+					//queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
+					//selectRequirement(ReqListForClient, reqReceived);
+					queryHandler.updateStatus(0, "status");
 					break;
+				// doesn't work yet
 				case getRequirement:
-					reqReceived = request.getObj().get(0); // get the requirement id
-					selectRequirement(ReqListForClient, reqReceived);
-					sendBackobject=ReqListForClient;
+					//reqReceived = request.getObject().get(0); // get the requirement id
+					//selectRequirement(ReqListForClient, reqReceived);
+					//sendBackObject = ReqListForClient;
 					break;
-				case getUser:	
-					sendBackobject=queryHandler.selectUser(((String)request.getObject()));
+				case getUser:
+					sendBackObject = queryHandler.selectUser(((String) request.getObject()));
 					break;
-				case updateUser:	
-					queryHandler.updateAllUserFileds((User)request.getObject());
+				case updateUser:
+					queryHandler.updateAllUserFields((User) request.getObject());
 					break;
-				case changeInLogIn:	
-					iWantResponce =false;
-					queryHandler.updateAllUserFileds((User)request.getObject());
+				case changeInLogIn:
+					iWantResponse = false;
+					queryHandler.updateAllUserFields((User) request.getObject());
 					break;
-				case addRequest:	
+				case addRequest:
 					ChangeRequest change =(ChangeRequest)request.getObject();
-					change.changeRequestID(queryHandler.InsertChangeRequest(change));
+					change.setRequestID(queryHandler.InsertChangeRequest(change));
 					change.updateInitiatorRequest();
 					change.updateStage();
 					queryHandler.insertInitiator(change.getInitiator());
-					queryHandler.InsertProcessStage(change.stage);
-					iWantResponce =false;
+					queryHandler.InsertProcessStage(change.getProcessStage());
+					iWantResponse = false;
+					break;
+				case updateChangeRequest: 
+					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
+					iWantResponse = false;
+					break;
+				case getAllUsers:
+					sendBackObject=queryHandler.getAllUsers();
 					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
@@ -111,116 +108,83 @@ public class EchoServer extends AbstractServer {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-		
-		Object answer = new clientRequestFromServer(request.getRequest(), sendBackobject); // answer to the ocf.client
+
+		Object answer = new clientRequestFromServer(request.getRequest(), sendBackObject); // answer to the ocf.client
 		try {
-			if (iWantResponce)client.sendToClient(answer);
+			if (iWantResponse) client.sendToClient(answer);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void selectRequirement(ArrayList<Requirement> reqListForClient, Requirement reqReceived) {
+	private void selectRequirement(ArrayList<Requirement> reqListForClient, ChangeRequest reqReceived) {
 		String[] result;
-		result = queryHandler.selectRequirement(reqReceived.getID());
+		result = queryHandler.selectRequirement(reqReceived.getRequestID());
 		reqListForClient.add(new Requirement(result));
 	}
 
 	private void getAllRequest(ArrayList<Requirement> reqListForClient) {
-		for (String[] arr : queryHandler.selectAll()) {
-			reqListForClient.add(new Requirement(arr));
-		}
-	}
-
-	/**
-	 * This method overrides the one in the superclass. Called when the osf.server
-	 * starts listening for connections.
-	 */
-	protected void serverStarted() throws UnknownHostException {
-		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
-		mysqlConnection mysqlConn = new mysqlConnection();
-		queryHandler = new QueryHandler(mysqlConn);
-		if (!mysqlConnection.checkExistence()) {
-			mysqlConnection.buildDB();
-			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
-			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
-			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
-			enterUsersToDB();	
-			enterChangeRequestToDB();
-			System.out.println("\nNew DB ready for use");
-		}
-		
-	}
-
-	/**
-	 * This method overrides the one in the superclass. Called when the osf.server stops
-	 * listening for connections.
-	 */
-	protected void serverStopped() {
-		mysqlConnection.closeConnection();
-		System.out.println("Server has stopped listening for connections.");
+		queryHandler.selectAll().forEach(arr -> reqListForClient.add(new Requirement(arr)));
 	}
 	
 	private void enterUsersToDB() {
 		// creating admin
-		EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
-		User newUser =new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
+		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
 		queryHandler.insertUser(newUser);
-		// creating  information Tecnologies DeparmentManger
-		EnumSet<ICMPermissions> lessPermissions =EnumSet.complementOf(Permissions);		//empty enum set
-		lessPermissions.add(User.ICMPermissions.informationTecnologiesDeparmentManger);
-		newUser= new User("informationTecnologiesDeparmentManger", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		// creating  information Technologies Department Manager
+		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
+		lessPermissions.add(User.ICMPermissions.informationTechnologiesDepartmentManager);
+		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating inspector
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.inspector);
-		newUser= new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating estimator
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.estimator);
-		newUser= new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating exeution Leader
-		lessPermissions=EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.ICMPermissions.exeutionLeader);
-		newUser= new User("exeutionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.executionLeader);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating examiner
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
-		newUser= new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating change Control Committee Chairman
-		lessPermissions=EnumSet.complementOf(Permissions);
+		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
-		newUser= new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating student
-		newUser= new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
+		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", User.Job.student, null, false);
 		queryHandler.insertUser(newUser);
-	}// END of  enterUsersToDB() 
-	
+	}// END of  enterUsersToDB()
+
 	private void enterChangeRequestToDB() {
-		EnumSet<ICMPermissions> Permissions =EnumSet.allOf(User.ICMPermissions.class);
-		User newUser =new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
-		Initiator init = new Initiator(newUser,null);
-		LocalDate start =  LocalDate.now();
-		ChangeRequest chang = new ChangeRequest(init, start,"TheSystme" ,"test", "test", "test",null);
-		chang.changeRequestID(queryHandler.InsertChangeRequest(chang));
-		init.setrequest(chang);
-		queryHandler.insertInitiator(init);
-		queryHandler.InsertProcessStage(chang.stage);
-		
+		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start = LocalDate.now();
+		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.insertInitiator(changeRequest.getInitiator());
+		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
 	}// END of enterChangeRequestToDB
-	
-/**
+
+	/**
 	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).
-	 *
-	 * @param args The port number to listen on. Defaults to 5555 if no argument
-	 *                is entered.
+	 * @param args The port number to listen on. Defaults to 5555 if no argument is entered.
 	 **/
 	public static void main(String[] args) {
 		int port; // Port to listen on
@@ -238,6 +202,34 @@ public class EchoServer extends AbstractServer {
 		} catch (Exception ex) {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
+	}
+
+	/**
+	 * This method overrides the one in the superclass. Called when the osf.server
+	 * starts listening for connections.
+	 */
+	protected void serverStarted() throws UnknownHostException {
+		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
+		mysqlConnection mysqlConn = new mysqlConnection();
+		queryHandler = new QueryHandler(mysqlConn);
+		if (!mysqlConnection.checkExistence()) {
+			mysqlConnection.buildDB();
+			queryHandler.insertRequirement("Bob", "Cataclysm", "Fix it!", "Johny", closed);
+			queryHandler.insertRequirement("Or", "Joy", "Enjoy", "Ilia", ongoing);
+			queryHandler.insertRequirement("Abu Ali", "Playful", "to play", "Marak", suspended);
+			enterUsersToDB();
+			enterChangeRequestToDB();
+			System.out.println("New DB ready for use");
+		}
+	}
+
+	/**
+	 * This method overrides the one in the superclass. Called when the osf.server stops
+	 * listening for connections.
+	 */
+	protected void serverStopped() {
+		mysqlConnection.closeConnection();
+		System.out.println("Server has stopped listening for connections.");
 	}
 }
 //End of EchoServer class

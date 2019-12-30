@@ -7,8 +7,6 @@ public class IcmClient extends AbstractClient {
 
 	public IcmForm clientUI; // the UI currently in serves
 
-	//Constructors 
-
 	/**
 	 * Constructs an instance of the chat client.
 	 *
@@ -23,7 +21,6 @@ public class IcmClient extends AbstractClient {
 	}
 
 	/**
-	 * @author Kostya
 	 * @param clientUI receives as object new Scene
 	 *                 to understand where send answers from server
 	 */
@@ -33,7 +30,6 @@ public class IcmClient extends AbstractClient {
 
 	/**
 	 * This method handles all data that comes in from the server.
-	 *
 	 * @param msg The message from the server.
 	 */
 	public void handleMessageFromServer(Object msg) {
@@ -42,7 +38,6 @@ public class IcmClient extends AbstractClient {
 
 	/**
 	 * This method handles all data coming from the UI
-	 *
 	 * @param message The message from the UI.
 	 */
 	public void handleMessageFromClientUI(Object message) {
@@ -66,4 +61,4 @@ public class IcmClient extends AbstractClient {
 		}
 		System.exit(0);
 	}
-}// end of ICMclient class
+}

@@ -1,22 +1,15 @@
 package GUI;
 
-import Entity.Requirement;
-import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class WatchRequestForm extends UserForm {
 	@FXML
-	public ComboBox<String> cmbRequests;
 	public TextField tfRequestStatus;
 	public TextArea taRequestDetails;
 	public TextArea taRequestReason;
@@ -28,24 +21,22 @@ public class WatchRequestForm extends UserForm {
 		setRequestsComboBox();
 	}
 
-	private void setRequestsComboBox() {
+	/*protected void setRequestsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		ReqListForClient.forEach(req -> al.add(Integer.toString((req.getID()))));
-		ObservableList<String> listFor_cmbRequests = FXCollections.observableArrayList(al);
-		cmbRequests.setItems(listFor_cmbRequests);
-	}
+		changeRequests.forEach(cR -> al.add(cR.getRequestID()));
+		cmbRequests.setItems(FXCollections.observableArrayList(al));
+	}*/
 
 	public void RequestsComboBoxUsed() {
-		int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
-		for (Requirement req : ReqListForClient) {
-			if (s == req.getID()) {
-				this.tfRequestStatus.setPromptText((req.getStatus()).name());
-				this.taRequestDetails.setText(req.getRequestDetails());
-				//TODO Implement this in Request Entity
-				//this.taRequestReason.setText(req.getRequestReason());
-				//this.taComment.setText(req.getRequestComment());
-				break;
+		//int s = Integer.parseInt(cmbRequests.getSelectionModel().getSelectedItem());
+		String selected = cmbRequests.getSelectionModel().getSelectedItem();
+		changeRequests.forEach(cR -> {
+			if (selected.equals(cR.getRequestID())) {
+				this.tfRequestStatus.setText(cR.getStatus().name());
+				this.taRequestDetails.setText(cR.getProblemDescription());
+				this.taRequestReason.setText(cR.getWhyChange());
+				this.taComment.setText(cR.getComment());
 			}
-		}
+		});
 	}
 }

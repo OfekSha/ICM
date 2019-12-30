@@ -1,96 +1,97 @@
 package Entity;
 
-import java.io.File;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * @author Yonathan in proggress
  */
 public class ChangeRequest implements Serializable {
 
-	public enum ChangeRequestStatus { //
-		ongoing, suspended, closed
-	}
-	private String RequestID;
-	private Initiator initiator;
-	private LocalDate starDate;
-	private String system;
-	private String problomeDescription;
-	private String whyChange;
-	private String comment;
-	private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
-	private Document doc;
-	public ProcessStage stage = new ProcessStage(this);
+    public enum ChangeRequestStatus { //
+        ongoing, suspended, closed
+    }
+    private String RequestID;
+    private Initiator initiator;
+    private LocalDate starDate;
+    private String system;
+    private String problemDescription;
+    private String whyChange;
+    private String comment;
+    private Document doc;
+    private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
+    private  ProcessStage stage = new ProcessStage(this);
 
-	public ChangeRequest(Initiator initiator, LocalDate starDate,String system, String problomeDescription, String whyChange,String comment,
-			Document doc) {
-		this.comment=comment;
-		this.initiator = initiator;
-		this.starDate = starDate;
-		this.system =system;
-		this.problomeDescription = problomeDescription;
-		this.whyChange = whyChange;
-		this.doc = doc;
-	}
-	// input
-	public void changeStatus(ChangeRequestStatus newStat) {
-		status=newStat;
-	}
-	public void changeRequestID(String id) {
-		RequestID= id;
-	}
-	//update 
-	/**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
-	 * 
-	 */
-	public void updateInitiatorRequest() {
-		initiator.setrequest(this);
-	}
-	public void updateStage() {
-		stage.setRequest(this);
-	}
-	// output
-	public  String getRequestID(){
-		return RequestID ;
-	}
-	public Initiator getInitiator() {
-		return initiator;
-	}
+    public ChangeRequest(Initiator initiator, LocalDate starDate,
+                         String system, String problemDescription,
+                         String whyChange, String comment, Document doc) {
+        this.comment = comment;
+        this.initiator = initiator;
+        this.starDate = starDate;
+        this.system = system;
+        this.problemDescription = problemDescription;
+        this.whyChange = whyChange;
+        this.doc = doc;
+    }
+    // input
+    public void setStatus(ChangeRequestStatus newStat) {
+        status = newStat;
+    }
+    public void setRequestID(String id) {
+        RequestID = id;
+    }
+    
+    public void setStage(ProcessStage stage) {
+    	this.stage= stage;
+    }
+    //update
+    /**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
+     *
+     */
+    public void updateInitiatorRequest() {
+        initiator.setrequest(this);
+    }
 
-	public LocalDate getStarDate() {
-		return starDate;
+    public void updateStage() {
+        stage.setRequest(this);
+    }
+    // output
+    public String getRequestID(){
+        return RequestID ;
+    }
 
-	}
+    public Initiator getInitiator() {
+        return initiator;
+    }
 
-	public String getSystem() {
-		return system;
+    public LocalDate getStartDate() {
+        return starDate;
+    }
 
-	}
+    public String getSystem() {
+        return this.system;
+    }
 
-	public String getProblomeDescription() {
-		return problomeDescription;
+    public String getProblemDescription() {
+        return problemDescription;
+    }
 
-	}
+    public String getWhyChange() {
+        return whyChange;
+    }
 
-	public String getWhyChange() {
-		return whyChange;
+    public String getComment() {
+        return comment;
+    }
 
-	}
-	public String getComment() {
-		return comment;
+    public ChangeRequestStatus getStatus() {
+        return status;
+    }
 
-	}
-
-	public ChangeRequestStatus getStatus() {
-		return status;
-
-	}
-
-	public Document getDoc() {
-		return doc;
-
-	}
+    public Document getDoc() {
+        return doc;
+    }
+    public  ProcessStage getProcessStage() {
+    	return stage;
+    }
 } // END of ChangeRequest class

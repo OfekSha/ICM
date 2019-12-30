@@ -1,5 +1,7 @@
 package GUI;
 
+import WindowApp.IcmForm;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -141,7 +143,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 		default:throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.");
 		}
 	}
-	
+
 	public void onRequirmentClicked(ActionEvent event)throws Exception{
 		requirmentForTable selectedReq =tblviewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStatus()) {
@@ -174,5 +176,4 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	public void getTalkApprove() {
 	}
-
 }

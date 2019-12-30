@@ -3,13 +3,7 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import WindowApp.IcmForm;
-import javafx.fxml.Initializable;
-import javafx.stage.Stage;
-
-public class ExaminerForm extends StageSupervisorForm implements IcmForm {
-
-
+public class ExaminerForm extends StageSupervisorForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

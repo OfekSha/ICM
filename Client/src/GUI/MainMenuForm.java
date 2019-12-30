@@ -1,17 +1,15 @@
 package GUI;
 
-import java.net.URL;
-import java.util.EnumSet;
-import java.util.ResourceBundle;
-
 import Entity.User;
-import Entity.clientRequestFromServer;
 import Entity.User.ICMPermissions;
-import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
+import java.net.URL;
+import java.util.EnumSet;
+import java.util.ResourceBundle;
 
 /**
  * @author Yonathan
@@ -46,9 +44,11 @@ public class MainMenuForm extends UserForm {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ClientLauncher.client.setClientUI(this);
 		//updating server user is logged in
-		user.changeLoginStaus(true);
-		Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
-		ClientLauncher.client.handleMessageFromClientUI(msg);
+		user.changeLoginStatus(true);
+		//TODO Implement it before use
+		// [Waste on found this little shit like 4 hours]
+		/*Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);*/
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
@@ -60,32 +60,31 @@ public class MainMenuForm extends UserForm {
 		EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
 		for (User.ICMPermissions p : Permissions) {
 			switch (p) {
-			case informationTecnologiesDeparmentManger:
-				btnInformationTechnologiesDepartmentManager.setDisable(false);
-				break;
-			case inspector:
-				btnInspector.setDisable(false);
-				break;
-			case estimator:
-				btnEstimator.setDisable(false);
-				break;
-			case exeutionLeader:
-				btnExecutionLeader.setDisable(false);
-				break;
-			case examiner:
-				btnExaminer.setDisable(false);
-				break;
-			case changeControlCommitteeChairman:
-				btnChangeControlCommitteeChairman.setDisable(false);
-				break;
+				case informationTechnologiesDepartmentManager:
+					btnInformationTechnologiesDepartmentManager.setDisable(false);
+					break;
+				case inspector:
+					btnInspector.setDisable(false);
+					break;
+				case estimator:
+					btnEstimator.setDisable(false);
+					break;
+				case executionLeader:
+					btnExecutionLeader.setDisable(false);
+					break;
+				case examiner:
+					btnExaminer.setDisable(false);
+					break;
+				case changeControlCommitteeChairman:
+					btnChangeControlCommitteeChairman.setDisable(false);
+					break;
 			}
 		}
-
 	} // END of initialize();
 
 	// TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {
-		getRequests();
+		//getRequests();
 		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, true);
 	}
 
@@ -100,22 +99,19 @@ public class MainMenuForm extends UserForm {
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
 		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, true);
-
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
+		//NextWindowLauncher(event, "/GUI/Estimator.fxml", this, true);
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
+		//getRequests();
+		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true);
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new RequestForm(),
-		// true);
+		NextWindowLauncher(event, "/GUI/Examiner.fxml", this, true);
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
