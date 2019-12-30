@@ -12,7 +12,9 @@ import Controllers.InspectorController;
 import Controllers.InspectorController.requirmentForTable;
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.ProcessStage.ChargeRequestStages;
 import Entity.Requirement.statusOptions;
+import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
@@ -74,17 +76,15 @@ public class InspectorForm extends UserForm implements IcmForm {
 	public TableColumn<requirmentForTable, Object> columnStage;
 	@FXML
 	public TableColumn<requirmentForTable, Object> columnDueTime;
-	
+
 	/*
-	//for test only:
-	@FXML
-	public TableColumn<requirmentForTable, String> columnStage;
-	@FXML
-	public TableColumn<requirmentForTable, String> columnDueTime;
-	*/
-	
-	
-	
+	 * //for test only:
+	 * 
+	 * @FXML public TableColumn<requirmentForTable, String> columnStage;
+	 * 
+	 * @FXML public TableColumn<requirmentForTable, String> columnDueTime;
+	 */
+
 	@FXML
 	public TableColumn<requirmentForTable, String> columnMessage;
 
@@ -98,22 +98,27 @@ public class InspectorForm extends UserForm implements IcmForm {
 		initializeTableView();
 
 	}
-	
+
 	private void initializeTableView() {
-		columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set values for messages
+		columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set
+																											// values
+																											// for
+																											// messages
 		columnId.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Integer>("id")); // set values for id
-		columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status")); // set values for status
+		columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status")); // set values
+																											// for
+																											// status
 		/*
-		//tests:
-		columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("stage"));
-		columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("dueTime"));
-		*/
-		
-		
-		columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable,Object>("stage"));
+		 * //tests: columnStage.setCellValueFactory(new
+		 * PropertyValueFactory<requirmentForTable, String>("stage"));
+		 * columnDueTime.setCellValueFactory(new
+		 * PropertyValueFactory<requirmentForTable, String>("dueTime"));
+		 */
+
+		columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("stage"));
 		columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("dueTime"));
-		//tblviewRequests.setItems(tableData);
-		
+		// tblviewRequests.setItems(tableData);
+
 	}
 
 	@Override
@@ -128,8 +133,12 @@ public class InspectorForm extends UserForm implements IcmForm {
 	public void watchRequest(ActionEvent event) throws Exception { // get event from the menuItem.
 		InspectorController.watchRequests(((MenuItem) event.getSource()));
 	}
-	public void freezeOrUnfreeze(ActionEvent event)throws Exception{
-		requirmentForTable selectedReq =tblviewRequests.getSelectionModel().getSelectedItem();
+	public void getDetails(ActionEvent event) throws Exception {
+
+	}
+
+	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
+		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
 		case ongoing:
@@ -140,12 +149,42 @@ public class InspectorForm extends UserForm implements IcmForm {
 			InspectorController.unfreeze(selectedReq);
 			btnFreezeUnfreeze.setText("freeze");
 			break;
-		default:throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.");
+		default:
+			throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.");
 		}
 	}
 
-	public void onRequirmentClicked(ActionEvent event)throws Exception{
-		requirmentForTable selectedReq =tblviewRequests.getSelectionModel().getSelectedItem();
+	public void roleApprove(ActionEvent event) throws Exception {
+
+	}
+
+	public void dueTimeApprove(ActionEvent event) throws Exception {
+
+	}
+
+	public void extensionApprove(ActionEvent event) throws Exception {
+
+	}
+
+	public void closeRequest(ActionEvent event) throws Exception {
+
+	}
+
+	public void onRequirmentClicked(ActionEvent event) throws Exception {
+		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+		btnGetDetails.setDisable(false);
+		// when freeze / unfreeze and close will be not disable.
+		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
+			btnFreezeUnfreeze.setText("Freeze / Unfreeze");
+			btnRoleApprove.setText("Role Approve");
+			btnCloseRequest.setDisable(false);
+			btnFreezeUnfreeze.setDisable(true);
+			btnExtensionApprove.setDisable(true);
+			btnDueTimeApprove.setDisable(true);
+			btnRoleApprove.setDisable(true);
+			return;
+
+		}
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
 		case ongoing:
@@ -156,8 +195,46 @@ public class InspectorForm extends UserForm implements IcmForm {
 			btnFreezeUnfreeze.setDisable(false);
 			btnFreezeUnfreeze.setText("freeze");
 			break;
-		default:btnFreezeUnfreeze.setDisable(true);
+		case closed:
+			btnFreezeUnfreeze.setText("Freeze / Unfreeze");
+			btnCloseRequest.setDisable(true);
+			btnFreezeUnfreeze.setDisable(true);
+			btnExtensionApprove.setDisable(true);
+			btnDueTimeApprove.setDisable(true);
+			btnRoleApprove.setDisable(true);
+		default:
+			btnFreezeUnfreeze.setDisable(true);
+			// @@need to throw new Exception.
 			break;
+		}
+		// when role, due time, and extension will be not disable
+		switch (selectedReq.getStage().getCurrentSubStage()) {
+		case determiningDueTime:
+			btnDueTimeApprove.setDisable(false);
+			btnExtensionApprove.setDisable(true);
+			btnCloseRequest.setDisable(true);
+			btnRoleApprove.setDisable(true);
+		case supervisorAction:
+			btnDueTimeApprove.setDisable(true);
+			btnExtensionApprove.setDisable(true);
+			btnCloseRequest.setDisable(true);
+			btnRoleApprove.setDisable(true);
+		case supervisorAllocation:
+			btnDueTimeApprove.setDisable(true);
+			btnExtensionApprove.setDisable(true);
+			btnCloseRequest.setDisable(true);
+			btnRoleApprove.setDisable(false);
+			switch (selectedReq.getStage().getCurrentStage()) {
+			case meaningEvaluation:
+				btnRoleApprove.setText("Estimator Approve");
+				break;
+			case execution:
+				btnRoleApprove.setText("Execution Leader Approve");
+				break;
+			default:
+				btnRoleApprove.setText("Role Approve");
+				break;
+			}
 		}
 	}
 	// TODO: the following methods are from the class diagram:
