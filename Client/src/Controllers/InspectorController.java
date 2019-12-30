@@ -58,10 +58,13 @@ public class InspectorController {
 		}
 
 		public requirmentForTable(ChangeRequest req) {
+			int stageNumber=req.getProcessStage().getCurrentStage().ordinal();
 			id = new SimpleStringProperty(req.getRequestID());
 			status = new SimpleObjectProperty<ChangeRequestStatus>(req.getStatus());
 			message = new SimpleStringProperty("test");
 			stage = new SimpleObjectProperty<ProcessStage>(req.getProcessStage());
+			dueTime =  new SimpleObjectProperty<LocalDate>(req.getProcessStage().getDates()[stageNumber][1]);
+			if (req.getProcessStage().getDates()[stageNumber][1]==null)dueTime=new SimpleObjectProperty<LocalDate>( LocalDate.now());
 		}
 
 	}
@@ -176,7 +179,7 @@ public class InspectorController {
 			break;
 		case getAll:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) respone.getObject();
-			filter = (reqFilter) respone.getObject();
+			//filter = (reqFilter) respone.getObject();
 			break;
 		default:
 			break;

@@ -28,6 +28,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class InspectorForm extends UserForm implements IcmForm {
@@ -69,7 +70,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	public TableView<requirmentForTable> tblviewRequests;
 	// table colums:
 	@FXML
-	public TableColumn<requirmentForTable, Integer> columnId;
+	public TableColumn<requirmentForTable, String> columnId;
 	@FXML
 	public TableColumn<requirmentForTable, Object> columnStatus;
 	@FXML
@@ -100,24 +101,17 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	private void initializeTableView() {
+		ClientLauncher.client.setClientUI(this);
 		columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set
 																											// values
 																											// for
 																											// messages
-		columnId.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Integer>("id")); // set values for id
+		columnId.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("id")); // set values for id
 		columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status")); // set values
 																											// for
 																											// status
-		/*
-		 * //tests: columnStage.setCellValueFactory(new
-		 * PropertyValueFactory<requirmentForTable, String>("stage"));
-		 * columnDueTime.setCellValueFactory(new
-		 * PropertyValueFactory<requirmentForTable, String>("dueTime"));
-		 */
-
 		columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("stage"));
 		columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("dueTime"));
-		// tblviewRequests.setItems(tableData);
 
 	}
 
@@ -170,8 +164,10 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	}
 
-	public void onRequirmentClicked(ActionEvent event) throws Exception {
-		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+	public void onRequirmentClicked(MouseEvent event) throws Exception {
+
+		requirmentForTable selectedReq= tblviewRequests.getSelectionModel().getSelectedItem();
+		if (selectedReq== null) return;
 		btnGetDetails.setDisable(false);
 		// when freeze / unfreeze and close will be not disable.
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {

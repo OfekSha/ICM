@@ -61,7 +61,7 @@
                         <Font size="14.0" />
                      </font>
                   </MenuButton>
-                  <TableView fx:id="tblviewRequests" onContextMenuRequested="#onRequirmentClicked">
+                  <TableView fx:id="tblviewRequests" onMouseClicked="#onRequirmentClicked">
                     <columns>
                       <TableColumn fx:id="columnId" prefWidth="75.0" text="ID" />
                       <TableColumn fx:id="columnStatus" prefWidth="75.0" text="Status" />
