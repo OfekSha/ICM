@@ -53,11 +53,11 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer) msg; // request from ocf.client
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObject() + "\t" + " from " + client.getInetAddress());
-		ArrayList<Requirement> ReqListForClient = new ArrayList<>();
+		//ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackObject = null;
 		boolean iWantResponse = true;
 		try {
-			Requirement reqReceived;
+		//	Requirement reqReceived;
 			switch (request.getRequest()) {
 				// read all ChangeRequest data
 				case getAll: 
@@ -68,13 +68,13 @@ public class EchoServer extends AbstractServer {
 					//reqReceived = request.getObject().get(0);
 					//queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
 					//selectRequirement(ReqListForClient, reqReceived);
-					sendBackObject = ReqListForClient;
+					queryHandler.updateStatus(0, "status");
 					break;
 				// doesn't work yet
 				case getRequirement:
 					//reqReceived = request.getObject().get(0); // get the requirement id
 					//selectRequirement(ReqListForClient, reqReceived);
-					sendBackObject = ReqListForClient;
+					//sendBackObject = ReqListForClient;
 					break;
 				case getUser:
 					sendBackObject = queryHandler.selectUser(((String) request.getObject()));
@@ -118,9 +118,9 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
-	private void selectRequirement(ArrayList<Requirement> reqListForClient, Requirement reqReceived) {
+	private void selectRequirement(ArrayList<Requirement> reqListForClient, ChangeRequest reqReceived) {
 		String[] result;
-		result = queryHandler.selectRequirement(reqReceived.getID());
+		result = queryHandler.selectRequirement(reqReceived.getRequestID());
 		reqListForClient.add(new Requirement(result));
 	}
 
