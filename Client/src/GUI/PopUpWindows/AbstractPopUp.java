@@ -10,7 +10,7 @@ public abstract class AbstractPopUp {
     @FXML
     private Button btnCancel;
     @FXML
-    void getCancel(ActionEvent event) {
+    public void getCancel(ActionEvent event) {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }

@@ -2,6 +2,7 @@ package GUI;
 
 import WindowApp.IcmForm;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -20,8 +21,13 @@ import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -29,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class InspectorForm extends UserForm implements IcmForm {
@@ -92,16 +99,17 @@ public class InspectorForm extends UserForm implements IcmForm {
 	// not fxml vars:
 	public static ArrayList<ChangeRequest> reqList;
 	private ObservableList<requirmentForTable> tableData;
+	private static Stage popupWindow;
+	public static Stage inspectorWindow;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		ClientLauncher.client.setClientUI(this);
 		initializeTableView();
 
 	}
 
 	private void initializeTableView() {
-		ClientLauncher.client.setClientUI(this);
 		columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set
 																											// values
 																											// for
@@ -124,6 +132,15 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	// functions for gui:
+	private void popupWindow(String target,ActionEvent event) throws IOException {
+		//inspectorWindow.setScene(((Node)event.getTarget()).getScene());
+		popupWindow = new Stage();
+		Parent root = FXMLLoader.load(this.getClass().getResource(target));
+		Scene scene = new Scene(root);
+		popupWindow.setScene(scene);
+		popupWindow.initModality(Modality.APPLICATION_MODAL);
+		popupWindow.show();
+	}
 	public void watchRequest(ActionEvent event) throws Exception { // get event from the menuItem.
 		InspectorController.watchRequests(((MenuItem) event.getSource()));
 	}
@@ -149,7 +166,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void roleApprove(ActionEvent event) throws Exception {
-
+		popupWindow("/GUI/PopUpWindows/ApproveEstimator.fxml",event);
 	}
 
 	public void dueTimeApprove(ActionEvent event) throws Exception {
@@ -185,11 +202,11 @@ public class InspectorForm extends UserForm implements IcmForm {
 		// the requirement wasn't freeze.
 		case ongoing:
 			btnFreezeUnfreeze.setDisable(false);
-			btnFreezeUnfreeze.setText("Unfreeze");
+			btnFreezeUnfreeze.setText("Freeze");
 			break;
 		case suspended:
 			btnFreezeUnfreeze.setDisable(false);
-			btnFreezeUnfreeze.setText("freeze");
+			btnFreezeUnfreeze.setText("Unfreeze");
 			break;
 		case closed:
 			btnFreezeUnfreeze.setText("Freeze / Unfreeze");

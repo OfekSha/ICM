@@ -12,6 +12,7 @@ import Entity.ProcessStage;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User;
+import Entity.User.ICMPermissions;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.InspectorForm;
@@ -19,6 +20,7 @@ import WindowApp.ClientLauncher;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.scene.control.MenuItem;
 
 public class InspectorController {
@@ -89,7 +91,7 @@ public class InspectorController {
 	private static void changeStatus(requirmentForTable req, ChangeRequestStatus newStatus) {
 		ChangeRequest selectedRequest = getReq(req);
 		selectedRequest.setStatus(newStatus);
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateStatus, selectedRequest));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 	}
 
 	public static void freeze(requirmentForTable req) {
@@ -123,32 +125,45 @@ public class InspectorController {
 	}
 
 	private static reqFilter filter;
-
+	private static MenuItem watchChoosed;;
 	public static void watchRequests(MenuItem item) {
+		Object toServerFilter=null;
+		watchChoosed=item;
+		requestOptions toServerOption=null;
 		switch (item.getText()) { // choose what string to send to server
 		case "Freeze Requests":
 			filter = reqFilter.freeze;
+			toServerFilter= ChangeRequestStatus.suspended;
+			toServerOption=requestOptions.getChangeRequestBystatus;
 			break;
 		case "Unfreeze Requests":
 			filter = reqFilter.unfreeze;
+			toServerFilter= ChangeRequestStatus.ongoing;
+			toServerOption=requestOptions.getChangeRequestBystatus;
 			break;
 		case "Approve Estimator":
 			filter = reqFilter.estimator;
+			toServerFilter=ICMPermissions.estimator;
+			toServerOption=requestOptions.getUsersByICMPermissions;
 			break;
 		case "Approve Execution Leader":
 			filter = reqFilter.executionLeader;
+			toServerFilter=ICMPermissions.executionLeader;
+			toServerOption=requestOptions.getUsersByICMPermissions;
 			break;
 		case "Approve Due Time":
 			filter = reqFilter.dueTime;
 			break;
 		case "Waiting for close":
 			filter = reqFilter.close;
+			toServerFilter= ChangeRequestStatus.closed;
+			toServerOption=requestOptions.getChangeRequestBystatus;
 			break;
 		case "Waiting for Extension":
 			filter = reqFilter.extension;
 			break;
 		}
-		clientRequestFromServer toServer = new clientRequestFromServer(requestOptions.getAll, filter);
+		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption,toServerFilter);
 		requestToServerProtocol(toServer);
 	}
 
@@ -171,19 +186,30 @@ public class InspectorController {
 	 * @param message
 	 */
 	public static void messageFromServer(Object message) {
-		// @@ need to add testing for message
 		clientRequestFromServer respone = (clientRequestFromServer) message;
 		switch (respone.getRequest()) {
 		case getRequirement:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) respone.getObject();
-			break;
+			break; //@@ not work for now.
 		case getAll:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) respone.getObject();
-			//filter = (reqFilter) respone.getObject();
+			//filter = (reqFilter)((Object[]) respone.getObject())[1];
+			break;
+		case getChangeRequestBystatus:
+			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			//filter = (reqFilter)((Object[]) respone.getObject())[1];
+			break;
+		case getUsersByICMPermissions:
+			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			//filter = (reqFilter)((Object[]) respone.getObject())[1];
+			break;
+		case updateChangeRequest:
+			watchRequests(watchChoosed);
 			break;
 		default:
-			break;
+			throw new IllegalArgumentException("the request " + respone.getRequest() + " not implemented in the inspector controller.");
 		}
 	}
+	
 
 }
