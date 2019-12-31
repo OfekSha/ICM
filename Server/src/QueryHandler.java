@@ -659,7 +659,7 @@ public class QueryHandler {
         // TODO:
         Document doc = null;
         //
-        ProcessStage stage = getProcessStage(RequestID);
+        ProcessStage stage = getProcessStage(RequestID);//<-----
 
 //THIS WAS REPLACED
 /*       if (statusString.equals(ongoing.name())) {
@@ -678,6 +678,7 @@ public class QueryHandler {
         toPut = new ChangeRequest(theInitiator, startDate, system, problemDescriptionString, whyChange, comment, doc);
         toPut.setStatus(status);
         toPut.setRequestID(RequestID);
+        toPut.setStage(stage);
         toPut.updateInitiatorRequest();
         toPut.updateStage();
         return toPut;
