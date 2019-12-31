@@ -125,7 +125,14 @@ public class EchoServer extends AbstractServer {
 					objectArray[1]=request.getObject();
 					sendBackObject=objectArray;
 					break;
-					
+				case getAllChangeRequestWithStatusAndStage:
+					objectArray= (Object[]) request.getObject();
+					Object[] returnigObjectArray =new Object[4];
+					returnigObjectArray[1] =objectArray[0];
+					returnigObjectArray[2] =objectArray[1];
+					returnigObjectArray[3]=objectArray[2];
+					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndStage((ChargeRequestStages)objectArray[0],(subStages)objectArray[1],(ChangeRequestStatus)objectArray[2]);
+					sendBackObject=returnigObjectArray;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
@@ -213,6 +220,7 @@ public class EchoServer extends AbstractServer {
 		initiator = new Initiator(newUser, null);
 		// change request satge 2
 		changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+		changeRequest.setStatus(ChangeRequestStatus.suspended);
 		LocalDate[][] startEndArray = new LocalDate[5][3];
 		 boolean[] WasThereAnExtensionRequest = new boolean[5];
 		for (int i = 0; i < 5; i++) {
@@ -246,6 +254,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
 		 stager =new ProcessStage(ChargeRequestStages.examination,subStages.supervisorAction,newUser,"test4","test4","test4",startEndArray,WasThereAnExtensionRequest);
 		 changeRequest.setStage(stager);
+		 changeRequest.setStatus(ChangeRequestStatus.suspended);
 			changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 			changeRequest.updateInitiatorRequest();
 			changeRequest.updateStage();
@@ -260,6 +269,7 @@ public class EchoServer extends AbstractServer {
 		// change request stage 5
 			changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
 			 stager =new ProcessStage(ChargeRequestStages.closure,subStages.supervisorAction,newUser,"test5","test5","test5",startEndArray,WasThereAnExtensionRequest);
+			 changeRequest.setStatus(ChangeRequestStatus.closed);
 			 changeRequest.setStage(stager);
 				changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 				changeRequest.updateInitiatorRequest();
@@ -309,8 +319,8 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
-			 ArrayList<User> a =queryHandler.getAllUsersByJob(Job.informationEngineer);
-			 ArrayList<User> b =queryHandler.getAllUsersByJob(Job.student);
+			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatusAndStage(ChargeRequestStages.meaningEvaluation ,subStages.supervisorAllocation, ChangeRequestStatus.ongoing);
+			ArrayList<ChangeRequest> b= queryHandler.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
 //
 			System.out.println("New DB ready for use");
 		}
