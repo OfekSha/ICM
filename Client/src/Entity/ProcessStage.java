@@ -231,5 +231,15 @@ public class ProcessStage implements Serializable {
 	public subStages getCurrentSubStage() {
 		return currentSubStage;
 	}
+	public String toString() {
+		switch (currentStage) {
+		case closure: return "closure";
+		case examination: return "examination";
+		case examinationAndDecision: return "examination And Decision";
+		case execution: return "execution";
+		case meaningEvaluation: return "meaning Evaluation";
+		default : return "Dosn't has a stage";
+		}
+	}
 
 }// END of Stage

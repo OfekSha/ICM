@@ -173,4 +173,9 @@ public class User implements Serializable {
 	public boolean getLoggedIn() {
 		return loggedIn;
 	}
+
+	@Override
+	public String toString() {
+		return userName;
+	}
 }// End of User

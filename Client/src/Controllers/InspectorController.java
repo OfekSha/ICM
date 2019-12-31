@@ -118,7 +118,14 @@ public class InspectorController {
 		selectedRequest.getProcessStage().newStageSupervisor(user);
 		selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
-		//requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, selectedRequest));
+		switch(selectedRequest.getProcessStage().getCurrentStage()) {
+		case meaningEvaluation:user.getICMPermissions().add(ICMPermissions.estimator);
+		break;
+		case execution:user.getICMPermissions().add(ICMPermissions.executionLeader);
+		break;
+		}
+		
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
 		
 	}
 
