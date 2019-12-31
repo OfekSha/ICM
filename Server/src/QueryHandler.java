@@ -1,5 +1,6 @@
 import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
 
@@ -610,6 +611,37 @@ public class QueryHandler {
         return toReturn;
     } // END of getAllChangeRequest();
     
+    /**get all requests in a specified:  stage AND substage AND state  
+     * @param currentStage
+     * @param currentSubStage
+     * @param stat
+     * @return
+     */
+    public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStage(ChargeRequestStages currentStage ,subStages currentSubStage, ChangeRequestStatus stat) {
+        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
+    
+        try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
+            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
+            		"FROM `icm`.`stage`\n" + 
+            		"where currentStage =? And currentSubStage =?) as T\n" + 
+            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
+            		"on T.`RequestID` = K.`RequestID`");
+            stmt.setNString(1,currentStage.name());
+            stmt.setNString(2,currentSubStage.name());
+            stmt.setNString(3,stat.name());
+            ResultSet re = stmt.executeQuery();
+           while (re.next()) {
+
+                toReturn.add(getChangeRequestsFromRes(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllChangeRequestWithStatusAndStage();
     
     private ChangeRequest getChangeRequestsFromRes( ResultSet re) throws SQLException {
         ChangeRequest toPut;
