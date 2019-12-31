@@ -1,6 +1,8 @@
 
 import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.ProcessStage.ChargeRequestStages;
+import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
 import ocsf.server.AbstractServer;
@@ -192,15 +194,80 @@ public class EchoServer extends AbstractServer {
 
 	private void enterChangeRequestToDB() {
 		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
+		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
 		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", User.Job.informationEngineer, Permissions, false);
 		Initiator initiator = new Initiator(newUser, null);
 		LocalDate start = LocalDate.now();
 		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+		// change request at satge 1
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
 		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		
+		//creating change Control Committee Chairman
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		initiator = new Initiator(newUser, null);
+		// change request satge 2
+		changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+		LocalDate[][] startEndArray = new LocalDate[5][3];
+		 boolean[] WasThereAnExtensionRequest = new boolean[5];
+		for (int i = 0; i < 5; i++) {
+			WasThereAnExtensionRequest[i] = false;
+		}
+		ProcessStage stager =new ProcessStage(ChargeRequestStages.examinationAndDecision,subStages.supervisorAction,newUser,"test2","test2","test2",startEndArray,WasThereAnExtensionRequest);
+		changeRequest.setStage(stager);
+		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		//creating exeution Leader
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.executionLeader);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+		initiator = new Initiator(newUser, null);
+		// change request stage 3
+		changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+		 stager =new ProcessStage(ChargeRequestStages.execution,subStages.determiningDueTime,newUser,"test3","test3","test3",startEndArray,WasThereAnExtensionRequest);
+		 changeRequest.setStage(stager);
+		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.insertInitiator(changeRequest.getInitiator());
+		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		//creating examiner
+				lessPermissions = EnumSet.complementOf(Permissions);
+				lessPermissions.add(User.ICMPermissions.examiner);
+				newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+				initiator = new Initiator(newUser, null);
+		// change request stage 4
+		changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+		 stager =new ProcessStage(ChargeRequestStages.examination,subStages.supervisorAction,newUser,"test4","test4","test4",startEndArray,WasThereAnExtensionRequest);
+		 changeRequest.setStage(stager);
+			changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+			changeRequest.updateInitiatorRequest();
+			changeRequest.updateStage();
+			queryHandler.insertInitiator(changeRequest.getInitiator());
+			queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+			
+			//creating inspector
+			lessPermissions = EnumSet.complementOf(Permissions);
+			lessPermissions.add(User.ICMPermissions.inspector);
+			newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
+			initiator = new Initiator(newUser, null);
+		// change request stage 5
+			changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
+			 stager =new ProcessStage(ChargeRequestStages.closure,subStages.supervisorAction,newUser,"test5","test5","test5",startEndArray,WasThereAnExtensionRequest);
+			 changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.insertInitiator(changeRequest.getInitiator());
+				queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		
+		
 	}// END of enterChangeRequestToDB
 
 	/**
