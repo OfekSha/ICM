@@ -19,7 +19,9 @@ public class clientRequestFromServer implements Serializable {
         getAllUsersByJob,		// getting all users with the specified job
         getAllChangeRequestWithStatusAndStage, // get all requests in a specified:  stage AND substage AND state
         getAllChangeRequestWithStatusAndStageOnly, //get all requests in a specified:  stage  AND state
-        getAllChangeRequestWithStatusAndSubStageOnly //get all requests in a specified:  sub stage  AND state
+        getAllChangeRequestWithStatusAndSubStageOnly, //get all requests in a specified:  sub stage  AND state
+        getAllChangeRequestWithStatusAndStageAndSupervisor //  get all requests in a specified:  sub stage  AND state AND StageSupervisor
+
     }
     //  is needed?
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.

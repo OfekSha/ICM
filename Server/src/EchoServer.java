@@ -151,6 +151,17 @@ public class EchoServer extends AbstractServer {
 					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndSubStageOnly((subStages)objectArray[0],(ChangeRequestStatus)objectArray[1]);
 					sendBackObject=returnigObjectArray;
 					break;
+				case getAllChangeRequestWithStatusAndStageAndSupervisor:
+					objectArray= (Object[]) request.getObject();
+					returnigObjectArray =new Object[5];
+					returnigObjectArray[1] =objectArray[0];
+					returnigObjectArray[2] =objectArray[1];
+					returnigObjectArray[3]=objectArray[2];
+					returnigObjectArray[4]=objectArray[3];
+					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndStageAndSupervisor((ChargeRequestStages)objectArray[0],(subStages)objectArray[1],(ChangeRequestStatus)objectArray[2],(String)objectArray[3]);
+					sendBackObject=returnigObjectArray;
+					break;
+					
 					
 					
 				default:
@@ -341,7 +352,7 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
-			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatusAndSubStageOnly(subStages.supervisorAction , ChangeRequestStatus.suspended);
+			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatusAndStageAndSupervisor(ChargeRequestStages.execution,subStages.determiningDueTime , ChangeRequestStatus.ongoing,"executionLeader");
 			//ArrayList<ChangeRequest> b= queryHandler.getAllChangeRequestWithStatusAndStageOnly(ChangeRequestStatus.ongoing);
 //
 			System.out.println("New DB ready for use");

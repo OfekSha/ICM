@@ -656,6 +656,41 @@ public class QueryHandler {
         return toReturn;
     } // END of getAllChangeRequestWithStatusAndStage();
     
+    
+    /** get all requests in a specified:  sub stage  AND state AND StageSupervisor
+     * @param currentStage
+     * @param currentSubStage
+     * @param stat
+     * @param username
+     * @return
+     */
+    public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStageAndSupervisor(ChargeRequestStages currentStage ,subStages currentSubStage, ChangeRequestStatus stat ,String username) {
+        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
+    
+        try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
+            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
+            		"FROM `icm`.`stage`\n" + 
+            		"where currentStage =? And currentSubStage =? And StageSupervisor =?) as T\n" + 
+            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
+            		"on T.`RequestID` = K.`RequestID`");
+            stmt.setNString(1,currentStage.name());
+            stmt.setNString(2,currentSubStage.name());
+            stmt.setNString(3,username);
+            stmt.setNString(4,stat.name());
+            ResultSet re = stmt.executeQuery();
+           while (re.next()) {
+
+                toReturn.add(getChangeRequestsFromRes(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllChangeRequestWithStatusAndStageAndSupervisor();
+    
     /**   get all requests in a specified:  sub stage  AND state
 
      * @param currentStage
