@@ -1,27 +1,66 @@
 package GUI;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Controllers.EstimatorContorller;
+import Controllers.InspectorController;
+import Entity.ChangeRequest;
+import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
+import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-public class EstimatorForm extends EstimatorExecutorForm implements IcmForm {
+public class EstimatorForm extends  StageSupervisorForm{
 
 
+	
+	@FXML
+	public TextArea taRequestDetails;
+	@FXML
+	public TextArea taRequestReason;
+	@FXML
+	public TextArea taComment;
+	@FXML
+	private ComboBox<String> cmbChangeRequest;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-
+	
+	private ArrayList<ChangeRequest> reqList = new ArrayList<>() ;
+	
+	
+	public void setArrayList(ArrayList<ChangeRequest> reqList) {
+		this.reqList =  reqList;
 	}
-
 	@Override
 	public void getFromServer(Object message) {
-		// TODO Auto-generated method stub
-
+		EstimatorContorller.messageFromServer(message,this);
+		
 	}
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		ClientLauncher.client.setClientUI(this);
+		//Object msg = new clientRequestFromServer(requestOptions.getChangeRequestBystatus, null);
+		//ClientLauncher.client.handleMessageFromClientUI(msg);
+	}
+	public void setSystemsComboBox() {
+		ArrayList<String> al = new ArrayList<>();
+		for (ChangeRequest e : reqList) {
+			al.add(e.getRequestID());
+		}
+		ObservableList<String> list = FXCollections.observableArrayList(al);
+		cmbChangeRequest.setItems(list);
+	}
+
+
 	//TODO: the following  methods are from the class diagram:  
 	public void getReport() {}
 

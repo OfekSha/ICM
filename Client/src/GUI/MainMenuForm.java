@@ -102,7 +102,7 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
-		//NextWindowLauncher(event, "/GUI/Estimator.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/Estimator.fxml", this, true);
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
