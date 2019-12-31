@@ -656,6 +656,69 @@ public class QueryHandler {
         return toReturn;
     } // END of getAllChangeRequestWithStatusAndStage();
     
+    /**   get all requests in a specified:  sub stage  AND state
+
+     * @param currentStage
+     * @param currentSubStage
+     * @param stat
+     * @return
+     */
+    public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndSubStageOnly(subStages currentSubStage, ChangeRequestStatus stat) {
+        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
+    
+        try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
+            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
+            		"FROM `icm`.`stage`\n" + 
+            		"where currentSubStage =?) as T\n" + 
+            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
+            		"on T.`RequestID` = K.`RequestID`");
+         
+            stmt.setNString(1,currentSubStage.name());
+            stmt.setNString(2,stat.name());
+            ResultSet re = stmt.executeQuery();
+           while (re.next()) {
+
+                toReturn.add(getChangeRequestsFromRes(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllChangeRequestWithStatusAndSubStageOnly();
+    
+    /** get all requests in a specified:  stage  AND state
+     * @param currentStage
+     * @param stat
+     * @return
+     */
+    public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStageOnly(ChargeRequestStages currentStage , ChangeRequestStatus stat) {
+        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
+    
+        try {
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
+            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
+            		"FROM `icm`.`stage`\n" + 
+            		"where currentStage =? ) as T\n" + 
+            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
+            		"on T.`RequestID` = K.`RequestID`");
+            stmt.setNString(1,currentStage.name());
+            stmt.setNString(2,stat.name());
+            ResultSet re = stmt.executeQuery();
+           while (re.next()) {
+
+                toReturn.add(getChangeRequestsFromRes(re));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+    } // END of getAllChangeRequestWithStatusAndStageOnly();
+    
     private ChangeRequest getChangeRequestsFromRes( ResultSet re) throws SQLException {
         ChangeRequest toPut;
         String RequestID = re.getString(1);

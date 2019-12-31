@@ -17,7 +17,9 @@ public class clientRequestFromServer implements Serializable {
         getChangeRequestBystatus, // getting all requests with the specified status 
         getUsersByICMPermissions,// Getting all users with the  specified ICMPermission
         getAllUsersByJob,		// getting all users with the specified job
-        getAllChangeRequestWithStatusAndStage // get all requests in a specified:  stage AND substage AND state  
+        getAllChangeRequestWithStatusAndStage, // get all requests in a specified:  stage AND substage AND state
+        getAllChangeRequestWithStatusAndStageOnly, //get all requests in a specified:  stage  AND state
+        getAllChangeRequestWithStatusAndSubStageOnly //get all requests in a specified:  sub stage  AND state
     }
     //  is needed?
     private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.

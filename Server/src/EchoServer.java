@@ -60,6 +60,7 @@ public class EchoServer extends AbstractServer {
 		//ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackObject = null;
 		Object[] objectArray=null;
+		Object[] returnigObjectArray =null;
 		boolean iWantResponse = true;
 		try {
 		//	Requirement reqReceived;
@@ -127,13 +128,31 @@ public class EchoServer extends AbstractServer {
 					break;
 				case getAllChangeRequestWithStatusAndStage:
 					objectArray= (Object[]) request.getObject();
-					Object[] returnigObjectArray =new Object[4];
+					returnigObjectArray =new Object[4];
 					returnigObjectArray[1] =objectArray[0];
 					returnigObjectArray[2] =objectArray[1];
 					returnigObjectArray[3]=objectArray[2];
 					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndStage((ChargeRequestStages)objectArray[0],(subStages)objectArray[1],(ChangeRequestStatus)objectArray[2]);
 					sendBackObject=returnigObjectArray;
 					break;
+				case getAllChangeRequestWithStatusAndStageOnly:
+					objectArray= (Object[]) request.getObject();
+					returnigObjectArray =new Object[3];
+					returnigObjectArray[1] =objectArray[0];
+					returnigObjectArray[2] =objectArray[1];
+					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndStageOnly((ChargeRequestStages)objectArray[0],(ChangeRequestStatus)objectArray[1]);
+					sendBackObject=returnigObjectArray;
+					break;
+				case getAllChangeRequestWithStatusAndSubStageOnly:
+					objectArray= (Object[]) request.getObject();
+					returnigObjectArray =new Object[3];
+					returnigObjectArray[1] =objectArray[0];
+					returnigObjectArray[2] =objectArray[1];
+					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndSubStageOnly((subStages)objectArray[0],(ChangeRequestStatus)objectArray[1]);
+					sendBackObject=returnigObjectArray;
+					break;
+					
+					
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
@@ -322,8 +341,8 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
-			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatusAndStage(ChargeRequestStages.meaningEvaluation ,subStages.supervisorAllocation, ChangeRequestStatus.ongoing);
-			ArrayList<ChangeRequest> b= queryHandler.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
+			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatusAndSubStageOnly(subStages.supervisorAction , ChangeRequestStatus.suspended);
+			//ArrayList<ChangeRequest> b= queryHandler.getAllChangeRequestWithStatusAndStageOnly(ChangeRequestStatus.ongoing);
 //
 			System.out.println("New DB ready for use");
 		}
