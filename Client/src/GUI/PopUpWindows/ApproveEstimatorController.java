@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
+import Entity.ChangeRequest;
 import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
@@ -28,6 +29,7 @@ public class ApproveEstimatorController extends AbstractPopUp implements IcmForm
     private Button btnApprove;
     @FXML
     public void getApprove(ActionEvent event) { 
+    	InspectorController.changeRole(InspectorController.selctedReqFromTable, cmbEstimator.getSelectionModel().getSelectedItem());
     }
     private ObservableList<User> userList;
 	@Override

@@ -206,6 +206,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
 		if (selectedReq == null)
 			return;
+		InspectorController.selctedReqFromTable=selectedReq;
 		btnGetDetails.setDisable(false);
 		// when freeze / unfreeze and close will be not disable.
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {

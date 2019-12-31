@@ -133,6 +133,7 @@ public class EchoServer extends AbstractServer {
 					returnigObjectArray[3]=objectArray[2];
 					returnigObjectArray[0] =queryHandler.getAllChangeRequestWithStatusAndStage((ChargeRequestStages)objectArray[0],(subStages)objectArray[1],(ChangeRequestStatus)objectArray[2]);
 					sendBackObject=returnigObjectArray;
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}

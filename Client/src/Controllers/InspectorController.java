@@ -60,13 +60,14 @@ public class InspectorController {
 		}
 
 		public requirmentForTable(ChangeRequest req) {
-			int stageNumber=req.getProcessStage().getCurrentStage().ordinal();
+			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
 			id = new SimpleStringProperty(req.getRequestID());
 			status = new SimpleObjectProperty<ChangeRequestStatus>(req.getStatus());
 			message = new SimpleStringProperty("test");
 			stage = new SimpleObjectProperty<ProcessStage>(req.getProcessStage());
-			dueTime =  new SimpleObjectProperty<LocalDate>(req.getProcessStage().getDates()[stageNumber][1]);
-			if (req.getProcessStage().getDates()[stageNumber][1]==null)dueTime=new SimpleObjectProperty<LocalDate>( LocalDate.now());
+			dueTime = new SimpleObjectProperty<LocalDate>(req.getProcessStage().getDates()[stageNumber][1]);
+			if (req.getProcessStage().getDates()[stageNumber][1] == null)
+				dueTime = new SimpleObjectProperty<LocalDate>(LocalDate.now());
 		}
 
 	}
@@ -95,15 +96,15 @@ public class InspectorController {
 	}
 
 	public static void freeze(requirmentForTable req) {
-		changeStatus(req,ChangeRequestStatus.suspended);
+		changeStatus(req, ChangeRequestStatus.suspended);
 	}
 
 	public static void unfreeze(requirmentForTable req) {
-		changeStatus(req,ChangeRequestStatus.ongoing);
+		changeStatus(req, ChangeRequestStatus.ongoing);
 	}
 
 	public static void closeRequest(requirmentForTable req) {
-		changeStatus(req,ChangeRequestStatus.closed);
+		changeStatus(req, ChangeRequestStatus.closed);
 	}
 
 	public static void approveSubStage(boolean approve, requirmentForTable req) {
@@ -116,6 +117,9 @@ public class InspectorController {
 		ChangeRequest selectedRequest = getReq(req);
 		selectedRequest.getProcessStage().newStageSupervisor(user);
 		selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+		//requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, selectedRequest));
+		
 	}
 
 	// functions for watch button:
@@ -124,57 +128,103 @@ public class InspectorController {
 		freeze, unfreeze, estimator, executionLeader, dueTime, close, extension
 	}
 
+	/*private static void filterTableView(reqFilter filter) {
+		switch (filter) {
+		case close:
+			for (ChangeRequest req : InspectorForm.reqList) {
+				if (req.getProcessStage().getCurrentStage() != ChargeRequestStages.closure)
+					InspectorForm.reqList.remove(req);
+			}
+			break;
+		case estimator:
+			for (ChangeRequest req : InspectorForm.reqList) {
+				if (req.getProcessStage()==null) System.out.println("server need to create estimator");
+				else if (req.getProcessStage().getCurrentStage() != ChargeRequestStages.meaningEvaluation) InspectorForm.reqList.remove(req);
+				else if (req.getProcessStage().getCurrentSubStage() != subStages.supervisorAllocation)
+					InspectorForm.reqList.remove(req);
+			}
+			break;
+		case executionLeader:
+			for (ChangeRequest req : InspectorForm.reqList) {
+				if (req.getProcessStage()==null)  System.out.println("no stage need throw exception");
+				if (req.getProcessStage().getCurrentStage() != ChargeRequestStages.execution) InspectorForm.reqList.remove(req);
+				else if (req.getProcessStage().getCurrentSubStage() != subStages.supervisorAllocation)
+					InspectorForm.reqList.remove(req);
+			}
+			break;
+		case dueTime:
+			for (ChangeRequest req : InspectorForm.reqList) {
+				if (req.getProcessStage().getCurrentSubStage() != subStages.determiningDueTime)
+					InspectorForm.reqList.remove(req);
+			}
+			break;
+			default: break; // no filter
+		}
+	}*/
+
 	public static reqFilter filter;
 	private static MenuItem watchChoosed;;
+
 	public static void watchRequests(MenuItem item) {
-		Object toServerFilter=null;
-		watchChoosed=item;
-		requestOptions toServerOption=null;
+		Object toServerFilter = null;
+		watchChoosed = item;
+		requestOptions toServerOption = null;
 		switch (item.getText()) { // choose what string to send to server
 		case "Freeze Requests":
 			filter = reqFilter.freeze;
-			toServerFilter= ChangeRequestStatus.suspended;
-			toServerOption=requestOptions.getChangeRequestBystatus;
+			toServerFilter = ChangeRequestStatus.suspended;
+			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		case "Unfreeze Requests":
 			filter = reqFilter.unfreeze;
-			toServerFilter= ChangeRequestStatus.ongoing;
-			toServerOption=requestOptions.getChangeRequestBystatus;
+			toServerFilter = ChangeRequestStatus.ongoing;
+			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		case "Approve Estimator":
 			filter = reqFilter.estimator;
-			toServerFilter=ICMPermissions.estimator;
-			toServerOption=requestOptions.getUsersByICMPermissions;
+			toServerFilter =new Object[3];
+			((Object[])toServerFilter)[0]=(Object)ChargeRequestStages.meaningEvaluation; //the stage
+			((Object[])toServerFilter)[1]=(Object)subStages.supervisorAllocation; // the sub stage 
+			((Object[])toServerFilter)[2]=(Object)ChangeRequestStatus.ongoing; // the status
+			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStage;
 			break;
 		case "Approve Execution Leader":
 			filter = reqFilter.executionLeader;
-			toServerFilter=ICMPermissions.executionLeader;
-			toServerOption=requestOptions.getUsersByICMPermissions;
+			toServerFilter =new Object[3];
+			((Object[])toServerFilter)[0]=(Object)ChargeRequestStages.execution; //the stage
+			((Object[])toServerFilter)[1]=(Object)subStages.supervisorAllocation; // the sub stage 
+			((Object[])toServerFilter)[2]=(Object)ChangeRequestStatus.ongoing; // the status
+			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStage;
 			break;
 		case "Approve Due Time":
 			filter = reqFilter.dueTime;
+			toServerFilter =new Object[3];
+			((Object[])toServerFilter)[0]=(Object)ChargeRequestStages.execution; //the stage
+			((Object[])toServerFilter)[1]=(Object)subStages.determiningDueTime; // the sub stage 
+			((Object[])toServerFilter)[2]=(Object)ChangeRequestStatus.ongoing; // the status
+			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStage;
 			break;
 		case "Waiting for close":
 			filter = reqFilter.close;
-			toServerFilter= ChangeRequestStatus.closed;
-			toServerOption=requestOptions.getChangeRequestBystatus;
+			toServerFilter = ChangeRequestStatus.closed;
+			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		case "Waiting for Extension":
 			filter = reqFilter.extension;
 			break;
 		}
-		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption,toServerFilter);
+		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption, toServerFilter);
 		requestToServerProtocol(toServer);
 	}
-	
-	
+
 // function for popup windows:
 	public static ArrayList estimators;
+	public static requirmentForTable selctedReqFromTable;
 	public static void getEstimators() {
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.getUsersByICMPermissions,ICMPermissions.estimator));
+		requestToServerProtocol(
+				new clientRequestFromServer(requestOptions.getUsersByICMPermissions, ICMPermissions.estimator));
 	}
-	
-	
+
 	// functions for server - client protocol:
 
 	/**
@@ -198,27 +248,33 @@ public class InspectorController {
 		switch (respone.getRequest()) {
 		case getRequirement:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) respone.getObject();
-			break; //@@ not work for now.
+			break; // @@ not work for now.
 		case getAll:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) respone.getObject();
-			//filter = (reqFilter)((Object[]) respone.getObject())[1];
+			//filterTableView(filter);
+			// filter = (reqFilter)((Object[]) respone.getObject())[1];
 			break;
 		case getChangeRequestBystatus:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
-			//filter = (reqFilter)((Object[]) respone.getObject())[1];
+			//filterTableView(filter);
+			// filter = (reqFilter)((Object[]) respone.getObject())[1];
 			break;
 		case getUsersByICMPermissions:
-			//InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
-			//filter = (reqFilter)((Object[]) respone.getObject())[1];
-			estimators=(ArrayList<User>) ((Object[]) respone.getObject())[0];
+			// InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[])
+			// respone.getObject())[0];
+			// filter = (reqFilter)((Object[]) respone.getObject())[1];
+			estimators = (ArrayList<User>) ((Object[]) respone.getObject())[0];
 			break;
 		case updateChangeRequest:
 			watchRequests(watchChoosed);
 			break;
+		case getAllChangeRequestWithStatusAndStage:
+			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			break;
 		default:
-			throw new IllegalArgumentException("the request " + respone.getRequest() + " not implemented in the inspector controller.");
+			throw new IllegalArgumentException(
+					"the request " + respone.getRequest() + " not implemented in the inspector controller.");
 		}
 	}
-	
 
 }
