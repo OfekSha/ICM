@@ -7,8 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import com.sun.corba.se.pept.transport.EventHandler;
-
 import Controllers.InspectorController;
 import Controllers.InspectorController.requirmentForTable;
 import Entity.ChangeRequest;
@@ -22,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class InspectorForm extends UserForm implements IcmForm {
 	// fxml vars:
@@ -132,18 +132,26 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	// functions for gui:
-	private void popupWindow(String target,ActionEvent event) throws IOException {
-		//inspectorWindow.setScene(((Node)event.getTarget()).getScene());
+	private void popupWindow(String target, ActionEvent event) throws IOException {
+		// inspectorWindow.setScene(((Node)event.getTarget()).getScene());
 		popupWindow = new Stage();
 		Parent root = FXMLLoader.load(this.getClass().getResource(target));
 		Scene scene = new Scene(root);
 		popupWindow.setScene(scene);
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
 		popupWindow.show();
+		InspectorForm icmform=this;
+		popupWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we) {
+				ClientLauncher.client.setClientUI(icmform);
+			}
+		});
 	}
+
 	public void watchRequest(ActionEvent event) throws Exception { // get event from the menuItem.
 		InspectorController.watchRequests(((MenuItem) event.getSource()));
 	}
+
 	public void getDetails(ActionEvent event) throws Exception {
 
 	}
@@ -166,14 +174,26 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void roleApprove(ActionEvent event) throws Exception {
-		popupWindow("/GUI/PopUpWindows/ApproveEstimator.fxml",event);
+		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+		switch (selectedReq.getStage().getCurrentStage()) {
+		case meaningEvaluation: // need to approve Estimator
+			popupWindow("/GUI/PopUpWindows/ApproveEstimator.fxml", event);
+			break;
+		case execution: // need to approve Execution Leader
+			popupWindow("/GUI/PopUpWindows/ApproveExecutionLeader.fxml", event);
+			break;
+		default:
+			// need to throw new exception.
+			break;
+		}
 	}
 
 	public void dueTimeApprove(ActionEvent event) throws Exception {
-
+		popupWindow("/GUI/PopUpWindows/ApproveDueTime.fxml", event);
 	}
 
 	public void extensionApprove(ActionEvent event) throws Exception {
+		popupWindow("/GUI/PopUpWindows/ApproveExtension.fxml", event);
 
 	}
 
@@ -183,8 +203,9 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	public void onRequirmentClicked(MouseEvent event) throws Exception {
 
-		requirmentForTable selectedReq= tblviewRequests.getSelectionModel().getSelectedItem();
-		if (selectedReq== null) return;
+		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+		if (selectedReq == null)
+			return;
 		btnGetDetails.setDisable(false);
 		// when freeze / unfreeze and close will be not disable.
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
@@ -238,10 +259,10 @@ public class InspectorForm extends UserForm implements IcmForm {
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(false);
 			switch (selectedReq.getStage().getCurrentStage()) {
-			case meaningEvaluation:
+			case meaningEvaluation: // need to approve Estimator
 				btnRoleApprove.setText("Estimator Approve");
 				break;
-			case execution:
+			case execution: // need to approve Execution Leader
 				btnRoleApprove.setText("Execution Leader Approve");
 				break;
 			default:

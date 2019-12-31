@@ -120,11 +120,11 @@ public class InspectorController {
 
 	// functions for watch button:
 
-	enum reqFilter {
+	public enum reqFilter {
 		freeze, unfreeze, estimator, executionLeader, dueTime, close, extension
 	}
 
-	private static reqFilter filter;
+	public static reqFilter filter;
 	private static MenuItem watchChoosed;;
 	public static void watchRequests(MenuItem item) {
 		Object toServerFilter=null;
@@ -166,7 +166,15 @@ public class InspectorController {
 		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption,toServerFilter);
 		requestToServerProtocol(toServer);
 	}
-
+	
+	
+// function for popup windows:
+	public static ArrayList estimators;
+	public static void getEstimators() {
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.getUsersByICMPermissions,ICMPermissions.estimator));
+	}
+	
+	
 	// functions for server - client protocol:
 
 	/**
@@ -200,8 +208,9 @@ public class InspectorController {
 			//filter = (reqFilter)((Object[]) respone.getObject())[1];
 			break;
 		case getUsersByICMPermissions:
-			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			//InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
 			//filter = (reqFilter)((Object[]) respone.getObject())[1];
+			estimators=(ArrayList<User>) ((Object[]) respone.getObject())[0];
 			break;
 		case updateChangeRequest:
 			watchRequests(watchChoosed);
