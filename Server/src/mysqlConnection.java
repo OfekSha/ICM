@@ -61,7 +61,8 @@ public class mysqlConnection {
 					"estimatorPermission TINYINT(1) NOT NULL,"+									//[10]
 					"executionLeaderPermission TINYINT(1) NOT NULL,"+							//[11]
 					"examinerPermission TINYINT(1) NOT NULL," + 								//[12]
-					"changeControlCommitteeChairman TINYINT(1) NOT NULL," +						//[13]
+					"changeControlCommitteeChairman TINYINT(1) NOT NULL," +	
+					"changeControlCommitteeMember TINYINT(1) NOT NULL," +//[14]
 					"PRIMARY KEY (userName));"); // create user table
 			//
 			stmt.execute("CREATE TABLE icm.initiator (" +

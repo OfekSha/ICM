@@ -44,8 +44,9 @@ public class QueryHandler {
                     "estimatorPermission," +
                     "executionLeaderPermission," +
                     "examinerPermission," +
-                    "changeControlCommitteeChairman)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    "changeControlCommitteeChairman," +
+                    "changeControlCommitteeMember)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);");
             setAllUserFieldsStatement(user, stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,6 +76,7 @@ public class QueryHandler {
         stmt.setInt(11, 0);
         stmt.setInt(12, 0);
         stmt.setInt(13, 0);
+        stmt.setInt(14, 0);
         EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
         if (Permissions != null) {
             for (ICMPermissions e : Permissions) {
@@ -96,6 +98,9 @@ public class QueryHandler {
                         break;
                     case changeControlCommitteeChairman:
                         stmt.setInt(13, 1);
+                        break;
+                    case changeControlCommitteeMember:
+                        stmt.setInt(14, 1);
                         break;
                 }
             }
@@ -378,8 +383,9 @@ public class QueryHandler {
                             "executionLeaderPermission = ?," +
                             "examinerPermission = ?," +
                             "changeControlCommitteeChairman = ?" +
+                            "changeControlCommitteeMember = ?" +
                             "WHERE userName = ?;");
-            updStatus.setNString(14, user.getUserName());
+            updStatus.setNString(15, user.getUserName());
             setAllUserFieldsStatement(user, updStatus);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -428,6 +434,7 @@ public class QueryHandler {
          int executionLeaderPermission = 0;
          int examinerPermission = 0;
          int changeControlCommitteeChairman = 0;
+         int changeControlCommitteeMember =0;
          try {
 
              userName = re.getNString(1);
@@ -443,6 +450,7 @@ public class QueryHandler {
              executionLeaderPermission = re.getInt(11);
              examinerPermission = re.getInt(12);
              changeControlCommitteeChairman = re.getInt(13);
+             changeControlCommitteeMember =re.getInt(14);
 
      } catch (SQLException e) {
          e.printStackTrace();
@@ -474,6 +482,9 @@ public class QueryHandler {
      }
      if (changeControlCommitteeChairman == 1) {
          Permissions.add(ICMPermissions.changeControlCommitteeChairman);
+     }
+     if (changeControlCommitteeMember == 1) {
+         Permissions.add(ICMPermissions.changeControlCommitteeMember);
      }
      toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, login);
      return toReturn;
@@ -554,6 +565,8 @@ public class QueryHandler {
     	case changeControlCommitteeChairman :
             re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeChairman=1;");
     		break;
+    	case changeControlCommitteeMember :
+            re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeMember=1;");
     	}
             while (re.next()) {
              toReturn.add(userStamentgets(re));

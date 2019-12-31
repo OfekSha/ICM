@@ -188,6 +188,7 @@ public class EchoServer extends AbstractServer {
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
 		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 		queryHandler.insertUser(newUser);
 		//creating change Control Committee Chairman
@@ -249,6 +250,7 @@ public class EchoServer extends AbstractServer {
 		//creating examiner
 				lessPermissions = EnumSet.complementOf(Permissions);
 				lessPermissions.add(User.ICMPermissions.examiner);
+				lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
 				newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", User.Job.informationEngineer, lessPermissions, false);
 				initiator = new Initiator(newUser, null);
 		// change request stage 4

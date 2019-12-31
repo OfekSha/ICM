@@ -13,7 +13,7 @@ public class User implements Serializable {
 	// enums*********************************************
 	public enum ICMPermissions {
 		informationTechnologiesDepartmentManager, inspector, estimator, executionLeader, examiner,
-		changeControlCommitteeChairman
+		changeControlCommitteeChairman,changeControlCommitteeMember
 	}
 
 	// wil be used to determan who can be allocted ICMPermissions
