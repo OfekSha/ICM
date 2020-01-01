@@ -140,9 +140,10 @@ public class InspectorForm extends UserForm implements IcmForm {
 		popupWindow.setScene(scene);
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
 		popupWindow.show();
-		InspectorForm icmform=this;
-		
-		//what happend when close window from out or from stage.close / stage.hide method
+		InspectorForm icmform = this;
+
+		// what happend when close window from out or from stage.close / stage.hide
+		// method
 		popupWindow.setOnCloseRequest(new EventHandler<WindowEvent>() { // close from out (alt +f4)
 			public void handle(WindowEvent we) {
 				ClientLauncher.client.setClientUI(icmform);
@@ -213,9 +214,18 @@ public class InspectorForm extends UserForm implements IcmForm {
 		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
 		if (selectedReq == null)
 			return;
-		InspectorController.selctedReqFromTable=selectedReq;
+		InspectorController.selctedReqFromTable = selectedReq;
 		btnGetDetails.setDisable(false);
-		// when freeze / unfreeze and close will be not disable.
+
+		// when extension is on:
+		if (selectedReq.getStage().getWasThereAnExtensionRequest()[selectedReq.getStage().getCurrentStage()
+				.ordinal()] == 1) {
+			btnExtensionApprove.setDisable(false);
+		} else
+			btnExtensionApprove.setDisable(true);
+
+		// when freeze / unfreeze and close will be not disable:
+		//enable close:
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
 			btnFreezeUnfreeze.setText("Freeze / Unfreeze");
 			btnRoleApprove.setText("Role Approve");
@@ -225,18 +235,20 @@ public class InspectorForm extends UserForm implements IcmForm {
 			btnDueTimeApprove.setDisable(true);
 			btnRoleApprove.setDisable(true);
 			return;
-
 		}
+
 		switch (selectedReq.getStatus()) {
-		// the requirement wasn't freeze.
+		//enable freeze:
 		case ongoing:
 			btnFreezeUnfreeze.setDisable(false);
 			btnFreezeUnfreeze.setText("Freeze");
 			break;
+		//enable unfreeze:
 		case suspended:
 			btnFreezeUnfreeze.setDisable(false);
 			btnFreezeUnfreeze.setText("Unfreeze");
 			break;
+			// when requirement is close (not need to be).
 		case closed:
 			btnFreezeUnfreeze.setText("Freeze / Unfreeze");
 			btnCloseRequest.setDisable(true);
@@ -249,23 +261,21 @@ public class InspectorForm extends UserForm implements IcmForm {
 			// @@need to throw new Exception.
 			break;
 		}
-		// when role, due time, and extension will be not disable
+		// when role, due time will be not disable
 		switch (selectedReq.getStage().getCurrentSubStage()) {
+		//enable due time approve
 		case determiningDueTime:
 			btnDueTimeApprove.setDisable(false);
-			btnExtensionApprove.setDisable(true);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(true);
 			break;
 		case supervisorAction:
 			btnDueTimeApprove.setDisable(true);
-			btnExtensionApprove.setDisable(true);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(true);
 			break;
 		case supervisorAllocation:
 			btnDueTimeApprove.setDisable(true);
-			btnExtensionApprove.setDisable(true);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(false);
 			switch (selectedReq.getStage().getCurrentStage()) {
