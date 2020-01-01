@@ -372,22 +372,22 @@ public class QueryHandler {
         PreparedStatement updStatus;
         try {
             updStatus = mysqlConn.getConn().prepareStatement(
-                    "UPDATE icm.user " +
-                            "SET userName = ?," +
-                            "password = ?," +
-                            "firstName = ?," +
-                            "lastName = ?," +
-                            "login = ?," +
-                            "job = ?," +
-                            "email = ?," +
-                            "informationTechnologiesDepartmentMangerPermission = ?," +
-                            "inspectorPermission = ?," +
-                            "estimatorPermission = ?," +
-                            "executionLeaderPermission = ?," +
-                            "examinerPermission = ?," +
-                            "changeControlCommitteeChairman = ?" +
-                            "changeControlCommitteeMember = ?" +
-                            "WHERE userName = ?;");
+            		" UPDATE icm.user SET"
+                            + " userName = ?,"
+                            + "password = ?,"
+                            + "firstName = ?,"
+                            + "lastName = ?,"
+                            + "login = ?,"
+                            + "job = ?,"
+                            + "email = ?,"
+                            + "informationTechnologiesDepartmentMangerPermission = ?,"
+                            + "inspectorPermission = ?,"
+                            + "estimatorPermission = ?,"
+                            + "executionLeaderPermission = ?,"
+                            + "examinerPermission = ?,"
+                            + "changeControlCommitteeChairman = ?,"
+                            + "changeControlCommitteeMember = ? "
+                            + "WHERE userName = ?;");
             updStatus.setNString(15, user.getUserName());
             setAllUserFieldsStatement(user, updStatus);
         } catch (SQLException e) {

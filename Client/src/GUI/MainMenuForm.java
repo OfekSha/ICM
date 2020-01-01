@@ -2,6 +2,8 @@ package GUI;
 
 import Entity.User;
 import Entity.User.ICMPermissions;
+import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,9 +48,8 @@ public class MainMenuForm extends UserForm {
 		//updating server user is logged in
 		user.changeLoginStatus(true);
 		//TODO Implement it before use
-		// [Waste on found this little shit like 4 hours]
-		/*Object msg = new clientRequestFromServer(requestOptions.updateUser, user);
-		ClientLauncher.client.handleMessageFromClientUI(msg);*/
+		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
