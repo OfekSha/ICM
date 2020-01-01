@@ -74,8 +74,8 @@
                       <Button fx:id="btnGetDetails" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Get Details" />
                       <Button fx:id="btnFreezeUnfreeze" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#freezeOrUnfreeze" text="Freeze / Unfreeze" />
                       <Button fx:id="btnRoleApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#roleApprove" text="Role Approve" />
-                      <Button fx:id="btnDueTimeApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Due Time Approve" />
-                      <Button fx:id="btnExtensionApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Extension Approve " />
+                      <Button fx:id="btnDueTimeApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#dueTimeApprove" text="Due Time Approve" />
+                      <Button fx:id="btnExtensionApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#extensionApprove" text="Extension Approve " />
                       <Button fx:id="btnCloseRequest" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" prefWidth="114.0" text="Close Request" />
                   </HBox>
                      </VBox>

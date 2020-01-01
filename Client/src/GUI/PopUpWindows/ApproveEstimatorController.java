@@ -51,4 +51,6 @@ public class ApproveEstimatorController extends AbstractPopUp implements IcmForm
 		int maxItems=cmbEstimator.getItems().size();
 		cmbEstimator.getSelectionModel().select((int)(Math.random()*maxItems)); // choose randomly estimator before approved.
 	}
+
+	
 }
