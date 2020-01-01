@@ -1,6 +1,7 @@
 package Controllers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.naming.directory.InvalidAttributesException;
 
@@ -114,6 +115,7 @@ public class InspectorController {
 			selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
 			selectedRequest.getProcessStage().addDueDate(null);
 		}
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 	}
 
 	public static void changeRole(requirmentForTable req, User user) {
@@ -129,7 +131,16 @@ public class InspectorController {
 		}
 		
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 		
+	}
+	public static void approveExtension(boolean approve, requirmentForTable req) {
+		ChangeRequest selectedRequest = getReq(req);
+		if (approve == true)
+			selectedRequest.getProcessStage().ExtentionRequestHandeld();
+		else {
+			
+		}
 	}
 
 	// functions for watch button:
@@ -143,11 +154,11 @@ public class InspectorController {
 		requestOptions toServerOption = null;
 		switch (item.getText()) { // choose what string to send to server
 		case "Freeze Requests":
-			toServerFilter = ChangeRequestStatus.suspended;
+			toServerFilter = (Object)ChangeRequestStatus.suspended;
 			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		case "Unfreeze Requests":
-			toServerFilter = ChangeRequestStatus.ongoing;
+			toServerFilter = (Object)ChangeRequestStatus.ongoing;
 			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		case "Approve Estimator":
@@ -177,7 +188,7 @@ public class InspectorController {
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStageOnly;
 			break;
 		case "Waiting for Extension":
-			toServerFilter = ChangeRequestStatus.ongoing;
+			toServerFilter =(Object) ChangeRequestStatus.ongoing;
 			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		}
@@ -220,14 +231,19 @@ public class InspectorController {
 		case updateChangeRequest: // for windows: approve role,approve due date, and freeze/unfreeze/close request.
 			watchRequests(watchChoosed);
 			break;
-		case getAllChangeRequestWithStatusAndStage: case getAllChangeRequestWithStatusAndSubStageOnly: case getAllChangeRequestWithStatusAndStageOnly:case getChangeRequestBystatus:
+		case getChangeRequestBystatus:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
 			if (watchChoosed.getText().contains("Waiting for Extension")) {
+				ArrayList<ChangeRequest> newList=new ArrayList<ChangeRequest>();
 				for (ChangeRequest req :InspectorForm.reqList) {
-					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage().ordinal()]!=1)
-						InspectorForm.reqList.remove(req);
+					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage().ordinal()]==1)
+						newList.add(req);
 				}
-			}
+				InspectorForm.reqList=newList;
+			} 
+			break;
+		case getAllChangeRequestWithStatusAndStage: case getAllChangeRequestWithStatusAndSubStageOnly: case getAllChangeRequestWithStatusAndStageOnly:
+			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
 			break;
 		default:
 			throw new IllegalArgumentException(
