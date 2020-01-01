@@ -63,11 +63,11 @@
                   </MenuButton>
                   <TableView fx:id="tblviewRequests" onMouseClicked="#onRequirmentClicked">
                     <columns>
-                      <TableColumn fx:id="columnId" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="columnStatus" prefWidth="75.0" text="Status" />
-                        <TableColumn fx:id="columnStage" prefWidth="75.0" text="Stage" />
-                        <TableColumn fx:id="columnDueTime" prefWidth="75.0" text="Due Time" />
-                        <TableColumn fx:id="columnMessage" prefWidth="429.0" text="Message" />
+                      <TableColumn fx:id="columnId" prefWidth="39.0" text="ID" />
+                      <TableColumn fx:id="columnStatus" prefWidth="111.0" text="Status" />
+                        <TableColumn fx:id="columnStage" prefWidth="117.0" text="Stage" />
+                        <TableColumn fx:id="columnDueTime" prefWidth="90.0" text="Due Time" />
+                        <TableColumn fx:id="columnMessage" prefWidth="437.0" text="Message" />
                     </columns>
                   </TableView>
                   <HBox alignment="CENTER" spacing="10.0">

@@ -67,8 +67,6 @@ public class InspectorController {
 			message = new SimpleStringProperty("test");
 			stage = new SimpleObjectProperty<ProcessStage>(req.getProcessStage());
 			dueTime = new SimpleObjectProperty<LocalDate>(req.getProcessStage().getDates()[stageNumber][1]);
-			if (req.getProcessStage().getDates()[stageNumber][1] == null)
-				dueTime = new SimpleObjectProperty<LocalDate>(LocalDate.now());
 		}
 
 	}
@@ -215,16 +213,13 @@ public class InspectorController {
 	public static void messageFromServer(Object message) {
 		clientRequestFromServer respone = (clientRequestFromServer) message;
 		switch (respone.getRequest()) {
-		case getChangeRequestBystatus:
-			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
-			break;
 		case getAllUsersByJob: // for windows: approve role.
 			informationEngineers = (ArrayList<User>) ((Object[]) respone.getObject())[0];
 			break;
 		case updateChangeRequest: // for windows: approve role,approve due date, and freeze/unfreeze/close request.
 			watchRequests(watchChoosed);
 			break;
-		case getAllChangeRequestWithStatusAndStage: case getAllChangeRequestWithStatusAndSubStageOnly: case getAllChangeRequestWithStatusAndStageOnly:
+		case getAllChangeRequestWithStatusAndStage: case getAllChangeRequestWithStatusAndSubStageOnly: case getAllChangeRequestWithStatusAndStageOnly:case getChangeRequestBystatus:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
 			break;
 		default:
