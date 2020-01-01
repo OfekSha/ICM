@@ -263,6 +263,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
+		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
 		//creating exeution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.executionLeader);
@@ -352,7 +353,7 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
-			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatusAndStageAndSupervisor(ChargeRequestStages.execution,subStages.determiningDueTime , ChangeRequestStatus.ongoing,"executionLeader");
+			ArrayList<ChangeRequest> a= queryHandler.getAllChangeRequestWithStatus(ChangeRequestStatus.suspended);
 			//ArrayList<ChangeRequest> b= queryHandler.getAllChangeRequestWithStatusAndStageOnly(ChangeRequestStatus.ongoing);
 //
 			System.out.println("New DB ready for use");
