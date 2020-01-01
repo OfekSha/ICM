@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.EstimatorMainForm">
+   <top>
+      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="200.0" fitWidth="200.0">
+                <Image url="@../img/ICMlogo.png" />
+            </ImageView>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+      </HBox>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+            <VBox alignment="BOTTOM_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+             <Button fx:id="btnBack" mnemonicParsing="false" onAction="#MainScene" prefHeight="0.0" prefWidth="180.0" text="Back">
+                 <VBox.margin>
+                     <Insets />
+                 </VBox.margin>
+             </Button>
+               <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LogOutButton" prefWidth="180.0" text="Log out" />
+               <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Exit">
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </Button>
+            </VBox>
+         <HBox alignment="TOP_CENTER">
+                     <VBox alignment="TOP_CENTER" prefWidth="795.0">
+                  <MenuButton fx:id="menubtnWatch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefWidth="200.0" text="Watch" textAlignment="CENTER">
+                    <items>
+                      <MenuItem fx:id="NeedToSetDueTime" mnemonicParsing="false" text="No approved due time" />
+                      <MenuItem fx:id="NeedToWriteAReport" mnemonicParsing="false" text="In need of a Report" />
+                    </items>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </MenuButton>
+                  <TableView fx:id="tblviewRequests">
+                    <columns>
+                      <TableColumn fx:id="columnId" prefWidth="39.0" text="ID" />
+                      <TableColumn fx:id="columnStatus" prefWidth="111.0" text="Status" />
+                        <TableColumn fx:id="columnStage" prefWidth="117.0" text="Stage" />
+                        <TableColumn fx:id="columnDueTime" prefWidth="90.0" text="Due Time" />
+                        <TableColumn fx:id="columnMessage" prefWidth="437.0" text="Message" />
+                    </columns>
+                  </TableView>
+                  <HBox alignment="CENTER" spacing="10.0">
+                      <Button fx:id="btnGetDetails" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Get Details" />
+                      <Button fx:id="btnSetDueTime" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Set Due Time" />
+                      <Button fx:id="btnWriteReport" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Write Report" />
+                      <Button fx:id="btnAskForTimeExtension" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Ask For Time Extension" />
+                  </HBox>
+                     </VBox>
+         </HBox>
+      </SplitPane>
+   </center>
+</BorderPane>

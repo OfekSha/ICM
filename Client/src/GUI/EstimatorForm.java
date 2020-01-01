@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 import Controllers.EstimatorContorller;
 import Controllers.InspectorController;
 import Entity.ChangeRequest;
+import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.ProcessStage.ChargeRequestStages;
+import Entity.ProcessStage.subStages;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -48,7 +51,12 @@ public class EstimatorForm extends  StageSupervisorForm{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ClientLauncher.client.setClientUI(this);
-		//Object msg = new clientRequestFromServer(requestOptions.getChangeRequestBystatus, null);
+		Object[] objectArr = new Object[4];
+		objectArr[0]=ChargeRequestStages.meaningEvaluation;
+		objectArr[1]=subStages.determiningDueTime;
+		objectArr[2]=ChangeRequestStatus.ongoing;
+		objectArr[3]=user.getUserName();
+		Object msg = new clientRequestFromServer(requestOptions.getAllChangeRequestWithStatusAndStageAndSupervisor, objectArr);
 		//ClientLauncher.client.handleMessageFromClientUI(msg);
 	}
 	public void setSystemsComboBox() {
@@ -61,7 +69,7 @@ public class EstimatorForm extends  StageSupervisorForm{
 	}
 
 
-	//TODO: the following  methods are from the class diagram:  
+	//TODO: the 1following  methods are from the class diagram:  
 	public void getReport() {}
 
 }

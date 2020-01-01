@@ -39,8 +39,13 @@ public class ProcessStage implements Serializable {
 	/**
 	 * an array whit what stages asked for extension
 	 * [stage number-1]
+	 * 
+	 * WasThereAnExtensionRequest = 0 - no  Extension Request
+	 * WasThereAnExtensionRequest = 1 - pending Extension Request
+	 * WasThereAnExtensionRequest = 2 - inspector approved/disapproved
+	 * 
 	 */
-	private boolean[] WasThereAnExtensionRequest = new boolean[5];
+	private int[] WasThereAnExtensionRequest = new int[5];
 
 	/**
 	 * startEndArray is -an array with the start date and end date for each stage
@@ -56,13 +61,13 @@ public class ProcessStage implements Serializable {
 	public ProcessStage(ChangeRequest Request) {
 		this.Request = Request;
 		for (int i = 0; i < 5; i++) {
-			WasThereAnExtensionRequest[i] = false;
+			WasThereAnExtensionRequest[i] = 0;
 		}
 	}
 
 	public ProcessStage(ChargeRequestStages currentStage, subStages currentSubStage, User StageSupervisor,
 						String EstimatorReport, String ExaminerFailReport, String inspectorDocumentation, LocalDate[][] startEndArray,
-						boolean[] WasThereAnExtensionRequest) {
+						int[] WasThereAnExtensionRequest) {
 		this.currentStage = currentStage;
 		this.currentSubStage = currentSubStage;
 		this.StageSupervisor = StageSupervisor;
@@ -106,8 +111,16 @@ public class ProcessStage implements Serializable {
 	/**
 	 * Extension Request Made was made at the current stage
 	 */
+	// TODO: add a test if possibale -agains the date and if requested
 	public void ExtentionRequestMade() {
-		WasThereAnExtensionRequest[currentStage.ordinal()] = true;
+		WasThereAnExtensionRequest[currentStage.ordinal()] = 1;
+	}
+	
+	/**
+	 * Extension Request was approved/disapproved  by the inspector
+	 */
+	public void ExtentionRequestHandeld() {
+		WasThereAnExtensionRequest[currentStage.ordinal()] = 2;
 	}
 
 	/**
@@ -224,7 +237,7 @@ public class ProcessStage implements Serializable {
 		return startEndArray;
 	}
 
-	public boolean[] getWasThereAnExtensionRequest() {
+	public int[] getWasThereAnExtensionRequest() {
 		return WasThereAnExtensionRequest;
 	}
 

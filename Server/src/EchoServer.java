@@ -254,9 +254,9 @@ public class EchoServer extends AbstractServer {
 		changeRequest = new ChangeRequest(initiator, start, "TheSystme", "test", "test", "test", null);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
 		LocalDate[][] startEndArray = new LocalDate[5][3];
-		 boolean[] WasThereAnExtensionRequest = new boolean[5];
+		 int[] WasThereAnExtensionRequest = new int[5];
 		for (int i = 0; i < 5; i++) {
-			WasThereAnExtensionRequest[i] = false;
+			WasThereAnExtensionRequest[i] = 0;
 		}
 		ProcessStage stager =new ProcessStage(ChargeRequestStages.examinationAndDecision,subStages.supervisorAction,newUser,"test2","test2","test2",startEndArray,WasThereAnExtensionRequest);
 		changeRequest.setStage(stager);

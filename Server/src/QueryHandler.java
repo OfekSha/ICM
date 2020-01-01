@@ -231,12 +231,15 @@ public class QueryHandler {
         } else {
             stmt.setNString(20, date[4][2].toString());
         }
-        boolean[] bool = newStage.getWasThereAnExtensionRequest();
+        int[] bool = newStage.getWasThereAnExtensionRequest();
         int v = 21;
         for (int j = 0; j < 5; j++) {
-            if (bool[j]) {
-                stmt.setInt(v, 1);
-            } else {
+            if (bool[j]==2) {
+                stmt.setInt(v, 2);
+            } 
+            if(bool[j]==1){
+            	stmt.setInt(v, 1);
+            }else {
                 stmt.setInt(v, 0);
             }
             v++;
@@ -441,7 +444,7 @@ public class QueryHandler {
              password = re.getNString(2);
              firstName = re.getNString(3);
              lastName = re.getNString(4);
-             login = re.getBoolean(5);
+             login =( re.getInt(5)==1);
              jobString = re.getNString(6);
              email = re.getNString(7);
              informationTechnologiesDepartmentManagerPermission = re.getInt(8);
@@ -841,10 +844,10 @@ public class QueryHandler {
                 }
 				else startEndArray[4][2] = null;
 
-				boolean[] WasThereAnExtensionRequest = new boolean[5];
+				int[] WasThereAnExtensionRequest = new int[5];
 				u = 21;
-				for (int i = 0; i < 5; i++) {
-                    WasThereAnExtensionRequest[i] = re.getInt(u) == 1;
+				for (int i = 0; i < 5; i++) {		
+                    WasThereAnExtensionRequest[i] = re.getInt(u) ;
 					u++;
 				}
 				returnProcessStage = new ProcessStage(currentStage, currentSubStage,
