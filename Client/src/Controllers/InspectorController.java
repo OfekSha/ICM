@@ -166,18 +166,19 @@ public class InspectorController {
 			break;
 		case "Approve Due Time":
 			toServerFilter =new Object[2];
-			((Object[])toServerFilter)[1]=(Object)subStages.determiningDueTime; // the sub stage 
-			((Object[])toServerFilter)[2]=(Object)ChangeRequestStatus.ongoing; // the status
+			((Object[])toServerFilter)[0]=(Object)subStages.determiningDueTime; // the sub stage 
+			((Object[])toServerFilter)[1]=(Object)ChangeRequestStatus.ongoing; // the status
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndSubStageOnly;
 			break;
 		case "Waiting for close":
 			toServerFilter =new Object[2];
-			((Object[])toServerFilter)[1]=(Object)ChargeRequestStages.closure; // the stage 
-			((Object[])toServerFilter)[2]=(Object)ChangeRequestStatus.ongoing; // the status
+			((Object[])toServerFilter)[0]=(Object)ChargeRequestStages.closure; // the stage 
+			((Object[])toServerFilter)[1]=(Object)ChangeRequestStatus.ongoing; // the status
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStageOnly;
 			break;
 		case "Waiting for Extension":
-
+			toServerFilter = ChangeRequestStatus.ongoing;
+			toServerOption = requestOptions.getChangeRequestBystatus;
 			break;
 		}
 		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption, toServerFilter);
@@ -221,6 +222,12 @@ public class InspectorController {
 			break;
 		case getAllChangeRequestWithStatusAndStage: case getAllChangeRequestWithStatusAndSubStageOnly: case getAllChangeRequestWithStatusAndStageOnly:case getChangeRequestBystatus:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			if (watchChoosed.getText().contains("Waiting for Extension")) {
+				for (ChangeRequest req :InspectorForm.reqList) {
+					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage().ordinal()]!=1)
+						InspectorForm.reqList.remove(req);
+				}
+			}
 			break;
 		default:
 			throw new IllegalArgumentException(

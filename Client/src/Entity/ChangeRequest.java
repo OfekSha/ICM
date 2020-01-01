@@ -94,4 +94,10 @@ public class ChangeRequest implements Serializable {
     public  ProcessStage getProcessStage() {
     	return stage;
     }
+    @Override // Override object method: equals (use for lists)
+    public boolean equals(Object another) {
+    	if (another instanceof ChangeRequest) 
+    	return RequestID==((ChangeRequest)another).RequestID;
+    	return false;
+    }
 } // END of ChangeRequest class

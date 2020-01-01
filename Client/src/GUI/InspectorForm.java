@@ -141,7 +141,14 @@ public class InspectorForm extends UserForm implements IcmForm {
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
 		popupWindow.show();
 		InspectorForm icmform=this;
-		popupWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		
+		//what happend when close window from out or from stage.close / stage.hide method
+		popupWindow.setOnCloseRequest(new EventHandler<WindowEvent>() { // close from out (alt +f4)
+			public void handle(WindowEvent we) {
+				ClientLauncher.client.setClientUI(icmform);
+			}
+		});
+		popupWindow.setOnHidden(new EventHandler<WindowEvent>() { // stage.close / stage.hide method
 			public void handle(WindowEvent we) {
 				ClientLauncher.client.setClientUI(icmform);
 			}
@@ -249,11 +256,13 @@ public class InspectorForm extends UserForm implements IcmForm {
 			btnExtensionApprove.setDisable(true);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(true);
+			break;
 		case supervisorAction:
 			btnDueTimeApprove.setDisable(true);
 			btnExtensionApprove.setDisable(true);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(true);
+			break;
 		case supervisorAllocation:
 			btnDueTimeApprove.setDisable(true);
 			btnExtensionApprove.setDisable(true);
@@ -270,6 +279,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 				btnRoleApprove.setText("Role Approve");
 				break;
 			}
+			break;
 		}
 	}
 	// TODO: the following methods are from the class diagram:
