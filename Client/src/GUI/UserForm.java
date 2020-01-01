@@ -115,7 +115,6 @@ public abstract class UserForm implements IcmForm {
 	public void NextWindowLauncher(ActionEvent event, String path,
 								   IcmForm launcherClass, boolean hide) throws Exception {
 		if (hide) {
-			getRequests();
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
 		Stage stage = new Stage();
