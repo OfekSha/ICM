@@ -77,6 +77,9 @@ public abstract class UserForm implements IcmForm {
 	}
 
 	public void ExitBtn() {
+		if (ClientLauncher.client == null) { //if no server founded
+			System.exit(0);
+		}
 		if (user != null && !(this instanceof LogInForm)) {
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -89,14 +92,9 @@ public abstract class UserForm implements IcmForm {
 				user.changeLoginStatus(false);
 				Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
 				ClientLauncher.client.handleMessageFromClientUI(msg);
-				//
-				ClientLauncher.client.quit();
 			}
-		} else { // if we are at the log in screen
-			/*if (ClientLauncher.client == null)
-				System.exit(0);*/
-			ClientLauncher.client.quit();
 		}
+		ClientLauncher.client.quit();
 	}
 	// End of standard buttons for each scene
 
@@ -112,6 +110,7 @@ public abstract class UserForm implements IcmForm {
 	 */
 	public void NextWindowLauncher(ActionEvent event, String path,
 								   IcmForm launcherClass, boolean hide, IcmForm clientUI) throws Exception {
+
 		ClientLauncher.client.setClientUI(clientUI);
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
