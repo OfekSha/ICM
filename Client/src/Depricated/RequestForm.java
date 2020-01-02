@@ -73,7 +73,7 @@ public class RequestForm extends UserForm implements Initializable, IcmForm {
 
 	@Override
 	public void getFromServer(Object message) throws NotImplementedException {
-		// TODO Auto-generated method stub
+
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		ReqListForClient = request.getObj();
 		System.out.println("\nMessage from osf.server Received:");
@@ -139,8 +139,6 @@ public class RequestForm extends UserForm implements Initializable, IcmForm {
 	}
 		// END of RequestsComboBoxUsed();
 
-	// TODO: connect the button to the method
-	
 	*/
 /**
 	 * @throws Exception

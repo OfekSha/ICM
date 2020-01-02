@@ -28,7 +28,6 @@ import java.util.ResourceBundle;
 //java
 //javafx
 //ENTITY IMPORT
-//TODO check if it is possible and right to do?
 
 public class FormController extends UserForm implements Initializable, IcmForm {
 	public TextArea taInitiatorRequest;
@@ -84,13 +83,13 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 
 	@Override
 	public void getFromServer(Object message) throws NotImplementedException {
-		// TODO Auto-generated method stub
+
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		// msg is ArrayLost of Requirement classes
 		ReqListForClient = (ArrayList<ChangeRequest>) request.getObject();
 		System.out.println("\nMessage from server Received:");
 		switch (request.getRequest()) {
-			//TODO some actions to prompt message to client about answer from server
+
 			case getAll:
 				System.out.print("Load list of requests: ");
 				ReqListForClient.forEach(e -> System.out.print("[" + e.getRequestID() + "] "));
@@ -150,9 +149,6 @@ public class FormController extends UserForm implements Initializable, IcmForm {
 		}
 	}
 		// END of RequestsComboBoxUsed();
-
-	// TODO: connect the button to the method
-	
 	*/
 /**
 	 * @throws Exception
