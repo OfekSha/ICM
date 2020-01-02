@@ -2,7 +2,6 @@ package GUI;
 
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
-import Entity.Requirement;
 import Entity.User;
 import Entity.clientRequestFromServer;
 import Entity.User.ICMPermissions;
@@ -34,13 +33,12 @@ public abstract class UserForm implements IcmForm {
 
 	// vars
 	protected static User user = null; // connected user;
-	static ArrayList<Requirement> ReqListForClient = null;
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
 	static ChangeRequestStatus requestStatus;
-	static ICMPermissions  iCMPermission;
+	static ICMPermissions iCMPermission;
 	static Job job;
-	
+
 	@FXML
 	public Button btnExit;
 	public Button btnLogout;
@@ -66,7 +64,7 @@ public abstract class UserForm implements IcmForm {
 
 	// Standard buttons for each scene
 	public void MainScene(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true, this);
 	}
 
 	public void LogOutButton(ActionEvent event) throws Exception {
@@ -75,7 +73,7 @@ public abstract class UserForm implements IcmForm {
 		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 		// lunching main menu
-		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true, new LogInForm());
 	}
 
 	public void ExitBtn() {
@@ -95,8 +93,8 @@ public abstract class UserForm implements IcmForm {
 				ClientLauncher.client.quit();
 			}
 		} else { // if we are at the log in screen
-			if (ClientLauncher.client == null)
-				System.exit(0);
+			/*if (ClientLauncher.client == null)
+				System.exit(0);*/
 			ClientLauncher.client.quit();
 		}
 	}
@@ -113,7 +111,8 @@ public abstract class UserForm implements IcmForm {
 	 * @throws Exception ???
 	 */
 	public void NextWindowLauncher(ActionEvent event, String path,
-								   IcmForm launcherClass, boolean hide) throws Exception {
+								   IcmForm launcherClass, boolean hide, IcmForm clientUI) throws Exception {
+		ClientLauncher.client.setClientUI(clientUI);
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
@@ -138,19 +137,19 @@ public abstract class UserForm implements IcmForm {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void getFromServer(Object message) { // msg is ArrayList of Entity.Requirement classes
+	public void getFromServer(Object message) { // msg is ArrayList of Entity.ChangeRequest classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		System.out.println("\nMessage from server received: ");
-		Object[] objectArry= null;
+		Object[] objectArray;
 		switch (request.getRequest()) {
 			case getAll:
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
 				changeRequests.forEach(e -> System.out.print("[" + e.getRequestID() + "] "));
 				break;
 			case updateStatus:
-				ReqListForClient = (ArrayList<Requirement>) request.getObject();
-				ReqListForClient.forEach(e ->
-						System.out.println("Status of request ID:[" + e.getID() + "] updated to "
+				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
+				changeRequests.forEach(e ->
+						System.out.println("Status of request ID:[" + e.getRequestID() + "] updated to "
 								+ e.getStatus().toString()));
 				break;
 			case getUser:
@@ -158,22 +157,22 @@ public abstract class UserForm implements IcmForm {
 				System.out.println("User entity received: [" + user.getUserName() + "]");
 				break;
 			case getAllUsers:
-				allUsers= (ArrayList<User>) request.getObject();
+				allUsers = (ArrayList<User>) request.getObject();
 				break;
 			case getChangeRequestBystatus:
-				objectArry=(Object[]) request.getObject();
-				changeRequests = (ArrayList<ChangeRequest>)objectArry[0];
-				requestStatus=(ChangeRequestStatus) objectArry[1];
+				objectArray = (Object[]) request.getObject();
+				changeRequests = (ArrayList<ChangeRequest>) objectArray[0];
+				requestStatus = (ChangeRequestStatus) objectArray[1];
 				break;
 			case getUsersByICMPermissions:
-				objectArry=(Object[]) request.getObject();
-				allUsers= (ArrayList<User>) objectArry[0];
-				iCMPermission=(ICMPermissions) objectArry[1];
+				objectArray = (Object[]) request.getObject();
+				allUsers = (ArrayList<User>) objectArray[0];
+				iCMPermission = (ICMPermissions) objectArray[1];
 				break;
 			case getAllUsersByJob:
-				objectArry=(Object[]) request.getObject();
-				allUsers= (ArrayList<User>) objectArry[0];
-				job=(Job) objectArry[1];
+				objectArray = (Object[]) request.getObject();
+				allUsers = (ArrayList<User>) objectArray[0];
+				job = (Job) objectArray[1];
 				break;
 /*			case getRequirement:
 				break;

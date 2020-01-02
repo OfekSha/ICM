@@ -1,42 +1,30 @@
 package GUI;
 
-import WindowApp.IcmForm;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import Controllers.InspectorController;
 import Controllers.InspectorController.requirmentForTable;
 import Entity.ChangeRequest;
-import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
-import Entity.Requirement.statusOptions;
-import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class InspectorForm extends UserForm implements IcmForm {
 	// fxml vars:
@@ -74,7 +62,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	private MenuItem extension;
 
 	@FXML
-	public TableView<requirmentForTable> tblviewRequests;
+	public TableView<requirmentForTable> tblViewRequests;
 	// table colums:
 	@FXML
 	public TableColumn<requirmentForTable, String> columnId;
@@ -110,24 +98,23 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	private void initializeTableView() {
-		columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set
+		columnMessage.setCellValueFactory(new PropertyValueFactory<>("message")); // set
 																											// values
 																											// for
 																											// messages
-		columnId.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("id")); // set values for id
-		columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status")); // set values
+		columnId.setCellValueFactory(new PropertyValueFactory<>("id")); // set values for id
+		columnStatus.setCellValueFactory(new PropertyValueFactory<>("status")); // set values
 																											// for
 																											// status
-		columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("stage"));
-		columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("dueTime"));
-
+		columnStage.setCellValueFactory(new PropertyValueFactory<>("stage"));
+		columnDueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
 	}
 
 	@Override
 	public void getFromServer(Object message) {
 		InspectorController.messageFromServer(message);
 		tableData = FXCollections.observableArrayList(InspectorController.requirmentForTableList(reqList));
-		tblviewRequests.setItems(tableData);
+		tblViewRequests.setItems(tableData);
 
 	}
 
@@ -140,18 +127,18 @@ public class InspectorForm extends UserForm implements IcmForm {
 		popupWindow.setScene(scene);
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
 		popupWindow.show();
-		InspectorForm icmform = this;
+		InspectorForm icmForm = this;
 
-		// what happend when close window from out or from stage.close / stage.hide
+		// what happened when close window from out or from stage.close / stage.hide
 		// method
 		popupWindow.setOnCloseRequest(new EventHandler<WindowEvent>() { // close from out (alt +f4)
 			public void handle(WindowEvent we) {
-				ClientLauncher.client.setClientUI(icmform);
+				ClientLauncher.client.setClientUI(icmForm);
 			}
 		});
 		popupWindow.setOnHidden(new EventHandler<WindowEvent>() { // stage.close / stage.hide method
 			public void handle(WindowEvent we) {
-				ClientLauncher.client.setClientUI(icmform);
+				ClientLauncher.client.setClientUI(icmForm);
 			}
 		});
 	}
@@ -165,7 +152,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
-		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
 		case ongoing:
@@ -182,7 +169,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void roleApprove(ActionEvent event) throws Exception {
-		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStage().getCurrentStage()) {
 		case meaningEvaluation: // need to approve Estimator
 			popupWindow("/GUI/PopUpWindows/ApproveEstimator.fxml", event);
@@ -209,9 +196,9 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	}
 
-	public void onRequirmentClicked(MouseEvent event) throws Exception {
+	public void onRequirementClicked(MouseEvent event) throws Exception {
 
-		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		if (selectedReq == null)
 			return;
 		InspectorController.selctedReqFromTable = selectedReq;

@@ -49,7 +49,7 @@
                       <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="180.0" />
                   </graphic></Label>
                <Button fx:id="btnDueTime" mnemonicParsing="false" onAction="#openDueTime" prefWidth="180.0" text="Set Due Time" />
-               <Button fx:id="btnApprove" mnemonicParsing="false" onAction="#getApproveExecution" prefWidth="180.0" text="Approve Execution" />
+               <Button fx:id="btnApprove" mnemonicParsing="false" onAction="#getExecutionApproved" prefWidth="180.0" text="Approve Execution" />
                <Button fx:id="btnGetExtension" mnemonicParsing="false" onAction="#requestExtension" prefWidth="180.0" text="Ask Time Extension" />
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">

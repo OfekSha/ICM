@@ -1,7 +1,6 @@
 package Entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class clientRequestFromServer implements Serializable {
     public enum requestOptions {
@@ -24,13 +23,13 @@ public class clientRequestFromServer implements Serializable {
 
     }
     //  is needed?
-    private ArrayList<Requirement> obj;	// some object that transfer to ocf.client or to osf.server.
+    //private ArrayList<ChangeRequest> obj;	// some object that transfer to ocf.client or to osf.server.
     //
     private Object object;
     private requestOptions request; // request
 
     public clientRequestFromServer(requestOptions request) {
-    	this.obj = null;
+    	this.object = null;
     	this.request = request;
     }
     
@@ -44,10 +43,10 @@ public class clientRequestFromServer implements Serializable {
     }
     
      //is needed?
-    public clientRequestFromServer(requestOptions request, ArrayList<Requirement> obj) {
+    /*public clientRequestFromServer(requestOptions request, ArrayList<Requirement> obj) {
     	this.obj = obj;
     	this.request = request;
-    }
+    }*/
     //
     public requestOptions getRequest() {
         return request;
@@ -55,12 +54,12 @@ public class clientRequestFromServer implements Serializable {
 
     @Override
     public String toString() {
-        return request.name() + " ArrayList<Requirement>: " + obj +" object: "+object ;
+        return request.name() + " object: " + object ;
     }
     // is needed ?
-	public ArrayList<Requirement> getObj() {
+	/*public ArrayList<Requirement> getObj() {
 		return obj;
-	}
+	}*/
 	//
 	
 	/** returns the held object

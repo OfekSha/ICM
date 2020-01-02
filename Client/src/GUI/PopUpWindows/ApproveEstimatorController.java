@@ -1,15 +1,6 @@
 package GUI.PopUpWindows;
 
-import static Entity.Requirement.statusOptions.closed;
-import static Entity.Requirement.statusOptions.ongoing;
-import static Entity.Requirement.statusOptions.suspended;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import Controllers.InspectorController;
-import Entity.ChangeRequest;
 import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
@@ -20,8 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ApproveEstimatorController extends AbstractPopUp implements IcmForm{
 

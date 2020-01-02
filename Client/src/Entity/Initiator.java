@@ -16,7 +16,7 @@ public class Initiator implements Serializable {
 		this.theInitiator =theInitiator;
 		this.request= request;
 	}
-	public void setrequest(ChangeRequest request) 
+	public void setRequest(ChangeRequest request)
 	{
 		this.request= request;
 	}

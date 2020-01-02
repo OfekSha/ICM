@@ -112,6 +112,9 @@ public class mysqlConnection {
 		}
 	}
 
+	/**
+	 * @return amount of schemas with name icm
+	 */
 	public static boolean checkExistence() {
 		String result = "0";
 		try {

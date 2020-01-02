@@ -13,24 +13,24 @@ public class ChangeRequest implements Serializable {
     }
     private String RequestID;
     private Initiator initiator;
-    private LocalDate starDate;
+    private LocalDate startDate;
     private String system;
     private String problemDescription;
-    private String whyChange;
+    private String changeReason;
     private String comment;
     private Document doc;
     private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
-    private  ProcessStage stage = new ProcessStage(this);
+    private ProcessStage stage = new ProcessStage(this);
 
-    public ChangeRequest(Initiator initiator, LocalDate starDate,
+    public ChangeRequest(Initiator initiator, LocalDate startDate,
                          String system, String problemDescription,
-                         String whyChange, String comment, Document doc) {
+                         String changeReason, String comment, Document doc) {
         this.comment = comment;
         this.initiator = initiator;
-        this.starDate = starDate;
+        this.startDate = startDate;
         this.system = system;
         this.problemDescription = problemDescription;
-        this.whyChange = whyChange;
+        this.changeReason = changeReason;
         this.doc = doc;
     }
     // input
@@ -42,14 +42,14 @@ public class ChangeRequest implements Serializable {
     }
     
     public void setStage(ProcessStage stage) {
-    	this.stage= stage;
+    	this.stage = stage;
     }
     //update
     /**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
      *
      */
     public void updateInitiatorRequest() {
-        initiator.setrequest(this);
+        initiator.setRequest(this);
     }
 
     public void updateStage() {
@@ -65,7 +65,7 @@ public class ChangeRequest implements Serializable {
     }
 
     public LocalDate getStartDate() {
-        return starDate;
+        return startDate;
     }
 
     public String getSystem() {
@@ -76,8 +76,8 @@ public class ChangeRequest implements Serializable {
         return problemDescription;
     }
 
-    public String getWhyChange() {
-        return whyChange;
+    public String getChangeReason() {
+        return changeReason;
     }
 
     public String getComment() {
@@ -91,13 +91,16 @@ public class ChangeRequest implements Serializable {
     public Document getDoc() {
         return doc;
     }
+
     public  ProcessStage getProcessStage() {
     	return stage;
     }
+
     @Override // Override object method: equals (use for lists)
     public boolean equals(Object another) {
-    	if (another instanceof ChangeRequest) 
-    	return RequestID==((ChangeRequest)another).RequestID;
+    	if (another instanceof ChangeRequest) {
+            return RequestID.equals(((ChangeRequest) another).RequestID);
+        }
     	return false;
     }
 } // END of ChangeRequest class

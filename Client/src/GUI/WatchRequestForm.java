@@ -34,7 +34,7 @@ public class WatchRequestForm extends UserForm {
 			if (selected.equals(cR.getRequestID())) {
 				this.tfRequestStatus.setText(cR.getStatus().name());
 				this.taRequestDetails.setText(cR.getProblemDescription());
-				this.taRequestReason.setText(cR.getWhyChange());
+				this.taRequestReason.setText(cR.getChangeReason());
 				this.taComment.setText(cR.getComment());
 			}
 		});

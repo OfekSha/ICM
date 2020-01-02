@@ -12,9 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import static Entity.Requirement.statusOptions;
 import static Entity.ProcessStage.ChargeRequestStages;
-import static Entity.ProcessStage.subStages;
 
 public class QueryHandler {
 
@@ -358,7 +356,7 @@ public class QueryHandler {
         stmt.setNString(2, newRequest.getStartDate().toString());
         stmt.setNString(3, newRequest.getSystem() );
         stmt.setNString(4, newRequest.getProblemDescription() );
-        stmt.setNString(5, newRequest.getWhyChange());
+        stmt.setNString(5, newRequest.getChangeReason());
         stmt.setNString(6, newRequest.getComment());
         stmt.setNString(7, newRequest.getStatus().name());
     }
@@ -408,7 +406,7 @@ public class QueryHandler {
 
             ResultSet re = stmt.executeQuery();
             while (re.next()) {
-            	toReturn=userStamentgets(re);
+            	toReturn= getUserQuery(re);
             }
             stmt.close();
         } catch (SQLException e) {
@@ -422,7 +420,7 @@ public class QueryHandler {
      * @param re ?
      * @return ?
      */
-    private  User userStamentgets(ResultSet re) {
+    private User getUserQuery(ResultSet re) {
     	 User toReturn;
          String userName = null;
          String password = null;
@@ -439,7 +437,6 @@ public class QueryHandler {
          int changeControlCommitteeChairman = 0;
          int changeControlCommitteeMember =0;
          try {
-
              userName = re.getNString(1);
              password = re.getNString(2);
              firstName = re.getNString(3);
@@ -453,8 +450,7 @@ public class QueryHandler {
              executionLeaderPermission = re.getInt(11);
              examinerPermission = re.getInt(12);
              changeControlCommitteeChairman = re.getInt(13);
-             changeControlCommitteeMember =re.getInt(14);
-
+             changeControlCommitteeMember = re.getInt(14);
      } catch (SQLException e) {
          e.printStackTrace();
      }
@@ -465,7 +461,7 @@ public class QueryHandler {
      for (Job e : Jobs) {
          if (jobString != null && jobString.equals(e.name())) job = e;
      }
-     // converting to premissions set
+     // converting to permissions set
      EnumSet<ICMPermissions> all = EnumSet.allOf(User.ICMPermissions.class);
      EnumSet<ICMPermissions> Permissions = EnumSet.complementOf(all);
      if (informationTechnologiesDepartmentManagerPermission == 1) {
@@ -506,7 +502,7 @@ public class QueryHandler {
             re = stmt.executeQuery("SELECT * FROM icm.user;");
 
             while (re.next()) {
-                toReturn.add(userStamentgets(re));
+                toReturn.add(getUserQuery(re));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -517,18 +513,18 @@ public class QueryHandler {
     } // END of getAllUsers
     
     /**  getting all users with the specified job
-     * @param job
-     * @return
+     * @param job ?
+     * @return ?
      */
     public ArrayList<User> getAllUsersByJob(Job job){
     	ArrayList<User> toReturn = new ArrayList<>();
     	 try {
-             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where job=?;");
-             stmt.setNString(1,job.name());
+             PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.user where job = ?;");
+             stmt.setNString(1, job.name());
              ResultSet re = stmt.executeQuery();
             while (re.next()) {
 
-                 toReturn.add(userStamentgets(re));
+                 toReturn.add(getUserQuery(re));
              }
              stmt.close();
          } catch (SQLException e) {
@@ -539,40 +535,40 @@ public class QueryHandler {
     } // END of getAllUsers
     
     /** Getting all users with the  specified ICMPermission
-     * @param prem
-     * @return
+     * @param prem ?
+     * @return ?
      */
-    public ArrayList<User> getAllUsersWithICMPermissions(ICMPermissions prem){
-    	ArrayList<User> toReturn = new ArrayList<>();
-    	Statement stmt;
-        ResultSet re = null ;
+    public ArrayList<User> getAllUsersWithICMPermissions(ICMPermissions prem) {
+        ArrayList<User> toReturn = new ArrayList<>();
+        Statement stmt;
+        ResultSet re = null;
         try {
             stmt = mysqlConn.getConn().createStatement();
 
-    	switch (prem) {
-    	case informationTechnologiesDepartmentManager :
-            re = stmt.executeQuery("SELECT * FROM icm.user where informationTechnologiesDepartmentMangerPermission=1;");
-    		break;
-    	case inspector:
-            re = stmt.executeQuery("SELECT * FROM icm.user where inspectorPermission=1;");
-    		break;
-    	case estimator:
-            re = stmt.executeQuery("SELECT * FROM icm.user where estimatorPermission=1;");
-    		break;
-    	case executionLeader:
-            re = stmt.executeQuery("SELECT * FROM icm.user where executionLeaderPermission=1;");
-    		break;
-    	case examiner:
-            re = stmt.executeQuery("SELECT * FROM icm.user where examinerPermission=1;");
-    		break;
-    	case changeControlCommitteeChairman :
-            re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeChairman=1;");
-    		break;
-    	case changeControlCommitteeMember :
-            re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeMember=1;");
-    	}
+            switch (prem) {
+                case informationTechnologiesDepartmentManager:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where informationTechnologiesDepartmentMangerPermission = 1;");
+                    break;
+                case inspector:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where inspectorPermission = 1;");
+                    break;
+                case estimator:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where estimatorPermission = 1;");
+                    break;
+                case executionLeader:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where executionLeaderPermission = 1;");
+                    break;
+                case examiner:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where examinerPermission = 1;");
+                    break;
+                case changeControlCommitteeChairman:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeChairman = 1;");
+                    break;
+                case changeControlCommitteeMember:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeMember = 1;");
+            }
             while (re.next()) {
-             toReturn.add(userStamentgets(re));
+                toReturn.add(getUserQuery(re));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -591,32 +587,28 @@ public class QueryHandler {
         try {
             stmt = mysqlConn.getConn().createStatement();
             re = stmt.executeQuery("SELECT * FROM icm.changerequest;");
-
             while (re.next()) {
-
                 toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return toReturn;
     } // END of getAllChangeRequest();
     
     /**getting all requests with the specified status 
-     * @param stat
-     * @return
+     * @param stat ?
+     * @return ?
      */
     public ArrayList<ChangeRequest> getAllChangeRequestWithStatus(ChangeRequestStatus stat) {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
     
         try {
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.changerequest where status=?;");
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("SELECT * FROM icm.changerequest where status = ?;");
             stmt.setNString(1,stat.name());
             ResultSet re = stmt.executeQuery();
            while (re.next()) {
-
                 toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
@@ -628,27 +620,27 @@ public class QueryHandler {
     } // END of getAllChangeRequest();
     
     /**get all requests in a specified:  stage AND substage AND state  
-     * @param currentStage
-     * @param currentSubStage
-     * @param stat
-     * @return
+     * @param currentStage ?
+     * @param currentSubStage ?
+     * @param stat ?
+     * @return ?
      */
     public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStage(ChargeRequestStages currentStage ,subStages currentSubStage, ChangeRequestStatus stat) {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
     
         try {
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
-            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
-            		"FROM `icm`.`stage`\n" + 
-            		"where currentStage =? And currentSubStage =?) as T\n" + 
-            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
-            		"on T.`RequestID` = K.`RequestID`");
-            stmt.setNString(1,currentStage.name());
-            stmt.setNString(2,currentSubStage.name());
-            stmt.setNString(3,stat.name());
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
+                    "SELECT K.RequestID, startDate, `system`, problemDescription, whyChange, comment, status " +
+            		"from (SELECT icm.stage.RequestID " +
+            		"FROM icm.stage " +
+            		"WHERE currentStage = ? And currentSubStage = ?) as T " +
+            		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
+            		"ON T.RequestID = K.RequestID");
+            stmt.setNString(1, currentStage.name());
+            stmt.setNString(2, currentSubStage.name());
+            stmt.setNString(3, stat.name());
             ResultSet re = stmt.executeQuery();
            while (re.next()) {
-
                 toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
@@ -661,29 +653,30 @@ public class QueryHandler {
     
     
     /** get all requests in a specified:  sub stage  AND state AND StageSupervisor
-     * @param currentStage
-     * @param currentSubStage
-     * @param stat
-     * @param username
-     * @return
+     * @param currentStage ?
+     * @param currentSubStage ?
+     * @param stat ?
+     * @param username ?
+     * @return ?
      */
-    public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStageAndSupervisor(ChargeRequestStages currentStage ,subStages currentSubStage, ChangeRequestStatus stat ,String username) {
+    public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStageAndSupervisor(ChargeRequestStages currentStage ,subStages currentSubStage,
+                                                                                       ChangeRequestStatus stat , String username) {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
     
         try {
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
-            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
-            		"FROM `icm`.`stage`\n" + 
-            		"where currentStage =? And currentSubStage =? And StageSupervisor =?) as T\n" + 
-            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
-            		"on T.`RequestID` = K.`RequestID`");
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
+                    "select K.RequestID, startDate, `system`, problemDescription, whyChange, comment, status " +
+            		"from (SELECT icm.stage.RequestID " +
+            		"FROM icm.stage " +
+            		"WHERE currentStage = ? And currentSubStage = ? AND StageSupervisor = ?) as T " +
+            		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
+            		"on T.RequestID = K.RequestID");
             stmt.setNString(1,currentStage.name());
             stmt.setNString(2,currentSubStage.name());
             stmt.setNString(3,username);
             stmt.setNString(4,stat.name());
             ResultSet re = stmt.executeQuery();
            while (re.next()) {
-
                 toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
@@ -695,28 +688,25 @@ public class QueryHandler {
     } // END of getAllChangeRequestWithStatusAndStageAndSupervisor();
     
     /**   get all requests in a specified:  sub stage  AND state
-
-     * @param currentStage
-     * @param currentSubStage
-     * @param stat
-     * @return
+     * @param currentSubStage ?
+     * @param stat ?
+     * @return ?
      */
     public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndSubStageOnly(subStages currentSubStage, ChangeRequestStatus stat) {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
     
         try {
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
-            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
-            		"FROM `icm`.`stage`\n" + 
-            		"where currentSubStage =?) as T\n" + 
-            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
-            		"on T.`RequestID` = K.`RequestID`");
-         
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
+                    "SELECT K.RequestID, startDate, `system`, problemDescription, whyChange, comment, status " +
+            		"FROM (SELECT icm.stage.RequestID " +
+            		"FROM icm.stage " +
+            		"WHERE currentSubStage = ?) as T " +
+            		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
+            		"on T.RequestID = K.RequestID");
             stmt.setNString(1,currentSubStage.name());
             stmt.setNString(2,stat.name());
             ResultSet re = stmt.executeQuery();
            while (re.next()) {
-
                 toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
@@ -728,74 +718,65 @@ public class QueryHandler {
     } // END of getAllChangeRequestWithStatusAndSubStageOnly();
     
     /** get all requests in a specified:  stage  AND state
-     * @param currentStage
-     * @param stat
-     * @return
+     * @param currentStage ?
+     * @param stat ?
+     * @return ?
      */
     public ArrayList<ChangeRequest> getAllChangeRequestWithStatusAndStageOnly(ChargeRequestStages currentStage , ChangeRequestStatus stat) {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
-    
         try {
-            PreparedStatement stmt = mysqlConn.getConn().prepareStatement("select K.`RequestID`,`startDate`,`system`,`problemDescription`,`whyChange`,`comment`,`status`\n" + 
-            		"from (SELECT `icm`.`stage`.`RequestID`\n" + 
-            		"FROM `icm`.`stage`\n" + 
-            		"where currentStage =? ) as T\n" + 
-            		" inner join (SELECT * FROM icm.changerequest where status=?) as K\n" + 
-            		"on T.`RequestID` = K.`RequestID`");
-            stmt.setNString(1,currentStage.name());
-            stmt.setNString(2,stat.name());
+            PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
+                    "select K.RequestID, startDate,`system`, problemDescription, whyChange, comment, status " +
+                    "FROM (SELECT icm.stage.RequestID " +
+                    "FROM icm.stage " +
+                    "WHERE currentStage = ?) as T " +
+                    "INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
+                    "ON T.RequestID = K.RequestID");
+            stmt.setNString(1, currentStage.name());
+            stmt.setNString(2, stat.name());
             ResultSet re = stmt.executeQuery();
-           while (re.next()) {
-
+            while (re.next()) {
                 toReturn.add(getChangeRequestsFromRes(re));
             }
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return toReturn;
     } // END of getAllChangeRequestWithStatusAndStageOnly();
     
-    private ChangeRequest getChangeRequestsFromRes( ResultSet re) throws SQLException {
+    private ChangeRequest getChangeRequestsFromRes(ResultSet re) throws SQLException {
         ChangeRequest toPut;
-        String RequestID = re.getString(1);
-        LocalDate startDate;
-        if (re.getString(2) != null) {
-            startDate = LocalDate.parse(re.getString(2));
-        } else startDate = null;
-        String system = re.getString(3);
-        String problemDescriptionString = re.getString(4);
-        String whyChange = re.getString(5);
-        String comment = re.getString(6);
-        String statusString = re.getString(7);
-        Initiator theInitiator = getInitiator(RequestID);
-        // TODO:
-        Document doc = null;
-        //
-        ProcessStage stage = getProcessStage(RequestID);//<-----
+        try {
+            String RequestID = re.getString(1);
+            LocalDate startDate;
+            if (re.getString(2) != null) {
+                startDate = LocalDate.parse(re.getString(2));
+            } else startDate = null;
+            String system = re.getString(3);
+            String description = re.getString(4);
+            String reason = re.getString(5);
+            String comment = re.getString(6);
+            String status = re.getString(7);
+            Initiator theInitiator = getInitiator(RequestID);
+            // TODO:
+            Document doc = null;
+            //
+            ProcessStage stage = getProcessStage(RequestID);//<-----
 
-//THIS WAS REPLACED
-/*       if (statusString.equals(ongoing.name())) {
-            status = ongoing;
-        }
-        if (statusString.equals(ChangeRequestStatus.suspended.name())) {
-            status = ChangeRequestStatus.suspended;
-        }
-        if (statusString.equals(ChangeRequestStatus.closed.name())) {
-            status = ChangeRequestStatus.closed;
-        }
-*/
-//BY THIS:
-        ChangeRequestStatus status = ChangeRequest.ChangeRequestStatus.valueOf(statusString);
+            ChangeRequestStatus statusEnum = ChangeRequest.ChangeRequestStatus.valueOf(status);
 
-        toPut = new ChangeRequest(theInitiator, startDate, system, problemDescriptionString, whyChange, comment, doc);
-        toPut.setStatus(status);
-        toPut.setRequestID(RequestID);
-        toPut.setStage(stage);
-        toPut.updateInitiatorRequest();
-        toPut.updateStage();
-        return toPut;
+            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, doc);
+            toPut.setStatus(statusEnum);
+            toPut.setRequestID(RequestID);
+            toPut.setStage(stage);
+            toPut.updateInitiatorRequest();
+            //toPut.updateStage();
+            return toPut;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     } //END of getChangeRequestsFromRes()
 
 	/** gets processStage without the change request
@@ -888,14 +869,12 @@ public class QueryHandler {
 
     // all old prototype methods **********************************************************************************
 
-    /**
-    *
-    * for prototype.
+ /* * for prototype.
     * update status to some id in requirement table.
     *
     * @param id id of Request going to Update as a Num in DataBase
     * @param status current status  going to Update as a Status in DataBase
-    */
+    *//*
    public void updateStatus(int id, String status) throws IllegalArgumentException {
        PreparedStatement updStatus;
        try {
@@ -910,14 +889,14 @@ public class QueryHandler {
        }
    }
     
-    /**
+    *//*
      * for prototype.
      * insert new requirement in icm.requirement.
      * @param reqInitiator              Initiator of request
      * @param currentSituationDetails   Details of current situation
      * @param requestDetails            Details of request
      * @param stageSupervisor           Supervisor of request
-     */
+     *//*
 
     public void insertRequirement(String reqInitiator, String currentSituationDetails,
                                   String requestDetails, String stageSupervisor,
@@ -957,13 +936,13 @@ public class QueryHandler {
         }
     }
 
-    /**
+    *//*
      *
      *for prototype.
      *get all details of one requirement by it's ID
      * @param reqID input request ID
      * @return list
-     */
+     *//*
     public String[] selectRequirement(String reqID) {
         String[] toReturn = null;
         try {
@@ -988,7 +967,7 @@ public class QueryHandler {
         return toReturn;
     }
 
-    /**
+    *//*
      *
      * get all requirement data.
      * send it to osf.server as ArrayList of array of strings.
@@ -1002,7 +981,7 @@ public class QueryHandler {
      * place 6: Status
      *
      * @return toReturn ArrayList<String[]>
-     */
+     *//*
     public ArrayList<String[]> selectAll() {
         ArrayList<String[]> toReturn = new ArrayList<>();
         String[] toPut;
@@ -1023,5 +1002,5 @@ public class QueryHandler {
             e.printStackTrace();
         }
         return toReturn;
-    }
+    }*/
 }

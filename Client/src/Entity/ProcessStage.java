@@ -190,7 +190,7 @@ public class ProcessStage implements Serializable {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-	}// End addExeminorFailReport;
+	}// End addExaminerFailReport;
 
 	public void addinspectorDocumention(String report) {
 		try {
@@ -202,7 +202,7 @@ public class ProcessStage implements Serializable {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-	}// End addExeminorFailReport;
+	}// End addExaminerFailReport;
 
 	public void setRequest(ChangeRequest Request) {
 		this.Request = Request;
@@ -255,4 +255,7 @@ public class ProcessStage implements Serializable {
 		}
 	}
 
+	public void setCurrentSubStage(subStages currentSubStage) {
+		this.currentSubStage = currentSubStage;
+	}
 }// END of Stage

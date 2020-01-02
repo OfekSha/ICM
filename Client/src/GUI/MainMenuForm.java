@@ -85,37 +85,35 @@ public class MainMenuForm extends UserForm {
 
 	// TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {
-		//getRequests();
-		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, true, new WatchRequestForm());
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
-		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true);
+		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true, new SubmitRequestForm());
 	}
 
-	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {
+	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) {
 		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
 		// WatchRequestForm(), true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, true, new InspectorForm());
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/EstimatorMain.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/EstimatorMain.fxml", this, true, new EstimatorForm());
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
-		//getRequests();
-		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true, new ExecutionLeaderForm());
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/Examiner.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/Examiner.fxml", this, true, new ExaminerForm());
 	}
 
-	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
+	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) {
 		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
 		// WatchRequestForm(), true);
 	}

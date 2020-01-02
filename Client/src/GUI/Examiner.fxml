@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FormController">
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ExaminerForm">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
@@ -46,7 +46,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                   <graphic>
-                              <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="170.0" />
+                              <ComboBox fx:id="cmbRequests" onMouseEntered="#getRequests" prefWidth="170.0" />
                   </graphic></Label>
                <Button mnemonicParsing="false" prefWidth="170.0" text="Approve Execution" />
                <Button mnemonicParsing="false" prefWidth="170.0" text="Disapprove Execution " />
@@ -57,7 +57,7 @@
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin></Label>
-               <TextArea fx:id="taExaminersReport" layoutX="10.0" layoutY="27.0" wrapText="true" />
+               <TextArea layoutX="10.0" layoutY="27.0" wrapText="true" />
                <Button mnemonicParsing="false" text="Submit">
                   <VBox.margin>
                      <Insets top="10.0" />
