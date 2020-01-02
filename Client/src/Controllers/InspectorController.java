@@ -107,41 +107,7 @@ public class InspectorController {
 		changeStatus(req, ChangeRequestStatus.closed);
 	}
 
-	public static void approveDueTime(boolean approve, requirmentForTable req) {
-		ChangeRequest selectedRequest = getReq(req);
-		if (approve == true)
-			selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
-		else {
-			selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
-			selectedRequest.getProcessStage().addDueDate(null);
-		}
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
-	}
-
-	public static void changeRole(requirmentForTable req, User user) {
-		ChangeRequest selectedRequest = getReq(req);
-		selectedRequest.getProcessStage().newStageSupervisor(user);
-		selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
-		switch(selectedRequest.getProcessStage().getCurrentStage()) {
-		case meaningEvaluation:user.getICMPermissions().add(ICMPermissions.estimator);
-		break;
-		case execution:user.getICMPermissions().add(ICMPermissions.executionLeader);
-		break;
-		}
-		
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
-		
-	}
-	public static void approveExtension(boolean approve, requirmentForTable req) {
-		ChangeRequest selectedRequest = getReq(req);
-		if (approve == true)
-			selectedRequest.getProcessStage().ExtentionRequestHandeld();
-		else {
-			
-		}
-	}
+	
 
 	// functions for watch button:
 
@@ -203,7 +169,41 @@ public class InspectorController {
 		requestToServerProtocol(
 				new clientRequestFromServer(requestOptions.getAllUsersByJob, Job.informationEngineer));
 	}
+	public static void approveDueTime(boolean approve, requirmentForTable req) {
+		ChangeRequest selectedRequest = getReq(req);
+		if (approve == true)
+			selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
+		else {
+			selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
+			selectedRequest.getProcessStage().addDueDate(null);
+		}
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+	}
 
+	public static void changeRole(requirmentForTable req, User user) {
+		ChangeRequest selectedRequest = getReq(req);
+		selectedRequest.getProcessStage().newStageSupervisor(user);
+		selectedRequest.getProcessStage().changecurretSubStage(subStages.supervisorAction);
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+		switch(selectedRequest.getProcessStage().getCurrentStage()) {
+		case meaningEvaluation:user.getICMPermissions().add(ICMPermissions.estimator);
+		break;
+		case execution:user.getICMPermissions().add(ICMPermissions.executionLeader);
+		break;
+		}
+		
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+		
+	}
+	public static void approveExtension(boolean approve, requirmentForTable req) {
+		ChangeRequest selectedRequest = getReq(req);
+		if (approve == true)
+			selectedRequest.getProcessStage().ExtentionRequestHandeld();
+		else {
+			
+		}
+	}
 	// functions for server - client protocol:
 
 	/**
