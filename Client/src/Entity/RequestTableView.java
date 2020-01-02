@@ -1,22 +1,15 @@
 package Entity;
 
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
-import Controllers.InspectorController;
-import Controllers.InspectorController.requirmentForTable;
 import Entity.ChangeRequest.ChangeRequestStatus;
-import WindowApp.ClientLauncher;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringPropertyBase;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import java.time.LocalDate;
 
 /**
  * 
@@ -101,7 +94,7 @@ public class RequestTableView {
 	 * 
 	 * @param event 
 	 *  - mouse event (onClick for example)
-	 * @return requirmentForTable
+	 * @return requirementForTable
 	 * 
 	 *  - this is special class for table for get the object requirmentForTable.getObject();
 	 * @throws Exception
@@ -186,11 +179,11 @@ public class RequestTableView {
 
 		/**
 		 * 
-		 * constructor for requimentForTable.
+		 * constructor for requirementForTable.
 		 * use SimpleStringProperty and SimpleObjectProperty
 		 * very important.
 		 * 
-		 * @param req
+		 * @param req ?
 		 */
 		public requirmentForTable(ChangeRequest req) {
 			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
@@ -204,7 +197,7 @@ public class RequestTableView {
 			startDate = new SimpleObjectProperty<LocalDate>(req.getStartDate());
 			system = new SimpleStringProperty(req.getSystem());
 			problemDescription = new SimpleStringProperty(req.getProblemDescription());
-			whyChange = new SimpleStringProperty(req.getWhyChange());
+			whyChange = new SimpleStringProperty(req.getChangeReason());
 			comment = new SimpleStringProperty(req.getComment());
 			doc = new SimpleObjectProperty<Document>(req.getDoc());
 		}

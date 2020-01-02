@@ -33,6 +33,7 @@ public class ChangeRequest implements Serializable {
         this.changeReason = changeReason;
         this.doc = doc;
     }
+
     // input
     public void setStatus(ChangeRequestStatus newStat) {
         status = newStat;
@@ -44,10 +45,12 @@ public class ChangeRequest implements Serializable {
     public void setStage(ProcessStage stage) {
     	this.stage = stage;
     }
+
     //update
     /**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
      *
      */
+
     public void updateInitiatorRequest() {
         initiator.setRequest(this);
     }
