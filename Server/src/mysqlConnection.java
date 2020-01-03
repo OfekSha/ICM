@@ -38,15 +38,6 @@ public class mysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			stmt.execute("CREATE SCHEMA icm;"); // create schema
-			stmt.execute("CREATE TABLE icm.requirement (" +
-					"Initiator VARCHAR(45) NOT NULL," +
-					"RequestID INT NOT NULL," +
-					"CurrentSituationDetails LONGTEXT NULL," +
-					"RequestDetails LONGTEXT NULL," +
-					"StageSupervisor VARCHAR(45) NULL," +
-					"Status ENUM('ongoing', 'suspended', 'closed') NOT NULL DEFAULT 'ongoing',\n" +
-					"PRIMARY KEY (RequestID));"); // create requirement table
-
 			// @building by yonathan - changes are coming !, maybe...
 			stmt.execute("CREATE TABLE icm.user (" + 
 					"userName VARCHAR(45) NOT NULL," + 	 										//[1]
@@ -61,8 +52,8 @@ public class mysqlConnection {
 					"estimatorPermission TINYINT(1) NOT NULL,"+									//[10]
 					"executionLeaderPermission TINYINT(1) NOT NULL,"+							//[11]
 					"examinerPermission TINYINT(1) NOT NULL," + 								//[12]
-					"changeControlCommitteeChairman TINYINT(1) NOT NULL," +	
-					"changeControlCommitteeMember TINYINT(1) NOT NULL," +//[14]
+					"changeControlCommitteeChairman TINYINT(1) NOT NULL," +						//[13]
+					"changeControlCommitteeMember TINYINT(1) NOT NULL," +						//[14]
 					"PRIMARY KEY (userName));"); // create user table
 			//
 			stmt.execute("CREATE TABLE icm.initiator (" +
@@ -70,39 +61,45 @@ public class mysqlConnection {
 					"userName VARCHAR(45) NOT NULL," +
 					"PRIMARY KEY (RequestID, userName));");
 			stmt.execute("CREATE TABLE icm.stage (" +
-					"RequestID VARCHAR(45) NOT NULL," +
-					"currentStage VARCHAR(45) NOT NULL," +
-					"StageSupervisor VARCHAR(45) NULL," +
-					"EstimatorReport VARCHAR(45) NULL," +
-					"ExaminerFailReport VARCHAR(45) NULL," +
-					"inspectorDocument VARCHAR(45) NULL," +				//6
-					"meaningEvaluationStartDate VARCHAR(45) NULL," + //[7]
-					"meaningEvaluationDueDate VARCHAR(45) NULL," +
-					"meaningEvaluationEndDate VARCHAR(45) NULL," +
-					"examinationAndDecisionStartDate VARCHAR(45) NULL," +
-					"stageColExaminationAndDecisionDueDate VARCHAR(45) NULL," +
-					"examinationAndDecisionEndDate VARCHAR(45) NULL," +
-					"ExecutionStartDate VARCHAR(45) NULL," +
-					"ExecutionDueDate VARCHAR(45) NULL," +
-					"ExecutionEndDate VARCHAR(45) NULL," +
-					"examinationStartDate VARCHAR(45) NULL," +
-					"examinationDueDate VARCHAR(45) NULL," +
-					"examinationEndDate VARCHAR(45) NULL," +
-					"closureStarDate VARCHAR(45) NULL," +
-					"closureEndDate VARCHAR(45) NULL," +
-					"stage1extension TINYINT(1) NOT NULL,"+
-					"stage2extension TINYINT(1) NOT NULL,"+
-					"stage3extension TINYINT(1) NOT NULL,"+
-					"stage4extension TINYINT(1) NOT NULL,"+
-					"stage5extension TINYINT(1) NOT NULL,"+
-					"currentSubStage VARCHAR(45) NULL," +
+					"RequestID VARCHAR(45) NOT NULL, " +
+					"currentStage ENUM ('meaningEvaluation'," +
+										"'examinationAndDecision'," +
+										"'execution'," +
+										"'examination'," +
+										"'closure')," +
+					"currentSubStage ENUM ('supervisorAllocation'," +
+											"'determiningDueTime'," +
+											"'supervisorAction')," +
+					"StageSupervisor VARCHAR(45) NULL, " +
+					"EstimatorReport VARCHAR(45) NULL, " +
+					"ExaminerFailReport VARCHAR(45) NULL, " +
+					"inspectorDocumentation VARCHAR(45) NULL, " +
+					"meaningEvaluationStartDate VARCHAR(45) NULL, " +
+					"meaningEvaluationDueDate VARCHAR(45) NULL, " +
+					"meaningEvaluationEndDate VARCHAR(45) NULL, " +
+					"examinationAndDecisionStartDate VARCHAR(45) NULL, " +
+					"stageColExaminationAndDecisionDueDate VARCHAR(45) NULL, " +
+					"examinationAndDecisionEndDate VARCHAR(45) NULL, " +
+					"executionStartDate VARCHAR(45) NULL, " +
+					"executionDueDate VARCHAR(45) NULL, " +
+					"executionEndDate VARCHAR(45) NULL, " +
+					"examinationStartDate VARCHAR(45) NULL, " +
+					"examinationDueDate VARCHAR(45) NULL, " +
+					"examinationEndDate VARCHAR(45) NULL, " +
+					"closureStarDate VARCHAR(45) NULL, " +
+					"closureEndDate VARCHAR(45) NULL, " +
+					"stage1extension TINYINT(1) NOT NULL, "+
+					"stage2extension TINYINT(1) NOT NULL, "+
+					"stage3extension TINYINT(1) NOT NULL, "+
+					"stage4extension TINYINT(1) NOT NULL, "+
+					"stage5extension TINYINT(1) NOT NULL, "+
 					"PRIMARY KEY (RequestID, currentStage));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID VARCHAR(45) NOT NULL," +
 					"startDate VARCHAR(45) NULL," +
 					"`system` VARCHAR(45) NULL," +
 					"problemDescription TEXT NULL," +
-					"whyChange TEXT NULL," +
+					"changeReason TEXT NULL," +
 					"comment VARCHAR(45)," +
 					"status VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID));");

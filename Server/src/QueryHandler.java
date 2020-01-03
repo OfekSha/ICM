@@ -154,32 +154,32 @@ public class QueryHandler {
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
                     "INSERT INTO icm.stage " +
-                    "(RequestID," +                            //[1]
-                    "currentStage," +                            //[2]
+                    "(RequestID," +                             //[1]
+                    "currentStage," +                           //[2]
                     "StageSupervisor," +                        //[3]
                     "EstimatorReport," +                        //[4]
-                    "ExaminerFailReport," +                    //[5]
-                    "inspectorDocument," +                        //[6]
-                    "meaningEvaluationStartDate," +            //[7]
-                    "meaningEvaluationDueDate," +                //[8]
-                    "meaningEvaluationEndDate," +                //[9]
+                    "ExaminerFailReport," +                     //[5]
+                    "inspectorDocumentation," +                 //[6]
+                    "meaningEvaluationStartDate," +             //[7]
+                    "meaningEvaluationDueDate," +               //[8]
+                    "meaningEvaluationEndDate," +               //[9]
                     "examinationAndDecisionStartDate," +        //[10]
                     "stageColExaminationAndDecisionDueDate," +  //[11]
-                    "examinationAndDecisionEndDate," +            //[12]
-                    "ExecutionStartDate," +                        //[13]
-                    "ExecutionDueDate," +                        //[14]
-                    "ExecutionEndDate," +                        //[15]
-                    "examinationStartDate," +                    //[16]
-                    "examinationDueDate," +                    //[17]
-                    "examinationEndDate," +                    //[18]
+                    "examinationAndDecisionEndDate," +          //[12]
+                    "executionStartDate," +                     //[13]
+                    "executionDueDate," +                       //[14]
+                    "executionEndDate," +                       //[15]
+                    "examinationStartDate," +                   //[16]
+                    "examinationDueDate," +                     //[17]
+                    "examinationEndDate," +                     //[18]
                     "closureStarDate," +                        //[19]
                     "closureEndDate," +                         //[20]
-                    "stage1extension," +                      //[21]
-                    "stage2extension," +                      //[22]
-                    "stage3extension," +                      //[23]
-                    "stage4extension," +                      //[24]
-                    "stage5extension," +                      //[25]
-                    "currentSubStage)" +
+                    "stage1extension," +                        //[21]
+                    "stage2extension," +                        //[22]
+                    "stage3extension," +                        //[23]
+                    "stage4extension," +                        //[24]
+                    "stage5extension," +                        //[25]
+                    "currentSubStage)" +                        //[26]
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             setAllProcessStageStatement(changeRequest, processStage , stmt);
         } catch (SQLException e) {
@@ -232,12 +232,12 @@ public class QueryHandler {
         int[] bool = processStage.getWasThereAnExtensionRequest();
         int v = 21;
         for (int j = 0; j < 5; j++) {
-            if (bool[j]==2) {
+            if (bool[j] == 2) {
                 stmt.setInt(v, 2);
             } 
-            if(bool[j]==1){
+            if (bool[j] == 1){
             	stmt.setInt(v, 1);
-            }else {
+            } else {
                 stmt.setInt(v, 0);
             }
             v++;
@@ -259,16 +259,16 @@ public class QueryHandler {
                     + "StageSupervisor = ?,"                        //3
                     + "EstimatorReport = ?,"                        //4
                     + "ExaminerFailReport = ?,"                     //5
-                    + "inspectorDocument = ?,"                      //6
+                    + "inspectorDocumentation = ?,"                      //6
                     + "meaningEvaluationStartDate = ?,"             //7
                     + "meaningEvaluationDueDate = ?,"               //8
                     + "meaningEvaluationEndDate = ?,"               //9
                     + "examinationAndDecisionStartDate = ?,"        //10
                     + "stageColExaminationAndDecisionDueDate = ?,"  //11
                     + "examinationAndDecisionEndDate = ?,"          //12
-                    + "ExecutionStartDate = ?,"                     //13
-                    + "ExecutionDueDate = ?,"                       //14
-                    + "ExecutionEndDate = ?,"                       //15
+                    + "executionStartDate = ?,"                     //13
+                    + "executionDueDate = ?,"                       //14
+                    + "executionEndDate = ?,"                       //15
                     + "examinationStartDate = ?,"                   //16
                     + "examinationDueDate = ?,"                     //17
                     + "examinationEndDate = ?,"                     //18
@@ -313,7 +313,7 @@ public class QueryHandler {
             		"startDate, " +
             		"`system`, " +
             		"problemDescription, " +
-            		"whyChange, " +
+            		"changeReason, " +
                     "comment, " +
             		"status)" +
             		"VALUES(?, ?, ?, ?, ?, ?, ?);");
@@ -335,7 +335,7 @@ public class QueryHandler {
             		+ "startDate = ?,"
             		+ "`system` = ?,"
             		+ "problemDescription = ?,"
-            		+ "whyChange = ?,"
+            		+ "changeReason = ?,"
             		+ "comment = ?,"
             		+ "status = ?"
             		+ " WHERE (RequestID = ?);");
@@ -441,7 +441,7 @@ public class QueryHandler {
              password = re.getNString(2);
              firstName = re.getNString(3);
              lastName = re.getNString(4);
-             login =( re.getInt(5)==1);
+             login = (re.getInt(5) == 1);
              jobString = re.getNString(6);
              email = re.getNString(7);
              informationTechnologiesDepartmentManagerPermission = re.getInt(8);
@@ -455,11 +455,12 @@ public class QueryHandler {
          e.printStackTrace();
      }
 
-     // convering job to enum
+     // converting job to enum
      EnumSet<Job> Jobs = EnumSet.allOf(User.Job.class);
      Job job = null;
      for (Job e : Jobs) {
-         if (jobString != null && jobString.equals(e.name())) job = e;
+         if (jobString != null && jobString.equals(e.name()))
+             job = e;
      }
      // converting to permissions set
      EnumSet<ICMPermissions> all = EnumSet.allOf(User.ICMPermissions.class);
@@ -488,7 +489,7 @@ public class QueryHandler {
      toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, login);
      return toReturn;
 
-     } // end of userStamentgets
+     } // end of userStamentGets
 
     /** get all the users in the DB
      * @return ?
@@ -630,7 +631,7 @@ public class QueryHandler {
     
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
-                    "SELECT K.RequestID, startDate, `system`, problemDescription, whyChange, comment, status " +
+                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
             		"from (SELECT icm.stage.RequestID " +
             		"FROM icm.stage " +
             		"WHERE currentStage = ? And currentSubStage = ?) as T " +
@@ -665,7 +666,7 @@ public class QueryHandler {
     
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
-                    "select K.RequestID, startDate, `system`, problemDescription, whyChange, comment, status " +
+                    "select K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
             		"from (SELECT icm.stage.RequestID " +
             		"FROM icm.stage " +
             		"WHERE currentStage = ? And currentSubStage = ? AND StageSupervisor = ?) as T " +
@@ -697,7 +698,7 @@ public class QueryHandler {
     
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
-                    "SELECT K.RequestID, startDate, `system`, problemDescription, whyChange, comment, status " +
+                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
             		"FROM (SELECT icm.stage.RequestID " +
             		"FROM icm.stage " +
             		"WHERE currentSubStage = ?) as T " +
@@ -726,7 +727,7 @@ public class QueryHandler {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
-                    "select K.RequestID, startDate,`system`, problemDescription, whyChange, comment, status " +
+                    "SELECT K.RequestID, startDate,`system`, problemDescription, changeReason, comment, status " +
                     "FROM (SELECT icm.stage.RequestID " +
                     "FROM icm.stage " +
                     "WHERE currentStage = ?) as T " +
@@ -792,20 +793,19 @@ public class QueryHandler {
 			stmt.setNString(1, RequestID);
 			ResultSet re = stmt.executeQuery();
 			while (re.next()) {
-
 				String currentStageString = re.getNString(2);
                 ChargeRequestStages currentStage = ChargeRequestStages.valueOf(currentStageString);
 
-				String currentSubStageString = re.getNString(26);
+				String currentSubStageString = re.getString(3);
                 subStages currentSubStage = subStages.valueOf(currentSubStageString);
 
-                User StageSupervisor = selectUser(re.getString(3));
-				String EstimatorReport = re.getString(4);
-				String ExaminerFailReport = re.getString(5);
-				String inspectorDocumentation = re.getString(6);
+                User StageSupervisor = selectUser(re.getString(4));
+				String EstimatorReport = re.getString(5);
+				String ExaminerFailReport = re.getString(6);
+				String inspectorDocumentation = re.getString(7);
 
 				LocalDate[][] startEndArray = new LocalDate[5][3];
-				int u = 7;
+				int u = 8;
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 3; j++) {
 						if(re.getString(u) != null) {
@@ -816,18 +816,18 @@ public class QueryHandler {
 					}
 				}
 				if(re.getString(u) != null) {
-				    startEndArray[4][0] = LocalDate.parse(re.getString(19));
+				    startEndArray[4][0] = LocalDate.parse(re.getString(20));
                 }
 				else startEndArray[4][0] = null;
 
 				if(re.getString(u) != null) {
-				    startEndArray[4][2] = LocalDate.parse(re.getString(20));
+				    startEndArray[4][2] = LocalDate.parse(re.getString(21));
                 }
 				else startEndArray[4][2] = null;
 
 				int[] WasThereAnExtensionRequest = new int[5];
-				u = 21;
-				for (int i = 0; i < 5; i++) {		
+				u = 22;
+				for (int i = 0; i < 5; i++) {
                     WasThereAnExtensionRequest[i] = re.getInt(u) ;
 					u++;
 				}
@@ -836,7 +836,6 @@ public class QueryHandler {
                         inspectorDocumentation, startEndArray, WasThereAnExtensionRequest);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return returnProcessStage;
@@ -861,7 +860,6 @@ public class QueryHandler {
             User user = selectUser(Username);
             returnInitiator = new Initiator(user, null);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return returnInitiator;
