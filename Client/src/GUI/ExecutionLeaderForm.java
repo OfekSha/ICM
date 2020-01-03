@@ -2,21 +2,23 @@ package GUI;
 
 import Entity.ChangeRequest;
 import Entity.clientRequestFromServer;
-import GUI.PopUpWindows.DueTimeController;
 import WindowApp.ClientLauncher;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static Entity.ProcessStage.subStages.determiningDueTime;
-import static Entity.ProcessStage.subStages.supervisorAction;
+import static Entity.ProcessStage.ChargeRequestStages.examination;
+import static Entity.ProcessStage.ChargeRequestStages.execution;
+import static Entity.ProcessStage.subStages.supervisorAllocation;
 import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
 
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
@@ -28,10 +30,13 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public TextArea taExaminerReport;
 	public TextArea taInitiatorRequest;
 	public Text txtDueTime;
+	public Text txtStage;
 	public Label lbDueTime;
+	public Label lbStage;
+
 
 	private String selected;
-	private ChangeRequest changeRequest;
+	public static ChangeRequest changeRequest;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -43,6 +48,8 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		btnDueTime.setDisable(true);
 		btnApprove.setDisable(true);
 		btnGetExtension.setDisable(true);
+		txtDueTime.setTextAlignment(TextAlignment.CENTER);
+		txtStage.setTextAlignment(TextAlignment.CENTER);
 		Platform.runLater(this::setRequestsComboBox);
 	}
 
@@ -54,22 +61,37 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 					changeRequest = cR;
 				}
 			});
-			this.taInitiatorRequest.setText(changeRequest.getProblemDescription());
-			this.taExaminerReport.setText(changeRequest.getComment());
+			taInitiatorRequest.setText(changeRequest.getProblemDescription());
+			taExaminerReport.setText(changeRequest.getComment());
 			LocalDate dueTime = changeRequest.getProcessStage().getDueDate();
 			if (dueTime != null) {
-				txtDueTime.setText(dueTime.toString());
-				lbDueTime.setVisible(true);
-				btnDueTime.setDisable(true);
+				setDueTimeBlockVisible(txtDueTime, dueTime.toString(), lbDueTime);
+				setApproveAndGetEnabled();
 			} else {
 				btnDueTime.setDisable(false);
 				lbDueTime.setVisible(false);
 				txtDueTime.setText(null);
 			}
-			//TODO some condition to turn them active
+			setRequestStagesVisible();
+		}
+	}
+
+	private void setRequestStagesVisible() {
+		txtStage.setText(changeRequest.getProcessStage().getCurrentStage().name()
+				+ "\n" + changeRequest.getProcessStage().getCurrentSubStage().name());
+		lbStage.setVisible(true);
+	}
+
+	private void setDueTimeBlockVisible(Text txtDueTime, String s, Label lbDueTime) {
+		btnDueTime.setDisable(true);
+		txtDueTime.setText(s);
+		lbDueTime.setVisible(true);
+	}
+
+	private void setApproveAndGetEnabled() {
+		if (changeRequest.getProcessStage().getCurrentSubStage().ordinal() != 1) {
 			btnApprove.setDisable(false);
 			btnGetExtension.setDisable(false);
-			DueTimeController.setChangeRequest(changeRequest);
 		}
 	}
 
@@ -79,11 +101,12 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
 	public void openDueTime() throws Exception {
 		popupWindowLauncher("/GUI/PopUpWindows/DeterminingDueTime.fxml");
-		LocalDate dueTime = changeRequest.getProcessStage().getDueDate();
-		if (dueTime != null) {
-			this.txtDueTime.setText(dueTime.toString());
-			this.lbDueTime.setVisible(true);
-		}
+		popupWindow.setOnHiding(windowEvent -> {
+			LocalDate dueTime = changeRequest.getProcessStage().getDueDate();
+			setDueTimeBlockVisible(txtDueTime, dueTime.toString(), lbDueTime);
+			setRequestStagesVisible();
+			setApproveAndGetEnabled();
+		});
 	}
 
 	public void getExecutionApproved() {
@@ -96,22 +119,25 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		alert.getButtonTypes().setAll(btnApprove, btnCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.isPresent()) {
-			if (result.get() == btnApprove) {
-				changeRequests.forEach(cR -> {
-					if (selected.equals(cR.getRequestID()) &&
-							cR.getProcessStage().getCurrentSubStage().equals(determiningDueTime)) {
-						cR.getProcessStage().setCurrentSubStage(supervisorAction);
-						clientRequestFromServer newRequest =
-								new clientRequestFromServer(updateProcessStage, changeRequest);
-						ClientLauncher.client.handleMessageFromClientUI(newRequest);
-					}
-				});
+		if (result.isPresent() && result.get() == btnApprove) {
+			if (changeRequest.getProcessStage().getCurrentStage().equals(execution)) {
+				changeRequest.getProcessStage().setCurrentStage(examination);
+				changeRequest.getProcessStage().setCurrentSubStage(supervisorAllocation);
+				sendUpdateForRequest();
 			}
 		}
+
+		alert.setOnHidden(event -> setDueTimeBlockVisible
+				(txtStage, changeRequest.getProcessStage().getCurrentStage().name(), lbStage));
 	}
 
-	public void requestExtension(ActionEvent actionEvent) {
+	public static void sendUpdateForRequest() {
+		clientRequestFromServer newRequest = new clientRequestFromServer(updateProcessStage, changeRequest);
+		ClientLauncher.client.handleMessageFromClientUI(newRequest);
+	}
+
+	public void requestExtension(ActionEvent actionEvent) throws IOException {
+		popupWindowLauncher("/GUI/PopUpWindows/GetExtension.fxml");
 
 	}
 }

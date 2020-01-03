@@ -1,20 +1,18 @@
 package GUI.PopUpWindows;
 
-import Entity.ChangeRequest;
-import Entity.clientRequestFromServer;
-import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 
-import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
+import static Entity.ProcessStage.subStages.supervisorAction;
+import static GUI.ExecutionLeaderForm.changeRequest;
+import static GUI.ExecutionLeaderForm.sendUpdateForRequest;
 
 public class DueTimeController extends AbstractPopUp {
-
-    private static ChangeRequest changeRequest;
 
     @FXML
     private DatePicker dpDueTime;
@@ -23,18 +21,16 @@ public class DueTimeController extends AbstractPopUp {
     @FXML
     private void getDone(ActionEvent event) {
         LocalDate dataDue = dpDueTime.getValue();
-        if (dataDue != null) {
-            if (dataDue.isAfter(LocalDate.now())) {
-                changeRequest.getProcessStage().addDueDate(dataDue);
-                clientRequestFromServer newRequest =
-                        new clientRequestFromServer(updateProcessStage, changeRequest);
-                ClientLauncher.client.handleMessageFromClientUI(newRequest);
-                getCancel(event);
-            }
+        if (dataDue != null && dataDue.isAfter(LocalDate.now())) {
+            changeRequest.getProcessStage().addDueDate(dataDue);
+            changeRequest.getProcessStage().setCurrentSubStage(supervisorAction);
+            sendUpdateForRequest();
+            getCancel(event);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Due time is null or incorrect!");
+            alert.setContentText("Please choose correct time.");
+            alert.showAndWait();
         }
-    }
-
-    public static void setChangeRequest(ChangeRequest changeRequest) {
-        DueTimeController.changeRequest = changeRequest;
     }
 }

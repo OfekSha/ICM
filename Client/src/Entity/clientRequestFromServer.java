@@ -24,9 +24,7 @@ public class clientRequestFromServer implements Serializable {
         getAllChangeRequestWithStatusAndStageAndSupervisor, //  get all requests in a specified:  sub stage  AND state AND StageSupervisor
 
     }
-    //  is needed?
-    //private ArrayList<ChangeRequest> obj;	// some object that transfer to ocf.client or to osf.server.
-    //
+
     private Object object;
     private requestOptions request; // request
 
@@ -43,26 +41,21 @@ public class clientRequestFromServer implements Serializable {
     	this.object = obj;
     	this.request = request;
     }
-    
-     //is needed?
-    /*public clientRequestFromServer(requestOptions request, ArrayList<Requirement> obj) {
-    	this.obj = obj;
-    	this.request = request;
-    }*/
-    //
+
     public requestOptions getRequest() {
         return request;
     }
 
     @Override
     public String toString() {
-        return request.name() + " object: " + object ;
+        if (object == null) {
+            return request.name();
+        }
+        else {
+            return request.name() + " object: "
+                    + object.toString().split("\\[")[0];
+        }
     }
-    // is needed ?
-	/*public ArrayList<Requirement> getObj() {
-		return obj;
-	}*/
-	//
 	
 	/** returns the held object
 	* nothing is @return

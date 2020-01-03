@@ -52,9 +52,14 @@
                <Button fx:id="btnDueTime" mnemonicParsing="false" onAction="#openDueTime" prefWidth="180.0" text="Set Due Time" />
                <Button fx:id="btnApprove" mnemonicParsing="false" onAction="#getExecutionApproved" prefWidth="180.0" text="Approve Execution" />
                <Button fx:id="btnGetExtension" mnemonicParsing="false" onAction="#requestExtension" prefWidth="180.0" text="Ask Time Extension" />
+               <Label fx:id="lbStage" alignment="CENTER" contentDisplay="BOTTOM" text="Current stage:" visible="false">
+                  <graphic>
+                     <Text fx:id="txtStage" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" textOrigin="CENTER" />
+                  </graphic>
+               </Label>
                <Label fx:id="lbDueTime" alignment="CENTER" contentDisplay="BOTTOM" text="Current due time:" visible="false">
                   <graphic>
-                     <Text fx:id="txtDueTime" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" />
+                     <Text fx:id="txtDueTime" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" textOrigin="CENTER" />
                   </graphic>
                </Label>
                   </VBox>
