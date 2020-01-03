@@ -1,5 +1,6 @@
 package GUI.PopUpWindows;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ public abstract class AbstractPopUp{
     public void getCancel(ActionEvent event) {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
+        Platform.setImplicitExit(true);
     }
 
 }

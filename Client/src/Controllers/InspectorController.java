@@ -166,9 +166,9 @@ public class InspectorController {
 	public static void approveDueTime(boolean approve, requirmentForTable req) {
 		ChangeRequest selectedRequest = getReq(req);
 		if (approve)
-			selectedRequest.getProcessStage().changeCurrentSubStage(subStages.supervisorAction);
+			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 		else {
-			selectedRequest.getProcessStage().changeCurrentSubStage(subStages.supervisorAction);
+			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 			selectedRequest.getProcessStage().addDueDate(null);
 		}
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
@@ -177,7 +177,7 @@ public class InspectorController {
 	public static void changeRole(requirmentForTable req, User user) {
 		ChangeRequest selectedRequest = getReq(req);
 		selectedRequest.getProcessStage().newStageSupervisor(user);
-		selectedRequest.getProcessStage().changeCurrentSubStage(subStages.supervisorAction);
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 		switch(selectedRequest.getProcessStage().getCurrentStage()) {
 		case meaningEvaluation:user.getICMPermissions().add(ICMPermissions.estimator);
@@ -214,34 +214,35 @@ public class InspectorController {
 	 * 
 	 * @param message ?
 	 */
+	@SuppressWarnings("unchecked")
 	public static void messageFromServer(Object message) {
-		clientRequestFromServer respone = (clientRequestFromServer) message;
-		switch (respone.getRequest()) {
+		clientRequestFromServer response = (clientRequestFromServer) message;
+		switch (response.getRequest()) {
 		case getAllUsersByJob: // for windows: approve role.
-			informationEngineers = (ArrayList<User>) ((Object[]) respone.getObject())[0];
+			informationEngineers = (ArrayList<User>) ((Object[]) response.getObject())[0];
 			break;
 		case updateChangeRequest: // for windows: approve role,approve due date, and freeze/unfreeze/close request.
 			watchRequests(watchChoosed);
 			break;
 		case getChangeRequestByStatus:
-			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 			if (watchChoosed.getText().contains("Waiting for Extension")) {
 				ArrayList<ChangeRequest> newList = new ArrayList<>();
 				for (ChangeRequest req :InspectorForm.reqList) {
 					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage().ordinal()]==1)
 						newList.add(req);
 				}
-				InspectorForm.reqList=newList;
+				InspectorForm.reqList = newList;
 			} 
 			break;
 		case getAllChangeRequestWithStatusAndStage:
 			case getAllChangeRequestWithStatusAndSubStageOnly:
 				case getAllChangeRequestWithStatusAndStageOnly:
-			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) respone.getObject())[0];
+			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 			break;
 		default:
 			throw new IllegalArgumentException(
-					"the request " + respone.getRequest() + " not implemented in the inspector controller.");
+					"the request " + response.getRequest() + " not implemented in the inspector controller.");
 		}
 	}
 

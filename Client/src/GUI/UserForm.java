@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -136,21 +136,15 @@ public abstract class UserForm implements IcmForm {
 		Scene scene = new Scene(root);
 		popupWindow.setScene(scene);
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
-		popupWindow.showAndWait();
+		popupWindow.show();
 	}
 
 	public void getRequests() {
 		clientRequestFromServer newRequest = new clientRequestFromServer(getAll);
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
-		System.out.println("\ngetRequests: " + Instant.now().toString()
-				.split("T")[1]
-				.replace("Z", " "));
 	}
 
 	protected void setRequestsComboBox() {
-		System.out.println("setComboBox: " + Instant.now().toString()
-				.split("T")[1]
-				.replace("Z", " "));
 		ArrayList<String> al = new ArrayList<>();
 		changeRequests.forEach(cR -> al.add(cR.getRequestID()));
 		cmbRequests.setItems(FXCollections.observableArrayList(al));
@@ -160,7 +154,11 @@ public abstract class UserForm implements IcmForm {
 	@Override
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.ChangeRequest classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		System.out.print("\nMessage from server received: ");
+		System.out.print("\n["
+				+ ZonedDateTime.now().toString()
+				.split("T")[1]
+				.split("\\+")[0]
+				+ "]: Message from server -> " + message.toString());
 		Object[] objectArray;
 		switch (request.getRequest()) {
 			case getAll:
@@ -175,7 +173,7 @@ public abstract class UserForm implements IcmForm {
 				break;
 			case getUser:
 				user = (User) request.getObject();
-				System.out.println("User entity received: [" + user.getUserName() + "]");
+				//System.out.println("User entity received: [" + user.getUserName() + "]");
 				break;
 			case getAllUsers:
 				allUsers = (ArrayList<User>) request.getObject();

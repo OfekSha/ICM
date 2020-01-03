@@ -11,17 +11,16 @@ import java.util.EnumSet;
  */
 public class ProcessStage implements Serializable {
 	public enum ChargeRequestStages { //
-		meaningEvaluation, // stage 1
-		examinationAndDecision, // stage 2
-		execution, // stage 3
-		examination, // stage 4
-		closure // stage 5
+		meaningEvaluation, 		//stage 1
+		examinationAndDecision, //stage 2
+		execution, 				//stage 3
+		examination, 			//stage 4
+		closure 				//stage 5
 	}
 
-	// not all stages have  all sub stages
+	// not all stages have all sub-stages
 	public enum subStages {
-		supervisorAllocation,
-		// if inspector disapproved  due time you have to go back to this sub stage	 
+		supervisorAllocation, //if inspector disapproved due time you have to go back to this sub stage
 		determiningDueTime,
 		supervisorAction
 	}
@@ -129,12 +128,12 @@ public class ProcessStage implements Serializable {
 	/**
 	 * change the sub stage you are in
 	 *
-	 * @param newSubStage ?
+//	 * @param newSubStage ?
 	 */
-	public void changeCurrentSubStage(subStages newSubStage) {
+	/*public void setCurrentSubStage(subStages newSubStage) {
 		currentSubStage = newSubStage;
 	}
-
+*/
 	public void newStageSupervisor(User supervisor) {
 		EnumSet<ICMPermissions> supervisorPermissions = supervisor.getICMPermissions();
 		ICMPermissions requiredPermission = null;
@@ -167,7 +166,7 @@ public class ProcessStage implements Serializable {
 		}
 	}// END newStageSupervisor()
 
-	public void changeStage(ChargeRequestStages newStage) { // TODO inforce stage order
+	public void setCurrentStage(ChargeRequestStages newStage) { // TODO inforce stage order
 		currentStage = newStage;
 	}
 
