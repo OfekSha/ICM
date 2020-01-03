@@ -1,6 +1,6 @@
 package GUI;
 
-import WindowApp.ClientLauncher;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -15,10 +15,11 @@ public class WatchRequestForm extends UserForm {
 	public TextArea taRequestReason;
 	public TextArea taComment;
 
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ClientLauncher.client.setClientUI(this);
-		setRequestsComboBox();
+		getRequests();
+		Platform.runLater(this::setRequestsComboBox);
 	}
 
 	/*protected void setRequestsComboBox() {

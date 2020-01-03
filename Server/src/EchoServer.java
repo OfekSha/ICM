@@ -1,10 +1,8 @@
-
 import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
-import Entity.User.Job;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -61,108 +59,116 @@ public class EchoServer extends AbstractServer {
 		boolean iWantResponse = true;
 		try {
 		//	Requirement reqReceived;
-			switch (request.getRequest()) {
-				// read all ChangeRequest data
-				case getAll: 
-					sendBackObject = queryHandler.getAllChangeRequest();
-					break;
-				// read data from some id in requirement, doesn't work yet
-				case updateStatus: // change status of one requirement.
-					//reqReceived = request.getObject().get(0);
-					//queryHandler.updateStatus(reqReceived.getID(), reqReceived.getStatus().name());
-					//selectRequirement(ReqListForClient, reqReceived);
-					//queryHandler.updateStatus(0, "status");
-					break;
-				// doesn't work yet
-				case getRequirement:
-					//reqReceived = request.getObject().get(0); // get the requirement id
-					//selectRequirement(ReqListForClient, reqReceived);
-					//sendBackObject = ReqListForClient;
-					break;
-				case getUser:
-					sendBackObject = queryHandler.selectUser(((String) request.getObject()));
-					break;
-				case updateUser:
-					queryHandler.updateAllUserFields((User) request.getObject());
-					break;
+			switch(request.getRequest()) {
 				case changeInLogIn:
-					iWantResponse = false;
 					queryHandler.updateAllUserFields((User) request.getObject());
 					break;
+
+				case updateProcessStage: // change stage
+					ChangeRequest cR = (ChangeRequest) request.getObject();
+					ProcessStage pS = cR.getProcessStage();
+					queryHandler.updateAllProcessStageFields(cR, pS);
+					break;
+
+				case updateChangeRequest:
+					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
+					break;
+
 				case addRequest:
 					ChangeRequest change = (ChangeRequest)request.getObject();
 					change.setRequestID(queryHandler.InsertChangeRequest(change));
 					change.updateInitiatorRequest();
 					change.updateStage();
 					queryHandler.insertInitiator(change.getInitiator());
-					queryHandler.InsertProcessStage(change.getProcessStage());
-					iWantResponse = false;
+					queryHandler.InsertProcessStage(change, change.getProcessStage());
 					break;
-				case updateChangeRequest: 
-					queryHandler.updateAllChangeRequestFields((ChangeRequest)request.getObject());
-					iWantResponse = false;
-					break;
-				case getAllUsers:
-					sendBackObject = queryHandler.getAllUsers();
-					break;
-				case getChangeRequestBystatus:
-					sendBackObject = new Object[] {
-							queryHandler.getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject()),
-							request.getObject()
-					};
-					break;
-				case getUsersByICMPermissions:
-					sendBackObject = new Object[] {
-							queryHandler.getAllUsersWithICMPermissions((ICMPermissions) request.getObject()),
-							request.getObject()
-					};
-					break;
-				case getAllUsersByJob:
-					sendBackObject = new Object[]{
-							queryHandler.getAllUsersByJob((Job) request.getObject()),
-							request.getObject()
-					};
-					break;
-				case getAllChangeRequestWithStatusAndStage:
-					objectArray = (Object[]) request.getObject();
-					sendBackObject = new Object[] {
-							objectArray[0],
-							objectArray[1],
-							objectArray[2],
-							queryHandler.getAllChangeRequestWithStatusAndStage(
-									(ChargeRequestStages) objectArray[0],
-									(subStages) objectArray[1],
-									(ChangeRequestStatus) objectArray[2])
-					};
-					break;
-				case getAllChangeRequestWithStatusAndStageOnly:
-					objectArray = (Object[]) request.getObject();
-					sendBackObject = returnigObjectArray = new Object[]{
-							objectArray[0],
-							objectArray[1],
-							queryHandler.getAllChangeRequestWithStatusAndStageOnly((ChargeRequestStages) objectArray[0], (ChangeRequestStatus) objectArray[1])
-					};
-					break;
-				case getAllChangeRequestWithStatusAndSubStageOnly:
-					objectArray = (Object[]) request.getObject();
-					sendBackObject = new Object[]{
-							objectArray[0],
-							objectArray[1],
-							queryHandler.getAllChangeRequestWithStatusAndSubStageOnly((subStages) objectArray[0], (ChangeRequestStatus) objectArray[1])
-					};
-					break;
-				case getAllChangeRequestWithStatusAndStageAndSupervisor:
-					objectArray = (Object[]) request.getObject();
-					sendBackObject = new Object[]{
-							objectArray[0],
-							objectArray[1],
-							objectArray[2],
-							objectArray[3],
-							queryHandler.getAllChangeRequestWithStatusAndStageAndSupervisor((ChargeRequestStages) objectArray[0], (subStages) objectArray[1], (ChangeRequestStatus) objectArray[2], (String) objectArray[3])
-					};
-					break;
-				default:
-					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
+			}
+			if (request.getRequest().ordinal() < 4) iWantResponse = false;
+			else {
+				switch (request.getRequest()) {
+					// read all ChangeRequest data
+					case getAll:
+						sendBackObject = queryHandler.getAllChangeRequest();
+						break;
+
+					case getUser:
+						sendBackObject = queryHandler.selectUser(((String) request.getObject()));
+						break;
+
+					case updateUser:
+						queryHandler.updateAllUserFields((User) request.getObject());
+						break;
+
+					case getAllUsers:
+						sendBackObject = queryHandler.getAllUsers();
+						break;
+
+					case getChangeRequestByStatus:
+						sendBackObject = new Object[]{
+								queryHandler.getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject()),
+								request.getObject()
+						};
+						break;
+
+					case getUsersByICMPermissions:
+						sendBackObject = new Object[]{
+								queryHandler.getAllUsersWithICMPermissions((ICMPermissions) request.getObject()),
+								request.getObject()
+						};
+						break;
+
+					case getAllUsersByJob:
+						sendBackObject = new Object[]{
+								queryHandler.getAllUsersByJob((User.Job) request.getObject()),
+								request.getObject()
+						};
+						break;
+
+					case getAllChangeRequestWithStatusAndStage:
+						objectArray = (Object[]) request.getObject();
+						sendBackObject = new Object[]{
+								objectArray[0],
+								objectArray[1],
+								objectArray[2],
+								queryHandler.getAllChangeRequestWithStatusAndStage(
+										(ChargeRequestStages) objectArray[0],
+										(subStages) objectArray[1],
+										(ChangeRequestStatus) objectArray[2])
+						};
+						break;
+
+					case getAllChangeRequestWithStatusAndStageOnly:
+						objectArray = (Object[]) request.getObject();
+						sendBackObject = new Object[]{
+								objectArray[0],
+								objectArray[1],
+								queryHandler.getAllChangeRequestWithStatusAndStageOnly((ChargeRequestStages) objectArray[0], (ChangeRequestStatus) objectArray[1])
+						};
+						break;
+
+					case getAllChangeRequestWithStatusAndSubStageOnly:
+						objectArray = (Object[]) request.getObject();
+						sendBackObject = new Object[]{
+								objectArray[0],
+								objectArray[1],
+								queryHandler.getAllChangeRequestWithStatusAndSubStageOnly((subStages) objectArray[0], (ChangeRequestStatus) objectArray[1])
+						};
+						break;
+
+					case getAllChangeRequestWithStatusAndStageAndSupervisor:
+						objectArray = (Object[]) request.getObject();
+						sendBackObject = new Object[]{
+								objectArray[0],
+								objectArray[1],
+								objectArray[2],
+								objectArray[3],
+								queryHandler.getAllChangeRequestWithStatusAndStageAndSupervisor((ChargeRequestStages) objectArray[0], (subStages) objectArray[1], (ChangeRequestStatus) objectArray[2], (String) objectArray[3])
+						};
+						break;
+
+					default:
+						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
+				}
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -240,7 +246,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -260,7 +266,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
-		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 		//creating exeution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.executionLeader);
@@ -274,7 +280,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
@@ -290,7 +296,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -306,7 +312,7 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest.getProcessStage());
+		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 
 
 	}// END of enterChangeRequestToDB

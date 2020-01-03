@@ -99,6 +99,9 @@ public class ProcessStage implements Serializable {
 		startEndArray[currentStage.ordinal()][1] = due;
 	}
 
+	public LocalDate getDueDate() {
+		return startEndArray[currentStage.ordinal()][1];
+	}
 	/**
 	 * adding a end date to the current satge
 	 *
@@ -112,14 +115,14 @@ public class ProcessStage implements Serializable {
 	 * Extension Request Made was made at the current stage
 	 */
 	// TODO: add a test if possibale -agains the date and if requested
-	public void ExtentionRequestMade() {
+	public void ExtensionRequestMade() {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 1;
 	}
 	
 	/**
 	 * Extension Request was approved/disapproved  by the inspector
 	 */
-	public void ExtentionRequestHandeld() {
+	public void ExtensionRequestHandled() {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 2;
 	}
 
@@ -128,7 +131,7 @@ public class ProcessStage implements Serializable {
 	 *
 	 * @param newSubStage ?
 	 */
-	public void changecurretSubStage(subStages newSubStage) {
+	public void changeCurrentSubStage(subStages newSubStage) {
 		currentSubStage = newSubStage;
 	}
 
@@ -180,7 +183,7 @@ public class ProcessStage implements Serializable {
 		}
 	}// End addEstimatorReport;
 
-	public void addExeminorFailReport(String report) {
+	public void addExaminerFailReport(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
@@ -192,7 +195,7 @@ public class ProcessStage implements Serializable {
 		}
 	}// End addExaminerFailReport;
 
-	public void addinspectorDocumention(String report) {
+	public void addinspectorDocumentation(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");

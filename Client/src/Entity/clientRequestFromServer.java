@@ -4,22 +4,24 @@ import java.io.Serializable;
 
 public class clientRequestFromServer implements Serializable {
     public enum requestOptions {
+        changeInLogIn,  // used to update log in/out
+        updateProcessStage,
+        updateChangeRequest, // updates all change Request fields (including held inspector and stage)
+        addRequest,		// adding a change request to the DB
+
         getAll,         // for now need to change not good name get all requirements
         updateStatus,   // change requirement status (ongoing ,closed,etc)
         getRequirement, // get requirement from DB by his id.
         getUser ,       // get one user from DB by his user name.
         updateUser,     // updates all users details
-        changeInLogIn,  // used to update log in/out
-        addRequest,		// adding a change request to the DB
-        updateChangeRequest, // updates all change Request fields (including held inspector and stage)
         getAllUsers,			// getting all users from DB
-        getChangeRequestBystatus, // getting all requests with the specified status 
+        getChangeRequestByStatus, // getting all requests with the specified status
         getUsersByICMPermissions,// Getting all users with the  specified ICMPermission
         getAllUsersByJob,		// getting all users with the specified job
         getAllChangeRequestWithStatusAndStage, // get all requests in a specified:  stage AND substage AND state
         getAllChangeRequestWithStatusAndStageOnly, //get all requests in a specified:  stage  AND state
         getAllChangeRequestWithStatusAndSubStageOnly, //get all requests in a specified:  sub stage  AND state
-        getAllChangeRequestWithStatusAndStageAndSupervisor //  get all requests in a specified:  sub stage  AND state AND StageSupervisor
+        getAllChangeRequestWithStatusAndStageAndSupervisor, //  get all requests in a specified:  sub stage  AND state AND StageSupervisor
 
     }
     //  is needed?

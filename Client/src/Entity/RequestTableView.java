@@ -65,26 +65,26 @@ public class RequestTableView {
 	 * 
 	 */
 	private void initializeTableView() {
-		columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message"));
-		columnId.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("id"));
-		columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status"));
-		columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("stage"));
-		columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("dueTime"));
+		columnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
+		columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		columnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+		columnStage.setCellValueFactory(new PropertyValueFactory<>("stage"));
+		columnDueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
 
-		columninitiator.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("initiator"));
+		columninitiator.setCellValueFactory(new PropertyValueFactory<>("initiator"));
 
-		columnStartDate.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("startDate"));
+		columnStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
-		columnSystem.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("system"));
+		columnSystem.setCellValueFactory(new PropertyValueFactory<>("system"));
 
 		columnProblemDescription
-				.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("problemDescription"));
+				.setCellValueFactory(new PropertyValueFactory<>("problemDescription"));
 
-		columnWhyChange.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("whyChange"));
+		columnWhyChange.setCellValueFactory(new PropertyValueFactory<>("whyChange"));
 
-		columnComment.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("comment"));
+		columnComment.setCellValueFactory(new PropertyValueFactory<>("comment"));
 
-		columnDoc.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("doc"));
+		columnDoc.setCellValueFactory(new PropertyValueFactory<>("doc"));
 
 	}
 
@@ -97,11 +97,9 @@ public class RequestTableView {
 	 * @return requirementForTable
 	 * 
 	 *  - this is special class for table for get the object requirmentForTable.getObject();
-	 * @throws Exception
 	 */
-	public requirmentForTable onRequirmentClicked(MouseEvent event) throws Exception {
-		requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
-		return selectedReq;
+	public requirmentForTable onRequirmentClicked(MouseEvent event) {
+		return tblviewRequests.getSelectionModel().getSelectedItem();
 	}
 
 	/**
@@ -188,20 +186,18 @@ public class RequestTableView {
 		public requirmentForTable(ChangeRequest req) {
 			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
 			id = new SimpleStringProperty(req.getRequestID());
-			status = new SimpleObjectProperty<ChangeRequestStatus>(req.getStatus());
+			status = new SimpleObjectProperty<>(req.getStatus());
 			message = new SimpleStringProperty("test");
-			stage = new SimpleObjectProperty<ProcessStage>(req.getProcessStage());
-			dueTime = new SimpleObjectProperty<LocalDate>(req.getProcessStage().getDates()[stageNumber][1]);
+			stage = new SimpleObjectProperty<>(req.getProcessStage());
+			dueTime = new SimpleObjectProperty<>(req.getProcessStage().getDates()[stageNumber][1]);
 			//
-			initiator = new SimpleObjectProperty<Initiator>(req.getInitiator());
-			startDate = new SimpleObjectProperty<LocalDate>(req.getStartDate());
+			initiator = new SimpleObjectProperty<>(req.getInitiator());
+			startDate = new SimpleObjectProperty<>(req.getStartDate());
 			system = new SimpleStringProperty(req.getSystem());
 			problemDescription = new SimpleStringProperty(req.getProblemDescription());
 			whyChange = new SimpleStringProperty(req.getChangeReason());
 			comment = new SimpleStringProperty(req.getComment());
-			doc = new SimpleObjectProperty<Document>(req.getDoc());
+			doc = new SimpleObjectProperty<>(req.getDoc());
 		}
-
 	}
-
 }

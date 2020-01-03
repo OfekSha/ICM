@@ -3,9 +3,9 @@ package GUI;
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.User;
-import Entity.clientRequestFromServer;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
+import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
@@ -21,9 +21,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -38,6 +41,7 @@ public abstract class UserForm implements IcmForm {
 	static ChangeRequestStatus requestStatus;
 	static ICMPermissions iCMPermission;
 	static Job job;
+	static Stage popupWindow;
 
 	@FXML
 	public Button btnExit;
@@ -64,23 +68,22 @@ public abstract class UserForm implements IcmForm {
 
 	// Standard buttons for each scene
 	public void MainScene(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true, this);
+		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 	}
 
 	public void LogOutButton(ActionEvent event) throws Exception {
-		// updating server user is logged out
-		user.changeLoginStatus(false);
-		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
-		ClientLauncher.client.handleMessageFromClientUI(msg);
+		setUserLogOff();
+		user = null;
+		ClientLauncher.client = null;
 		// lunching main menu
-		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true, new LogInForm());
+		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 	}
 
 	public void ExitBtn() {
 		if (ClientLauncher.client == null) { //if no server founded
 			System.exit(0);
 		}
-		if (user != null && !(this instanceof LogInForm)) {
+		if (user != null) {
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Exit");
@@ -88,13 +91,18 @@ public abstract class UserForm implements IcmForm {
 			alert.setContentText("Are you sure you want to do that?");
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) { // the user pressed ok
-				// updating server user is logged out
-				user.changeLoginStatus(false);
-				Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
-				ClientLauncher.client.handleMessageFromClientUI(msg);
+				setUserLogOff();
+				ClientLauncher.client.quit();
 			}
+			else alert.close();
 		}
-		ClientLauncher.client.quit();
+	}
+
+	private void setUserLogOff() {
+		// updating server user is logged out
+		user.changeLoginStatus(false);
+		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
 	}
 	// End of standard buttons for each scene
 
@@ -109,13 +117,12 @@ public abstract class UserForm implements IcmForm {
 	 * @throws Exception ???
 	 */
 	public void NextWindowLauncher(ActionEvent event, String path,
-								   IcmForm launcherClass, boolean hide, IcmForm clientUI) throws Exception {
-
-		ClientLauncher.client.setClientUI(clientUI);
+								   IcmForm launcherClass, boolean hide) throws Exception {
+		ClientLauncher.client.setClientUI(launcherClass);
+		Stage stage = new Stage();
 		if (hide) {
 			((Node) event.getSource()).getScene().getWindow().hide(); // hiding primary window
 		}
-		Stage stage = new Stage();
 		Parent root = FXMLLoader.load(launcherClass.getClass().getResource(path));
 		Scene scene = new Scene(root);
 		setUndecorated(stage, root);
@@ -123,12 +130,28 @@ public abstract class UserForm implements IcmForm {
 		stage.show();
 	}
 
+	protected void popupWindowLauncher(String target) throws IOException {
+		// inspectorWindow.setScene(((Node)event.getTarget()).getScene());
+		popupWindow = new Stage();
+		Parent root = FXMLLoader.load(this.getClass().getResource(target));
+		Scene scene = new Scene(root);
+		popupWindow.setScene(scene);
+		popupWindow.initModality(Modality.APPLICATION_MODAL);
+		popupWindow.showAndWait();
+	}
+
 	public void getRequests() {
 		clientRequestFromServer newRequest = new clientRequestFromServer(getAll);
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
+		System.out.println("\ngetRequests: " + Instant.now().toString()
+				.split("T")[1]
+				.replace("Z", " "));
 	}
 
 	protected void setRequestsComboBox() {
+		System.out.println("setComboBox: " + Instant.now().toString()
+				.split("T")[1]
+				.replace("Z", " "));
 		ArrayList<String> al = new ArrayList<>();
 		changeRequests.forEach(cR -> al.add(cR.getRequestID()));
 		cmbRequests.setItems(FXCollections.observableArrayList(al));
@@ -138,12 +161,12 @@ public abstract class UserForm implements IcmForm {
 	@Override
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.ChangeRequest classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		System.out.println("\nMessage from server received: ");
+		System.out.print("\nMessage from server received: ");
 		Object[] objectArray;
 		switch (request.getRequest()) {
 			case getAll:
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
-				changeRequests.forEach(e -> System.out.print("[" + e.getRequestID() + "] "));
+				changeRequests.forEach(e -> System.out.print("[" + e.getRequestID() + "]"));
 				break;
 			case updateStatus:
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
@@ -158,7 +181,7 @@ public abstract class UserForm implements IcmForm {
 			case getAllUsers:
 				allUsers = (ArrayList<User>) request.getObject();
 				break;
-			case getChangeRequestBystatus:
+			case getChangeRequestByStatus:
 				objectArray = (Object[]) request.getObject();
 				changeRequests = (ArrayList<ChangeRequest>) objectArray[0];
 				requestStatus = (ChangeRequestStatus) objectArray[1];
@@ -179,6 +202,6 @@ public abstract class UserForm implements IcmForm {
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
 		}
-		// TODO End of todo
+		System.out.println();
 	}
 }

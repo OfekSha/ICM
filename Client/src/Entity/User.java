@@ -128,8 +128,7 @@ public class User implements Serializable {
 	public void removePermission(ICMPermissions Permission) {
 		if (Permission == null || this.Permissions == null)
 			return;
-		if (this.Permissions.contains(Permission))
-			this.Permissions.remove(Permission);
+		this.Permissions.remove(Permission);
 	}// END of removePermission()
 
 	/**

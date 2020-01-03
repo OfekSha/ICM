@@ -9,7 +9,6 @@ import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -113,7 +111,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	@Override
 	public void getFromServer(Object message) {
 		InspectorController.messageFromServer(message);
-		tableData = FXCollections.observableArrayList(InspectorController.requirmentForTableList(reqList));
+		tableData = FXCollections.observableArrayList(InspectorController.requirementForTableList(reqList));
 		tblViewRequests.setItems(tableData);
 
 	}
@@ -131,23 +129,17 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 		// what happened when close window from out or from stage.close / stage.hide
 		// method
-		popupWindow.setOnCloseRequest(new EventHandler<WindowEvent>() { // close from out (alt +f4)
-			public void handle(WindowEvent we) {
-				ClientLauncher.client.setClientUI(icmForm);
-			}
-		});
-		popupWindow.setOnHidden(new EventHandler<WindowEvent>() { // stage.close / stage.hide method
-			public void handle(WindowEvent we) {
-				ClientLauncher.client.setClientUI(icmForm);
-			}
-		});
+		popupWindow.setOnCloseRequest(windowEvent ->  // close from out (alt +f4)
+					ClientLauncher.client.setClientUI(icmForm));
+		// stage.close / stage.hide method
+		popupWindow.setOnHidden(we -> ClientLauncher.client.setClientUI(icmForm));
 	}
 
-	public void watchRequest(ActionEvent event) throws Exception { // get event from the menuItem.
+	public void watchRequest(ActionEvent event) { // get event from the menuItem.
 		InspectorController.watchRequests(((MenuItem) event.getSource()));
 	}
 
-	public void getDetails(ActionEvent event) throws Exception {
+	public void getDetails(ActionEvent event) {
 
 	}
 
@@ -192,11 +184,11 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	}
 
-	public void closeRequest(ActionEvent event) throws Exception {
+	public void closeRequest(ActionEvent event) {
 
 	}
 
-	public void onRequirementClicked(MouseEvent event) throws Exception {
+	public void onRequirementClicked(MouseEvent event) {
 
 		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		if (selectedReq == null)

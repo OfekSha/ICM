@@ -48,12 +48,6 @@ public class LogInForm extends UserForm {
 		primaryStage.show();
 	}
 
-	/*@Override
-	public void getFromServer(Object message) {
-		clientRequestFromServer request = (clientRequestFromServer) message;
-		user = (User) request.getObject();
-	}*/
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//TODO remove before final :
@@ -72,8 +66,7 @@ public class LogInForm extends UserForm {
 			String username = tfUserName.getText();
 			Object msg = new clientRequestFromServer(requestOptions.getUser, username);
 			ClientLauncher.client.handleMessageFromClientUI(msg);
-			//TODO: maybe switch to be notified by the server?> --then handling of lost connection and such problems
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			boolean temp = securityController.checkLogin(pfPassword.getText(), user);
 
 			if (temp) MainScene(event);

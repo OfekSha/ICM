@@ -10,8 +10,7 @@ import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 
-import static Entity.clientRequestFromServer.requestOptions.getAll;
-import static Entity.clientRequestFromServer.requestOptions.updateChangeRequest;
+import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
 
 public class DueTimeController extends AbstractPopUp {
 
@@ -19,24 +18,20 @@ public class DueTimeController extends AbstractPopUp {
 
     @FXML
     private DatePicker dpDueTime;
-
-    @FXML
     public Button btnDone;
 
     @FXML
     private void getDone(ActionEvent event) {
         LocalDate dataDue = dpDueTime.getValue();
-
-        changeRequest.getProcessStage().addDueDate(dataDue);
-
-        clientRequestFromServer newRequest =
-                new clientRequestFromServer(updateChangeRequest, changeRequest);
-
-        ClientLauncher.client.handleMessageFromClientUI(newRequest);
-
-        newRequest = new clientRequestFromServer(getAll);
-
-        ClientLauncher.client.handleMessageFromClientUI(newRequest);
+        if (dataDue != null) {
+            if (dataDue.isAfter(LocalDate.now())) {
+                changeRequest.getProcessStage().addDueDate(dataDue);
+                clientRequestFromServer newRequest =
+                        new clientRequestFromServer(updateProcessStage, changeRequest);
+                ClientLauncher.client.handleMessageFromClientUI(newRequest);
+                getCancel(event);
+            }
+        }
     }
 
     public static void setChangeRequest(ChangeRequest changeRequest) {

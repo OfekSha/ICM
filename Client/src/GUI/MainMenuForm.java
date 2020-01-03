@@ -44,7 +44,6 @@ public class MainMenuForm extends UserForm {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		ClientLauncher.client.setClientUI(this);
 		//updating server user is logged in
 		user.changeLoginStatus(true);
 		//TODO Implement it before use
@@ -85,11 +84,11 @@ public class MainMenuForm extends UserForm {
 
 	// TODO: Load suitable list for each new form
 	public void WatchRequest(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, true, new WatchRequestForm());
+		NextWindowLauncher(event, "/GUI/WatchRequest.fxml", this, true);
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
-		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true, new SubmitRequestForm());
+		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true);
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) {
@@ -98,19 +97,19 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, true, new InspectorForm());
+		NextWindowLauncher(event, "/GUI/InspectorMain.fxml", this, true);
 	}
 
 	public void EstimatorMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/EstimatorMain.fxml", this, true, new EstimatorForm());
+		NextWindowLauncher(event, "/GUI/EstimatorMain.fxml", this, true);
 	}
 
 	public void ExecutionLeaderMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true, new ExecutionLeaderForm());
+		NextWindowLauncher(event, "/GUI/ExecutionLeader.fxml", this, true);
 	}
 
 	public void ExaminerMenu(ActionEvent event) throws Exception {
-		NextWindowLauncher(event, "/GUI/Examiner.fxml", this, true, new ExaminerForm());
+		NextWindowLauncher(event, "/GUI/Examiner.fxml", this, true);
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) {

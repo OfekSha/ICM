@@ -4,8 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Controllers.EstimatorContorller;
-import Controllers.InspectorController;
+import Controllers.EstimatorController;
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -13,14 +12,11 @@ import Entity.ProcessStage.subStages;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
-import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
 
 public class EstimatorForm extends  StageSupervisorForm{
 
@@ -44,7 +40,7 @@ public class EstimatorForm extends  StageSupervisorForm{
 	}
 	@Override
 	public void getFromServer(Object message) {
-		EstimatorContorller.messageFromServer(message,this);
+		EstimatorController.messageFromServer(message,this);
 		
 	}
 	

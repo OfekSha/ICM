@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ExecutionLeaderForm">
    <top>
@@ -40,7 +41,7 @@
                </VBox.margin></Button>
             </VBox>
             <HBox alignment="TOP_CENTER" fillHeight="false" prefWidth="200.0">
-                  <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0">
+                  <VBox alignment="TOP_CENTER" fillWidth="false" prefWidth="200.0" spacing="10.0">
                         <Label contentDisplay="BOTTOM" text="Requests">
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -51,18 +52,23 @@
                <Button fx:id="btnDueTime" mnemonicParsing="false" onAction="#openDueTime" prefWidth="180.0" text="Set Due Time" />
                <Button fx:id="btnApprove" mnemonicParsing="false" onAction="#getExecutionApproved" prefWidth="180.0" text="Approve Execution" />
                <Button fx:id="btnGetExtension" mnemonicParsing="false" onAction="#requestExtension" prefWidth="180.0" text="Ask Time Extension" />
+               <Label fx:id="lbDueTime" alignment="CENTER" contentDisplay="BOTTOM" text="Current due time:" visible="false">
+                  <graphic>
+                     <Text fx:id="txtDueTime" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" />
+                  </graphic>
+               </Label>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
+                  <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="400.0" prefWidth="600.0">
                         <Label alignment="CENTER" text="Initiator Request">
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin></Label>
-                        <TextArea fx:id="taInitiatorRequest" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+                        <TextArea fx:id="taInitiatorRequest" prefHeight="200.0" prefWidth="550.0" wrapText="true" />
                <Label alignment="CENTER" text="Examiners Report">
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin></Label>
-               <TextArea fx:id="taExaminerReport" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="600.0" wrapText="true" />
+               <TextArea fx:id="taExaminerReport" layoutX="10.0" layoutY="27.0" prefHeight="200.0" prefWidth="550.0" wrapText="true" />
                   </VBox>
             </HBox>
       </SplitPane>
