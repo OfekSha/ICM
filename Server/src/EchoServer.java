@@ -4,6 +4,7 @@ import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
+import Entity.clientRequestFromServer.requestOptions;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -57,7 +58,13 @@ public class EchoServer extends AbstractServer {
 		Object sendBackObject = null;
 		Object[] objectArray;
 		Object[] returningObjectArray;
+		// only for login purposes -------------
+		ConnectionToClient tryingToLogInClient =null;
+		User tryingToLogInUser =null;
+		int usersAnswed=0;
+		//---------------------------------------
 		boolean iWantResponse = true;
+
 		try {
 			//	Requirement reqReceived;
 			switch (request.getRequest()) {
@@ -169,6 +176,41 @@ public class EchoServer extends AbstractServer {
 										(String)objectArray[3]);
 						sendBackObject = returningObjectArray;
 						break;
+						//-please do not touch
+						 //TODO: @yonathan more then one user is trying to login at the same time - map<user><int-cnt>
+				case LogIN:// @yonathan -  under construction 
+					tryingToLogInUser = queryHandler.selectUser(((String) request.getObject()));
+					// testing if the user is really logged in
+					if (tryingToLogInUser.getLoggedIn() == true) {
+						iWantResponse = false;
+						Object answerAll = new clientRequestFromServer(requestOptions.areUtheUser, tryingToLogInUser);
+						sendToAllClients(answerAll);
+						tryingToLogInClient = client;
+					} else {
+						sendBackObject = tryingToLogInUser;
+					}
+
+				case areUtheUser:// @yonathan -  under construction -please do not touch
+					iWantResponse = false;
+					usersAnswed++;
+					try {
+					if ((boolean) request.getObject() == true) { // one of the connected users is a user tying to log in
+						Object answerTyingToLogUser = new clientRequestFromServer(requestOptions.LogIN, null);
+							tryingToLogInClient.sendToClient(answerTyingToLogUser);
+							usersAnswed=0;
+						} 
+					
+					else {
+						usersAnswed++;
+						if(usersAnswed>=getNumberOfClients()) {//<-----maby save instead to the number of clients that were connected
+						Object answerTyingToLogUser = new clientRequestFromServer(requestOptions.LogIN, tryingToLogInUser);
+						tryingToLogInClient.sendToClient(answerTyingToLogUser);
+						}
+					}
+					}catch (IOException e) {
+						e.printStackTrace();
+					}
+							
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 				}

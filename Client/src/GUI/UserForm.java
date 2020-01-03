@@ -74,16 +74,14 @@ public abstract class UserForm implements IcmForm {
 	public void LogOutButton(ActionEvent event) throws Exception {
 		setUserLogOff();
 		user = null;
-		ClientLauncher.client = null;
+		//ClientLauncher.client = null;   // NextWindowLauncher - needs clinte
 		// lunching main menu
 		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 	}
 
 	public void ExitBtn() {
-		if (ClientLauncher.client == null) { //if no server founded
-			System.exit(0);
-		}
-		if (user != null) {
+		// if there is no server there will be no client
+		if (user != null && !(this instanceof LogInForm)) { 
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Exit");
@@ -96,7 +94,8 @@ public abstract class UserForm implements IcmForm {
 			}
 			else alert.close();
 		}
-	}
+		System.exit(0);	
+		}
 
 	private void setUserLogOff() {
 		// updating server user is logged out
@@ -196,6 +195,17 @@ public abstract class UserForm implements IcmForm {
 				allUsers = (ArrayList<User>) objectArray[0];
 				job = (Job) objectArray[1];
 				break;
+			case areUtheUser: // @yonathan -  under construction -please do not touch
+				User gotUser= (User) request.getObject();
+				if (gotUser.equals(user)) {
+					Object msg = new clientRequestFromServer(requestOptions.areUtheUser, true);
+					ClientLauncher.client.handleMessageFromClientUI(msg);
+				}
+				else {
+					Object msg = new clientRequestFromServer(requestOptions.areUtheUser, false);
+					ClientLauncher.client.handleMessageFromClientUI(msg);
+				}
+				break;
 /*			case getRequirement:
 				break;
 			case updateUser: break;*/
@@ -204,4 +214,11 @@ public abstract class UserForm implements IcmForm {
 		}
 		System.out.println();
 	}
-}
+	
+	 public void SetUser(User u) {
+		 user =u;
+	}
+	 public User getUser(User u) {
+		  return user;
+	}
+}// END of class UserForm

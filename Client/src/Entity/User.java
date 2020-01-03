@@ -177,4 +177,18 @@ public class User implements Serializable {
 	public String toString() {
 		return userName;
 	}
+	
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof User)) {
+			return false;
+		}
+		User u = (User) o;
+		return (this.getUserName()).equals(u.getUserName());
+
+	}
 }// End of User
