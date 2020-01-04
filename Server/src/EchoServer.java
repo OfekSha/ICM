@@ -177,41 +177,18 @@ public class EchoServer extends AbstractServer {
 										(String)objectArray[3]);
 						sendBackObject = returningObjectArray;
 						break;
-						//-please do not touch
-						 //TODO: @yonathan more then one user is trying to login at the same time - map<user><int-cnt>
-				case LogIN:// @yonathan -  under construction 
-					tryingToLogInUser = queryHandler.selectUser(((String) request.getObject()));
-					// testing if the user is really logged in
-					if (tryingToLogInUser.getLoggedIn() == true) {
-						iWantResponse = false;
-						Object answerAll = new clientRequestFromServer(requestOptions.areUtheUser, tryingToLogInUser);
-						sendToAllClients(answerAll);
-						tryingToLogInClient = client;
-					} else {
-						sendBackObject = tryingToLogInUser;
-					}
-
-				case areUtheUser:// @yonathan -  under construction -please do not touch
-					iWantResponse = false;
-					usersAnswed++;
-					try {
-					if ((boolean) request.getObject() == true) { // one of the connected users is a user tying to log in
-						Object answerTyingToLogUser = new clientRequestFromServer(requestOptions.LogIN, null);
-							tryingToLogInClient.sendToClient(answerTyingToLogUser);
-							usersAnswed=0;
-						} 
 					
-					else {
-						usersAnswed++;
-						if(usersAnswed>=getNumberOfClients()) {//<-----maby save instead to the number of clients that were connected
-						Object answerTyingToLogUser = new clientRequestFromServer(requestOptions.LogIN, tryingToLogInUser);
-						tryingToLogInClient.sendToClient(answerTyingToLogUser);
-						}
-					}
-					}catch (IOException e) {
-						e.printStackTrace();
-					}
-							
+					case LogIN:
+						tryingToLogInUser = queryHandler.selectUser(((String) request.getObject()));
+						if (testAllClientsForUser(tryingToLogInUser)) 
+							sendBackObject=null;
+						else sendBackObject =tryingToLogInUser;
+						break;
+					case successfulLogInOut:
+						client.setConnectedUser((User) request.getObject());
+						iWantResponse =false;
+						break;
+					
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 				}
@@ -406,6 +383,27 @@ public class EchoServer extends AbstractServer {
 	protected void serverStopped() {
 		mysqlConnection.closeConnection();
 		System.out.println("Server has stopped listening for connections.");
+	}
+	
+	/** tests all connections if the user trying  to connect is connected 
+	 * @param tryingToConnect
+	 * @return true if the user is already connected
+	 */
+	protected boolean testAllClientsForUser(User tryingToConnect)
+	{
+	  Thread[] clientThreadList = getClientConnections();
+
+	  for (Thread thread : clientThreadList) {
+	    try {
+	      User u= ((ConnectionToClient) thread).getConnectedUser();
+	      if(tryingToConnect.equals(u)) {
+	    	  return true;
+	      }
+	    } catch (Exception ex) {
+	      ex.printStackTrace();
+	    }
+	  }
+	  return false;
 	}
 }
 //End of EchoServer class

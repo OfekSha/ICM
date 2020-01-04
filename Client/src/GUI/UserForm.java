@@ -81,7 +81,7 @@ public abstract class UserForm implements IcmForm {
 
 	public void ExitBtn() {
 		// if there is no server there will be no client
-		if (user != null && !(this instanceof LogInForm)) { 
+		if (user != null && !(this instanceof LogInForm)) {
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Exit");
@@ -91,16 +91,17 @@ public abstract class UserForm implements IcmForm {
 			if (result.isPresent() && result.get() == ButtonType.OK) { // the user pressed ok
 				setUserLogOff();
 				ClientLauncher.client.quit();
-			}
-			else alert.close();
-		}
-		System.exit(0);	
-		}
+			} else
+				alert.close();
+		} else
+			System.exit(0);
+	}
 
+	/**updating server user is logged out
+	 * 
+	 */
 	private void setUserLogOff() {
-		// updating server user is logged out
-		user.changeLoginStatus(false);
-		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
+		Object msg = new clientRequestFromServer(requestOptions.successfulLogInOut, null);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 	}
 	// End of standard buttons for each scene
@@ -209,17 +210,7 @@ public abstract class UserForm implements IcmForm {
 				allUsers = (ArrayList<User>) objectArray[0];
 				job = (Job) objectArray[1];
 				break;
-			case areUtheUser: // @yonathan -  under construction -please do not touch
-				User gotUser= (User) request.getObject();
-				if (gotUser.equals(user)) {
-					Object msg = new clientRequestFromServer(requestOptions.areUtheUser, true);
-					ClientLauncher.client.handleMessageFromClientUI(msg);
-				}
-				else {
-					Object msg = new clientRequestFromServer(requestOptions.areUtheUser, false);
-					ClientLauncher.client.handleMessageFromClientUI(msg);
-				}
-				break;
+			
 /*			case getRequirement:
 				break;
 			case updateUser: break;*/

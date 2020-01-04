@@ -34,9 +34,9 @@ public class SecurityController {
 	 */
 	public boolean serveHandler(clientRequestFromServer request) {
 		user = (User) request.getObject();
+		log.SetUser(user);
 		if (testPassword(user)) {
-			log.SetUser(user);
-			return true;
+		return true;
 		} else {
 			return false;
 		}
@@ -47,7 +47,7 @@ public class SecurityController {
 	 * @param password
 	 */
 	public void input(String username, String password) {
-		Object msg = new clientRequestFromServer(requestOptions.getUser, username);
+		Object msg = new clientRequestFromServer(requestOptions.LogIN, username);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 		this.password = password;
 

@@ -22,9 +22,8 @@ public class clientRequestFromServer implements Serializable {
         getAllChangeRequestWithStatusAndStageOnly, //get all requests in a specified:  stage  AND state
         getAllChangeRequestWithStatusAndSubStageOnly, //get all requests in a specified:  sub stage  AND state
         getAllChangeRequestWithStatusAndStageAndSupervisor, //  get all requests in a specified:  sub stage  AND state AND StageSupervisor
-        //@yonathan under construction  -please do not touch
         LogIN ,//only for logging in - tests whether the user is logged in already
-        areUtheUser //   tests if you are the user tying to log in   all handlers must have 
+        successfulLogInOut //Updated the server whether there is a user  related to the connection
 
     }
 

@@ -74,11 +74,15 @@ public class LogInForm extends UserForm {
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
 			securityController.input(tfUserName.getText(), pfPassword.getText());
 			putLunchedThreadToSleep();
-			if (canLogIn)
+			if (canLogIn) {
+				successfulLogIn(user);
 				lunchMain();
+			}
 			else
-				alertWindowLauncher(AlertType.ERROR, "Information Dialog", null, "Password or Username is incorrect");
-
+			{
+			if(user!=null)	alertWindowLauncher(AlertType.ERROR, "Information Dialog", null, "Password or Username is incorrect");
+			else alertWindowLauncher(AlertType.ERROR, "Information Dialog", null, "User is already connected");
+			}
 		} else {
 			String contant = "Things you can do : \n" + "1) Make sure the server is running\n"
 					+ "2) Ask  for the server IP";
@@ -93,7 +97,7 @@ public class LogInForm extends UserForm {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		Object[] objectArray;
 		switch (request.getRequest()) {
-		case getUser:
+		case LogIN:
 			if (securityController.serveHandler(request)) {
 				canLogIn = true;
 				wakeUpLunchedThread();
@@ -134,14 +138,16 @@ public class LogInForm extends UserForm {
 		}
 	}
 
-
-
-	
 	private void  lunchMain() {
 		try {
 			MainScene(eventIput);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void successfulLogIn(User user) {
+		Object msg = new clientRequestFromServer(requestOptions.successfulLogInOut, user);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
 	}
 }// End of LogInForm

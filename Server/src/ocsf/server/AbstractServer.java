@@ -10,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Entity.User;
+
 /**
 * The <code> AbstractServer </code> class maintains a thread that waits
 * for connection attempts from clients. When a connection attempt occurs
@@ -558,5 +560,7 @@ public abstract class AbstractServer implements Runnable
   {
     this.handleMessageFromClient(msg, client);
   }
+
+
 }
 // End of AbstractServer Class

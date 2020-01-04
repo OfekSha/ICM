@@ -8,6 +8,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import Entity.User;
+
 /**
 * An instance of this class is created by the server when a client
 * connects. It accepts messages coming from the client and is
@@ -60,6 +62,12 @@ public class ConnectionToClient extends Thread
 {
 // INSTANCE VARIABLES ***********************************************
 
+	/** added by @author Yonathan
+	 *  A reference to the connected user 
+	 *  not null only if the user is connected
+	 */
+	private User connectedUser=null;
+	
   /**
   * A reference to the Server that created this instance.
   */
@@ -351,6 +359,15 @@ public class ConnectionToClient extends Thread
     catch(IOException e) {
       e.printStackTrace();
     }
+  }
+  
+  // added methods 
+  
+  public  User getConnectedUser() {
+	  return connectedUser;
+  }
+  public void setConnectedUser(User u) {
+	  connectedUser=u;
   }
 }
 // End of ConnectionToClient class
