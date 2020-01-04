@@ -45,8 +45,11 @@ public class ProcessStage implements Serializable {
 	 * 
 	 */
 	private int[] WasThereAnExtensionRequest = new int[5];
-
-	/**
+	/** an array whit what stages asked for extension
+	 * [stage number-1]
+	 */
+	private String[] ExtensionExplanation = new String[5];
+	/** 
 	 * startEndArray is -an array with the start date and end date for each stage
 	 * <p>
 	 * [stage number -1 ][0] - start date for stage
@@ -66,7 +69,7 @@ public class ProcessStage implements Serializable {
 
 	public ProcessStage(ChargeRequestStages currentStage, subStages currentSubStage, User StageSupervisor,
 						String EstimatorReport, String ExaminerFailReport, String inspectorDocumentation, LocalDate[][] startEndArray,
-						int[] WasThereAnExtensionRequest) {
+						int[] WasThereAnExtensionRequest,String[] ExtensionExplanation) {
 		this.currentStage = currentStage;
 		this.currentSubStage = currentSubStage;
 		this.StageSupervisor = StageSupervisor;
@@ -75,9 +78,25 @@ public class ProcessStage implements Serializable {
 		this.inspectorDocumentation = inspectorDocumentation;
 		this.startEndArray = startEndArray;
 		this.WasThereAnExtensionRequest = WasThereAnExtensionRequest;
+		this.ExtensionExplanation=ExtensionExplanation;
 	}
 
 	// input methods
+	
+	
+	/** input an extension explanation 
+	 * @param s
+	 */
+	public void inputExtensionExplanation(String s) {
+		ExtensionExplanation[currentStage.ordinal()]=s;
+	}
+	/**input all extension explanation 
+	 * @param s
+	 */
+	public void inputAllExtensionExplanation(String[] s) {
+		ExtensionExplanation=s;
+	}
+	
 	//  TODO: add constraints to date methods 
 
 	/**
@@ -113,7 +132,7 @@ public class ProcessStage implements Serializable {
 	/**
 	 * Extension Request Made was made at the current stage
 	 */
-	// TODO: add a test if possibale -agains the date and if requested
+	// TODO: add a test if possible -again the date and if requested
 	public void ExtensionRequestMade() {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 1;
 	}
@@ -209,6 +228,10 @@ public class ProcessStage implements Serializable {
 	public void setRequest(ChangeRequest Request) {
 		this.Request = Request;
 	}
+	
+	public void setCurrentSubStage(subStages currentSubStage) {
+		this.currentSubStage = currentSubStage;
+	}
 
 	// output
 	public ChangeRequest getRequest() {
@@ -257,7 +280,12 @@ public class ProcessStage implements Serializable {
 		}
 	}
 
-	public void setCurrentSubStage(subStages currentSubStage) {
-		this.currentSubStage = currentSubStage;
-	}
+
+	public String getExtensionExplanation() {
+		return	ExtensionExplanation[currentStage.ordinal()];
+		}
+
+		public String[] getAllExtensionExplanation() {
+			return ExtensionExplanation;
+		}
 }// END of Stage

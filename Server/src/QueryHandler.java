@@ -174,8 +174,13 @@ public class QueryHandler {
                     "stage3extension," +                        //[23]
                     "stage4extension," +                        //[24]
                     "stage5extension," +                        //[25]
-                    "currentSubStage)" +                        //[26]
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "currentSubStage," +                        //[26]
+                    "stage1ExtensionExplanation, " +//27
+					"stage2ExtensionExplanation, " +//28
+					"stage3ExtensionExplanation, " +//29
+					"stage4ExtensionExplanation, " +//30
+					"stage5ExtensionExplanation) " +//31
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             setAllProcessStageStatement(changeRequest, processStage , stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -238,6 +243,15 @@ public class QueryHandler {
             v++;
         }
         stmt.setString(26, processStage.getCurrentSubStage().name());
+        String[] s =processStage.getAllExtensionExplanation();
+        
+        stmt.setString(27, s[0]);
+        stmt.setString(28, s[1]);
+        stmt.setString(29, s[2]);
+        stmt.setString(30, s[3]);
+        stmt.setString(31, s[4]);
+        
+        
         stmt.execute();
         stmt.close();
     }//END setAllProcessStageStatement()
@@ -275,9 +289,14 @@ public class QueryHandler {
                     + "stage4extension = ?,"                        //24
                     + "stage5extension = ?,"                        //25
                     + "currentSubStage = ?"                         //26
-                    + "WHERE (RequestID = ?) and (currentStage = ?);"); //27
-            stmt.setNString(27, changeRequest.getRequestID());
-            stmt.setNString(28, processStage.getCurrentStage().name());
+                     + "stage1ExtensionExplanation = ?,"            //27            
+                    + "stage2ExtensionExplanation = ?,"              //28          
+                    + "stage3ExtensionExplanation = ?,"                  //29      
+                    + "stage4ExtensionExplanation = ?,"                      //30  
+                    + "stage5ExtensionExplanation = ?"                       //31 
+                    + "WHERE (RequestID = ?) and (currentStage = ?);"); //32 33
+            stmt.setNString(32, changeRequest.getRequestID());
+            stmt.setNString(33, processStage.getCurrentStage().name());
             setAllProcessStageStatement(changeRequest, processStage, stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -788,16 +807,14 @@ public class QueryHandler {
 				String currentStageString = re.getNString(2);
                 ChargeRequestStages currentStage = ChargeRequestStages.valueOf(currentStageString);
 
-				String currentSubStageString = re.getString(3);
-                subStages currentSubStage = subStages.valueOf(currentSubStageString);
-
-                User StageSupervisor = selectUser(re.getString(4));
-				String EstimatorReport = re.getString(5);
-				String ExaminerFailReport = re.getString(6);
-				String inspectorDocumentation = re.getString(7);
+				
+                User StageSupervisor = selectUser(re.getString(3));
+				String EstimatorReport = re.getString(4);
+				String ExaminerFailReport = re.getString(5);
+				String inspectorDocumentation = re.getString(6);
 
 				LocalDate[][] startEndArray = new LocalDate[5][3];
-				int u = 8;
+				int u = 7;
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 3; j++) {
 						if(re.getString(u) != null) {
@@ -808,24 +825,33 @@ public class QueryHandler {
 					}
 				}
 				if(re.getString(u) != null) {
-				    startEndArray[4][0] = LocalDate.parse(re.getString(20));
+				    startEndArray[4][0] = LocalDate.parse(re.getString(19));
                 }
 				else startEndArray[4][0] = null;
 
 				if(re.getString(u) != null) {
-				    startEndArray[4][2] = LocalDate.parse(re.getString(21));
+				    startEndArray[4][2] = LocalDate.parse(re.getString(20));
                 }
 				else startEndArray[4][2] = null;
 
 				int[] WasThereAnExtensionRequest = new int[5];
-				u = 22;
+				u = 21;
 				for (int i = 0; i < 5; i++) {
                     WasThereAnExtensionRequest[i] = re.getInt(u) ;
 					u++;
 				}
+				String currentSubStageString = re.getString(26);
+                subStages currentSubStage = subStages.valueOf(currentSubStageString);
+                String[] s =new String[5];
+                s[0] =re.getNString(27);
+                s[1] =re.getNString(28);
+                s[2] =re.getNString(29);
+                s[3] =re.getNString(30);
+                s[4] =re.getNString(31);
+
 				returnProcessStage = new ProcessStage(currentStage, currentSubStage,
                         StageSupervisor, EstimatorReport, ExaminerFailReport,
-                        inspectorDocumentation, startEndArray, WasThereAnExtensionRequest);
+                        inspectorDocumentation, startEndArray, WasThereAnExtensionRequest,s);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

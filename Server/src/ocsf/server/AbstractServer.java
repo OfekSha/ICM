@@ -10,7 +10,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import Entity.User;
 
 /**
 * The <code> AbstractServer </code> class maintains a thread that waits

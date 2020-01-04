@@ -251,6 +251,7 @@ public class EchoServer extends AbstractServer {
 		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
 		EnumSet<ICMPermissions> lessPermissions; //empty enum set
 		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions);
+		String []ExtensionExplanation=new String[5];
 		Initiator initiator = new Initiator(newUser, null);
 		LocalDate start = LocalDate.now();
 		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
@@ -275,7 +276,7 @@ public class EchoServer extends AbstractServer {
 		for (int i = 0; i < 5; i++) {
 			WasThereAnExtensionRequest[i] = 0;
 		}
-		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", "test2", startEndArray, WasThereAnExtensionRequest);
+		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
@@ -290,7 +291,7 @@ public class EchoServer extends AbstractServer {
 
 		// change request stage 3
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
-		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", "test3", startEndArray, WasThereAnExtensionRequest);
+		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", "test3", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
@@ -307,7 +308,7 @@ public class EchoServer extends AbstractServer {
 
 		// change request stage 4
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
-		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", "test4", startEndArray, WasThereAnExtensionRequest);
+		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", "test4", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
@@ -324,7 +325,7 @@ public class EchoServer extends AbstractServer {
 
 		// change request stage 5
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
-		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", "test5", startEndArray, WasThereAnExtensionRequest);
+		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStatus(ChangeRequestStatus.closed);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
