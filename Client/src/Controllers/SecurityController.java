@@ -77,13 +77,7 @@ public class SecurityController {
 			System.out.println("Connection established!\n" // TODO: to be removed/changed
 					+ "Welcome to ICM.");
 			return true;
-		} catch (IOException exception) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText("Error: Can't setup connection!");
-			alert.setContentText(
-					"Things you can do : \n" + "1) Make sure the server is running\n" + "2) Ask  for the server IP");
-			alert.showAndWait();
+		} catch (IOException exception) {	
 			return false;
 		}
 	} // END connectToServer()

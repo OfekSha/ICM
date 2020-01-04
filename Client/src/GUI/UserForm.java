@@ -138,6 +138,22 @@ public abstract class UserForm implements IcmForm {
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
 		popupWindow.show();
 	}
+	
+	
+	/** creates an alert and shows it 
+	 * @param type
+	 * @param title
+	 * @param header
+	 * @param Content
+	 * 
+	 */
+	protected void alertWindowLauncher(AlertType type,String title, String header, String Content) {
+		Alert alert = new Alert(type);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(Content);
+		alert.showAndWait();	
+	}
 
 	public void getRequests() {
 		clientRequestFromServer newRequest = new clientRequestFromServer(getAll);

@@ -73,12 +73,19 @@ public class LogInForm extends UserForm {
 		eventIput = event;
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
 			securityController.input(tfUserName.getText(), pfPassword.getText());
-			putLunchedToSleep();
-			if (canLogIn) {
+			putLunchedThreadToSleep();
+			if (canLogIn)
 				lunchMain();
-			}
-			else incorrectDetails();
+			else
+				alertWindowLauncher(AlertType.ERROR, "Information Dialog", null, "Password or Username is incorrect");
+
+		} else {
+			String contant = "Things you can do : \n" + "1) Make sure the server is running\n"
+					+ "2) Ask  for the server IP";
+			alertWindowLauncher(AlertType.ERROR, "Information Dialog", "Error: Can't setup connection!", contant);
 		}
+	
+
 	} // END of getInput;
 
 	@Override
@@ -108,7 +115,7 @@ public class LogInForm extends UserForm {
 	 * - saves it so  wakeUpLunchedThread would be able to wake it up
 	 * 
 	 */
-	private void putLunchedToSleep(){
+	private void putLunchedThreadToSleep(){
 		log = Thread.currentThread();
 		try {
 			log.sleep(9999999);
@@ -127,16 +134,7 @@ public class LogInForm extends UserForm {
 		}
 	}
 
-	/** activates pop up that informs the user his one of the detail he entered is wrong
-	 * 
-	 */
-	private void incorrectDetails() {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Information Dialog");
-		alert.setHeaderText(null);
-		alert.setContentText("Password or Username is incorrect");
-		alert.showAndWait();
-	}
+
 
 	
 	private void  lunchMain() {
