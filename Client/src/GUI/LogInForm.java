@@ -69,45 +69,31 @@ public class LogInForm extends UserForm {
 		// ----
 	}
 
-	/**
-	 * connects to ip , tests user name and password
-	 * 
-	 * @param event ??
-	 * @throws Exception ??
-	 */
-
 	public void getInput(ActionEvent event) {
 		eventIput = event;
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
 			securityController.input(tfUserName.getText(), pfPassword.getText());
-		}
-		log = Thread.currentThread();
-		try {
-			log.sleep(9999999);
-		} catch (InterruptedException e) {
-		} 
-
-		if (canLogIn) {
-			try {
-				MainScene(eventIput);
-			} catch (Exception e) {
-				e.printStackTrace();
+			putLunchedToSleep();
+			if (canLogIn) {
+				lunchMain();
 			}
+			else incorrectDetails();
 		}
 	} // END of getInput;
 
 	@Override
 	public void getFromServer(Object message) {
 		clientRequestFromServer request = (clientRequestFromServer) message;
-		System.out.print("\nMessage from server received: ");
 		Object[] objectArray;
 		switch (request.getRequest()) {
 		case getUser:
-			if (securityController.serveHandler(message)) {
-				wakeUpOriginalThread();
-			} else {
-				incorrectDetails();
-				wakeUpOriginalThread();
+			if (securityController.serveHandler(request)) {
+				canLogIn = true;
+				wakeUpLunchedThread();
+			}
+			else {
+				canLogIn = false;
+				wakeUpLunchedThread();
 			}
 			break;
 		default:
@@ -117,9 +103,23 @@ public class LogInForm extends UserForm {
 
 	}
 
-	private void wakeUpOriginalThread() {
+	/** Saves the the lunched thread and puts it to  sleep
+	 * 
+	 * - saves it so  wakeUpLunchedThread would be able to wake it up
+	 * 
+	 */
+	private void putLunchedToSleep(){
+		log = Thread.currentThread();
 		try {
-			canLogIn = true;
+			log.sleep(9999999);
+		} catch (InterruptedException e) {
+		}
+	}
+	/** Wakes up the lunched thread
+	 * 
+	 */
+	private void wakeUpLunchedThread() {
+		try {
 			log.interrupt();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -127,6 +127,9 @@ public class LogInForm extends UserForm {
 		}
 	}
 
+	/** activates pop up that informs the user his one of the detail he entered is wrong
+	 * 
+	 */
 	private void incorrectDetails() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Information Dialog");
@@ -135,4 +138,12 @@ public class LogInForm extends UserForm {
 		alert.showAndWait();
 	}
 
+	
+	private void  lunchMain() {
+		try {
+			MainScene(eventIput);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }// End of LogInForm

@@ -27,10 +27,14 @@ public class SecurityController {
 		this.log = log;
 	}
 
-	public boolean serveHandler(Object message) {
-		clientRequestFromServer request = (clientRequestFromServer) message;
+	/** Handles the getUser request 
+	 * - the method is activated by getFromServer server there for it should have all details 
+	 * @param request
+	 * @return
+	 */
+	public boolean serveHandler(clientRequestFromServer request) {
 		user = (User) request.getObject();
-		if (checkLogin(user)) {
+		if (testPassword(user)) {
 			log.SetUser(user);
 			return true;
 		} else {
@@ -38,6 +42,10 @@ public class SecurityController {
 		}
 	}
 
+	/** saves the user input and askes the server for further details
+	 * @param username
+	 * @param password
+	 */
 	public void input(String username, String password) {
 		Object msg = new clientRequestFromServer(requestOptions.getUser, username);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
@@ -45,13 +53,22 @@ public class SecurityController {
 
 	}
 
-	public boolean checkLogin(User user) {
+	/** tests if the use given password matches the  password in DB
+	 * @param user
+	 * @return
+	 */
+	public boolean testPassword(User user) {
 		if (!(user == null)) {
 			return password.equals(user.getPassword());
 		}
 		return false;
-	}// End of checkLogin()
-
+	}// End of testPassword()
+ 
+	/** connects to the server with given ip
+	 * @param host
+	 * @param form
+	 * @return
+	 */
 	public boolean connectToServer(String host, IcmForm form) {
 		if (host == null)
 			host = "localhost";
