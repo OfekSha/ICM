@@ -2,8 +2,12 @@ package WindowApp;
 
 import ocsf.client.AbstractClient;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.ZonedDateTime;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class IcmClient extends AbstractClient {
 
@@ -68,4 +72,22 @@ public class IcmClient extends AbstractClient {
 		}
 		System.exit(0);
 	}
+	/**@author Yonathan 
+	 *	if we lose the connection  we need organized message to the client
+	 */
+	@Override
+	  public void sendToServer(Object msg) throws IOException
+	  {
+	    if (clientSocket == null || output == null) {
+	    	Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("no connection");
+			alert.setHeaderText("You have lost you connection to the server");
+			alert.setContentText("Things you can do:\n1) Make sure the server is running\n");
+			alert.showAndWait();
+			// TODO : re lunch the client insted
+			System.exit(0);		
+	    }
+
+	    else  output.writeObject(msg);
+	  }
 }

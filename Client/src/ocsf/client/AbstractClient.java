@@ -69,13 +69,18 @@ public abstract class AbstractClient implements Runnable
   * Sockets are used in the operating system as channels
   * of communication between two processes.
   * @see java.net.Socket
-  */
-  private Socket clientSocket;
+  * 
+  * 
+  * @author Yonathan - chaged to protected so i can override sendToServer
+  */ 
+  protected Socket clientSocket;
 
   /**
   * The stream to handle data going to the server.
+  * 
+  * @author Yonathan - chaged to protected so i can override sendToServer
   */
-  private ObjectOutputStream output;
+  protected ObjectOutputStream output;
 
   /**
   * The stream to handle data from the server.
