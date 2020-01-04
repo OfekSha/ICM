@@ -31,8 +31,6 @@ public class User implements Serializable {
 	private EnumSet<ICMPermissions> Permissions = null;
 	//private ICMPermissions[] Permissions;
 	private Job job;
-	private boolean loggedIn;
-
 // Contractors
 
 	/**
@@ -49,7 +47,7 @@ public class User implements Serializable {
 	 * @param loggedIn    - represents if the user is logged in
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, Job job,
-				EnumSet<ICMPermissions> Permissions, boolean loggedIn) {
+				EnumSet<ICMPermissions> Permissions) {
 		this.job = job;
 		updatePremiisions(Permissions);
 		this.userName = userName;
@@ -57,7 +55,6 @@ public class User implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.loggedIn = loggedIn;
 	}
 
 // input 
@@ -75,9 +72,7 @@ public class User implements Serializable {
 		return true;
 	}
 
-	public void updateLoging(boolean logedIn) {
-		this.loggedIn = logedIn;
-	}
+
 
 	// TODO test this method
 
@@ -136,9 +131,7 @@ public class User implements Serializable {
 	 *
 	 * @param bool ?
 	 */
-	public void changeLoginStatus(boolean bool) {
-		loggedIn = bool;
-	}// END changeLoginStaus
+
 //output
 
 	public String getUserName() {
@@ -169,9 +162,6 @@ public class User implements Serializable {
 		return job;
 	}
 
-	public boolean getLoggedIn() {
-		return loggedIn;
-	}
 
 	@Override
 	public String toString() {

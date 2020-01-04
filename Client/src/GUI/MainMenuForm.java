@@ -44,8 +44,6 @@ public class MainMenuForm extends UserForm {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//updating server user is logged in
-		user.changeLoginStatus(true);
 		//TODO Implement it before use
 		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);

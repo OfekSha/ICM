@@ -34,7 +34,6 @@ public class QueryHandler {
                     "password," +
                     "firstName," +
                     "lastName," +
-                    "login," +
                     "job," +
                     "email," +
                     "informationTechnologiesDepartmentMangerPermission," +
@@ -44,7 +43,7 @@ public class QueryHandler {
                     "examinerPermission," +
                     "changeControlCommitteeChairman," +
                     "changeControlCommitteeMember)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);");
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             setAllUserFieldsStatement(user, stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,43 +61,39 @@ public class QueryHandler {
         stmt.setNString(2, user.getPassword());
         stmt.setNString(3, user.getFirstName());
         stmt.setNString(4, user.getLastName());
-        if (user.getLoggedIn()) {
-            stmt.setInt(5, 1);
-        }
-        else stmt.setInt(5, 0);
-        stmt.setNString(6, user.getJob().name());
-        stmt.setNString(7, user.getEmail());
+        stmt.setNString(5, user.getJob().name());
+        stmt.setNString(6, user.getEmail());
+        stmt.setInt(7, 0);
         stmt.setInt(8, 0);
         stmt.setInt(9, 0);
         stmt.setInt(10, 0);
         stmt.setInt(11, 0);
         stmt.setInt(12, 0);
         stmt.setInt(13, 0);
-        stmt.setInt(14, 0);
         EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
         if (Permissions != null) {
             for (ICMPermissions e : Permissions) {
                 switch (e) {
                     case informationTechnologiesDepartmentManager:
-                        stmt.setInt(8, 1);
+                        stmt.setInt(7, 1);
                         break;
                     case inspector:
-                        stmt.setInt(9, 1);
+                        stmt.setInt(8, 1);
                         break;
                     case estimator:
-                        stmt.setInt(10, 1);
+                        stmt.setInt(9, 1);
                         break;
                     case executionLeader:
-                        stmt.setInt(11, 1);
+                        stmt.setInt(10, 1);
                         break;
                     case examiner:
-                        stmt.setInt(12, 1);
+                        stmt.setInt(11, 1);
                         break;
                     case changeControlCommitteeChairman:
-                        stmt.setInt(13, 1);
+                        stmt.setInt(12, 1);
                         break;
                     case changeControlCommitteeMember:
-                        stmt.setInt(14, 1);
+                        stmt.setInt(13, 1);
                         break;
                 }
             }
@@ -375,7 +370,6 @@ public class QueryHandler {
                             + "password = ?,"
                             + "firstName = ?,"
                             + "lastName = ?,"
-                            + "login = ?,"
                             + "job = ?,"
                             + "email = ?,"
                             + "informationTechnologiesDepartmentMangerPermission = ?,"
@@ -386,7 +380,7 @@ public class QueryHandler {
                             + "changeControlCommitteeChairman = ?,"
                             + "changeControlCommitteeMember = ? "
                             + "WHERE userName = ?;");
-            updStatus.setNString(15, user.getUserName());
+            updStatus.setNString(14, user.getUserName());
             setAllUserFieldsStatement(user, updStatus);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -426,7 +420,6 @@ public class QueryHandler {
          String password = null;
          String firstName = null;
          String lastName = null;
-         boolean login = false;
          String jobString = null;
          String email = null;
          int informationTechnologiesDepartmentManagerPermission = 0;
@@ -441,16 +434,15 @@ public class QueryHandler {
              password = re.getNString(2);
              firstName = re.getNString(3);
              lastName = re.getNString(4);
-             login = (re.getInt(5) == 1);
-             jobString = re.getNString(6);
-             email = re.getNString(7);
-             informationTechnologiesDepartmentManagerPermission = re.getInt(8);
-             inspectorPermission = re.getInt(9);
-             estimatorPermission = re.getInt(10);
-             executionLeaderPermission = re.getInt(11);
-             examinerPermission = re.getInt(12);
-             changeControlCommitteeChairman = re.getInt(13);
-             changeControlCommitteeMember = re.getInt(14);
+             jobString = re.getNString(5);
+             email = re.getNString(6);
+             informationTechnologiesDepartmentManagerPermission = re.getInt(7);
+             inspectorPermission = re.getInt(8);
+             estimatorPermission = re.getInt(9);
+             executionLeaderPermission = re.getInt(10);
+             examinerPermission = re.getInt(11);
+             changeControlCommitteeChairman = re.getInt(12);
+             changeControlCommitteeMember = re.getInt(13);
      } catch (SQLException e) {
          e.printStackTrace();
      }
@@ -486,7 +478,7 @@ public class QueryHandler {
      if (changeControlCommitteeMember == 1) {
          Permissions.add(ICMPermissions.changeControlCommitteeMember);
      }
-     toReturn = new User(userName, password, firstName, lastName, email, job, Permissions, login);
+     toReturn = new User(userName, password, firstName, lastName, email, job, Permissions);
      return toReturn;
 
      } // end of userStamentGets
@@ -533,7 +525,7 @@ public class QueryHandler {
          }
 
          return toReturn;
-    } // END of getAllUsers
+    } // END of getAllUsersByJob
     
     /** Getting all users with the  specified ICMPermission
      * @param prem ?

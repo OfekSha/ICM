@@ -44,7 +44,6 @@ public class mysqlConnection {
 					"password VARCHAR(45) NOT NULL," + 											//[2]
 					"firstName VARCHAR(45) NULL," + 											//[3]
 					"lastName VARCHAR(45) NULL," + 												//[4]
-					"login TINYINT(1) NOT NULL," + 												//[5]
 					"job VARCHAR(45) NULL," + 													//[6]
 					"email VARCHAR(45) NULL," + 												//[7]
 					"informationTechnologiesDepartmentMangerPermission TINYINT(1) NOT NULL,"+	//[8]

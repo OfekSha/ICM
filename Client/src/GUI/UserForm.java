@@ -81,7 +81,7 @@ public abstract class UserForm implements IcmForm {
 
 	public void ExitBtn() {
 		// if there is no server there will be no client
-		if (user != null && !(this instanceof LogInForm)) {
+		if (user != null ) {
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Exit");

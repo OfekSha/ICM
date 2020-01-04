@@ -209,48 +209,48 @@ public class EchoServer extends AbstractServer {
 	private void enterUsersToDB() {
 		// creating admin
 		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
-		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions, false);
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions);
 		queryHandler.insertUser(newUser);
 		// creating  information Technologies Department Manager
 		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
 		lessPermissions.add(User.ICMPermissions.informationTechnologiesDepartmentManager);
-		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		queryHandler.insertUser(newUser);
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.inspector);
-		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		queryHandler.insertUser(newUser);
 		//creating estimator
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.estimator);
-		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		queryHandler.insertUser(newUser);
 		//creating exeution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.executionLeader);
-		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		queryHandler.insertUser(newUser);
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
-		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		queryHandler.insertUser(newUser);
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
-		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		queryHandler.insertUser(newUser);
 		//creating student
-		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", Job.student, null, false);
+		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", Job.student, null);
 		queryHandler.insertUser(newUser);
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {
 		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
 		EnumSet<ICMPermissions> lessPermissions; //empty enum set
-		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions, false);
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions);
 		Initiator initiator = new Initiator(newUser, null);
 		LocalDate start = LocalDate.now();
 		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
@@ -264,7 +264,7 @@ public class EchoServer extends AbstractServer {
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
-		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
 		// change request stage 2
@@ -285,7 +285,7 @@ public class EchoServer extends AbstractServer {
 		//creating execution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.executionLeader);
-		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
 		// change request stage 3
@@ -302,7 +302,7 @@ public class EchoServer extends AbstractServer {
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
-		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
 		// change request stage 4
@@ -319,7 +319,7 @@ public class EchoServer extends AbstractServer {
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.inspector);
-		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions, false);
+		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
 		// change request stage 5

@@ -150,4 +150,8 @@ public class LogInForm extends UserForm {
 		Object msg = new clientRequestFromServer(requestOptions.successfulLogInOut, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 	}
+	@Override
+	public  void ExitBtn() {
+		System.exit(0);
+	}
 }// End of LogInForm
