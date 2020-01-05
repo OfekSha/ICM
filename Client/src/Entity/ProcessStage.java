@@ -69,7 +69,7 @@ public class ProcessStage implements Serializable {
 
 	public ProcessStage(ChargeRequestStages currentStage, subStages currentSubStage, User StageSupervisor,
 						String EstimatorReport, String ExaminerFailReport, String inspectorDocumentation, LocalDate[][] startEndArray,
-						int[] WasThereAnExtensionRequest,String[] ExtensionExplanation) {
+						int[] WasThereAnExtensionRequest, String[] ExtensionExplanation) {
 		this.currentStage = currentStage;
 		this.currentSubStage = currentSubStage;
 		this.StageSupervisor = StageSupervisor;
@@ -77,34 +77,28 @@ public class ProcessStage implements Serializable {
 		this.ExaminerFailReport = ExaminerFailReport;
 		this.inspectorDocumentation = inspectorDocumentation;
 		this.startEndArray = startEndArray;
-		this.WasThereAnExtensionRequest = WasThereAnExtensionRequest;
-		this.ExtensionExplanation=ExtensionExplanation;
+		this.WasThereAnExtensionRequest = WasThereAnExtensionRequest; //What for?
+		this.ExtensionExplanation = ExtensionExplanation; //What for?
 	}
 
 	// input methods
 	
 	
 	/** input an extension explanation 
-	 * @param s
+	 * @param s ?
 	 */
-	public void inputExtensionExplanation(String s) {
-		ExtensionExplanation[currentStage.ordinal()]=s;
+	public void setExtensionExplanation(String s) {
+		ExtensionExplanation[currentStage.ordinal()] = s;
 	}
-	/**input all extension explanation 
-	 * @param s
-	 */
-	public void inputAllExtensionExplanation(String[] s) {
-		ExtensionExplanation=s;
-	}
-	
-	//  TODO: add constraints to date methods 
+
+	//TODO: add constraints to date methods
 
 	/**
 	 * adding a start date to the current stage
 	 *
 	 * @param start ?
 	 */
-	public void addStartDate(LocalDate start) {
+	public void setStartDate(LocalDate start) {
 		startEndArray[currentStage.ordinal()][0] = start;
 	}
 
@@ -113,7 +107,7 @@ public class ProcessStage implements Serializable {
 	 *
 	 * @param due ?
 	 */
-	public void addDueDate(LocalDate due) {
+	public void setDueDate(LocalDate due) {
 		startEndArray[currentStage.ordinal()][1] = due;
 	}
 
@@ -121,11 +115,11 @@ public class ProcessStage implements Serializable {
 		return startEndArray[currentStage.ordinal()][1];
 	}
 	/**
-	 * adding a end date to the current satge
+	 * adding a end date to the current stage
 	 *
 	 * @param end ?
 	 */
-	public void addEndDate(LocalDate end) {
+	public void setEndDate(LocalDate end) {
 		startEndArray[currentStage.ordinal()][2] = end;
 	}
 
@@ -185,35 +179,39 @@ public class ProcessStage implements Serializable {
 		}
 	}// END newStageSupervisor()
 
-	public void setCurrentStage(ChargeRequestStages newStage) { // TODO inforce stage order
+	public void setCurrentStage(ChargeRequestStages newStage) { // TODO enforce stage order
 		currentStage = newStage;
 	}
 
-	public void addEstimatorReport(String report) {
+	public void setEstimatorReport(String report) {
 		try {
-			if (StageSupervisor == null)
+			if (StageSupervisor == null) {
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
-			if (!(Permissions.contains(ICMPermissions.estimator)))
+			}
+			if (!(Permissions.contains(ICMPermissions.estimator))) {
 				throw new IllegalArgumentException("StageSupervisor must have Permission - estimator");
+			}
 			EstimatorReport = report;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}// End addEstimatorReport;
 
-	public void addExaminerFailReport(String report) {
+	public void setExaminerFailReport(String report) {
 		try {
-			if (StageSupervisor == null)
+			if (StageSupervisor == null) {
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
-			if (!(Permissions.contains(ICMPermissions.examiner)))
+			}
+			if (!(Permissions.contains(ICMPermissions.examiner))) {
 				throw new IllegalArgumentException("StageSupervisor must have Permission - examiner");
+			}
 			ExaminerFailReport = report;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}// End addExaminerFailReport;
 
-	public void addinspectorDocumentation(String report) {
+	public void setInspectorDocumentation(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
@@ -269,23 +267,29 @@ public class ProcessStage implements Serializable {
 	public subStages getCurrentSubStage() {
 		return currentSubStage;
 	}
+
 	public String toString() {
 		switch (currentStage) {
-		case closure: return "closure";
-		case examination: return "examination";
-		case examinationAndDecision: return "examination And Decision";
-		case execution: return "execution";
-		case meaningEvaluation: return "meaning Evaluation";
-		default : return "Dosn't has a stage";
+			case closure:
+				return "closure";
+			case examination:
+				return "examination";
+			case examinationAndDecision:
+				return "examination and decision";
+			case execution:
+				return "execution";
+			case meaningEvaluation:
+				return "meaning evaluation";
+			default:
+				return "Doesn't has a stage";
 		}
 	}
 
-
 	public String getExtensionExplanation() {
-		return	ExtensionExplanation[currentStage.ordinal()];
-		}
+		return ExtensionExplanation[currentStage.ordinal()];
+	}
 
-		public String[] getAllExtensionExplanation() {
-			return ExtensionExplanation;
-		}
+	public String[] getAllExtensionExplanation() {
+		return ExtensionExplanation;
+	}
 }// END of Stage

@@ -12,8 +12,9 @@ public class User implements Serializable {
 
 	// enums*********************************************
 	public enum ICMPermissions {
-		informationTechnologiesDepartmentManager, inspector, estimator, executionLeader, examiner,
-		changeControlCommitteeChairman,changeControlCommitteeMember
+		informationTechnologiesDepartmentManager,
+		inspector, estimator, executionLeader, examiner,
+		changeControlCommitteeChairman, changeControlCommitteeMember
 	}
 
 	// wil be used to determan who can be allocted ICMPermissions
@@ -44,7 +45,6 @@ public class User implements Serializable {
 	 * @param job         -(enum-Job)
 	 * @param Permissions - (enum-ICMPermissions)if the user is is a student send
 	 *                    null
-	 * @param loggedIn    - represents if the user is logged in
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, Job job,
 				EnumSet<ICMPermissions> Permissions) {
@@ -128,8 +128,6 @@ public class User implements Serializable {
 
 	/**
 	 * changes the log in value to the given value
-	 *
-	 * @param bool ?
 	 */
 
 //output

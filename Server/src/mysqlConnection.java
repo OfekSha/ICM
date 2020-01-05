@@ -46,13 +46,13 @@ public class mysqlConnection {
 					"lastName VARCHAR(45) NULL," + 												//[4]
 					"job VARCHAR(45) NULL," + 													//[6]
 					"email VARCHAR(45) NULL," + 												//[7]
-					"informationTechnologiesDepartmentMangerPermission TINYINT(1) NOT NULL,"+	//[8]
+					"informationTechnologiesDepartmentManagerPermission TINYINT(1) NOT NULL,"+	//[8]
 					"inspectorPermission TINYINT(1) NOT NULL,"+									//[9]
 					"estimatorPermission TINYINT(1) NOT NULL,"+									//[10]
 					"executionLeaderPermission TINYINT(1) NOT NULL,"+							//[11]
 					"examinerPermission TINYINT(1) NOT NULL," + 								//[12]
-					"changeControlCommitteeChairman TINYINT(1) NOT NULL," +						//[13]
-					"changeControlCommitteeMember TINYINT(1) NOT NULL," +						//[14]
+					"changeControlCommitteeChairmanPermission TINYINT(1) NOT NULL," +						//[13]
+					"changeControlCommitteeMemberPermission TINYINT(1) NOT NULL," +						//[14]
 					"PRIMARY KEY (userName));"); // create user table
 			//
 			stmt.execute("CREATE TABLE icm.initiator (" +
@@ -66,7 +66,6 @@ public class mysqlConnection {
 										"'execution'," +
 										"'examination'," +
 										"'closure')," +
-					
 					"StageSupervisor VARCHAR(45) NULL, " +						//3
 					"EstimatorReport VARCHAR(45) NULL, " +						//4
 					"ExaminerFailReport VARCHAR(45) NULL, " +					//5
@@ -91,8 +90,8 @@ public class mysqlConnection {
 					"stage4extension TINYINT(1) NOT NULL, "+						//24
 					"stage5extension TINYINT(1) NOT NULL, "+						//25
 					"currentSubStage ENUM ('supervisorAllocation'," +				//26
-					"'determiningDueTime'," +										
-					"'supervisorAction')," +										
+											"'determiningDueTime'," +
+											"'supervisorAction')," +
 					"stage1ExtensionExplanation TEXT NULL, " +						//27
 					"stage2ExtensionExplanation TEXT NULL, " +						//28
 					"stage3ExtensionExplanation TEXT NULL, " +						//29

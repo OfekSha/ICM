@@ -4,7 +4,6 @@ import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
-import Entity.clientRequestFromServer.requestOptions;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -59,9 +58,9 @@ public class EchoServer extends AbstractServer {
 		Object[] objectArray;
 		Object[] returningObjectArray;
 		// only for login purposes -------------
-		ConnectionToClient tryingToLogInClient =null;
-		User tryingToLogInUser =null;
-		int usersAnswed=0;
+		ConnectionToClient tryingToLogInClient = null;
+		User tryingToLogInUser = null;
+		int usersAnswered = 0;
 		//---------------------------------------
 		boolean iWantResponse = true;
 
@@ -180,13 +179,15 @@ public class EchoServer extends AbstractServer {
 					
 					case LogIN:
 						tryingToLogInUser = queryHandler.selectUser(((String) request.getObject()));
-						if (testAllClientsForUser(tryingToLogInUser)) 
-							sendBackObject=null;
-						else sendBackObject =tryingToLogInUser;
+						if (testAllClientsForUser(tryingToLogInUser)) {
+							//TODO Variable is already assigned to this value
+							sendBackObject = null;
+						}
+						else sendBackObject = tryingToLogInUser;
 						break;
 					case successfulLogInOut:
 						client.setConnectedUser((User) request.getObject());
-						iWantResponse =false;
+						iWantResponse = false;
 						break;
 					
 					default:
@@ -372,7 +373,8 @@ public class EchoServer extends AbstractServer {
 			enterChangeRequestToDB();
 			//testing
 			ArrayList<ChangeRequest> a = queryHandler.getAllChangeRequestWithStatus(ChangeRequestStatus.suspended);
-			//ArrayList<ChangeRequest> b = queryHandler.getAllChangeRequestWithStatusAndStageOnly(ChangeRequestStatus.ongoing);
+			ArrayList<User> b = queryHandler.getAllUsersWithICMPermissions(ICMPermissions.inspector);
+			System.out.println("test changeRequest: " + a + "\ntest Users with Inspector Permission: " + b);
 			System.out.println("New DB ready for use");
 		}
 	}
@@ -387,7 +389,7 @@ public class EchoServer extends AbstractServer {
 	}
 	
 	/** tests all connections if the user trying  to connect is connected 
-	 * @param tryingToConnect
+	 * @param tryingToConnect ?
 	 * @return true if the user is already connected
 	 */
 	protected boolean testAllClientsForUser(User tryingToConnect)

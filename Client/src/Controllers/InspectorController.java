@@ -169,7 +169,7 @@ public class InspectorController {
 			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 		else {
 			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
-			selectedRequest.getProcessStage().addDueDate(null);
+			selectedRequest.getProcessStage().setDueDate(null);
 		}
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 	}
