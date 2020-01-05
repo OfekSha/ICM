@@ -8,7 +8,6 @@ import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 
-import static Entity.ProcessStage.subStages.supervisorAction;
 import static GUI.ExecutionLeaderForm.changeRequest;
 import static GUI.ExecutionLeaderForm.sendUpdateForRequest;
 
@@ -23,9 +22,8 @@ public class DueTimeController extends AbstractPopUp {
         LocalDate dataDue = dpDueTime.getValue();
         if (dataDue != null && dataDue.isAfter(LocalDate.now())) {
             changeRequest.getProcessStage().addDueDate(dataDue);
-            changeRequest.getProcessStage().setCurrentSubStage(supervisorAction);
             sendUpdateForRequest();
-            getCancel(event);
+            getCancel();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Due time is null or incorrect!");

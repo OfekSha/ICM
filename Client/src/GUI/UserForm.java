@@ -144,13 +144,13 @@ public abstract class UserForm implements IcmForm {
 	
 	
 	/** creates an alert and shows it 
-	 * @param type
-	 * @param title
-	 * @param header
-	 * @param Content
+	 * @param type ?
+	 * @param title ?
+	 * @param header ?
+	 * @param Content ?
 	 * 
 	 */
-	protected void alertWindowLauncher(AlertType type,String title, String header, String Content) {
+	protected void alertWindowLauncher(AlertType type, String title, String header, String Content) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
@@ -159,10 +159,10 @@ public abstract class UserForm implements IcmForm {
 	}
 	/** lunches an alert with the option to click OK or Cancel
 	 * @param type - the alert type 
-	 * @param title
-	 * @param header
-	 * @param Content
-	 * @return- true if ok was clicked
+	 * @param title ?
+	 * @param header ?
+	 * @param Content ?
+	 * @return - true if ok was clicked
 	 */
 	protected boolean areYouSureAlert(AlertType type,String title, String header, String Content) {
 
@@ -235,13 +235,14 @@ public abstract class UserForm implements IcmForm {
 				allUsers = (ArrayList<User>) objectArray[0];
 				job = (Job) objectArray[1];
 				break;
-			
+
 /*			case getRequirement:
 				break;
 			case updateUser: break;*/
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
 		}
+
 		System.out.println();
 	}
 	

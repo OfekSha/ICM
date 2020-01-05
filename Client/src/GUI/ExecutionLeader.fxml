@@ -49,9 +49,9 @@
                   <graphic>
                       <ComboBox fx:id="cmbRequests" onAction="#RequestsComboBoxUsed" onMouseEntered="#getRequests" prefWidth="180.0" />
                   </graphic></Label>
-               <Button fx:id="btnDueTime" mnemonicParsing="false" onAction="#openDueTime" prefWidth="180.0" text="Set Due Time" />
-               <Button fx:id="btnApprove" mnemonicParsing="false" onAction="#getExecutionApproved" prefWidth="180.0" text="Approve Execution" />
-               <Button fx:id="btnGetExtension" mnemonicParsing="false" onAction="#requestExtension" prefWidth="180.0" text="Ask Time Extension" />
+               <Button fx:id="btnDueTime" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#openDueTime" prefWidth="180.0" text="Set Due Time" />
+               <Button fx:id="btnApprove" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#openExecutionApproval" prefWidth="180.0" text="Approve Execution" />
+               <Button fx:id="btnGetExtension" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#openRequestExtension" prefWidth="180.0" text="Ask Time Extension" />
                <Label fx:id="lbStage" alignment="CENTER" contentDisplay="BOTTOM" text="Current stage:" visible="false">
                   <graphic>
                      <Text fx:id="txtStage" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" textOrigin="CENTER" />

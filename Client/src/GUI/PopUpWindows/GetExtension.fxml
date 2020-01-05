@@ -26,6 +26,6 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnSendRequest" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SendExtensionRequest" text="Send extension request" />
+            <Button fx:id="btnSendRequest" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#sendExtensionRequest" text="Send extension request" />
       </HBox>
 </VBox>
