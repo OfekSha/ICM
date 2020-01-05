@@ -82,6 +82,8 @@ public abstract class UserForm implements IcmForm {
 	public void ExitBtn() {
 		// if there is no server there will be no client
 		if (user != null ) {
+			//TODO: replace alert with -areYouSureAlert()
+			
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Exit");
@@ -154,6 +156,29 @@ public abstract class UserForm implements IcmForm {
 		alert.setHeaderText(header);
 		alert.setContentText(Content);
 		alert.showAndWait();	
+	}
+	/** lunches an alert with the option to click OK or Cancel
+	 * @param type - the alert type 
+	 * @param title
+	 * @param header
+	 * @param Content
+	 * @return- true if ok was clicked
+	 */
+	protected boolean areYouSureAlert(AlertType type,String title, String header, String Content) {
+
+		Alert alert = new Alert(type);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(Content);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) { // the user pressed ok
+			alert.close();
+			return true;
+		} else {
+			alert.close();
+		return false;
+		}
+
 	}
 
 	public void getRequests() {

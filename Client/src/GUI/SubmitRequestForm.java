@@ -74,28 +74,35 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		alertWindowLauncher(AlertType.ERROR,"ERROR Dialog","Error:empty fields","The following fields must not be empty:"+missing);
 		 }
 	}
- // TODO move are  you sure to difreent mehod
+ // TODO move are  you sure to different method
 	@Override
 	public void LogOutButton(ActionEvent event) throws Exception {
 		if (!(taRequestDetails.getText().equals("")) || !(taRequestReason.getText().equals(""))
 				|| !((getSys()).equals(""))) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("log out");
-			alert.setHeaderText("You are sure you want to stope the request submition?");
-			alert.setContentText("the detials you enterd will not be saved");
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.isPresent() && result.get() == ButtonType.OK) { // the user pressed ok
-				setUserLogOff();
-				user = null;
-				// ClientLauncher.client = null; // NextWindowLauncher - needs clinte
-				// lunching main menu
-				NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
-			} else
-				alert.close();
+			if (areYouSureAlert(AlertType.CONFIRMATION, "Living the submit form",
+					"Are you ok with  stoping the request submition?", "The detials you enterd will not be saved")) {
+				logingOut(event);
+			}
+
+		} else {
+			logingOut(event);
 		}
 	}
+	
+	@Override
+	public void MainScene(ActionEvent event) throws Exception {
 
+		if (!(taRequestDetails.getText().equals("")) || !(taRequestReason.getText().equals(""))
+				|| !((getSys()).equals(""))) {
+			if (areYouSureAlert(AlertType.CONFIRMATION, "Living the submit form",
+					"Are you ok with  stoping the request submition?", "The detials you enterd will not be saved")) {
+				NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+			}
 
+		} else {
+			NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+		}
+	}
 
 /** getting the system form its combobox
  * @return
@@ -105,6 +112,12 @@ private String getSys() {
 	Object temp = cmbSystems.getSelectionModel().getSelectedItem();
 	if (temp != null) sys = temp.toString();
 	return sys;
+}
+
+private  void logingOut (ActionEvent event) throws Exception  {
+	setUserLogOff();
+	user = null;
+	NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 }
 	
 }
