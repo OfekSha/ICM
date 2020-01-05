@@ -36,13 +36,13 @@ public class QueryHandler {
                     "lastName," +
                     "job," +
                     "email," +
-                    "informationTechnologiesDepartmentManagerPermission," +
+                    "informationTechnologiesDepartmentMangerPermission," +
                     "inspectorPermission," +
                     "estimatorPermission," +
                     "executionLeaderPermission," +
                     "examinerPermission," +
-                    "changeControlCommitteeChairmanPermission," +
-                    "changeControlCommitteeMemberPermission)" +
+                    "changeControlCommitteeChairman," +
+                    "changeControlCommitteeMember)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             setAllUserFieldsStatement(user, stmt);
         } catch (SQLException e) {
@@ -63,14 +63,39 @@ public class QueryHandler {
         stmt.setNString(4, user.getLastName());
         stmt.setNString(5, user.getJob().name());
         stmt.setNString(6, user.getEmail());
-
-        for (int i = 7; i < 14; i++) {
-            stmt.setInt(i, 0);
-        }
+        stmt.setInt(7, 0);
+        stmt.setInt(8, 0);
+        stmt.setInt(9, 0);
+        stmt.setInt(10, 0);
+        stmt.setInt(11, 0);
+        stmt.setInt(12, 0);
+        stmt.setInt(13, 0);
         EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
         if (Permissions != null) {
             for (ICMPermissions e : Permissions) {
-                stmt.setInt(e.ordinal() + 7, 1);
+                switch (e) {
+                    case informationTechnologiesDepartmentManager:
+                        stmt.setInt(7, 1);
+                        break;
+                    case inspector:
+                        stmt.setInt(8, 1);
+                        break;
+                    case estimator:
+                        stmt.setInt(9, 1);
+                        break;
+                    case executionLeader:
+                        stmt.setInt(10, 1);
+                        break;
+                    case examiner:
+                        stmt.setInt(11, 1);
+                        break;
+                    case changeControlCommitteeChairman:
+                        stmt.setInt(12, 1);
+                        break;
+                    case changeControlCommitteeMember:
+                        stmt.setInt(13, 1);
+                        break;
+                }
             }
         }
         stmt.execute(); // insert new row to requirement table
@@ -225,7 +250,8 @@ public class QueryHandler {
         stmt.setString(29, s[2]);
         stmt.setString(30, s[3]);
         stmt.setString(31, s[4]);
-
+        
+        
         stmt.execute();
         stmt.close();
     }//END setAllProcessStageStatement()
@@ -237,38 +263,38 @@ public class QueryHandler {
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
                     "UPDATE icm.stage "
-                    + "SET RequestID = ?, "                          //1
-                    + "currentStage = ?, "                           //2
-                    + "StageSupervisor = ?, "                        //3
-                    + "EstimatorReport = ?, "                        //4
-                    + "ExaminerFailReport = ?, "                     //5
-                    + "inspectorDocumentation = ?, "                 //6
-                    + "meaningEvaluationStartDate = ?, "             //7
-                    + "meaningEvaluationDueDate = ?, "               //8
-                    + "meaningEvaluationEndDate = ?, "               //9
-                    + "examinationAndDecisionStartDate = ?, "        //10
-                    + "stageColExaminationAndDecisionDueDate = ?, "  //11
-                    + "examinationAndDecisionEndDate = ?, "          //12
-                    + "executionStartDate = ?, "                     //13
-                    + "executionDueDate = ?, "                       //14
-                    + "executionEndDate = ?, "                       //15
-                    + "examinationStartDate = ?, "                   //16
-                    + "examinationDueDate = ?, "                     //17
-                    + "examinationEndDate = ?, "                     //18
-                    + "closureStarDate = ?, "                        //19
-                    + "closureEndDate = ?, "                         //20
-                    + "stage1extension = ?, "                        //21
-                    + "stage2extension = ?, "                        //22
-                    + "stage3extension = ?, "                        //23
-                    + "stage4extension = ?, "                        //24
-                    + "stage5extension = ?, "                        //25
-                    + "currentSubStage = ?, "                       //26+
-                    + "stage1ExtensionExplanation = ?, "             //27
-                    + "stage2ExtensionExplanation = ?, "             //28
-                    + "stage3ExtensionExplanation = ?, "             //29
-                    + "stage4ExtensionExplanation = ?, "             //30
-                    + "stage5ExtensionExplanation = ?"              //31
-                    + "WHERE (RequestID = ?) and (currentStage = ?);"); //32 //33
+                    + "SET RequestID = ?,"                          //1
+                    + "currentStage = ?,"                           //2
+                    + "StageSupervisor = ?,"                        //3
+                    + "EstimatorReport = ?,"                        //4
+                    + "ExaminerFailReport = ?,"                     //5
+                    + "inspectorDocumentation = ?,"                      //6
+                    + "meaningEvaluationStartDate = ?,"             //7
+                    + "meaningEvaluationDueDate = ?,"               //8
+                    + "meaningEvaluationEndDate = ?,"               //9
+                    + "examinationAndDecisionStartDate = ?,"        //10
+                    + "stageColExaminationAndDecisionDueDate = ?,"  //11
+                    + "examinationAndDecisionEndDate = ?,"          //12
+                    + "executionStartDate = ?,"                     //13
+                    + "executionDueDate = ?,"                       //14
+                    + "executionEndDate = ?,"                       //15
+                    + "examinationStartDate = ?,"                   //16
+                    + "examinationDueDate = ?,"                     //17
+                    + "examinationEndDate = ?,"                     //18
+                    + "closureStarDate = ?,"                        //19
+                    + "closureEndDate = ?,"                         //20
+                    + "stage1extension = ?,"                        //21
+                    + "stage2extension = ?,"                        //22
+                    + "stage3extension = ?,"                        //23
+                    + "stage4extension = ?,"                        //24
+                    + "stage5extension = ?,"                        //25
+                    + "currentSubStage = ?"                         //26
+                     + "stage1ExtensionExplanation = ?,"            //27            
+                    + "stage2ExtensionExplanation = ?,"              //28          
+                    + "stage3ExtensionExplanation = ?,"                  //29      
+                    + "stage4ExtensionExplanation = ?,"                      //30  
+                    + "stage5ExtensionExplanation = ?"                       //31 
+                    + "WHERE (RequestID = ?) and (currentStage = ?);"); //32 33
             stmt.setNString(32, changeRequest.getRequestID());
             stmt.setNString(33, processStage.getCurrentStage().name());
             setAllProcessStageStatement(changeRequest, processStage, stmt);
@@ -365,13 +391,13 @@ public class QueryHandler {
                             + "lastName = ?,"
                             + "job = ?,"
                             + "email = ?,"
-                            + "informationTechnologiesDepartmentManagerPermission = ?,"
+                            + "informationTechnologiesDepartmentMangerPermission = ?,"
                             + "inspectorPermission = ?,"
                             + "estimatorPermission = ?,"
                             + "executionLeaderPermission = ?,"
                             + "examinerPermission = ?,"
-                            + "changeControlCommitteeChairmanPermission = ?,"
-                            + "changeControlCommitteeMemberPermission = ? "
+                            + "changeControlCommitteeChairman = ?,"
+                            + "changeControlCommitteeMember = ? "
                             + "WHERE userName = ?;");
             updStatus.setNString(14, user.getUserName());
             setAllUserFieldsStatement(user, updStatus);
@@ -509,6 +535,7 @@ public class QueryHandler {
              stmt.setNString(1, job.name());
              ResultSet re = stmt.executeQuery();
             while (re.next()) {
+
                  toReturn.add(getUserQuery(re));
              }
              stmt.close();
@@ -526,16 +553,32 @@ public class QueryHandler {
     public ArrayList<User> getAllUsersWithICMPermissions(ICMPermissions prem) {
         ArrayList<User> toReturn = new ArrayList<>();
         Statement stmt;
-
-        ResultSet re;
-
+        ResultSet re = null;
         try {
             stmt = mysqlConn.getConn().createStatement();
-            String permission = prem.name() + "Permission";
 
-            //TODO check it please, must be better than switch
-            re = stmt.executeQuery("SELECT * FROM icm.user WHERE " + permission + " = 1");
-
+            switch (prem) {
+                case informationTechnologiesDepartmentManager:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where informationTechnologiesDepartmentMangerPermission = 1;");
+                    break;
+                case inspector:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where inspectorPermission = 1;");
+                    break;
+                case estimator:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where estimatorPermission = 1;");
+                    break;
+                case executionLeader:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where executionLeaderPermission = 1;");
+                    break;
+                case examiner:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where examinerPermission = 1;");
+                    break;
+                case changeControlCommitteeChairman:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeChairman = 1;");
+                    break;
+                case changeControlCommitteeMember:
+                    re = stmt.executeQuery("SELECT * FROM icm.user where changeControlCommitteeMember = 1;");
+            }
             while (re.next()) {
                 toReturn.add(getUserQuery(re));
             }
@@ -602,7 +645,7 @@ public class QueryHandler {
                     "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
             		"from (SELECT icm.stage.RequestID " +
             		"FROM icm.stage " +
-            		"WHERE currentStage = ? AND currentSubStage = ?) as T " +
+            		"WHERE currentStage = ? And currentSubStage = ?) as T " +
             		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
             		"ON T.RequestID = K.RequestID");
             stmt.setNString(1, currentStage.name());
@@ -635,11 +678,11 @@ public class QueryHandler {
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
                     "select K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
-            		"FROM (SELECT icm.stage.RequestID " +
+            		"from (SELECT icm.stage.RequestID " +
             		"FROM icm.stage " +
-            		"WHERE currentStage = ? And currentSubStage = ? AND StageSupervisor = ?) AS T " +
-            		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) AS K " +
-            		"ON T.RequestID = K.RequestID");
+            		"WHERE currentStage = ? And currentSubStage = ? AND StageSupervisor = ?) as T " +
+            		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
+            		"on T.RequestID = K.RequestID");
             stmt.setNString(1,currentStage.name());
             stmt.setNString(2,currentSubStage.name());
             stmt.setNString(3,username);
@@ -672,8 +715,8 @@ public class QueryHandler {
             		"WHERE currentSubStage = ?) as T " +
             		"INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
             		"on T.RequestID = K.RequestID");
-            stmt.setNString(1, currentSubStage.name());
-            stmt.setNString(2, stat.name());
+            stmt.setNString(1,currentSubStage.name());
+            stmt.setNString(2,stat.name());
             ResultSet re = stmt.executeQuery();
            while (re.next()) {
                 toReturn.add(getChangeRequestsFromRes(re));
@@ -695,11 +738,11 @@ public class QueryHandler {
         ArrayList<ChangeRequest> toReturn = new ArrayList<>();
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
-                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
+                    "SELECT K.RequestID, startDate,`system`, problemDescription, changeReason, comment, status " +
                     "FROM (SELECT icm.stage.RequestID " +
                     "FROM icm.stage " +
-                    "WHERE currentStage = ?) AS T " +
-                    "INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) AS K " +
+                    "WHERE currentStage = ?) as T " +
+                    "INNER JOIN (SELECT * FROM icm.changerequest WHERE status = ?) as K " +
                     "ON T.RequestID = K.RequestID");
             stmt.setNString(1, currentStage.name());
             stmt.setNString(2, stat.name());

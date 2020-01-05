@@ -59,7 +59,9 @@ public class ChangeRequest implements Serializable {
         stage.setRequest(this);
     }
     // output
-    public String getRequestID() { return RequestID; }
+    public String getRequestID(){
+        return RequestID ;
+    }
 
     public Initiator getInitiator() {
         return initiator;

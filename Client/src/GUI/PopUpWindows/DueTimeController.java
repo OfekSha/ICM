@@ -22,7 +22,7 @@ public class DueTimeController extends AbstractPopUp {
     private void getDone(ActionEvent event) {
         LocalDate dataDue = dpDueTime.getValue();
         if (dataDue != null && dataDue.isAfter(LocalDate.now())) {
-            changeRequest.getProcessStage().setDueDate(dataDue);
+            changeRequest.getProcessStage().addDueDate(dataDue);
             changeRequest.getProcessStage().setCurrentSubStage(supervisorAction);
             sendUpdateForRequest();
             getCancel(event);
