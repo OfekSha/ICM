@@ -100,7 +100,7 @@ public abstract class UserForm implements IcmForm {
 	/**updating server user is logged out
 	 * 
 	 */
-	private void setUserLogOff() {
+	protected void setUserLogOff() {
 		Object msg = new clientRequestFromServer(requestOptions.successfulLogInOut, null);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 	}

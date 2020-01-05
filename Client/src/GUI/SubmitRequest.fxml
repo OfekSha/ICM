@@ -57,6 +57,7 @@
                               <ComboBox fx:id="cmbSystems" prefWidth="150.0" />
                         </graphic>
                         </Label>
+                  <Button fx:id="btnAddFile" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Add a file" />
                </VBox>
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
@@ -65,7 +66,7 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taRequestDetails" prefHeight="100.0" wrapText="true">
+                        <TextArea fx:id="taRequestDetails" prefHeight="150.0" prefWidth="480.0" wrapText="true">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -77,7 +78,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taRequestReason" prefHeight="100.0" wrapText="true" />
+                        <TextArea fx:id="taRequestReason" prefHeight="150.0" prefWidth="480.0" wrapText="true" />
                   </graphic>
                   </Label>
                   <Label alignment="CENTER" contentDisplay="BOTTOM" text="Your comment (optional)">
