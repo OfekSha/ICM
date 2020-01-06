@@ -788,6 +788,7 @@ public class QueryHandler {
             toPut.setStatus(statusEnum);
             toPut.setRequestID(RequestID);
             toPut.setStage(stage);
+            toPut.updateStage();
             toPut.updateInitiatorRequest();
             //toPut.updateStage();
             return toPut;
