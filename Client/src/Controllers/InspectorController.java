@@ -26,7 +26,7 @@ public class InspectorController {
 	 * 
 	 * This class make changeRequest class compatible with table view component.
 	 * 
-	 * @author ooffe
+	 * @author Ofek
 	 */
 	public static class requirmentForTable {
 		private SimpleStringProperty message;
