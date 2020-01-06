@@ -72,10 +72,8 @@ public class EchoServer extends AbstractServer {
 					queryHandler.updateAllUserFields((User) request.getObject());
 					break;
 
-				case updateProcessStage: // change stage
-					ChangeRequest cR = (ChangeRequest) request.getObject();
-					ProcessStage pS = cR.getProcessStage();
-					queryHandler.updateAllProcessStageFields(cR, pS);
+				case updateProcessStage: // change stage		 
+					queryHandler.updateAllProcessStageFields((ProcessStage) request.getObject());
 					break;
 
 				case updateChangeRequest:
@@ -297,8 +295,11 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
-
+		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
+		// updating due date 
+		changeRequest.getProcessStage().addDueDate(LocalDate.now());
+		queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
+		startEndArray = new LocalDate[5][3];
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
@@ -371,6 +372,7 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
+			
 			ArrayList<ChangeRequest> a = queryHandler.getAllChangeRequestWithStatus(ChangeRequestStatus.suspended);
 			//ArrayList<ChangeRequest> b = queryHandler.getAllChangeRequestWithStatusAndStageOnly(ChangeRequestStatus.ongoing);
 			System.out.println("New DB ready for use");

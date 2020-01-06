@@ -259,45 +259,47 @@ public class QueryHandler {
     /** Updateds all existing ProcessStage fields
      * @param processStage ?
     */
-    public void updateAllProcessStageFields(ChangeRequest changeRequest, ProcessStage processStage) {
+    public void updateAllProcessStageFields( ProcessStage processStage) {
         try {
             PreparedStatement stmt = mysqlConn.getConn().prepareStatement(
-                    "UPDATE icm.stage "
-                    + "SET RequestID = ?,"                          //1
-                    + "currentStage = ?,"                           //2
-                    + "StageSupervisor = ?,"                        //3
-                    + "EstimatorReport = ?,"                        //4
-                    + "ExaminerFailReport = ?,"                     //5
-                    + "inspectorDocumentation = ?,"                      //6
-                    + "meaningEvaluationStartDate = ?,"             //7
-                    + "meaningEvaluationDueDate = ?,"               //8
-                    + "meaningEvaluationEndDate = ?,"               //9
-                    + "examinationAndDecisionStartDate = ?,"        //10
-                    + "stageColExaminationAndDecisionDueDate = ?,"  //11
-                    + "examinationAndDecisionEndDate = ?,"          //12
-                    + "executionStartDate = ?,"                     //13
-                    + "executionDueDate = ?,"                       //14
-                    + "executionEndDate = ?,"                       //15
-                    + "examinationStartDate = ?,"                   //16
-                    + "examinationDueDate = ?,"                     //17
-                    + "examinationEndDate = ?,"                     //18
-                    + "closureStarDate = ?,"                        //19
-                    + "closureEndDate = ?,"                         //20
-                    + "stage1extension = ?,"                        //21
-                    + "stage2extension = ?,"                        //22
-                    + "stage3extension = ?,"                        //23
-                    + "stage4extension = ?,"                        //24
-                    + "stage5extension = ?,"                        //25
-                    + "currentSubStage = ?"                         //26
-                     + "stage1ExtensionExplanation = ?,"            //27            
-                    + "stage2ExtensionExplanation = ?,"              //28          
-                    + "stage3ExtensionExplanation = ?,"                  //29      
-                    + "stage4ExtensionExplanation = ?,"                      //30  
-                    + "stage5ExtensionExplanation = ?"                       //31 
-                    + "WHERE (RequestID = ?) and (currentStage = ?);"); //32 33
-            stmt.setNString(32, changeRequest.getRequestID());
+                    "UPDATE `icm`.`stage`\n" + 
+                    "SET\n" + 
+                    "`RequestID` = ?,\n" + 
+                    "`currentStage` = ?,\n" + 
+                    "`StageSupervisor` = ?,\n" + 
+                    "`EstimatorReport` = ?,\n" + 
+                    "`ExaminerFailReport` = ?,\n" + 
+                    "`inspectorDocumentation` = ?,\n" + 
+                    "`meaningEvaluationStartDate` = ?,\n" + 
+                    "`meaningEvaluationDueDate` = ?,\n" + 
+                    "`meaningEvaluationEndDate` = ?,\n" + 
+                    "`examinationAndDecisionStartDate` = ?,\n" + 
+                    "`stageColExaminationAndDecisionDueDate` = ?,\n" + 
+                    "`examinationAndDecisionEndDate` = ?,\n" + 
+                    "`executionStartDate` = ?,\n" + 
+                    "`executionDueDate` = ?,\n" + 
+                    "`executionEndDate` = ?,\n" + 
+                    "`examinationStartDate` = ?,\n" + 
+                    "`examinationDueDate` = ?,\n" + 
+                    "`examinationEndDate` = ?,\n" + 
+                    "`closureStarDate` = ?,\n" + 
+                    "`closureEndDate` = ?,\n" + 
+                    "`stage1extension` = ?,\n" + 
+                    "`stage2extension` = ?,\n" + 
+                    "`stage3extension` = ?,\n" + 
+                    "`stage4extension` = ?,\n" + 
+                    "`stage5extension` = ?,\n" + 
+                    "`currentSubStage` = ?,\n" + 
+                    "`stage1ExtensionExplanation` = ?,\n" + 
+                    "`stage2ExtensionExplanation` = ?,\n" + 
+                    "`stage3ExtensionExplanation` = ?,\n" + 
+                    "`stage4ExtensionExplanation` = ?,\n" + 
+                    "`stage5ExtensionExplanation` = ?\n" + 
+                    "WHERE `RequestID` = ? AND `currentStage` = ?;\n" + 
+                    ""); //32 33
+            stmt.setNString(32, processStage.getRequest().getRequestID());
             stmt.setNString(33, processStage.getCurrentStage().name());
-            setAllProcessStageStatement(changeRequest, processStage, stmt);
+            setAllProcessStageStatement(processStage.getRequest(), processStage, stmt);
         } catch (SQLException e) {
             e.printStackTrace();
         }// END updateAllProcessStageStatement
@@ -362,7 +364,7 @@ public class QueryHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    	updateAllProcessStageFields(changeRequest, changeRequest.getProcessStage());
+    	updateAllProcessStageFields(changeRequest.getProcessStage());
     	updateAllInitiatorFields(changeRequest.getInitiator());
     }// END updateChangeRequest()
 
