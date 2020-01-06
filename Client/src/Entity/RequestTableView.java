@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * 
@@ -124,7 +125,7 @@ public class RequestTableView {
 		private SimpleStringProperty whyChange;
 		private SimpleStringProperty comment;
 
-		private SimpleObjectProperty<Document> doc;
+		private SimpleObjectProperty<ArrayList<Document>> doc;
 
 		public String getMessage() {
 			return message.get();
@@ -171,7 +172,7 @@ public class RequestTableView {
 			return comment.get();
 		}
 
-		public Document getDoc() {
+		public ArrayList<Document> getDoc() {
 			return doc.get();
 		}
 
