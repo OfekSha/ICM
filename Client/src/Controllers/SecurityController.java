@@ -7,9 +7,6 @@ import GUI.LogInForm;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmClient;
 import WindowApp.IcmForm;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
 
@@ -29,22 +26,18 @@ public class SecurityController {
 
 	/** Handles the getUser request 
 	 * - the method is activated by getFromServer server there for it should have all details 
-	 * @param request
-	 * @return
+	 * @param request ?
+	 * @return ?
 	 */
 	public boolean serveHandler(clientRequestFromServer request) {
 		user = (User) request.getObject();
-		log.SetUser(user);
-		if (testPassword(user)) {
-		return true;
-		} else {
-			return false;
-		}
+		log.setUser(user);
+		return testPassword(user);
 	}
 
-	/** saves the user input and askes the server for further details
-	 * @param username
-	 * @param password
+	/** saves the user input and ask the server for further details
+	 * @param username ?
+	 * @param password ?
 	 */
 	public void input(String username, String password) {
 		Object msg = new clientRequestFromServer(requestOptions.LogIN, username);
@@ -54,8 +47,8 @@ public class SecurityController {
 	}
 
 	/** tests if the use given password matches the  password in DB
-	 * @param user
-	 * @return
+	 * @param user ?
+	 * @return ?
 	 */
 	public boolean testPassword(User user) {
 		if (!(user == null)) {
@@ -65,9 +58,9 @@ public class SecurityController {
 	}// End of testPassword()
  
 	/** connects to the server with given ip
-	 * @param host
-	 * @param form
-	 * @return
+	 * @param host ?
+	 * @param form ?
+	 * @return ?
 	 */
 	public boolean connectToServer(String host, IcmForm form) {
 		if (host == null)

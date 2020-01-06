@@ -85,13 +85,13 @@ public class ProcessStage implements Serializable {
 	
 	
 	/** input an extension explanation 
-	 * @param s
+	 * @param s ?
 	 */
 	public void inputExtensionExplanation(String s) {
 		ExtensionExplanation[currentStage.ordinal()]=s;
 	}
 	/**input all extension explanation 
-	 * @param s
+	 * @param s ?
 	 */
 	public void inputAllExtensionExplanation(String[] s) {
 		ExtensionExplanation=s;
@@ -144,15 +144,6 @@ public class ProcessStage implements Serializable {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 2;
 	}
 
-	/**
-	 * change the sub stage you are in
-	 *
-//	 * @param newSubStage ?
-	 */
-	/*public void setCurrentSubStage(subStages newSubStage) {
-		currentSubStage = newSubStage;
-	}
-*/
 	public void newStageSupervisor(User supervisor) {
 		EnumSet<ICMPermissions> supervisorPermissions = supervisor.getICMPermissions();
 		ICMPermissions requiredPermission = null;
