@@ -4,6 +4,10 @@ import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -780,7 +784,7 @@ public class QueryHandler {
 
             ChangeRequestStatus statusEnum = ChangeRequest.ChangeRequestStatus.valueOf(status);
 
-            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, doc);
+            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, null);
             toPut.setStatus(statusEnum);
             toPut.setRequestID(RequestID);
             toPut.setStage(stage);
@@ -884,6 +888,55 @@ public class QueryHandler {
         }
         return returnInitiator;
     }
+    public  void InsertFile(  ArrayList<Document> uploadedDocs) {
+    	int count=0;
+    	try {
+    	Statement numTest = mysqlConn.getConn().createStatement();
+        ResultSet re = numTest.executeQuery("SELECT FileID FROM icm.docs");// get all numbers submissions.
+        while (re.next()) { // generate number for submission.
+            count++;
+        }
+    	}catch (SQLException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    		}
+    	count++;
+    	for(Document each : uploadedDocs) {
+			 try {
+		            
+			PreparedStatement stmt = mysqlConn.getConn()
+					.prepareStatement("INSERT INTO `icm`.`docs`\n" + 
+							"(`FileID`,\n" + 
+							"`RequestID`,\n" + 
+							"`uploadedFile`)\n" + 
+							"VALUES\n" + 
+							"(?,\n" + 
+							"?,\n" + 
+							"?);\n" + 
+							"");
+			setFile(stmt,each,Integer.toString(count));
+		} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+    	}
+		
+    }//END of updateFile
+    
+	public void setFile(PreparedStatement stmt, Document doc, String ID) throws SQLException {
+		InputStream is = new ByteArrayInputStream(doc.getByteArr());
+		stmt.setNString(1,ID );
+		stmt.setNString(2, doc.getChangeRequestID());
+		stmt.setBlob(3, is);
+		stmt.executeUpdate();
+	}// end of setFile()
+    
+    
+    
+    
+    
+    
+    
 
     // all old prototype methods **********************************************************************************
 

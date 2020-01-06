@@ -108,6 +108,11 @@ public class mysqlConnection {
 					"comment VARCHAR(45)," +
 					"status VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID));");
+			stmt.execute("CREATE TABLE icm.docs (\n" +
+					"FileID VARCHAR(45) NOT NULL ,\n"+
+					"RequestID VARCHAR(45) NOT NULL," +
+					"uploadedFile MEDIUMBLOB,\n" +		
+					"PRIMARY KEY (FileID)) ;\n");
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

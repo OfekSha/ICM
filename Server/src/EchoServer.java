@@ -87,6 +87,8 @@ public class EchoServer extends AbstractServer {
 					change.updateStage();
 					queryHandler.insertInitiator(change.getInitiator());
 					queryHandler.InsertProcessStage(change, change.getProcessStage());
+					change.updateDocs();
+					queryHandler.InsertFile(change.getDoc());
 					break;
 			}
 			if (request.getRequest().ordinal() < 4) iWantResponse = false;

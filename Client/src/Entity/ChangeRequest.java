@@ -2,6 +2,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * @author Yonathan in proggress
@@ -18,20 +19,20 @@ public class ChangeRequest implements Serializable {
     private String problemDescription;
     private String changeReason;
     private String comment;
-    private Document doc;
+    private ArrayList<Document> uploadedDocs;
     private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
     private ProcessStage stage = new ProcessStage(this);
 
     public ChangeRequest(Initiator initiator, LocalDate startDate,
                          String system, String problemDescription,
-                         String changeReason, String comment, Document doc) {
+                         String changeReason, String comment, ArrayList<Document>  uploadedDocs) {
         this.comment = comment;
         this.initiator = initiator;
         this.startDate = startDate;
         this.system = system;
         this.problemDescription = problemDescription;
         this.changeReason = changeReason;
-        this.doc = doc;
+        this.uploadedDocs = uploadedDocs;
     }
 
     // input
@@ -44,6 +45,9 @@ public class ChangeRequest implements Serializable {
     
     public void setStage(ProcessStage stage) {
     	this.stage = stage;
+    }
+    public void setDocs(ArrayList<Document>  uploadedDocs) {
+    	   this.uploadedDocs = uploadedDocs;	
     }
 
     //update
@@ -58,6 +62,13 @@ public class ChangeRequest implements Serializable {
     public void updateStage() {
         stage.setRequest(this);
     }
+    
+    public void updateDocs() {
+    	 for(Document e: uploadedDocs) {
+    		 e.setChangeRequest(this);
+    	 }
+    }
+    
     // output
     public String getRequestID(){
         return RequestID ;
@@ -91,8 +102,8 @@ public class ChangeRequest implements Serializable {
         return status;
     }
 
-    public Document getDoc() {
-        return doc;
+    public ArrayList<Document>  getDoc() {
+        return uploadedDocs;
     }
 
     public  ProcessStage getProcessStage() {

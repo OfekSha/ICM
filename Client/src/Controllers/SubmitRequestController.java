@@ -1,8 +1,15 @@
 package Controllers;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import Entity.ChangeRequest;
+import Entity.Document;
 import Entity.Initiator;
 import Entity.User;
 import Entity.clientRequestFromServer;
@@ -14,7 +21,10 @@ import javafx.scene.control.Alert.AlertType;
 
 public class SubmitRequestController {
 	
-
+	/** all of the users uploaded docs for  a request
+	 * 
+	 */
+	ArrayList<Document> uploadedDocs =new ArrayList<>();
 	
 	/** sends the change request to the server <p>
 	 * 
@@ -25,20 +35,26 @@ public class SubmitRequestController {
 	 * @param user
 	 * @return - true if the request was sent
 	 */
-	public  boolean getSubmition(String requestDetails, String requestreason,String requestComment,String sys ,User user) {	
+	public boolean getSubmition(String requestDetails, String requestreason, String requestComment, String sys,
+			User user) {
 		if (requestDetails.equals("") || requestreason.equals("") || sys.equals("")) {
 			return false;
 		} else {
 			Initiator init = new Initiator(user, null);
 			LocalDate start = LocalDate.now();
-			//TODO: add doc
-			ChangeRequest change = new ChangeRequest(init, start, sys, requestDetails, requestreason, requestComment, null);
-			Object msg = new clientRequestFromServer(requestOptions.addRequest, change);
+			// TODO: add doc
+			ChangeRequest change = new ChangeRequest(init, start, sys, requestDetails, requestreason, requestComment,
+					uploadedDocs);
+			Object msg = new clientRequestFromServer(requestOptions.addRequest, change);//
 			ClientLauncher.client.handleMessageFromClientUI(msg);
+			// cleaning 
+			uploadedDocs =new ArrayList<>();
 			return true;
 		}
 		
 	}// END of getSubmition()
+	
+
 
 	/** appends the empty Strings to one  
 	 * @param requestDetails
@@ -52,6 +68,29 @@ public class SubmitRequestController {
 		if(requestreasonString.equals("")) appended=appended+"\nChange request reason ";
 		if(sys.equals("")) appended=appended+"\nInformation System ";
 		return appended;
+	}
+	
+	/**
+	 * @param newFile
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean AddThefile(File newFile) throws IOException {
+		
+		Document doc = new Document(newFile.getName());	
+	      byte [] mybytearray  = new byte [(int)newFile.length()];
+	      if( 16777215>mybytearray.length) {
+	      FileInputStream fis = new FileInputStream(newFile);
+	      BufferedInputStream bis = new BufferedInputStream(fis);			    
+	      doc.initArray(mybytearray.length);
+	      doc.setSize(mybytearray.length); 
+	      bis.read(doc.getMybytearray(),0,mybytearray.length);
+	      uploadedDocs.add(doc);
+	      return true;
+	      }
+	      return false;
+	  
+		
 	}
 	
 }

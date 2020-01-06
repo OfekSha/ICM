@@ -1,6 +1,7 @@
 package GUI;
 
 import Entity.ChangeRequest;
+import Entity.Document;
 import Entity.Initiator;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
@@ -17,12 +18,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 import Controllers.SubmitRequestController;
 
@@ -40,6 +48,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	private Button btnAddFile;
 	@FXML
 	private ComboBox<String> cmbSystems;
+
 
 	
 	 private SubmitRequestController submitRequestController;
@@ -74,7 +83,21 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		alertWindowLauncher(AlertType.ERROR,"ERROR Dialog","Error:empty fields","The following fields must not be empty:"+missing);
 		 }
 	}
- // TODO move are  you sure to different method
+	
+	/** Attaches a file to request<p>
+	 * uses the FileChooser to get the file
+	 * @throws IOException
+	 */
+	public void AddFile() throws IOException {
+
+		FileChooser fileChooser = new FileChooser();
+		if (!submitRequestController.AddThefile(fileChooser.showOpenDialog(null)))
+			alertWindowLauncher(AlertType.ERROR, "ERROR Dialog", "Error:file to large",
+					"file must be smaller then 16mb");
+
+	}
+	
+	
 	@Override
 	public void LogOutButton(ActionEvent event) throws Exception {
 		if (!(taRequestDetails.getText().equals("")) || !(taRequestReason.getText().equals(""))
