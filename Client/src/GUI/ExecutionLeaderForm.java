@@ -1,6 +1,8 @@
 package GUI;
 
 import Entity.ChangeRequest;
+import Entity.ProcessStage;
+import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static Entity.ProcessStage.ChargeRequestStages.execution;
 import static Entity.ProcessStage.subStages.determiningDueTime;
 import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
 
@@ -33,9 +36,11 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public Label lbStage;
 
 	private String selected;
-	public static ChangeRequest changeRequest;
-	private LocalDate dueTime;
+	private ChangeRequest changeRequest;
+	public static ProcessStage processStage;
+	private LocalDate currentDueTime;
 	private subStages currentSubStage;
+	private ChargeRequestStages currentRequestStage;
 
 
 	@Override
@@ -53,23 +58,44 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	}
 
 	public void RequestsComboBoxUsed() {
+		currentSubStage = null;
+		currentDueTime = null;
+		currentRequestStage = null;
+
 		selected = cmbRequests.getSelectionModel().getSelectedItem();
 		if (selected != null) {
 			changeRequests.forEach(cR -> {
 				if (selected.equals(cR.getRequestID())) {
 					changeRequest = cR;
+					processStage = cR.getProcessStage();
 				}
 			});
 			taInitiatorRequest.setText(changeRequest.getProblemDescription());
 			taExaminerReport.setText(changeRequest.getComment());
-			dueTime = changeRequest.getProcessStage().getDueDate();
-			currentSubStage = changeRequest.getProcessStage().getCurrentSubStage();
-			if (dueTime != null) {
-				setDueTimeBlockEnabled(true);
-				setApproveExecutionEnabled(true);
-				setGetExtensionEnabled();
-			} if (currentSubStage.equals(determiningDueTime)) {
-				setDueTimeBlockEnabled(false);
+
+			currentDueTime = processStage.getDueDate();
+			currentRequestStage = processStage.getCurrentStage();
+			currentSubStage = processStage.getCurrentSubStage();
+
+			if (currentSubStage.equals(determiningDueTime)) {
+				if (currentDueTime != null) {
+					btnDueTime.setDisable(true);
+					lbDueTime.setVisible(true);
+					txtDueTime.setText(currentDueTime.toString());
+					//txtDueTime.setVisible(true);
+					setGetExtensionEnabled();
+					setApproveExecutionEnabled(true);
+				} else {
+					btnDueTime.setDisable(false);
+					lbDueTime.setVisible(false);
+					//txtDueTime.setVisible(false);
+				}
+			} else {
+				btnDueTime.setDisable(true);
+				lbDueTime.setVisible(false);
+				//txtDueTime.setVisible(false);
+				btnGetExtension.setDisable(true);
+				btnApprove.setDisable(true);
 			}
 			//TODO remove later
 			setRequestStagesVisible(true);
@@ -84,11 +110,16 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public void openDueTime() throws Exception {
 		popupWindowLauncher("/GUI/PopUpWindows/DeterminingDueTime.fxml");
 		popupWindow.setOnHiding(windowEvent -> {
-			dueTime = changeRequest.getProcessStage().getDueDate();
-			setDueTimeBlockEnabled(true);
-			setApproveExecutionEnabled(true);
-			setRequestStagesVisible(true);
-			setGetExtensionEnabled();
+			currentDueTime = processStage.getDueDate();
+			if (currentDueTime != null) {
+				btnDueTime.setDisable(true);
+				txtDueTime.setText(currentDueTime.toString());
+				//txtDueTime.setVisible(true);
+				lbDueTime.setVisible(true);
+				setApproveExecutionEnabled(true);
+				setRequestStagesVisible(true);
+				setGetExtensionEnabled();
+			}
 		});
 	}
 
@@ -112,20 +143,22 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public void openRequestExtension() throws IOException {
 		popupWindowLauncher("/GUI/PopUpWindows/GetExtension.fxml");
 		popupWindow.setOnHidden(event -> {
-			if (!changeRequest.getProcessStage().getExtensionExplanation().isEmpty()) {
+			if (!processStage.getExtensionExplanation().isEmpty()) {
 				btnGetExtension.setDisable(true);
 			}
 		});
 	}
 
 	public static void sendUpdateForRequest() {
-		clientRequestFromServer newRequest =
-				new clientRequestFromServer(updateProcessStage, changeRequest);
-		ClientLauncher.client.handleMessageFromClientUI(newRequest);
+		if (processStage != null) {
+			clientRequestFromServer newRequest =
+					new clientRequestFromServer(updateProcessStage, processStage);
+			ClientLauncher.client.handleMessageFromClientUI(newRequest);
+		}
 	}
 
 	private void setRequestStagesVisible(boolean bool) {
-		txtStage.setText(changeRequest.getProcessStage().getCurrentStage().name()
+		txtStage.setText(currentRequestStage.name()
 				+ "\n" + currentSubStage.name());
 		lbStage.setVisible(bool);
 	}
@@ -135,24 +168,16 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	 * @param bool == true ? dueTime is exist, button disabled and label shows up
 	 * : dueTime is empty, button enabled and label disabled
 	 */
-	private void setDueTimeBlockEnabled(boolean bool) {
-		if (bool) {
-			btnDueTime.setDisable(true);
-			txtDueTime.setText(dueTime.toString());
-			lbDueTime.setVisible(true);
-		} else {
-			btnDueTime.setDisable(false);
-		}
-	}
 
 	private void setApproveExecutionEnabled(boolean bool) {
-		if (currentSubStage.equals(determiningDueTime)) {
+		if (currentRequestStage.equals(execution)
+				&& currentSubStage.equals(determiningDueTime)) {
 			btnApprove.setDisable(!bool);
 		}
 	}
 
 	private void setGetExtensionEnabled() {
-		if (dueTime != null && dueTime.minusDays(3).isBefore(LocalDate.now())) {
+		if (currentDueTime != null && currentDueTime.minusDays(3).isBefore(LocalDate.now())) {
 			btnGetExtension.setDisable(false);
 		} else btnGetExtension.setDisable(true);
 	}

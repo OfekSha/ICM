@@ -35,7 +35,7 @@ import static Entity.clientRequestFromServer.requestOptions.getAll;
 public abstract class UserForm implements IcmForm {
 
 	// vars
-	protected static User user = null; // connected user;
+	static User user = null; // connected user;
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
 	static ChangeRequestStatus requestStatus;
@@ -74,8 +74,6 @@ public abstract class UserForm implements IcmForm {
 	public void LogOutButton(ActionEvent event) throws Exception {
 		setUserLogOff();
 		user = null;
-		//ClientLauncher.client = null;   // NextWindowLauncher - needs clinte
-		// lunching main menu
 		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
 	}
 
@@ -164,8 +162,7 @@ public abstract class UserForm implements IcmForm {
 	 * @param Content ?
 	 * @return - true if ok was clicked
 	 */
-	protected boolean areYouSureAlert(AlertType type,String title, String header, String Content) {
-
+	protected boolean areYouSureAlert(AlertType type, String title, String header, String Content) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
@@ -178,7 +175,6 @@ public abstract class UserForm implements IcmForm {
 			alert.close();
 		return false;
 		}
-
 	}
 
 	public void getRequests() {
@@ -205,7 +201,11 @@ public abstract class UserForm implements IcmForm {
 		switch (request.getRequest()) {
 			case getAll:
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
-				changeRequests.forEach(e -> System.out.print("[" + e.getRequestID() + "]"));
+				changeRequests.forEach(e -> {
+					if (e.getProcessStage().getDueDate() != null) {
+						System.out.println("[" + e.getRequestID() + ": " + e.getProcessStage().getDueDate().toString() + "]");
+					}
+				});
 				break;
 			case updateStatus:
 				changeRequests = (ArrayList<ChangeRequest>) request.getObject();
@@ -242,12 +242,11 @@ public abstract class UserForm implements IcmForm {
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
 		}
-
 		System.out.println();
 	}
-	
-	 public void SetUser(User u) {
-		 user =u;
+
+	 public void setUser(User u) {
+		 user = u;
 	}
 	 public User getUser(User u) {
 		  return user;

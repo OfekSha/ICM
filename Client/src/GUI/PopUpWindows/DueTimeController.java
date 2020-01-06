@@ -1,6 +1,5 @@
 package GUI.PopUpWindows;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -8,7 +7,7 @@ import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 
-import static GUI.ExecutionLeaderForm.changeRequest;
+import static GUI.ExecutionLeaderForm.processStage;
 import static GUI.ExecutionLeaderForm.sendUpdateForRequest;
 
 public class DueTimeController extends AbstractPopUp {
@@ -18,10 +17,10 @@ public class DueTimeController extends AbstractPopUp {
     public Button btnDone;
 
     @FXML
-    private void getDone(ActionEvent event) {
+    private void getDone() {
         LocalDate dataDue = dpDueTime.getValue();
         if (dataDue != null && dataDue.isAfter(LocalDate.now())) {
-            changeRequest.getProcessStage().addDueDate(dataDue);
+            processStage.addDueDate(dataDue);
             sendUpdateForRequest();
             getCancel();
         } else {

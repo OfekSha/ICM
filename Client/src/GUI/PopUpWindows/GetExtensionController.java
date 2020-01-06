@@ -5,8 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
-import static GUI.ExecutionLeaderForm.changeRequest;
-import static GUI.ExecutionLeaderForm.sendUpdateForRequest;
+import static GUI.ExecutionLeaderForm.*;
 
 public class GetExtensionController extends AbstractPopUp {
 
@@ -20,7 +19,7 @@ public class GetExtensionController extends AbstractPopUp {
     void sendExtensionRequest() {
         String explanation = taExplanation.getText();
         if (!explanation.isEmpty()) {
-            changeRequest.getProcessStage().inputExtensionExplanation(explanation);
+            processStage.inputExtensionExplanation(explanation);
             sendUpdateForRequest();
             getCancel();
         }
