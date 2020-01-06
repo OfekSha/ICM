@@ -92,7 +92,7 @@ public class mysqlConnection {
 					"stage5extension TINYINT(1) NOT NULL, "+						//25
 					"currentSubStage ENUM ('supervisorAllocation'," +				//26
 					"'determiningDueTime'," +										
-					"'supervisorAction')," +										
+					"'supervisorAction','ApprovingDueTime')," +										
 					"stage1ExtensionExplanation TEXT NULL, " +						//27
 					"stage2ExtensionExplanation TEXT NULL, " +						//28
 					"stage3ExtensionExplanation TEXT NULL, " +						//29

@@ -22,6 +22,7 @@ public class ProcessStage implements Serializable {
 	public enum subStages {
 		supervisorAllocation, //if inspector disapproved due time you have to go back to this sub stage
 		determiningDueTime,
+		ApprovingDueTime,
 		supervisorAction
 	}
 

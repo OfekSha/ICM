@@ -300,7 +300,8 @@ public class EchoServer extends AbstractServer {
 		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
 		// updating due date 
 		changeRequest.getProcessStage().addDueDate(LocalDate.now());
-		queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
+		//test
+		//queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
 		startEndArray = new LocalDate[5][3];
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);

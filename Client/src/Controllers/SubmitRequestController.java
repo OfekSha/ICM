@@ -70,7 +70,7 @@ public class SubmitRequestController {
 		return appended;
 	}
 	
-	/**
+	/** adding the file to the array list if under 16mb
 	 * @param newFile
 	 * @return
 	 * @throws IOException
