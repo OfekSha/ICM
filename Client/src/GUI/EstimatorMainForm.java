@@ -1,21 +1,18 @@
 package GUI;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import Controllers.EstimatorController;
-import Controllers.InspectorController.requirmentForTable;
+import Controllers.InspectorController;
+import Controllers.InspectorController.requirementForTable;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class EstimatorMainForm extends UserForm implements IcmForm {
 
@@ -40,17 +37,17 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 		
 
 		@FXML
-		public TableView<requirmentForTable> tblviewRequests;
+		public TableView<InspectorController.requirementForTable> tblviewRequests;
 		// table columns:
 		@FXML
-		public TableColumn<requirmentForTable, String> columnId;
+		public TableColumn<requirementForTable, String> columnId;
 		@FXML
-		public TableColumn<requirmentForTable, Object> columnStatus;
+		public TableColumn<InspectorController.requirementForTable, Object> columnStatus;
 		@FXML
-		public TableColumn<requirmentForTable, Object> columnDueTime;
+		public TableColumn<InspectorController.requirementForTable, Object> columnDueTime;
 		
 		@FXML
-		public TableColumn<requirmentForTable, String> columnMessage;
+		public TableColumn<requirementForTable, String> columnMessage;
 		
 		
 		@Override
@@ -64,15 +61,15 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 		}
 		
 		private void initializeTableView() {
-			columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set
+			columnMessage.setCellValueFactory(new PropertyValueFactory<InspectorController.requirementForTable, String>("message")); // set
 																												// values
 																												// for
 																												// messages
-			columnId.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("id")); // set values for id
-			columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status")); // set values
+			columnId.setCellValueFactory(new PropertyValueFactory<InspectorController.requirementForTable, String>("id")); // set values for id
+			columnStatus.setCellValueFactory(new PropertyValueFactory<requirementForTable, Object>("status")); // set values
 																												// for
 																												// status
-			columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("dueTime"));
+			columnDueTime.setCellValueFactory(new PropertyValueFactory<InspectorController.requirementForTable, Object>("dueTime"));
 
 		}
 		public void filterRequests(ActionEvent event) { // get event from the menuItem.
@@ -80,7 +77,7 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 		}
 		public void onRequestClicked(MouseEvent event) {
 
-			requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+			requirementForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
 			if (selectedReq == null)
 				return;
 			EstimatorController.setSelectedRequest(selectedReq);

@@ -12,17 +12,15 @@ import javafx.scene.control.MenuItem;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Controllers.InspectorController.requirmentForTable;
-
 public class EstimatorController {
 	
 	public static ArrayList <ChangeRequest> requests; // requests the controller holds
 	public static ChangeRequest selectedRequest; // request that was selected from the forms.
 	
-	public static void setSelectedRequest(requirmentForTable selectedReq) {
+	public static void setSelectedRequest(InspectorController.requirementForTable selectedReq) {
 		selectedRequest=getReq(selectedReq);
 	}
-	public static ChangeRequest getReq(requirmentForTable tableReq) throws NullPointerException {
+	public static ChangeRequest getReq(InspectorController.requirementForTable tableReq) throws NullPointerException {
 		for (ChangeRequest regular : requests) {
 			if (regular.getRequestID().equals(tableReq.getId()))
 				return regular;
@@ -38,7 +36,7 @@ public class EstimatorController {
 		// @@ need to add testing for message
 		clientRequestFromServer response = (clientRequestFromServer) message;
 		//Object[] objectArray;
-		switch (response.getRequest()) {
+		switch (response.getRequest()) { //TODO too few cases in switch
 			case getChangeRequestByStatus:
 				requests = (ArrayList <ChangeRequest>) ((Object[])response.getObject())[0];
 				break;

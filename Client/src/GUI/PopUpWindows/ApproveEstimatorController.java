@@ -26,13 +26,13 @@ public class ApproveEstimatorController extends AbstractPopUp implements IcmForm
     private Label title;
     @FXML
     public void getApprove(ActionEvent event) { 
-    	InspectorController.changeRole(InspectorController.selctedReqFromTable, cmbEstimator.getSelectionModel().getSelectedItem());
+    	InspectorController.changeRole(InspectorController.selectedReqFromTable, cmbEstimator.getSelectionModel().getSelectedItem());
     	((Stage) btnApprove.getScene().getWindow()).close();
     }
     private ObservableList<User> userList;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		title.setText("Approve Estimator for request "+InspectorController.selctedReqFromTable.getId());
+		title.setText("Approve Estimator for request "+InspectorController.selectedReqFromTable.getId());
 		ClientLauncher.client.setClientUI(this);
 		InspectorController.getInformationEngineers();
 	}

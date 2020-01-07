@@ -1,8 +1,5 @@
 package GUI.PopUpWindows;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import Controllers.InspectorController;
 import Entity.User;
 import WindowApp.ClientLauncher;
@@ -16,6 +13,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class ApproveExecutionLeaderController extends AbstractPopUp implements IcmForm {
 
     @FXML
@@ -26,13 +26,13 @@ public class ApproveExecutionLeaderController extends AbstractPopUp implements I
     private Label title;
     @FXML
     public void getApprove(ActionEvent event) { 
-    	InspectorController.changeRole(InspectorController.selctedReqFromTable, cmbExecutionLeaders.getSelectionModel().getSelectedItem());
+    	InspectorController.changeRole(InspectorController.selectedReqFromTable, cmbExecutionLeaders.getSelectionModel().getSelectedItem());
     	((Stage) btnApprove.getScene().getWindow()).close();
     }
     private ObservableList<User> userList;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		title.setText("Approve Estimator for request "+InspectorController.selctedReqFromTable.getId());
+		title.setText("Approve Estimator for request "+InspectorController.selectedReqFromTable.getId());
 		ClientLauncher.client.setClientUI(this);
 		InspectorController.getInformationEngineers();
 	}

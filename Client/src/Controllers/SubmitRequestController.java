@@ -1,28 +1,16 @@
 package Controllers;
 
+import Entity.*;
+import Entity.clientRequestFromServer.requestOptions;
+import WindowApp.ClientLauncher;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import Controllers.InspectorController.requirmentForTable;
-import Entity.ChangeRequest;
-import Entity.Document;
-import Entity.Initiator;
-import Entity.ProcessStage;
-import Entity.User;
-import Entity.clientRequestFromServer;
-import Entity.ChangeRequest.ChangeRequestStatus;
-import Entity.clientRequestFromServer.requestOptions;
-import GUI.SubmitRequestForm;
-import WindowApp.ClientLauncher;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class SubmitRequestController {
 	
@@ -33,11 +21,11 @@ public class SubmitRequestController {
 	
 	/** sends the change request to the server <p>
 	 * 
-	 * @param requestDetails
-	 * @param requestreason
-	 * @param requestComment
-	 * @param sys
-	 * @param user
+	 * @param requestDetails ?
+	 * @param requestreason ?
+	 * @param requestComment ?
+	 * @param sys ?
+	 * @param user ?
 	 * @return - true if the request was sent
 	 */
 	public boolean getSubmition(String requestDetails, String requestreason, String requestComment, String sys,
@@ -62,10 +50,10 @@ public class SubmitRequestController {
 
 
 	/** appends the empty Strings to one  
-	 * @param requestDetails
-	 * @param requestreasonString
-	 * @param sys
-	 * @return
+	 * @param requestDetails ?
+	 * @param requestreasonString ?
+	 * @param sys ?
+	 * @return ?
 	 */
 	public String AppendEmpty(String requestDetails, String requestreasonString,String sys) {
 		String appended ="";
@@ -78,7 +66,7 @@ public class SubmitRequestController {
 	/** adding the file to the array list if under 16mb
 	 * @param newFile - the file to be added 
 	 * @return true when the file has been attached 
-	 * @throws IOException
+	 * @throws IOException ?
 	 */
 	public boolean AddThefile(File newFile) throws IOException {
 		

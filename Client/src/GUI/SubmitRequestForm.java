@@ -1,10 +1,7 @@
 package GUI;
 
-import Entity.ChangeRequest;
-import Entity.Document;
-import Entity.Initiator;
-import Entity.clientRequestFromServer;
-import Entity.clientRequestFromServer.requestOptions;
+import Controllers.SubmitRequestController;
+import Controllers.SubmitRequestController.DocumentForTable;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
@@ -12,32 +9,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
-
-import Controllers.InspectorController;
-import Controllers.SubmitRequestController;
-import Controllers.InspectorController.requirmentForTable;
-import Controllers.SubmitRequestController.DocumentForTable;
 
 public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
 //TextArea
@@ -117,7 +98,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	
 	/** Attaches a file to request<p>
 	 * uses the FileChooser to get the file
-	 * @throws IOException
+	 * @throws IOException ?
 	 */
 	public void AddFile() throws IOException {
 
@@ -152,7 +133,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	
 	
 	/** logging out of the system and going to the logIn screen <p>
-	 * 	 @override addition is asking if the user is sure when started filling some of the fields 
+	 * 	 override addition is asking if the user is sure when started filling some of the fields
 	 */
 	@Override
 	public void LogOutButton(ActionEvent event) throws Exception {
@@ -169,7 +150,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	}
 	
 	/** The back button takes the user back to main menu 
-	 *@override  addition is asking if the user is sure when started filling some of the fields 
+	 * override  addition is asking if the user is sure when started filling some of the fields
 	 */
 	@Override
 	public void MainScene(ActionEvent event) throws Exception {
@@ -197,8 +178,8 @@ private String getSys() {
 }
 
 /** Telling the server the user logged out and lunching the log in screen 
- * @param event
- * @throws Exception
+ * @param event ?
+ * @throws Exception ?
  */
 private  void logingOut (ActionEvent event) throws Exception  {
 	setUserLogOff();

@@ -1,7 +1,7 @@
 package GUI;
 
 import Controllers.InspectorController;
-import Controllers.InspectorController.requirmentForTable;
+import Controllers.InspectorController.requirementForTable;
 import Entity.ChangeRequest;
 import Entity.ProcessStage.ChargeRequestStages;
 import WindowApp.ClientLauncher;
@@ -60,31 +60,31 @@ public class InspectorForm extends UserForm implements IcmForm {
 	private MenuItem extension;
 
 	@FXML
-	public TableView<requirmentForTable> tblViewRequests;
+	public TableView<requirementForTable> tblViewRequests;
 	// table colums:
 	@FXML
-	public TableColumn<requirmentForTable, String> columnId;
+	public TableColumn<requirementForTable, String> columnId;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnStatus;
+	public TableColumn<requirementForTable, Object> columnStatus;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnStage;
+	public TableColumn<requirementForTable, Object> columnStage;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnDueTime;
+	public TableColumn<requirementForTable, Object> columnDueTime;
 
 	/*
 	 * //for test only:
 	 * 
-	 * @FXML public TableColumn<requirmentForTable, String> columnStage;
+	 * @FXML public TableColumn<requirementForTable, String> columnStage;
 	 * 
-	 * @FXML public TableColumn<requirmentForTable, String> columnDueTime;
+	 * @FXML public TableColumn<requirementForTable, String> columnDueTime;
 	 */
 
 	@FXML
-	public TableColumn<requirmentForTable, String> columnMessage;
+	public TableColumn<requirementForTable, String> columnMessage;
 
 	// not fxml vars:
 	public static ArrayList<ChangeRequest> reqList;
-	private ObservableList<requirmentForTable> tableData;
+	private ObservableList<requirementForTable> tableData;
 	private static Stage popupWindow;
 	public static Stage inspectorWindow;
 
@@ -92,7 +92,6 @@ public class InspectorForm extends UserForm implements IcmForm {
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		initializeTableView();
-
 	}
 
 	private void initializeTableView() {
@@ -144,7 +143,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
-		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
+		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
 		case ongoing:
@@ -161,7 +160,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void roleApprove(ActionEvent event) throws Exception {
-		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
+		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStage().getCurrentStage()) {
 		case meaningEvaluation: // need to approve Estimator
 			popupWindow("/GUI/PopUpWindows/ApproveEstimator.fxml", event);
@@ -190,10 +189,10 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	public void onRequirementClicked(MouseEvent event) {
 
-		requirmentForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
+		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		if (selectedReq == null)
 			return;
-		InspectorController.selctedReqFromTable = selectedReq;
+		InspectorController.selectedReqFromTable = selectedReq;
 		btnGetDetails.setDisable(false);
 
 		// when extension is on:

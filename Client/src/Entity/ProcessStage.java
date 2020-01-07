@@ -79,23 +79,23 @@ public class ProcessStage implements Serializable {
 		this.inspectorDocumentation = inspectorDocumentation;
 		this.startEndArray = startEndArray;
 		this.WasThereAnExtensionRequest = WasThereAnExtensionRequest;
-		this.ExtensionExplanation=ExtensionExplanation;
+		this.ExtensionExplanation = ExtensionExplanation;
 	}
 
 	// input methods
-	
-	
+
 	/** input an extension explanation 
 	 * @param s ?
 	 */
 	public void inputExtensionExplanation(String s) {
-		ExtensionExplanation[currentStage.ordinal()]=s;
+		ExtensionExplanation[currentStage.ordinal()] = s;
 	}
+
 	/**input all extension explanation 
 	 * @param s ?
 	 */
 	public void inputAllExtensionExplanation(String[] s) {
-		ExtensionExplanation=s;
+		ExtensionExplanation = s;
 	}
 	
 	//  TODO: add constraints to date methods 
@@ -121,6 +121,7 @@ public class ProcessStage implements Serializable {
 	public LocalDate getDueDate() {
 		return startEndArray[currentStage.ordinal()][1];
 	}
+
 	/**
 	 * adding a end date to the current satge
 	 *
@@ -205,7 +206,7 @@ public class ProcessStage implements Serializable {
 		}
 	}// End addExaminerFailReport;
 
-	public void addinspectorDocumentation(String report) {
+	public void addInspectorDocumentation(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");

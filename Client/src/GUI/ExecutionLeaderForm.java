@@ -4,13 +4,13 @@ import Entity.ChangeRequest;
 import Entity.ProcessStage;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
+import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,14 +30,19 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public Button btnGetExtension;
 	public TextArea taExaminerReport;
 	public TextArea taInitiatorRequest;
-	public Text txtDueTime;
-	public Text txtStage;
-	public Label lbDueTime;
-	public Label lbStage;
+	//public Text txtDueTime;
+	//public Text txtStage;
+	//public Label lbDueTime;
+	//public Label lbStage;
+	public TableView<requirementForTable> tblRequests;
+	public TableColumn<requirementForTable, String> colID;
+	public TableColumn<requirementForTable, String> colStatus;
+	public TableColumn<requirementForTable, String> colDueTime;
 
-	private String selected;
-	private ChangeRequest changeRequest;
 	public static ProcessStage processStage;
+
+	private String selectedID;
+	private ChangeRequest changeRequest;
 	private LocalDate currentDueTime;
 	private subStages currentSubStage;
 	private ChargeRequestStages currentRequestStage;
@@ -48,57 +53,66 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		initUI();
 	}
 
-	private void initUI() {
+	public void initUI() {
 		getRequests();
 		btnDueTime.setDisable(true);
 		btnApprove.setDisable(true);
-		txtDueTime.setTextAlignment(TextAlignment.CENTER);
-		txtStage.setTextAlignment(TextAlignment.CENTER);
-		Platform.runLater(this::setRequestsComboBox);
+		btnGetExtension.setDisable(true);
+		taExaminerReport.clear();
+		taInitiatorRequest.clear();
+		Platform.runLater(this::setTableRequests);
 	}
 
-	public void RequestsComboBoxUsed() {
+	protected void setTableRequests() {
+		tblRequests.getItems().clear();
+		colID.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+		colDueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
+		changeRequests.forEach(e -> {
+			if (e.getProcessStage().getCurrentStage().equals(execution)) {
+				tblRequests.getItems().add(new requirementForTable(e));
+
+			}
+		});
+	}
+
+	public void tableGotClicked() {
 		currentSubStage = null;
 		currentDueTime = null;
 		currentRequestStage = null;
 
-		selected = cmbRequests.getSelectionModel().getSelectedItem();
-		if (selected != null) {
-			changeRequests.forEach(cR -> {
-				if (selected.equals(cR.getRequestID())) {
-					changeRequest = cR;
-					processStage = cR.getProcessStage();
-				}
-			});
-			taInitiatorRequest.setText(changeRequest.getProblemDescription());
-			taExaminerReport.setText(changeRequest.getComment());
+		requirementForTable req = tblRequests.getSelectionModel().getSelectedItem();
+		if (req != null) {
+			selectedID = req.getId();
 
-			currentDueTime = processStage.getDueDate();
-			currentRequestStage = processStage.getCurrentStage();
-			currentSubStage = processStage.getCurrentSubStage();
+			if (selectedID != null) {
+				changeRequests.forEach(cR -> {
+					if (selectedID.equals(cR.getRequestID())) {
+						changeRequest = cR;
+						processStage = cR.getProcessStage();
+					}
+				});
+				taInitiatorRequest.setText(changeRequest.getProblemDescription());
+				taExaminerReport.setText(changeRequest.getComment());
 
-			if (currentSubStage.equals(determiningDueTime)) {
-				if (currentDueTime != null) {
-					btnDueTime.setDisable(true);
-					lbDueTime.setVisible(true);
-					txtDueTime.setText(currentDueTime.toString());
-					//txtDueTime.setVisible(true);
-					setGetExtensionEnabled();
-					setApproveExecutionEnabled(true);
+				currentDueTime = processStage.getDueDate();
+				currentRequestStage = processStage.getCurrentStage();
+				currentSubStage = processStage.getCurrentSubStage();
+
+				if (currentSubStage.equals(determiningDueTime)) {
+					if (currentDueTime != null) {
+						btnDueTime.setDisable(true);
+						setGetExtensionEnabled();
+						setApproveExecutionEnabled(true);
+					} else {
+						btnDueTime.setDisable(false);
+					}
 				} else {
-					btnDueTime.setDisable(false);
-					lbDueTime.setVisible(false);
-					//txtDueTime.setVisible(false);
+					btnDueTime.setDisable(true);
+					btnGetExtension.setDisable(true);
+					btnApprove.setDisable(true);
 				}
-			} else {
-				btnDueTime.setDisable(true);
-				lbDueTime.setVisible(false);
-				//txtDueTime.setVisible(false);
-				btnGetExtension.setDisable(true);
-				btnApprove.setDisable(true);
 			}
-			//TODO remove later
-			setRequestStagesVisible(true);
 		}
 	}
 	
@@ -113,11 +127,10 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 			currentDueTime = processStage.getDueDate();
 			if (currentDueTime != null) {
 				btnDueTime.setDisable(true);
-				txtDueTime.setText(currentDueTime.toString());
-				//txtDueTime.setVisible(true);
-				lbDueTime.setVisible(true);
+				//txtDueTime.setText(currentDueTime.toString());
+				//lbDueTime.setVisible(true);
 				setApproveExecutionEnabled(true);
-				setRequestStagesVisible(true);
+		//		setRequestStagesVisible(true);
 				setGetExtensionEnabled();
 			}
 		});
@@ -157,11 +170,11 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		}
 	}
 
-	private void setRequestStagesVisible(boolean bool) {
+	/*private void setRequestStagesVisible(boolean bool) {
 		txtStage.setText(currentRequestStage.name()
 				+ "\n" + currentSubStage.name());
 		lbStage.setVisible(bool);
-	}
+	}*/
 
 	/**
 	 * boolean value as a switcher

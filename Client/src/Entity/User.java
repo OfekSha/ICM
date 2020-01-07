@@ -42,14 +42,12 @@ public class User implements Serializable {
 	 * @param lastName    ?
 	 * @param email       ?
 	 * @param job         -(enum-Job)
-	 * @param Permissions - (enum-ICMPermissions)if the user is is a student send
-	 *                    null
-	 * @param loggedIn    - represents if the user is logged in
+	 * @param Permissions - (enum-ICMPermissions)if the user is is a student send null
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, Job job,
 				EnumSet<ICMPermissions> Permissions) {
 		this.job = job;
-		updatePremiisions(Permissions);
+		updatePermissions(Permissions);
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
@@ -65,7 +63,9 @@ public class User implements Serializable {
 	 * @param Permissions - EnumSet of the Permissions the user has
 	 * @return - returns true if the update was done
 	 */
-	public boolean updatePremiisions(EnumSet<ICMPermissions> Permissions) {
+
+	//TODO Return value of the method is never used
+	public boolean updatePermissions(EnumSet<ICMPermissions> Permissions) {
 		if (Permissions == null || job == Job.student)
 			return false;
 		this.Permissions = Permissions;
@@ -111,7 +111,7 @@ public class User implements Serializable {
 		if (this.Permissions.contains(Permission))
 			return;
 		this.Permissions.add(Permission);
-	} // END of addPremmision()
+	} // END of addPermmision()
 
 	// TODO test this method
 
@@ -125,12 +125,6 @@ public class User implements Serializable {
 			return;
 		this.Permissions.remove(Permission);
 	}// END of removePermission()
-
-	/**
-	 * changes the log in value to the given value
-	 *
-	 * @param bool ?
-	 */
 
 //output
 

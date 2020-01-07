@@ -18,51 +18,50 @@ import java.util.ArrayList;
  * 
  *  make new class with no parametrs and you will get the table ready for use.
  *  
- *  use function onRequirmentClicked for get selected row in the table.
+ *  use function onRequirementClicked for get selected row in the table.
  * 
  * @author ooffe
  *
  */
 public class RequestTableView {
 	@FXML
-	public TableView<requirmentForTable> tblviewRequests;
+	public TableView<requirementForTable> tblviewRequests;
 	// table colums:
 	@FXML
-	public TableColumn<requirmentForTable, String> columnId;
+	public TableColumn<requirementForTable, String> columnId;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnStatus;
+	public TableColumn<requirementForTable, Object> columnStatus;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnStage;
+	public TableColumn<requirementForTable, Object> columnStage;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnDueTime;
+	public TableColumn<requirementForTable, Object> columnDueTime;
 	@FXML
-	public TableColumn<requirmentForTable, String> columnMessage;
+	public TableColumn<requirementForTable, String> columnMessage;
 
 	@FXML
-	public TableColumn<requirmentForTable, Object> columninitiator;
+	public TableColumn<requirementForTable, Object> columninitiator;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnStartDate;
+	public TableColumn<requirementForTable, Object> columnStartDate;
 
 	@FXML
-	public TableColumn<requirmentForTable, String> columnSystem;
+	public TableColumn<requirementForTable, String> columnSystem;
 
 	@FXML
-	public TableColumn<requirmentForTable, String> columnProblemDescription;
+	public TableColumn<requirementForTable, String> columnProblemDescription;
 	@FXML
-	public TableColumn<requirmentForTable, String> columnWhyChange;
+	public TableColumn<requirementForTable, String> columnWhyChange;
 	@FXML
-	public TableColumn<requirmentForTable, String> columnComment;
+	public TableColumn<requirementForTable, String> columnComment;
 	@FXML
-	public TableColumn<requirmentForTable, Object> columnDoc;
+	public TableColumn<requirementForTable, Object> columnDoc;
 
 	public RequestTableView() {
 		initializeTableView();
-
 	}
 
 	/**
 	 * 
-	 * This function match the columns for the table(FXML) to the class requirmentForTable.
+	 * This function match the columns for the table(FXML) to the class requirementForTable.
 	 * 
 	 */
 	private void initializeTableView() {
@@ -97,9 +96,9 @@ public class RequestTableView {
 	 *  - mouse event (onClick for example)
 	 * @return requirementForTable
 	 * 
-	 *  - this is special class for table for get the object requirmentForTable.getObject();
+	 *  - this is special class for table for get the object requirementForTable.getObject();
 	 */
-	public requirmentForTable onRequirmentClicked(MouseEvent event) {
+	public requirementForTable onRequirementClicked(MouseEvent event) {
 		return tblviewRequests.getSelectionModel().getSelectedItem();
 	}
 
@@ -110,7 +109,7 @@ public class RequestTableView {
 	 * @author Ofek
 	 *
 	 */
-	public static class requirmentForTable {
+	public static class requirementForTable {
 		private SimpleStringProperty message;
 		private SimpleStringProperty id;
 		private SimpleObjectProperty<ChangeRequestStatus> status;
@@ -184,7 +183,7 @@ public class RequestTableView {
 		 * 
 		 * @param req ?
 		 */
-		public requirmentForTable(ChangeRequest req) {
+		public requirementForTable(ChangeRequest req) {
 			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
 			id = new SimpleStringProperty(req.getRequestID());
 			status = new SimpleObjectProperty<>(req.getStatus());

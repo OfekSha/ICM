@@ -215,7 +215,7 @@ public abstract class UserForm implements IcmForm {
 				break;
 			case getUser:
 				user = (User) request.getObject();
-				//System.out.println("User entity received: [" + user.getUserName() + "]");
+				System.out.println("User entity received: [" + user.getUserName() + "]");
 				break;
 			case getAllUsers:
 				allUsers = (ArrayList<User>) request.getObject();
@@ -235,10 +235,6 @@ public abstract class UserForm implements IcmForm {
 				allUsers = (ArrayList<User>) objectArray[0];
 				job = (Job) objectArray[1];
 				break;
-
-/*			case getRequirement:
-				break;
-			case updateUser: break;*/
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
 		}
