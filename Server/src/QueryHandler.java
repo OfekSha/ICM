@@ -901,10 +901,10 @@ public class QueryHandler {
     		// TODO Auto-generated catch block
     		e.printStackTrace();
     		}
-    	count++;
+    	
     	for(Document each : uploadedDocs) {
 			 try {
-		            
+				 count++; 
 			PreparedStatement stmt = mysqlConn.getConn()
 					.prepareStatement("INSERT INTO `icm`.`docs`\n" + 
 							"(`FileID`,\n" + 

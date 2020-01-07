@@ -112,12 +112,15 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	public void AddFile() throws IOException {
 
 		FileChooser fileChooser = new FileChooser();
-		if (!submitRequestController.AddThefile(fileChooser.showOpenDialog(null)))
+		File file =fileChooser.showOpenDialog(null);
+		if(file!=null) {
+		
+		if (!submitRequestController.AddThefile(file))
 			alertWindowLauncher(AlertType.ERROR, "ERROR Dialog", "Error:file to large",
 					"file must be smaller then 16mb");
 		tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
 		tblViewDocuments.setItems(tableData);
-
+		}
 	}
 	
 	private void initializeTableView() {
@@ -149,11 +152,11 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 				|| !((getSys()).equals(""))) {
 			if (areYouSureAlert(AlertType.CONFIRMATION, "Living the submit form",
 					"Are you ok with  stoping the request submition?", "The detials you enterd will not be saved")) {
-				NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+				NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 			}
 
 		} else {
-			NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+			NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 		}
 	}
 
