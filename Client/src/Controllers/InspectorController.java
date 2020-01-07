@@ -101,11 +101,8 @@ public class InspectorController {
 		changeStatus(req, ChangeRequestStatus.closed);
 	}
 
-	
-
 	// functions for watch button:
 
-	
 	private static MenuItem watchChoosed; // the last menu item in watch button that chosen.
 
 	public static void watchRequests(MenuItem item) {
@@ -122,29 +119,29 @@ public class InspectorController {
 			toServerOption = requestOptions.getChangeRequestByStatus;
 			break;
 		case "Approve Estimator":
-			toServerFilter =new Object[3];
-			((Object[])toServerFilter)[0] = ChargeRequestStages.meaningEvaluation; //the stage
-			((Object[])toServerFilter)[1] = subStages.supervisorAllocation; // the sub stage
-			((Object[])toServerFilter)[2] = ChangeRequestStatus.ongoing; // the status
+			toServerFilter = new Object[3];
+			((Object[]) toServerFilter)[0] = ChargeRequestStages.meaningEvaluation; // the stage
+			((Object[]) toServerFilter)[1] = subStages.supervisorAllocation; // the sub stage
+			((Object[]) toServerFilter)[2] = ChangeRequestStatus.ongoing; // the status
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStage;
 			break;
 		case "Approve Execution Leader":
-			toServerFilter =new Object[3];
-			((Object[])toServerFilter)[0] = ChargeRequestStages.execution; //the stage
-			((Object[])toServerFilter)[1] = subStages.supervisorAllocation; // the sub stage
-			((Object[])toServerFilter)[2] = ChangeRequestStatus.ongoing; // the status
+			toServerFilter = new Object[3];
+			((Object[]) toServerFilter)[0] = ChargeRequestStages.execution; // the stage
+			((Object[]) toServerFilter)[1] = subStages.supervisorAllocation; // the sub stage
+			((Object[]) toServerFilter)[2] = ChangeRequestStatus.ongoing; // the status
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStage;
 			break;
 		case "Approve Due Time":
-			toServerFilter =new Object[2];
-			((Object[])toServerFilter)[0] = subStages.determiningDueTime; // the sub stage
-			((Object[])toServerFilter)[1] = ChangeRequestStatus.ongoing; // the status
+			toServerFilter = new Object[2];
+			((Object[]) toServerFilter)[0] = subStages.ApprovingDueTime; // the sub stage
+			((Object[]) toServerFilter)[1] = ChangeRequestStatus.ongoing; // the status
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndSubStageOnly;
 			break;
 		case "Waiting for close":
-			toServerFilter =new Object[2];
-			((Object[])toServerFilter)[0] = ChargeRequestStages.closure; // the stage
-			((Object[])toServerFilter)[1] = ChangeRequestStatus.ongoing; // the status
+			toServerFilter = new Object[2];
+			((Object[]) toServerFilter)[0] = ChargeRequestStages.closure; // the stage
+			((Object[]) toServerFilter)[1] = ChangeRequestStatus.ongoing; // the status
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStageOnly;
 			break;
 		case "Waiting for Extension":
@@ -159,16 +156,17 @@ public class InspectorController {
 // function for popup windows:
 	public static ArrayList<User> informationEngineers;
 	public static requirmentForTable selctedReqFromTable;
+
 	public static void getInformationEngineers() {
-		requestToServerProtocol(
-				new clientRequestFromServer(requestOptions.getAllUsersByJob, Job.informationEngineer));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.getAllUsersByJob, Job.informationEngineer));
 	}
+
 	public static void approveDueTime(boolean approve, requirmentForTable req) {
 		ChangeRequest selectedRequest = getReq(req);
 		if (approve)
 			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 		else {
-			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
+			selectedRequest.getProcessStage().setCurrentSubStage(subStages.determiningDueTime);
 			selectedRequest.getProcessStage().addDueDate(null);
 		}
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
@@ -176,20 +174,28 @@ public class InspectorController {
 
 	public static void changeRole(requirmentForTable req, User user) {
 		ChangeRequest selectedRequest = getReq(req);
-		selectedRequest.getProcessStage().newStageSupervisor(user);
-		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
-		switch(selectedRequest.getProcessStage().getCurrentStage()) {
-		case meaningEvaluation:user.getICMPermissions().add(ICMPermissions.estimator);
-		break;
-		case execution:user.getICMPermissions().add(ICMPermissions.executionLeader);
-		break;
+		selectedRequest.getProcessStage().newStageSupervisor(user); // set user to be supervisor
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.determiningDueTime); // next sub stage
+
+		switch (selectedRequest.getProcessStage().getCurrentStage()) {
+		// give permission to user
+		case meaningEvaluation:
+			user.getICMPermissions().add(ICMPermissions.estimator);
+			break;
+		case execution:
+			user.getICMPermissions().add(ICMPermissions.executionLeader);
+			break;
+		default:
+			throw new IllegalArgumentException(
+					"Inspector can\"t approve role to stage " + selectedRequest.getProcessStage().getCurrentStage());
 		}
-		
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
+		// send request to server
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
-		
+		// send user with the new permission to the server.
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
+
 	}
+
 	public static void approveExtension(boolean approve, requirmentForTable req) {
 		ChangeRequest selectedRequest = getReq(req);
 		if (approve) {
@@ -202,7 +208,7 @@ public class InspectorController {
 	 * 
 	 * function to send to server client Request.
 	 * 
-	 * @param req ?
+	 * @param req - send class {@link clientRequestFromServer}
 	 */
 	private static void requestToServerProtocol(clientRequestFromServer req) { // send to server request protocol.
 		ClientLauncher.client.handleMessageFromClientUI(req);
@@ -212,7 +218,7 @@ public class InspectorController {
 	 * 
 	 * Function to get message from server.
 	 * 
-	 * @param message ?
+	 * @param message - get class {@link clientRequestFromServer}
 	 */
 	@SuppressWarnings("unchecked")
 	public static void messageFromServer(Object message) {
@@ -228,16 +234,17 @@ public class InspectorController {
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 			if (watchChoosed.getText().contains("Waiting for Extension")) {
 				ArrayList<ChangeRequest> newList = new ArrayList<>();
-				for (ChangeRequest req :InspectorForm.reqList) {
-					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage().ordinal()]==1)
+				for (ChangeRequest req : InspectorForm.reqList) {
+					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage()
+							.ordinal()] == 1)
 						newList.add(req);
 				}
 				InspectorForm.reqList = newList;
-			} 
+			}
 			break;
 		case getAllChangeRequestWithStatusAndStage:
-			case getAllChangeRequestWithStatusAndSubStageOnly:
-				case getAllChangeRequestWithStatusAndStageOnly:
+		case getAllChangeRequestWithStatusAndSubStageOnly:
+		case getAllChangeRequestWithStatusAndStageOnly:
 			InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 			break;
 		default:

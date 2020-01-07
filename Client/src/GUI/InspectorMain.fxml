@@ -44,7 +44,7 @@
             </VBox>
          <HBox alignment="TOP_CENTER">
                      <VBox alignment="TOP_CENTER" prefWidth="795.0">
-                  <MenuButton fx:id="menubtnWatch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefWidth="200.0" text="Watch" textAlignment="CENTER">
+                  <MenuButton fx:id="menubtnWatch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefWidth="200.0" text="Filter" textAlignment="CENTER">
                     <items>
                       <MenuItem fx:id="freeze" mnemonicParsing="false" onAction="#watchRequest" text="Freeze Requests" />
                       <MenuItem fx:id="unfreeze" mnemonicParsing="false" onAction="#watchRequest" text="Unfreeze Requests" />
