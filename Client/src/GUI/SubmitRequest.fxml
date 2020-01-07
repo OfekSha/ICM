@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -48,8 +50,8 @@
             </VBox>
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
             <VBox alignment="TOP_CENTER" prefHeight="349.0" prefWidth="172.0">
-               <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="172.0">
-                        <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="58.0" prefWidth="172.0" text="Information System">
+               <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="172.0" spacing="30.0">
+                        <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="69.0" prefWidth="172.0" text="Information System">
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
@@ -57,8 +59,20 @@
                               <ComboBox fx:id="cmbSystems" prefWidth="150.0" />
                         </graphic>
                         </Label>
-                  <Button fx:id="btnAddFile" mnemonicParsing="false" onAction="#AddFile" prefHeight="25.0" prefWidth="149.0" text="Add a file" />
+                  <TableView fx:id="tblViewDocuments" prefHeight="232.0" prefWidth="179.0">
+                    <columns>
+                      <TableColumn fx:id="columnFileName" prefWidth="85.6666259765625" text="File name" />
+                      <TableColumn fx:id="columnFileSize" prefWidth="85.0" text="size (Mb)" />
+                    </columns>
+                  </TableView>
                </VBox>
+               <HBox prefHeight="45.0" prefWidth="172.0" spacing="17.0">
+                  <children>
+                     <Button fx:id="btnAddFile" mnemonicParsing="false" onAction="#AddFile" prefHeight="25.0" prefWidth="82.0" text="Add  file" />
+                     <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Remove file" />
+                  </children>
+               </HBox>
+               <Label text=" Single file size limited to 16 Mb" />
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
                   <Label contentDisplay="BOTTOM" text="Change request details">

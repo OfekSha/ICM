@@ -14,9 +14,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 
@@ -31,8 +34,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+import Controllers.InspectorController;
 import Controllers.SubmitRequestController;
+import Controllers.SubmitRequestController.DocumentForTable;
 
 public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
 
@@ -49,14 +53,29 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	@FXML
 	private ComboBox<String> cmbSystems;
 
+	
+	
+	// table stuff
+	@FXML
+	public TableView<DocumentForTable> tblViewDocuments;
+	// table colums:
+		@FXML
+		public TableColumn<DocumentForTable, String> columnFileName;
+		@FXML
+		public TableColumn<DocumentForTable, String> columnFileSize;
+		
+		
+		private ObservableList<DocumentForTable> tableData;
+
 
 	
 	 private SubmitRequestController submitRequestController;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		ClientLauncher.client.setClientUI(this);
 		submitRequestController =new SubmitRequestController();
 		setSystemsComboBox();
+		initializeTableView();
 	}
 
 	public void setSystemsComboBox() {
@@ -77,6 +96,8 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		taRequestReason.clear();
 		taComment.clear();
 		cmbSystems.setValue("");
+		tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
+		tblViewDocuments.setItems(tableData);
 		 }
 		 else {
 		String missing =submitRequestController.AppendEmpty( taRequestDetails.getText(),taRequestReason.getText(),getSys());
@@ -94,7 +115,16 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		if (!submitRequestController.AddThefile(fileChooser.showOpenDialog(null)))
 			alertWindowLauncher(AlertType.ERROR, "ERROR Dialog", "Error:file to large",
 					"file must be smaller then 16mb");
+		tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
+		tblViewDocuments.setItems(tableData);
 
+	}
+	
+	private void initializeTableView() {
+																									// messages
+		columnFileName.setCellValueFactory(new PropertyValueFactory<>("name")); // set values for id
+		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
+	
 	}
 	
 	

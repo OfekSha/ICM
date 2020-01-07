@@ -8,14 +8,19 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Controllers.InspectorController.requirmentForTable;
 import Entity.ChangeRequest;
 import Entity.Document;
 import Entity.Initiator;
+import Entity.ProcessStage;
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.SubmitRequestForm;
 import WindowApp.ClientLauncher;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -91,6 +96,36 @@ public class SubmitRequestController {
 	      return false;
 	  
 		
+	}//ENF of AddThefile()
+	
+	
+	public static class DocumentForTable {
+		private SimpleStringProperty name;
+		private SimpleStringProperty size;
+
+		public String getName() {
+			return name.get();
+		}
+
+		public String getSize() {
+			return size.get();
+		}
+
+
+		public DocumentForTable(Document doc) {
+			name  =new SimpleStringProperty(doc.getFileName());
+			size =  new SimpleStringProperty( Double.toString((double)doc.getSize()/1E6));
+		}
+
 	}
 	
-}
+	
+	public  ArrayList<DocumentForTable> DocumentForTableList() {
+		ArrayList<DocumentForTable> newList = new ArrayList<>();
+		for (Document doc : uploadedDocs)
+			newList.add(new DocumentForTable(doc));
+		return newList;
+	}
+
+	
+}//END of  calss SubmitRequestController 
