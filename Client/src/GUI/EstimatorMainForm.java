@@ -3,9 +3,11 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Controllers.EstimatorController;
 import Controllers.InspectorController.requirmentForTable;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -13,6 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class EstimatorMainForm extends UserForm implements IcmForm {
 
@@ -38,13 +41,11 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 
 		@FXML
 		public TableView<requirmentForTable> tblviewRequests;
-		// table colums:
+		// table columns:
 		@FXML
 		public TableColumn<requirmentForTable, String> columnId;
 		@FXML
 		public TableColumn<requirmentForTable, Object> columnStatus;
-		@FXML
-		public TableColumn<requirmentForTable, Object> columnStage;
 		@FXML
 		public TableColumn<requirmentForTable, Object> columnDueTime;
 		
@@ -58,6 +59,9 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 			ClientLauncher.client.setClientUI(this);
 			initializeTableView();
 		}
+		public void getFromServer(Object message) {
+			EstimatorController.messageFromServer(message);
+		}
 		
 		private void initializeTableView() {
 			columnMessage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, String>("message")); // set
@@ -68,8 +72,35 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 			columnStatus.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("status")); // set values
 																												// for
 																												// status
-			columnStage.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("stage"));
 			columnDueTime.setCellValueFactory(new PropertyValueFactory<requirmentForTable, Object>("dueTime"));
 
 		}
+		public void filterRequests(ActionEvent event) { // get event from the menuItem.
+			EstimatorController.filterRequests(((MenuItem) event.getSource()));
+		}
+		public void onRequestClicked(MouseEvent event) {
+
+			requirmentForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+			if (selectedReq == null)
+				return;
+			EstimatorController.setSelectedRequest(selectedReq);
+			btnGetDetails.setDisable(false);
+			btnAskForTimeExtension.setDisable(false);
+			switch (selectedReq.getStage().getCurrentSubStage()) {
+			case determiningDueTime: 
+				btnSetDueTime.setDisable(false);
+				btnWriteReport.setDisable(true);
+				break;
+			case supervisorAction:
+				btnWriteReport.setDisable(false);
+				btnSetDueTime.setDisable(true);
+			default:
+				btnAskForTimeExtension.setDisable(true);
+				btnWriteReport.setDisable(true);
+				btnSetDueTime.setDisable(true);
+				break;
+			}
+			
+		}
+		
 }

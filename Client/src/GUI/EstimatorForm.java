@@ -40,7 +40,7 @@ public class EstimatorForm extends  StageSupervisorForm{
 	}
 	@Override
 	public void getFromServer(Object message) {
-		EstimatorController.messageFromServer(message,this);
+		//EstimatorController.messageFromServer(message,this);
 		
 	}
 	
