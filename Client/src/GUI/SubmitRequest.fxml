@@ -69,7 +69,7 @@
                <HBox prefHeight="45.0" prefWidth="172.0" spacing="17.0">
                   <children>
                      <Button fx:id="btnAddFile" mnemonicParsing="false" onAction="#AddFile" prefHeight="25.0" prefWidth="82.0" text="Add  file" />
-                     <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Remove file" />
+                     <Button fx:id="btnRomoveFile" mnemonicParsing="false" onAction="#removeFile" prefHeight="25.0" prefWidth="92.0" text="Remove file" />
                   </children>
                </HBox>
                <Label text=" Single file size limited to 16 Mb" />

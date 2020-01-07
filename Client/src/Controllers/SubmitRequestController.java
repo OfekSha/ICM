@@ -29,7 +29,7 @@ public class SubmitRequestController {
 	/** all of the users uploaded docs for  a request
 	 * 
 	 */
-	ArrayList<Document> uploadedDocs =new ArrayList<>();
+	 private ArrayList<Document> uploadedDocs =new ArrayList<>();
 	
 	/** sends the change request to the server <p>
 	 * 
@@ -76,8 +76,8 @@ public class SubmitRequestController {
 	}
 	
 	/** adding the file to the array list if under 16mb
-	 * @param newFile
-	 * @return
+	 * @param newFile - the file to be added 
+	 * @return true when the file has been attached 
 	 * @throws IOException
 	 */
 	public boolean AddThefile(File newFile) throws IOException {
@@ -99,10 +99,14 @@ public class SubmitRequestController {
 	}//ENF of AddThefile()
 	
 	
+	/** class made for representing the change requests attached documents 
+	 * 
+	 *
+	 */
 	public static class DocumentForTable {
 		private SimpleStringProperty name;
 		private SimpleStringProperty size;
-
+		private Document theDoc;
 		public String getName() {
 			return name.get();
 		}
@@ -110,21 +114,39 @@ public class SubmitRequestController {
 		public String getSize() {
 			return size.get();
 		}
+		/**
+		 * @return The document we are representing in the table raw
+		 */
+		public Document gettheDoc() {
+			return theDoc;
+		}
 
 
 		public DocumentForTable(Document doc) {
 			name  =new SimpleStringProperty(doc.getFileName());
 			size =  new SimpleStringProperty( Double.toString((double)doc.getSize()/1E6));
+			theDoc =doc;
 		}
 
 	}
 	
 	
+	/** creates the list of documents witch are attached to the  change request for the table 
+	 * @return  DocumentForTable array list for table
+	 * @see DocumentForTable
+	 */
 	public  ArrayList<DocumentForTable> DocumentForTableList() {
 		ArrayList<DocumentForTable> newList = new ArrayList<>();
 		for (Document doc : uploadedDocs)
 			newList.add(new DocumentForTable(doc));
 		return newList;
+	}
+	
+	/** removing the document from the requests documents 
+	 * @param doc the document to be removed 
+	 */
+	public void removeDoc(Document doc) {
+		uploadedDocs.remove(doc);
 	}
 
 	

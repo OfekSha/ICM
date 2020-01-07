@@ -36,20 +36,26 @@ import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
 import Controllers.SubmitRequestController;
+import Controllers.InspectorController.requirmentForTable;
 import Controllers.SubmitRequestController.DocumentForTable;
 
 public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
-
+//TextArea
 	@FXML
 	public TextArea taRequestDetails;
 	@FXML
 	public TextArea taRequestReason;
 	@FXML
 	public TextArea taComment;
+	//Button
 	@FXML
 	private Button btnSubmit;
 	@FXML
 	private Button btnAddFile;
+	
+	@FXML
+	private Button btnRomoveFile;
+	//ComboBox
 	@FXML
 	private ComboBox<String> cmbSystems;
 
@@ -58,7 +64,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	// table stuff
 	@FXML
 	public TableView<DocumentForTable> tblViewDocuments;
-	// table colums:
+	// table columns:
 		@FXML
 		public TableColumn<DocumentForTable, String> columnFileName;
 		@FXML
@@ -66,10 +72,11 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		
 		
 		private ObservableList<DocumentForTable> tableData;
-
-
-	
-	 private SubmitRequestController submitRequestController;
+	// the  forms controller 
+		private SubmitRequestController submitRequestController;
+	/**
+	 *
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
@@ -78,6 +85,9 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		initializeTableView();
 	}
 
+	/** adding the relevant systems to the combo box
+	 * 
+	 */
 	public void setSystemsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
 		al.add("ICM");
@@ -123,14 +133,27 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		}
 	}
 	
+	/** setting up the table columns 
+	 * 
+	 */
 	private void initializeTableView() {
 																									// messages
 		columnFileName.setCellValueFactory(new PropertyValueFactory<>("name")); // set values for id
 		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
 	
 	}
+	public void removeFile() {
+		DocumentForTable selectedDoc = tblViewDocuments.getSelectionModel().getSelectedItem();
+		if(selectedDoc!=null) {
+		tblViewDocuments.getItems().remove(selectedDoc);
+		submitRequestController.removeDoc(selectedDoc.gettheDoc());
+		}
+	}
 	
 	
+	/** logging out of the system and going to the logIn screen <p>
+	 * 	 @override addition is asking if the user is sure when started filling some of the fields 
+	 */
 	@Override
 	public void LogOutButton(ActionEvent event) throws Exception {
 		if (!(taRequestDetails.getText().equals("")) || !(taRequestReason.getText().equals(""))
@@ -145,6 +168,9 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		}
 	}
 	
+	/** The back button takes the user back to main menu 
+	 *@override  addition is asking if the user is sure when started filling some of the fields 
+	 */
 	@Override
 	public void MainScene(ActionEvent event) throws Exception {
 
@@ -160,8 +186,8 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		}
 	}
 
-/** getting the system form its combobox
- * @return
+/** 
+ * @return  the  pressed system  String form  combo box
  */
 private String getSys() {
 	String sys = "";
@@ -170,6 +196,10 @@ private String getSys() {
 	return sys;
 }
 
+/** Telling the server the user logged out and lunching the log in screen 
+ * @param event
+ * @throws Exception
+ */
 private  void logingOut (ActionEvent event) throws Exception  {
 	setUserLogOff();
 	user = null;
