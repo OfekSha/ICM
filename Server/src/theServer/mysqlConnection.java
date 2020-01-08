@@ -1,3 +1,4 @@
+package theServer;
 import java.sql.*;
 
 public class mysqlConnection {

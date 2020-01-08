@@ -1,3 +1,4 @@
+package theServer;
 import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -7,6 +8,7 @@ import Entity.User.Job;
 import Entity.clientRequestFromServer.requestOptions;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+import queryHandler.QueryHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -69,26 +71,26 @@ public class EchoServer extends AbstractServer {
 			//	Those 4 cases doesn't answer to client not, but they have to!!
 			switch (request.getRequest()) {
 				case changeInLogIn:
-					queryHandler.updateAllUserFields((User) request.getObject());
+					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
 					break;
 
 				case updateProcessStage: // change stage		 
-					queryHandler.updateAllProcessStageFields((ProcessStage) request.getObject());
+					queryHandler.getProccesStageQuerys().updateAllProcessStageFields((ProcessStage) request.getObject());
 					break;
 
 				case updateChangeRequest:
-					queryHandler.updateAllChangeRequestFields((ChangeRequest) request.getObject());
+					queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields((ChangeRequest) request.getObject());
 					break;
 
 				case addRequest:
 					ChangeRequest change = (ChangeRequest) request.getObject();
-					change.setRequestID(queryHandler.InsertChangeRequest(change));
+					change.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(change));
 					change.updateInitiatorRequest();
 					change.updateStage();
-					queryHandler.insertInitiator(change.getInitiator());
-					queryHandler.InsertProcessStage(change, change.getProcessStage());
+					queryHandler.getInitiatorQuerys().insertInitiator(change.getInitiator());
+					queryHandler.getProccesStageQuerys().InsertProcessStage(change, change.getProcessStage());
 					change.updateDocs();
-					queryHandler.InsertFile(change.getDoc());
+					queryHandler.getFilesQuerys().InsertFile(change.getDoc());
 					break;
 			}
 			if (request.getRequest().ordinal() < 4) iWantResponse = false;
@@ -97,36 +99,36 @@ public class EchoServer extends AbstractServer {
 				switch (request.getRequest()) {
 					// read all ChangeRequest data
 					case getAll:
-						sendBackObject = queryHandler.getAllChangeRequest();
+						sendBackObject = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
 						break;
 
 					case getUser:
-						sendBackObject = queryHandler.selectUser(((String) request.getObject()));
+						sendBackObject = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
 						break;
 
 					case updateUser:
-						queryHandler.updateAllUserFields((User) request.getObject());
+						queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
 						break;
 
 					case getAllUsers:
-						sendBackObject = queryHandler.getAllUsers();
+						sendBackObject = queryHandler.getUserQuerys().getAllUsers();
 						break;
 
 					case getChangeRequestByStatus:
 						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
+						objectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
 						objectArray[1] = request.getObject();
 						sendBackObject = objectArray;
 						break;
 					case getUsersByICMPermissions:
 						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getAllUsersWithICMPermissions((ICMPermissions) request.getObject());
+						objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((ICMPermissions) request.getObject());
 						objectArray[1] = request.getObject();
 						sendBackObject = objectArray;
 						break;
 					case getAllUsersByJob:
 						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getAllUsersByJob((Job) request.getObject());
+						objectArray[0] = queryHandler.getUserQuerys().getAllUsersByJob((Job) request.getObject());
 						objectArray[1] = request.getObject();
 						sendBackObject = objectArray;
 						break;
@@ -136,7 +138,7 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray[1] = objectArray[0];
 						returningObjectArray[2] = objectArray[1];
 						returningObjectArray[3] = objectArray[2];
-						returningObjectArray[0] = queryHandler.getAllChangeRequestWithStatusAndStage(
+						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStage(
 								(ChargeRequestStages)objectArray[0],
 								(subStages)objectArray[1],
 								(ChangeRequestStatus)objectArray[2]);
@@ -147,7 +149,7 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray = new Object[3];
 						returningObjectArray[1] = objectArray[0];
 						returningObjectArray[2] = objectArray[1];
-						returningObjectArray[0] = queryHandler.getAllChangeRequestWithStatusAndStageOnly(
+						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStageOnly(
 								(ChargeRequestStages)objectArray[0],
 								(ChangeRequestStatus)objectArray[1]);
 						sendBackObject = returningObjectArray;
@@ -157,7 +159,7 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray = new Object[3];
 						returningObjectArray[1] = objectArray[0];
 						returningObjectArray[2] = objectArray[1];
-						returningObjectArray[0] = queryHandler.getAllChangeRequestWithStatusAndSubStageOnly(
+						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndSubStageOnly(
 								(subStages)objectArray[0],
 								(ChangeRequestStatus)objectArray[1]);
 						sendBackObject = returningObjectArray;
@@ -169,8 +171,8 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray[2] = objectArray[1];
 						returningObjectArray[3] = objectArray[2];
 						returningObjectArray[4] = objectArray[3];
-						returningObjectArray[0] = queryHandler.
-								getAllChangeRequestWithStatusAndStageAndSupervisor(
+						returningObjectArray[0] = queryHandler.getChangeRequestQuerys()
+								.getAllChangeRequestWithStatusAndStageAndSupervisor(
 										(ChargeRequestStages)objectArray[0],
 										(subStages)objectArray[1],
 										(ChangeRequestStatus)objectArray[2],
@@ -179,7 +181,7 @@ public class EchoServer extends AbstractServer {
 						break;
 					
 					case LogIN:
-						tryingToLogInUser = queryHandler.selectUser(((String) request.getObject()));
+						tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
 						if (testAllClientsForUser(tryingToLogInUser)) 
 							sendBackObject=null;
 						else sendBackObject =tryingToLogInUser;
@@ -210,41 +212,41 @@ public class EchoServer extends AbstractServer {
 		// creating admin
 		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
 		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		// creating  information Technologies Department Manager
 		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
 		lessPermissions.add(User.ICMPermissions.informationTechnologiesDepartmentManager);
 		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.inspector);
 		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating estimator
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.estimator);
 		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating exeution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.executionLeader);
 		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.examiner);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
 		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
 		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating student
 		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", Job.student, null);
-		queryHandler.insertUser(newUser);
+		queryHandler.getUserQuerys().insertUser(newUser);
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {
@@ -256,11 +258,11 @@ public class EchoServer extends AbstractServer {
 		LocalDate start = LocalDate.now();
 		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
 		// change request at stage 1
-		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
-		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -278,10 +280,10 @@ public class EchoServer extends AbstractServer {
 		}
 		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
-		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
-		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 
 		//creating execution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -293,11 +295,11 @@ public class EchoServer extends AbstractServer {
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
 		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", "test3", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
-		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
-		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
 		// updating due date 
 		changeRequest.getProcessStage().addDueDate(LocalDate.now());
 		//test
@@ -315,11 +317,11 @@ public class EchoServer extends AbstractServer {
 		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", "test4", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
-		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
-		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -332,11 +334,11 @@ public class EchoServer extends AbstractServer {
 		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStatus(ChangeRequestStatus.closed);
 		changeRequest.setStage(stager);
-		changeRequest.setRequestID(queryHandler.InsertChangeRequest(changeRequest));
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
-		queryHandler.insertInitiator(changeRequest.getInitiator());
-		queryHandler.InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 	}// END of enterChangeRequestToDB
 
 	/**
@@ -375,9 +377,6 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
-			
-			ArrayList<ChangeRequest> a = queryHandler.getAllChangeRequestWithStatus(ChangeRequestStatus.suspended);
-			//ArrayList<ChangeRequest> b = queryHandler.getAllChangeRequestWithStatusAndStageOnly(ChangeRequestStatus.ongoing);
 			System.out.println("New DB ready for use");
 		}
 	}
