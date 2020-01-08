@@ -2,7 +2,6 @@ package GUI;
 
 import Entity.ChangeRequest;
 import Entity.ProcessStage;
-import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer;
@@ -23,6 +22,7 @@ import static Entity.ProcessStage.ChargeRequestStages.execution;
 import static Entity.ProcessStage.subStages.determiningDueTime;
 import static Entity.ProcessStage.subStages.supervisorAllocation;
 import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
+import static GUI.PopUpWindows.GetExtensionController.Approve;
 
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
@@ -32,10 +32,6 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public Button btnGetExtension;
 	public TextArea taExaminerReport;
 	public TextArea taInitiatorRequest;
-	//public Text txtDueTime;
-	//public Text txtStage;
-	//public Label lbDueTime;
-	//public Label lbStage;
 	public TableView<requirementForTable> tblRequests;
 	public TableColumn<requirementForTable, String> colID;
 	public TableColumn<requirementForTable, String> colStatus;
@@ -49,17 +45,18 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+        getRequests();
 		initUI();
 	}
 
 	public void initUI() {
-		getRequests();
+        getRequests();
 		btnDueTime.setDisable(true);
 		btnApprove.setDisable(true);
 		btnGetExtension.setDisable(true);
 		taExaminerReport.clear();
 		taInitiatorRequest.clear();
-		Platform.runLater(this::setTableRequests);
+        Platform.runLater(this::setTableRequests);
 	}
 
 	protected void setTableRequests() {
@@ -71,14 +68,12 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 			if (e.getProcessStage().getCurrentStage().equals(execution) &&
 			e.getProcessStage().getCurrentSubStage().equals(determiningDueTime)) {
 				tblRequests.getItems().add(new requirementForTable(e));
-
 			}
 		});
 	}
 
 	public void tableGotClicked() {
 		subStages currentSubStage;
-		ChargeRequestStages currentRequestStage = null;
 		currentDueTime = null;
 
 		requirementForTable req = tblRequests.getSelectionModel().getSelectedItem();
@@ -157,7 +152,8 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		popupWindowLauncher("/GUI/PopUpWindows/GetExtension.fxml");
 		popupWindow.setOnHidden(event -> {
 			if (!processStage.getExtensionExplanation().isEmpty()) {
-				btnGetExtension.setDisable(true);
+				btnGetExtension.setDisable(Approve);
+
 			}
 		});
 	}
@@ -172,7 +168,8 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
 	private void setGetExtensionEnabled() {
 		if (currentDueTime != null &&
-				currentDueTime.minusDays(3).isBefore(LocalDate.now())) {
+				currentDueTime.minusDays(3).isBefore(LocalDate.now()) &&
+				processStage.getExtensionExplanation().isEmpty()) {
 			btnGetExtension.setDisable(false);
 		} else btnGetExtension.setDisable(true);
 	}

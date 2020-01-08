@@ -51,8 +51,8 @@
                   <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="557.0" prefWidth="400.0" spacing="10.0">
                <TableView fx:id="tblRequests" onMouseClicked="#tableGotClicked" prefHeight="557.0" prefWidth="400.0">
                  <columns>
-                   <TableColumn fx:id="colID" editable="false" prefWidth="110.0" resizable="false" text="ID" />
-                     <TableColumn fx:id="colStatus" prefWidth="130.0" resizable="false" text="Status" />
+                   <TableColumn fx:id="colID" editable="false" prefWidth="109.0" resizable="false" text="ID" />
+                     <TableColumn fx:id="colStatus" prefWidth="129.0" resizable="false" text="Status" />
                      <TableColumn fx:id="colDueTime" prefWidth="160.0" resizable="false" text="Due Time" />
                  </columns>
                   <VBox.margin>
