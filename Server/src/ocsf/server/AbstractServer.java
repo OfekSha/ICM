@@ -9,7 +9,6 @@ import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.time.LocalTime;
 
 
 /**
@@ -478,7 +477,6 @@ public abstract class AbstractServer implements Runnable
    */
   synchronized protected void clientDisconnected(
     ConnectionToClient client) {
-    System.out.println("[" + LocalTime.now() + "]: Client " + client + " disconnected");
   }
 
   /**
