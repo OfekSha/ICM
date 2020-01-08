@@ -165,7 +165,7 @@ public class InspectorController {
 		}
 		else {
 			selectedRequest.getProcessStage().setCurrentSubStage(subStages.determiningDueTime);
-			selectedRequest.getProcessStage().addDueDate(null);
+			selectedRequest.getProcessStage().setDueDate(null);
 		}
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 	}
@@ -197,7 +197,7 @@ public class InspectorController {
 	public static void approveExtension(boolean approve, requirementForTable req) {
 		ChangeRequest selectedRequest = getReq(req);
 		if (approve) {
-			selectedRequest.getProcessStage().ExtensionRequestHandled();
+			selectedRequest.getProcessStage().setFlagExtensionRequestHandled();
 		}
 	}
 	// functions for server - client protocol:

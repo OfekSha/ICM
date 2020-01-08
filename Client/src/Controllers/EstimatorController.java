@@ -48,7 +48,7 @@ public class EstimatorController {
 	
 	//function for request:
 	public static void setDueTime(ChangeRequest request, LocalDate date) {
-		request.getProcessStage().addDueDate(date);
+		request.getProcessStage().setDueDate(date);
 		request.getProcessStage().setCurrentSubStage(subStages.ApprovingDueTime);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 	}
@@ -60,8 +60,8 @@ public class EstimatorController {
 	}
 
 	public static void askExtension(ChangeRequest request,String explanation) {
-		request.getProcessStage().ExtensionRequestMade();
-		request.getProcessStage().inputExtensionExplanation(explanation);
+		request.getProcessStage().setFlagExtensionRequested();
+		request.getProcessStage().setExtensionExplanation(explanation);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 	}
 	// end functions for request.

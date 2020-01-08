@@ -87,14 +87,14 @@ public class ProcessStage implements Serializable {
 	/** input an extension explanation 
 	 * @param s ?
 	 */
-	public void inputExtensionExplanation(String s) {
+	public void setExtensionExplanation(String s) {
 		ExtensionExplanation[currentStage.ordinal()] = s;
 	}
 
 	/**input all extension explanation 
 	 * @param s ?
 	 */
-	public void inputAllExtensionExplanation(String[] s) {
+	public void setExtensionExplanation(String[] s) {
 		ExtensionExplanation = s;
 	}
 	
@@ -105,7 +105,7 @@ public class ProcessStage implements Serializable {
 	 *
 	 * @param start ?
 	 */
-	public void addStartDate(LocalDate start) {
+	public void setStartDate(LocalDate start) {
 		startEndArray[currentStage.ordinal()][0] = start;
 	}
 
@@ -114,7 +114,7 @@ public class ProcessStage implements Serializable {
 	 *
 	 * @param due ?
 	 */
-	public void addDueDate(LocalDate due) {
+	public void setDueDate(LocalDate due) {
 		startEndArray[currentStage.ordinal()][1] = due;
 	}
 
@@ -123,11 +123,11 @@ public class ProcessStage implements Serializable {
 	}
 
 	/**
-	 * adding a end date to the current satge
+	 * adding a end date to the current stage
 	 *
 	 * @param end ?
 	 */
-	public void addEndDate(LocalDate end) {
+	public void setEndDate(LocalDate end) {
 		startEndArray[currentStage.ordinal()][2] = end;
 	}
 
@@ -135,14 +135,14 @@ public class ProcessStage implements Serializable {
 	 * Extension Request Made was made at the current stage
 	 */
 	// TODO: add a test if possible -again the date and if requested
-	public void ExtensionRequestMade() {
+	public void setFlagExtensionRequested() {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 1;
 	}
 	
 	/**
 	 * Extension Request was approved/disapproved  by the inspector
 	 */
-	public void ExtensionRequestHandled() {
+	public void setFlagExtensionRequestHandled() {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 2;
 	}
 
@@ -182,7 +182,7 @@ public class ProcessStage implements Serializable {
 		currentStage = newStage;
 	}
 
-	public void addEstimatorReport(String report) {
+	public void setEstimatorReport(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
@@ -194,7 +194,7 @@ public class ProcessStage implements Serializable {
 		}
 	}// End addEstimatorReport;
 
-	public void addExaminerFailReport(String report) {
+	public void setExaminerFailReport(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
@@ -206,7 +206,7 @@ public class ProcessStage implements Serializable {
 		}
 	}// End addExaminerFailReport;
 
-	public void addInspectorDocumentation(String report) {
+	public void setInspectorDocumentation(String report) {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
@@ -264,21 +264,26 @@ public class ProcessStage implements Serializable {
 	}
 	public String toString() {
 		switch (currentStage) {
-		case closure: return "closure";
-		case examination: return "examination";
-		case examinationAndDecision: return "examination And Decision";
-		case execution: return "execution";
-		case meaningEvaluation: return "meaning Evaluation";
-		default : return "Dosn't has a stage";
+			case closure:
+				return "closure";
+			case examination:
+				return "examination";
+			case examinationAndDecision:
+				return "examination And Decision";
+			case execution:
+				return "execution";
+			case meaningEvaluation:
+				return "meaning Evaluation";
+			default:
+				return "Doesn't have a stage";
 		}
 	}
 
-
 	public String getExtensionExplanation() {
-		return	ExtensionExplanation[currentStage.ordinal()];
-		}
+		return ExtensionExplanation[currentStage.ordinal()];
+	}
 
-		public String[] getAllExtensionExplanation() {
-			return ExtensionExplanation;
-		}
+	public String[] getAllExtensionExplanation() {
+		return ExtensionExplanation;
+	}
 }// END of Stage
