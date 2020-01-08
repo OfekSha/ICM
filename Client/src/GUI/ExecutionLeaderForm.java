@@ -109,11 +109,6 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 			}
 		}
 	}
-	
-	// the following  methods are from the class diagram:
-	public void getReport() {
-
-	}
 
 	public void openDueTime() throws Exception {
 		popupWindowLauncher("/GUI/PopUpWindows/DeterminingDueTime.fxml");
@@ -132,16 +127,17 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		alert.setTitle("Approve performing change");
 		alert.setHeaderText("Are you perform requested changes?");
 
-		ButtonType btnApprove = new ButtonType("Approve");
+		ButtonType approveButton = new ButtonType("Approve");
 		ButtonType btnCancel = ButtonType.CANCEL;
-		alert.getButtonTypes().setAll(btnApprove, btnCancel);
+		alert.getButtonTypes().setAll(approveButton, btnCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.isPresent() && result.get() == btnApprove) {
-			if (changeRequest.getProcessStage().getCurrentStage().equals(execution)) {
-				changeRequest.getProcessStage().setCurrentStage(examination);
-				changeRequest.getProcessStage().setCurrentSubStage(supervisorAllocation);
-				this.btnApprove.setDisable(true);
+
+		if (result.isPresent() && result.get() == approveButton) {
+			if (processStage.getCurrentStage().equals(execution)) {
+				processStage.setCurrentStage(examination);
+				processStage.setCurrentSubStage(supervisorAllocation);
+				btnApprove.setDisable(true);
 				btnGetExtension.setDisable(true);
 				sendUpdateForRequest();
 			}
@@ -153,7 +149,6 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		popupWindow.setOnHidden(event -> {
 			if (!processStage.getExtensionExplanation().isEmpty()) {
 				btnGetExtension.setDisable(Approve);
-
 			}
 		});
 	}
@@ -167,9 +162,8 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	}
 
 	private void setGetExtensionEnabled() {
-		if (currentDueTime != null &&
-				currentDueTime.minusDays(3).isBefore(LocalDate.now()) &&
-				processStage.getExtensionExplanation().isEmpty()) {
+		if (currentDueTime != null && processStage.getExtensionExplanation().isEmpty() &&
+				currentDueTime.minusDays(3).isBefore(LocalDate.now())) {
 			btnGetExtension.setDisable(false);
 		} else btnGetExtension.setDisable(true);
 	}

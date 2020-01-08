@@ -1,13 +1,11 @@
 package WindowApp;
 
-import ocsf.client.AbstractClient;
-
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.time.ZonedDateTime;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import ocsf.client.AbstractClient;
+
+import java.io.IOException;
+import java.time.LocalTime;
 
 public class IcmClient extends AbstractClient {
 
@@ -49,9 +47,10 @@ public class IcmClient extends AbstractClient {
 	public void handleMessageFromClientUI(Object message) {
 		try {
 			System.out.print("\n["
-					+ ZonedDateTime.now().toString()
-					.split("T")[1]
-					.split("\\+")[0]
+					+ LocalTime.now()
+					//+ ZonedDateTime.now().toString()
+					//.split("T")[1]
+					//.split("\\+")[0]
 					+ "]: Message to server <- " + message);
 			sendToServer(message);
 		} catch (IOException e) {
