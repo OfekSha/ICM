@@ -301,7 +301,7 @@ public class EchoServer extends AbstractServer {
 		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
 		// updating due date 
-		changeRequest.getProcessStage().addDueDate(LocalDate.now());
+		changeRequest.getProcessStage().setDueDate(LocalDate.now());
 		//test
 		//queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
 		startEndArray = new LocalDate[5][3];
