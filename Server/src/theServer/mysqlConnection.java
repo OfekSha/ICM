@@ -1,3 +1,4 @@
+package theServer;
 import java.sql.*;
 
 public class mysqlConnection {
@@ -113,6 +114,15 @@ public class mysqlConnection {
 					"RequestID VARCHAR(45) NOT NULL," +
 					"uploadedFile MEDIUMBLOB,\n" +		
 					"PRIMARY KEY (FileID)) ;\n");
+			stmt.execute("CREATE TABLE `icm`.`inspectorupdates` (\n" + 
+					"  `updateID` VARCHAR(45) NOT NULL,\n" + 
+					"  `RequestID` VARCHAR(45) NULL,\n" + 
+					"  `inspector` VARCHAR(45) NULL,\n" + 
+					"  `updatDescription` TEXT NULL,\n" + 
+					"  `updateDate` VARCHAR(45) NULL,\n" + 
+					"  `updateKind` VARCHAR(45) NULL,\n" + 
+					"  PRIMARY KEY (`updateID`));\n" + 
+					"");
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
