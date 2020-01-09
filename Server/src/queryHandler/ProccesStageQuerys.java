@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import Entity.ChangeRequest;
+import Entity.EstimatorReport;
 import Entity.ProcessStage;
 import Entity.User;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -34,7 +35,6 @@ public class ProccesStageQuerys {
                     "(RequestID," +                             //[1]
                     "currentStage," +                           //[2]
                     "StageSupervisor," +                        //[3]
-                    "EstimatorReport," +                        //[4]
                     "ExaminerFailReport," +                     //[5]
                     "inspectorDocumentation," +                 //[6]
                     "meaningEvaluationStartDate," +             //[7]
@@ -62,7 +62,7 @@ public class ProccesStageQuerys {
 					"stage3ExtensionExplanation, " +//29
 					"stage4ExtensionExplanation, " +//30
 					"stage5ExtensionExplanation) " +//31
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             setAllProcessStageStatement(changeRequest, processStage , stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,11 +87,10 @@ public class ProccesStageQuerys {
         } else {
             stmt.setNString(3, processStage.getStageSupervisor().getUserName());
         }
-        stmt.setNString(4, processStage.getEstimatorReport());
-        stmt.setNString(5, processStage.getExaminerFailReport());
-        stmt.setNString(6, processStage.getInspectorDocumentation());
+        stmt.setNString(4, processStage.getExaminerFailReport());
+        stmt.setNString(5, processStage.getInspectorDocumentation());
         LocalDate[][] date = processStage.getDates();
-        int u = 7;
+        int u = 6;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
                 if (date[i][j] == null) {
@@ -103,17 +102,17 @@ public class ProccesStageQuerys {
             }
         }
         if (date[4][0] == null) {
-            stmt.setNString(19, null);
+            stmt.setNString(18, null);
         } else {
-            stmt.setNString(19, date[4][0].toString());
+            stmt.setNString(18, date[4][0].toString());
         }
         if (date[4][2] == null) {
-            stmt.setNString(20, null);
+            stmt.setNString(19, null);
         } else {
-            stmt.setNString(20, date[4][2].toString());
+            stmt.setNString(19, date[4][2].toString());
         }
         int[] bool = processStage.getWasThereAnExtensionRequest();
-        int v = 21;
+        int v = 20;
         for (int j = 0; j < 5; j++) {
             if (bool[j] == 2) {
                 stmt.setInt(v, 2);
@@ -125,15 +124,14 @@ public class ProccesStageQuerys {
             }
             v++;
         }
-        stmt.setString(26, processStage.getCurrentSubStage().name());
+        stmt.setString(25, processStage.getCurrentSubStage().name());
         String[] s =processStage.getAllExtensionExplanation();
         
-        stmt.setString(27, s[0]);
-        stmt.setString(28, s[1]);
-        stmt.setString(29, s[2]);
-        stmt.setString(30, s[3]);
-        stmt.setString(31, s[4]);
-        
+        stmt.setString(26, s[0]);
+        stmt.setString(27, s[1]);
+        stmt.setString(28, s[2]);
+        stmt.setString(29, s[3]);
+        stmt.setString(30, s[4]);
         
         stmt.execute();
         stmt.close();
@@ -150,7 +148,6 @@ public class ProccesStageQuerys {
                     "`RequestID` = ?,\n" + 
                     "`currentStage` = ?,\n" + 
                     "`StageSupervisor` = ?,\n" + 
-                    "`EstimatorReport` = ?,\n" + 
                     "`ExaminerFailReport` = ?,\n" + 
                     "`inspectorDocumentation` = ?,\n" + 
                     "`meaningEvaluationStartDate` = ?,\n" + 
@@ -179,10 +176,11 @@ public class ProccesStageQuerys {
                     "`stage4ExtensionExplanation` = ?,\n" + 
                     "`stage5ExtensionExplanation` = ?\n" + 
                     "WHERE `RequestID` = ? AND `currentStage` = ?;\n" + 
-                    ""); //32 33
-            stmt.setNString(32, processStage.getRequest().getRequestID());
-            stmt.setNString(33, processStage.getCurrentStage().name());
+                    ""); //31 32
+            stmt.setNString(31, processStage.getRequest().getRequestID());
+            stmt.setNString(32, processStage.getCurrentStage().name());
             setAllProcessStageStatement(processStage.getRequest(), processStage, stmt);
+            queryHandler.getEstimatorReportQuerys().UpdateOrInsertEstimatorReport(processStage.getEstimatorReport(),processStage.getRequest().getRequestID());
         } catch (SQLException e) {
             e.printStackTrace();
         }// END updateAllProcessStageStatement
@@ -206,12 +204,11 @@ public class ProccesStageQuerys {
 
 				
                 User StageSupervisor = queryHandler.getUserQuerys().selectUser(re.getString(3));
-				String EstimatorReport = re.getString(4);
-				String ExaminerFailReport = re.getString(5);
-				String inspectorDocumentation = re.getString(6);
+				String ExaminerFailReport = re.getString(4);
+				String inspectorDocumentation = re.getString(5);
 
 				LocalDate[][] startEndArray = new LocalDate[5][3];
-				int u = 7;
+				int u = 6;
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 3; j++) {
 						if(re.getString(u) != null) {
@@ -222,34 +219,36 @@ public class ProccesStageQuerys {
 					}
 				}
 				if(re.getString(u) != null) {
-				    startEndArray[4][0] = LocalDate.parse(re.getString(19));
+				    startEndArray[4][0] = LocalDate.parse(re.getString(18));
                 }
 				else startEndArray[4][0] = null;
 
 				if(re.getString(u) != null) {
-				    startEndArray[4][2] = LocalDate.parse(re.getString(20));
+				    startEndArray[4][2] = LocalDate.parse(re.getString(19));
                 }
 				else startEndArray[4][2] = null;
 
 				int[] WasThereAnExtensionRequest = new int[5];
-				u = 21;
+				u = 20;
 				for (int i = 0; i < 5; i++) {
                     WasThereAnExtensionRequest[i] = re.getInt(u) ;
 					u++;
 				}
-				String currentSubStageString = re.getString(26);
+				String currentSubStageString = re.getString(25);
                 subStages currentSubStage = subStages.valueOf(currentSubStageString);
                 String[] s =new String[5];
-                s[0] =re.getNString(27);
-                s[1] =re.getNString(28);
-                s[2] =re.getNString(29);
-                s[3] =re.getNString(30);
-                s[4] =re.getNString(31);
-
+                s[0] =re.getNString(26);
+                s[1] =re.getNString(27);
+                s[2] =re.getNString(28);
+                s[3] =re.getNString(29);
+                s[4] =re.getNString(30);
+                EstimatorReport estimatorReport =queryHandler.getEstimatorReportQuerys().SelectEstimatorreports(RequestID);
 				returnProcessStage = new ProcessStage(currentStage, currentSubStage,
-                        StageSupervisor, EstimatorReport, ExaminerFailReport,
+                        StageSupervisor, ExaminerFailReport,
                         inspectorDocumentation, startEndArray, WasThereAnExtensionRequest,s);
+				returnProcessStage.setEstimatorReport(estimatorReport);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

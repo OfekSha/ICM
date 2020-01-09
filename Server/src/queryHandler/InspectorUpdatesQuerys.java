@@ -70,7 +70,7 @@ public class InspectorUpdatesQuerys {
 	            e.printStackTrace();
 	        }
 	    	return String.valueOf(count);
-	    } // end of InsertChangeRequest()
+	    } // end of InsertInspectorUpdates()
 	 
 	  /** sets inspectorUpdateDescription in a statement 
 	 * @param newUpdate - the incoming update

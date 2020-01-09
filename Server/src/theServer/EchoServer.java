@@ -264,13 +264,20 @@ public class EchoServer extends AbstractServer {
 		changeRequest.updateStage();
 		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
-
+		
+		// estimatore 
+		//creating estimator
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.estimator);
+		 User estimator = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		 EstimatorReport estimiatorReoport = new EstimatorReport(estimator, "report", "report", "report", "report", start);
+		
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
 		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
-
+		
 		// change request stage 2
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
@@ -279,13 +286,14 @@ public class EchoServer extends AbstractServer {
 		for (int i = 0; i < 5; i++) {
 			WasThereAnExtensionRequest[i] = 0;
 		}
-		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, estimator, "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
-
+		changeRequest.getProcessStage().setEstimatorReport(estimiatorReoport);
+		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
 		//creating execution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.ICMPermissions.executionLeader);
@@ -294,7 +302,7 @@ public class EchoServer extends AbstractServer {
 
 		// change request stage 3
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
-		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", "test3", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
@@ -315,7 +323,7 @@ public class EchoServer extends AbstractServer {
 
 		// change request stage 4
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
-		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", "test4", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
@@ -340,7 +348,7 @@ public class EchoServer extends AbstractServer {
 		
 		// change request stage 5
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
-		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStatus(ChangeRequestStatus.closed);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));

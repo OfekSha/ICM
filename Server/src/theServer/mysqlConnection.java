@@ -69,7 +69,6 @@ public class mysqlConnection {
 										"'closure')," +
 					
 					"StageSupervisor VARCHAR(45) NULL, " +						//3
-					"EstimatorReport VARCHAR(45) NULL, " +						//4
 					"ExaminerFailReport VARCHAR(45) NULL, " +					//5
 					"inspectorDocumentation VARCHAR(45) NULL, " +				//6
 					"meaningEvaluationStartDate VARCHAR(45) NULL, " +			//7
@@ -122,6 +121,17 @@ public class mysqlConnection {
 					"  `updateDate` VARCHAR(45) NULL,\n" + 
 					"  `updateKind` VARCHAR(45) NULL,\n" + 
 					"  PRIMARY KEY (`updateID`));\n" + 
+					"");
+			stmt.execute("CREATE TABLE `icm`.`estimatorreports` (\n" + 
+					"  `estimatorReportID` VARCHAR(45) NOT NULL,\n" + 
+					"  `referencedRequestID` VARCHAR(45) NULL,\n" + 
+					"  `estimatorUsername` VARCHAR(45) NULL,\n" + 
+					"  `location` VARCHAR(45) NULL,\n" + 
+					"  `changeDescription` VARCHAR(45) NULL,\n" + 
+					"  `resultingResult` VARCHAR(45) NULL,\n" + 
+					"  `constraints` VARCHAR(45) NULL,\n" + 
+					"  `timeEstimate` VARCHAR(45) NULL,\n" + 
+					"  PRIMARY KEY (`estimatorReportID`));\n" + 
 					"");
 			stmt.close();
 		} catch (SQLException e) {

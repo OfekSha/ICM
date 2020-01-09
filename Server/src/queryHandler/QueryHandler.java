@@ -21,13 +21,17 @@ import java.util.EnumSet;
 
 import static Entity.ProcessStage.ChargeRequestStages;
 
-/**  concentrates all existing query Classes <p>
- * @see FilesQuerys, 
- *@see  ChangeRequestQuerys 
- * @see ProccesStageQuerys,
- *  @see InitiatorQuerys
- *	@see UserQuerys
+/**
+ * concentrates all existing query Classes
+ * <p>
  * 
+ * @see FilesQuerys,
+ * @see ChangeRequestQuerys
+ * @see ProccesStageQuerys,
+ * @see InitiatorQuerys
+ * @see UserQuerys
+ * @see InspectorUpdatesQuerys
+ * @see EstimatorReportQuerys
  *
  */
 public class QueryHandler {
@@ -40,7 +44,8 @@ public class QueryHandler {
 
 	private InitiatorQuerys initiatorQuerys;
 	private UserQuerys userQuerys;
-	private  InspectorUpdatesQuerys inspectorUpdatesQuerys;
+	private InspectorUpdatesQuerys inspectorUpdatesQuerys;
+	private EstimatorReportQuerys estimatorReportQuerys;
 
 	public QueryHandler(mysqlConnection mysqlConn) {
 		this.mysqlConn = mysqlConn;
@@ -49,7 +54,8 @@ public class QueryHandler {
 		this.proccesStageQuerys = new ProccesStageQuerys(this);
 		this.initiatorQuerys = new InitiatorQuerys(this);
 		this.userQuerys = new UserQuerys(this);
-		this.inspectorUpdatesQuerys= new InspectorUpdatesQuerys(this);
+		this.inspectorUpdatesQuerys = new InspectorUpdatesQuerys(this);
+		this.estimatorReportQuerys = new EstimatorReportQuerys(this);
 	}
 
 	public mysqlConnection getmysqlConn() {
@@ -76,8 +82,13 @@ public class QueryHandler {
 	public UserQuerys getUserQuerys() {
 		return userQuerys;
 	}
+
 	public InspectorUpdatesQuerys getInspectorUpdatesQuerys() {
 		return inspectorUpdatesQuerys;
+	}
+
+	public EstimatorReportQuerys getEstimatorReportQuerys() {
+		return estimatorReportQuerys;
 	}
 
 	// all old prototype methods
