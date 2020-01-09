@@ -1,7 +1,6 @@
 package GUI;
 
 import Entity.ChangeRequest;
-import Entity.ProcessStage;
 import Entity.ProcessStage.subStages;
 import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer;
@@ -22,6 +21,7 @@ import static Entity.ProcessStage.ChargeRequestStages.execution;
 import static Entity.ProcessStage.subStages.determiningDueTime;
 import static Entity.ProcessStage.subStages.supervisorAllocation;
 import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
+import static GUI.PopUpWindows.DueTimeController.processStage;
 import static GUI.PopUpWindows.GetExtensionController.Approve;
 
 public class ExecutionLeaderForm extends EstimatorExecutorForm {
@@ -37,7 +37,6 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 	public TableColumn<requirementForTable, String> colStatus;
 	public TableColumn<requirementForTable, String> colDueTime;
 
-	public static ProcessStage processStage;
 
 	private String selectedID;
 	private ChangeRequest changeRequest;
