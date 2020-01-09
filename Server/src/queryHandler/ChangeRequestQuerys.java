@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import Entity.ChangeRequest;
 import Entity.Document;
 import Entity.Initiator;
+import Entity.InspectorUpdateDescription;
 import Entity.ProcessStage;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -64,6 +65,7 @@ public class ChangeRequestQuerys {
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
+	    	queryHandler.getInspectorUpdatesQuerys().UpdateOrInsertInspectorUpdates(newRequest.getInspectorUpdateDescription(),newRequest.getRequestID());
 	    	return String.valueOf(count);
 	    } // end of InsertChangeRequest()
 
@@ -90,6 +92,10 @@ public class ChangeRequestQuerys {
 	        }
 	    	queryHandler.getProccesStageQuerys().updateAllProcessStageFields(changeRequest.getProcessStage());
 	    	queryHandler.getInitiatorQuerys().updateAllInitiatorFields(changeRequest.getInitiator());
+	    	queryHandler.getInspectorUpdatesQuerys().UpdateOrInsertInspectorUpdates(changeRequest.getInspectorUpdateDescription(),changeRequest.getRequestID());
+
+		    	
+		    	
 	    }// END updateChangeRequest()
 
 	    private void setChangeRequestFieldsStmnt(ChangeRequest newRequest, PreparedStatement stmt) throws SQLException {
@@ -119,6 +125,7 @@ public class ChangeRequestQuerys {
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
+	        
 	        return toReturn;
 	    } // END of getAllChangeRequest();
 	    
@@ -297,6 +304,7 @@ public class ChangeRequestQuerys {
 	            toPut.setStage(stage);
 	            toPut.updateStage();
 	            toPut.updateInitiatorRequest();
+	            toPut.setInspectorUpdateDescription(queryHandler.getInspectorUpdatesQuerys().SelectInspectorUpdates(toPut.getRequestID()));
 	            //toPut.updateStage();
 	            return toPut;
 	        } catch (Exception e) {

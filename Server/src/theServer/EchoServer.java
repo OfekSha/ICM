@@ -6,6 +6,7 @@ import Entity.ProcessStage.subStages;
 import Entity.User.ICMPermissions;
 import Entity.User.Job;
 import Entity.clientRequestFromServer.requestOptions;
+import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import queryHandler.QueryHandler;
@@ -329,6 +330,14 @@ public class EchoServer extends AbstractServer {
 		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
+		
+		// adding  update 
+		InspectorUpdateDescription des =new InspectorUpdateDescription(newUser,"test",LocalDate.now(),inspectorUpdateKind.freeze);
+		changeRequest.addInspectorUpdate(des);
+		des=new InspectorUpdateDescription(newUser,"test",LocalDate.now(),inspectorUpdateKind.unfreeze);
+		changeRequest.addInspectorUpdate(des);
+		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
+		
 		// change request stage 5
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
 		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
@@ -377,6 +386,7 @@ public class EchoServer extends AbstractServer {
 			enterUsersToDB();
 			enterChangeRequestToDB();
 			//testing
+			ArrayList<ChangeRequest>  a = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
 			System.out.println("New DB ready for use");
 		}
 	}

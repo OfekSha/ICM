@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * @author Yonathan in proggress
+ *  represents one change request in the system
  */
 public class ChangeRequest implements Serializable {
 
@@ -22,12 +22,14 @@ public class ChangeRequest implements Serializable {
     private ArrayList<Document> uploadedDocs;
     private ChangeRequestStatus status = ChangeRequestStatus.ongoing;
     private ProcessStage stage = new ProcessStage(this);
+    private ArrayList<InspectorUpdateDescription> ionspectorUpdateDescription =  new ArrayList<>();
 
     public ChangeRequest(Initiator initiator, LocalDate startDate,
                          String system, String problemDescription,
-                         String changeReason, String comment, ArrayList<Document>  uploadedDocs) {
+                         String changeReason, String comment, ArrayList<Document>  uploadedDocs ) {
         this.comment = comment;
-        this.initiator = initiator;
+        if( initiator!=null) initiator.setRequest(this);
+        this.initiator = initiator;    
         this.startDate = startDate;
         this.system = system;
         this.problemDescription = problemDescription;
@@ -44,13 +46,28 @@ public class ChangeRequest implements Serializable {
     }
     
     public void setStage(ProcessStage stage) {
+    	 if (stage!=null)stage.setRequest(this);
     	this.stage = stage;
     }
     public void setDocs(ArrayList<Document>  uploadedDocs) {
     	   this.uploadedDocs = uploadedDocs;	
     }
+    public void setInspectorUpdateDescription(ArrayList<InspectorUpdateDescription> ionspectorUpdateDescription ) {
+    	if(ionspectorUpdateDescription!=null) {
+    		for(InspectorUpdateDescription e:ionspectorUpdateDescription) {
+    			e.setReferencedChangeRequest(this);
+    		}
+    	}
+    	   this.ionspectorUpdateDescription =ionspectorUpdateDescription;
+    	   }//END of setInspectorUpdateDescription();
+    
+    public void addInspectorUpdate(InspectorUpdateDescription inspectorUpdateDescription) {
+    	inspectorUpdateDescription.setReferencedChangeRequest(this);
+    	ionspectorUpdateDescription.add(inspectorUpdateDescription);
+    }
 
     //update
+    
     /**Related classes on changes  - only impotent they have there this classes ID , no need to keep more updated
      *
      */
@@ -109,6 +126,10 @@ public class ChangeRequest implements Serializable {
     public  ProcessStage getProcessStage() {
     	return stage;
     }
+    public ArrayList<InspectorUpdateDescription> getInspectorUpdateDescription(){
+    	return  ionspectorUpdateDescription;
+    }
+ 
 
     @Override // Override object method: equals (use for lists)
     public boolean equals(Object another) {

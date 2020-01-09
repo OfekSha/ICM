@@ -40,6 +40,7 @@ public class QueryHandler {
 
 	private InitiatorQuerys initiatorQuerys;
 	private UserQuerys userQuerys;
+	private  InspectorUpdatesQuerys inspectorUpdatesQuerys;
 
 	public QueryHandler(mysqlConnection mysqlConn) {
 		this.mysqlConn = mysqlConn;
@@ -48,6 +49,7 @@ public class QueryHandler {
 		this.proccesStageQuerys = new ProccesStageQuerys(this);
 		this.initiatorQuerys = new InitiatorQuerys(this);
 		this.userQuerys = new UserQuerys(this);
+		this.inspectorUpdatesQuerys= new InspectorUpdatesQuerys(this);
 	}
 
 	public mysqlConnection getmysqlConn() {
@@ -73,6 +75,9 @@ public class QueryHandler {
 
 	public UserQuerys getUserQuerys() {
 		return userQuerys;
+	}
+	public InspectorUpdatesQuerys getInspectorUpdatesQuerys() {
+		return inspectorUpdatesQuerys;
 	}
 
 	// all old prototype methods
