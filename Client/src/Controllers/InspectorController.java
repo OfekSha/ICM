@@ -2,6 +2,8 @@ package Controllers;
 
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.InspectorUpdateDescription;
+import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import Entity.ProcessStage;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
@@ -11,6 +13,7 @@ import Entity.User.Job;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.InspectorForm;
+import GUI.UserForm;
 import WindowApp.ClientLauncher;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -158,14 +161,19 @@ public class InspectorController {
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.getAllUsersByJob, Job.informationEngineer));
 	}
 
-	public static void approveDueTime(boolean approve, requirementForTable req) {
+	public static void approveDueTime(boolean approve, requirementForTable req,String reason) {
 		ChangeRequest selectedRequest = getReq(req);
+		InspectorUpdateDescription report;;
 		if (approve) {
 			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
+			report= new InspectorUpdateDescription(UserForm.user,reason,LocalDate.now(),inspectorUpdateKind.approveDueTime);
+			selectedRequest.addInspectorUpdate(report);
 		}
 		else {
 			selectedRequest.getProcessStage().setCurrentSubStage(subStages.determiningDueTime);
 			selectedRequest.getProcessStage().setDueDate(null);
+			report= new InspectorUpdateDescription(UserForm.user,reason,LocalDate.now(),inspectorUpdateKind.DisapproveDueTime);
+			selectedRequest.addInspectorUpdate(report);
 		}
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 	}

@@ -35,7 +35,7 @@ import static Entity.clientRequestFromServer.requestOptions.getAll;
 public abstract class UserForm implements IcmForm {
 
 	// vars
-	static User user = null; // connected user;
+	public static User user = null; // connected user;
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
 	static ChangeRequestStatus requestStatus;

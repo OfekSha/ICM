@@ -7,10 +7,16 @@ import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -48,8 +54,43 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 		
 		@FXML
 		public TableColumn<requirementForTable, String> columnMessage;
-		
-		
+		public static Stage popupWindow;
+		@FXML
+		public void setDueTimeClicked(ActionEvent event) {
+			try {
+				// not work because the fxml work only with execution leader.
+				popupWindow("DeterminingDueTime.fxml",event);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getCause());
+			}
+		}
+		@FXML
+		public void askExtensionClicked(ActionEvent event) {
+			try {
+				// not work because the fxml work only with execution leader.
+				popupWindow("GetExtension.fxml",event);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getCause());
+			}
+		}
+		private void popupWindow(String target, ActionEvent event) throws IOException {
+			popupWindow = new Stage();
+			Parent root = FXMLLoader.load(this.getClass().getResource(target));
+			Scene scene = new Scene(root);
+			popupWindow.setScene(scene);
+			popupWindow.initModality(Modality.APPLICATION_MODAL);
+			popupWindow.show();
+			EstimatorMainForm icmForm = this;
+
+			// what happened when close window from out or from stage.close / stage.hide
+			// method
+			popupWindow.setOnCloseRequest(windowEvent ->  // close from out (alt +f4)
+						ClientLauncher.client.setClientUI(icmForm));
+			// stage.close / stage.hide method
+			popupWindow.setOnHidden(we -> ClientLauncher.client.setClientUI(icmForm));
+		}
 		@Override
 		public void initialize(URL arg0, ResourceBundle arg1) {
 			// TODO Auto-generated method stub
