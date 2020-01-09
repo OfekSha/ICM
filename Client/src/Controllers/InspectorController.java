@@ -202,11 +202,19 @@ public class InspectorController {
 
 	}
 
-	public static void approveExtension(boolean approve, requirementForTable req) {
+	public static void approveExtension(boolean approve, requirementForTable req,String reactionReason) {
 		ChangeRequest selectedRequest = getReq(req);
+		InspectorUpdateDescription report;
+		
 		if (approve) {
 			selectedRequest.getProcessStage().setFlagExtensionRequestHandled();
+			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.approveExtension);
+		}else {
+			selectedRequest.getProcessStage().setFlagExtensionRequestNotHandled();
+			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.DisapproveExtension);
 		}
+		selectedRequest.addInspectorUpdate(report);
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
 	}
 	// functions for server - client protocol:
 
