@@ -12,7 +12,7 @@ import Entity.User.ICMPermissions;
 public class InspectorUpdateDescription implements Serializable {
 
 	public enum inspectorUpdateKind {
-		freeze, unfreeze, close, approveExtension, DisapproveExtension, ApproveSupervisor
+		freeze, unfreeze, close, approveExtension, DisapproveExtension, ApproveSupervisor, approveDueTime,DisapproveDueTime
 	}
 	/** the updateds DB  key
 	 * 

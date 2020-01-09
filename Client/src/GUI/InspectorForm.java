@@ -4,6 +4,8 @@ import Controllers.InspectorController;
 import Controllers.InspectorController.requirementForTable;
 import Entity.ChangeRequest;
 import Entity.ProcessStage.ChargeRequestStages;
+import GUI.PopUpWindows.ApproveRoleForm;
+import GUI.PopUpWindows.ApproveRoleForm.Role;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
@@ -163,15 +165,16 @@ public class InspectorForm extends UserForm implements IcmForm {
 		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStage().getCurrentStage()) {
 		case meaningEvaluation: // need to approve Estimator
-			popupWindow("/GUI/PopUpWindows/ApproveEstimator.fxml", event);
+			ApproveRoleForm.role=Role.estimator;
 			break;
 		case execution: // need to approve Execution Leader
-			popupWindow("/GUI/PopUpWindows/ApproveExecutionLeader.fxml", event);
+			ApproveRoleForm.role=Role.executionLeader;
 			break;
 		default:
 			// need to throw new exception.
 			break;
 		}
+		popupWindow("/GUI/PopUpWindows/ApproveRole.fxml", event);
 	}
 
 	public void dueTimeApprove(ActionEvent event) throws Exception {

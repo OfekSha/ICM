@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.awt.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,14 +21,16 @@ public class ApproveDueTimeController extends AbstractPopUp implements IcmForm {
     @FXML
     private Label title;
     @FXML
+    private TextField description;
+    @FXML
     void getApprove(ActionEvent event) {
-    	InspectorController.approveDueTime(true, InspectorController.selectedReqFromTable);
+    	InspectorController.approveDueTime(true, InspectorController.selectedReqFromTable,description.getText());
     	((Stage) btnApprove.getScene().getWindow()).close();
     }
 
     @FXML
     void getDisapprove(ActionEvent event) {
-    	InspectorController.approveDueTime(false, InspectorController.selectedReqFromTable);
+    	InspectorController.approveDueTime(false, InspectorController.selectedReqFromTable,description.getText());
     	((Stage) btnApprove.getScene().getWindow()).close();
     }
 

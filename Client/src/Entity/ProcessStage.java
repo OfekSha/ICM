@@ -164,6 +164,9 @@ public class ProcessStage implements Serializable {
 	public void setFlagExtensionRequestHandled() {
 		WasThereAnExtensionRequest[currentStage.ordinal()] = 2;
 	}
+	public void setFlagExtensionRequestNotHandled() {
+		WasThereAnExtensionRequest[currentStage.ordinal()] = 0;
+	}
 
 	public void newStageSupervisor(User supervisor) {
 		if (supervisor != null) {
