@@ -1,5 +1,6 @@
 package Entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import Entity.User.ICMPermissions;
@@ -8,7 +9,7 @@ import Entity.User.ICMPermissions;
  * Represents an update action the inspector can make.
  *
  */
-public class InspectorUpdateDescription {
+public class InspectorUpdateDescription implements Serializable {
 
 	public enum inspectorUpdateKind {
 		freeze, unfreeze, close, approveExtension, DisapproveExtension, ApproveSupervisor
