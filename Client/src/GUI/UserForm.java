@@ -21,12 +21,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -131,13 +130,11 @@ public abstract class UserForm implements IcmForm {
 	}
 
 	protected void popupWindowLauncher(String target) throws IOException {
-		// inspectorWindow.setScene(((Node)event.getTarget()).getScene());
 		popupWindow = new Stage();
 		Parent root = FXMLLoader.load(this.getClass().getResource(target));
 		Scene scene = new Scene(root);
 		popupWindow.setScene(scene);
-		popupWindow.initModality(Modality.APPLICATION_MODAL);
-		popupWindow.show();
+		popupWindow.showAndWait();
 	}
 	
 	
@@ -193,9 +190,10 @@ public abstract class UserForm implements IcmForm {
 	public void getFromServer(Object message) { // msg is ArrayList of Entity.ChangeRequest classes
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		System.out.print("\n["
-				+ ZonedDateTime.now().toString()
-				.split("T")[1]
-				.split("\\+")[0]
+				+ LocalTime.now()
+				//+ ZonedDateTime.now().toString()
+				//.split("T")[1]
+				//.split("\\+")[0]
 				+ "]: Message from server -> " + message.toString());
 		Object[] objectArray;
 		switch (request.getRequest()) {
