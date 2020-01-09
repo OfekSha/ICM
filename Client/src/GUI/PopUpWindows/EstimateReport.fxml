@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="BOTTOM_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="500.0" spacing="15.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.GetExtensionController">
+   <Label prefHeight="28.0" prefWidth="159.0" text="Insert Fields of Report:" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Label>
+   <GridPane prefHeight="94.0" prefWidth="459.0">
+     <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="127.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="128.0" />
+       <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="109.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="111.0" />
+     </columnConstraints>
+     <rowConstraints>
+         <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="101.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="102.0" text="Location " textAlignment="CENTER" textFill="WHITE" />
+         <Label contentDisplay="CENTER" text="Change Description" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1" />
+         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="101.0" text="Desired Result" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="2" />
+         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="100.0" text="Constraints" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" />
+         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="98.0" text="Risks" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         <Label contentDisplay="CENTER" text="Due Time Estimate" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+         <TextArea prefHeight="67.0" prefWidth="110.0" GridPane.columnIndex="1" />
+         <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <TextArea prefHeight="62.0" prefWidth="117.0" GridPane.columnIndex="3" />
+         <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+         <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      </children>
+   </GridPane>
+      <HBox alignment="CENTER" fillHeight="false" prefHeight="35.0" prefWidth="500.0" spacing="300.0">
+            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#getCancel" text="Cancel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnSendRequest" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#sendExtensionRequest" text="Send Report" />
+      </HBox>
+</VBox>
