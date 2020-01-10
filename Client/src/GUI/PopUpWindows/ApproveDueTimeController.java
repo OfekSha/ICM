@@ -24,19 +24,19 @@ public class ApproveDueTimeController extends AbstractPopUp implements IcmForm {
     private TextField description;
     @FXML
     void getApprove(ActionEvent event) {
-    	InspectorController.approveDueTime(true, InspectorController.selectedReqFromTable,description.getText());
+    	InspectorController.approveDueTime(true, InspectorController.selectedRequest,description.getText());
     	((Stage) btnApprove.getScene().getWindow()).close();
     }
 
     @FXML
     void getDisapprove(ActionEvent event) {
-    	InspectorController.approveDueTime(false, InspectorController.selectedReqFromTable,description.getText());
+    	InspectorController.approveDueTime(false, InspectorController.selectedRequest,description.getText());
     	((Stage) btnApprove.getScene().getWindow()).close();
     }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		title.setText("Approve Due Time ("+InspectorController.selectedReqFromTable.getDueTime()+") for request" +InspectorController.selectedReqFromTable.getId());
+		title.setText("Approve Due Time ("+InspectorController.selectedRequest.getProcessStage().getDueDate()+") for request" +InspectorController.selectedRequest.getRequestID());
 		
 	}
 

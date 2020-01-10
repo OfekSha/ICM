@@ -36,7 +36,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 
 	@FXML
 	public void getApprove(ActionEvent event) {
-		InspectorController.changeRole(InspectorController.selectedReqFromTable,
+		InspectorController.changeRole(InspectorController.selectedRequest,
 				cmbITMembers.getSelectionModel().getSelectedItem());
 		((Stage) btnApprove.getScene().getWindow()).close();
 	}
@@ -48,10 +48,10 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 		
 		switch (role) {
 		case estimator:
-			title.setText("Approve Estimator for request " + InspectorController.selectedReqFromTable.getId());
+			title.setText("Approve Estimator for request " + InspectorController.selectedRequest.getRequestID());
 			break;
 		case executionLeader:
-			title.setText("Approve Execution Leader for request "+InspectorController.selectedReqFromTable.getId());
+			title.setText("Approve Execution Leader for request "+InspectorController.selectedRequest.getRequestID());
 			break;
 			
 		}

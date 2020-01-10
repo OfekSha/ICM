@@ -4,7 +4,6 @@ package GUI.PopUpWindows;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.scene.control.SelectedCellsMap;
 
 import Controllers.InspectorController;
 import WindowApp.IcmForm;
@@ -29,19 +28,19 @@ public class ApproveExtensionController extends AbstractPopUp implements IcmForm
 
     @FXML
     void getApprove(ActionEvent event) {  
-    	InspectorController.approveExtension(true, InspectorController.selectedReqFromTable, reactionReason.getText());
+    	InspectorController.approveExtension(true, InspectorController.selectedRequest, reactionReason.getText());
     	getCancel();
     }
 
     @FXML
     void getDisapprove(ActionEvent event) {  
-    	InspectorController.approveExtension(false, InspectorController.selectedReqFromTable, reactionReason.getText());
+    	InspectorController.approveExtension(false, InspectorController.selectedRequest, reactionReason.getText());
     	getCancel();
     }
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-		title.setText("Do you approve extension for request " +InspectorController.selectedReqFromTable.getId());
-		extensionExplanation.setText(InspectorController.selectedReqFromTable.getStage().getExtensionExplanation());
+		title.setText("Do you approve extension for request " +InspectorController.selectedRequest.getRequestID());
+		extensionExplanation.setText(InspectorController.selectedRequest.getProcessStage().getExtensionExplanation());
 		
 	}
 

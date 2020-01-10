@@ -5,9 +5,11 @@ import Entity.clientRequestFromServer;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
+import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import javafx.scene.control.MenuItem;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,10 +19,10 @@ public class EstimatorController {
 	public static ArrayList <ChangeRequest> requests; // requests the controller holds
 	public static ChangeRequest selectedRequest; // request that was selected from the forms.
 	
-	public static void setSelectedRequest(InspectorController.requirementForTable selectedReq) {
+	public static void setSelectedRequest(requirementForTable selectedReq) {
 		selectedRequest=getReq(selectedReq);
 	}
-	public static ChangeRequest getReq(InspectorController.requirementForTable tableReq) throws NullPointerException {
+	public static ChangeRequest getReq(requirementForTable tableReq) throws NullPointerException {
 		for (ChangeRequest regular : requests) {
 			if (regular.getRequestID().equals(tableReq.getId()))
 				return regular;
@@ -28,7 +30,7 @@ public class EstimatorController {
 		throw new NullPointerException("The table view not match to the regular change requests.");
 	}
 	private static void requestToServerProtocol(clientRequestFromServer req) { // send to server request protocol.
-		ClientLauncher.client.handleMessageFromClientUI(req);
+		ClientLauncher.client.handleMessageFromClientUI((Object)req);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -37,7 +39,7 @@ public class EstimatorController {
 		clientRequestFromServer response = (clientRequestFromServer) message;
 		//Object[] objectArray;
 		switch (response.getRequest()) { //TODO too few cases in switch
-			case getChangeRequestByStatus:
+			case getAllChangeRequestWithStatusAndStage:
 				requests = (ArrayList <ChangeRequest>) ((Object[])response.getObject())[0];
 				break;
 			default:throw new IllegalArgumentException(
@@ -89,6 +91,7 @@ public class EstimatorController {
 		requestToServerProtocol(toServer);
 		
 	}
+	
 	
 	
 }

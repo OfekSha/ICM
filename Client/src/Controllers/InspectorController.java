@@ -24,83 +24,24 @@ import java.util.ArrayList;
 
 public class InspectorController {
 
-	// functions and class to work with Table view :
-
-	/**
-	 * This class make changeRequest class compatible with table view component.
-	 *
-	 * @author Ofek
-	 */
-	public static class requirementForTable {
-		private SimpleStringProperty message;
-		private SimpleStringProperty id;
-		private SimpleObjectProperty<ChangeRequestStatus> status;
-		private SimpleObjectProperty<ProcessStage> stage;
-		private SimpleObjectProperty<LocalDate> dueTime;
-
-		public String getMessage() {
-			return message.get();
-		}
-
-		public String getId() {
-			return id.get();
-		}
-
-		public ChangeRequestStatus getStatus() {
-			return status.get();
-		}
-
-		public ProcessStage getStage() {
-			return stage.get();
-		}
-
-		public LocalDate getDueTime() {
-			return dueTime.get();
-		}
-
-		public requirementForTable(ChangeRequest req) {
-			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
-			id = new SimpleStringProperty(req.getRequestID());
-			status = new SimpleObjectProperty<>(req.getStatus());
-			message = new SimpleStringProperty("test");
-			stage = new SimpleObjectProperty<>(req.getProcessStage());
-			dueTime = new SimpleObjectProperty<>(req.getProcessStage().getDates()[stageNumber][1]);
-		}
-
-	}
-
-	public static ArrayList<requirementForTable> requirementForTableList(ArrayList<ChangeRequest> reqList) {
-		ArrayList<requirementForTable> newList = new ArrayList<>();
-		for (ChangeRequest req : reqList)
-			newList.add(new requirementForTable(req));
-		return newList;
-	}
-
-	public static ChangeRequest getReq(requirementForTable tableReq) throws NullPointerException {
-		for (ChangeRequest regular : InspectorForm.reqList) {
-			if (regular.getRequestID().equals(tableReq.getId()))
-				return regular;
-		}
-		throw new NullPointerException("The table view not match to the regular change requests.");
-	}
+	public static ArrayList<ChangeRequest> requests = new ArrayList<ChangeRequest>();
 	// public ArrayList <lReport> getClosedRequests(){}
-
+	public static ChangeRequest selectedRequest;
 	// functions for bottom buttons:
-	private static void changeStatus(requirementForTable req, ChangeRequestStatus newStatus) {
-		ChangeRequest selectedRequest = getReq(req);
-		selectedRequest.setStatus(newStatus);
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+	private static void changeStatus(ChangeRequest req, ChangeRequestStatus newStatus) {
+		req.setStatus(newStatus);
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 	}
 
-	public static void freeze(requirementForTable req) {
+	public static void freeze(ChangeRequest req) {
 		changeStatus(req, ChangeRequestStatus.suspended);
 	}
 
-	public static void unfreeze(requirementForTable req) {
+	public static void unfreeze(ChangeRequest req) {
 		changeStatus(req, ChangeRequestStatus.ongoing);
 	}
 
-	public static void closeRequest(requirementForTable req) {
+	public static void closeRequest(ChangeRequest req) {
 		changeStatus(req, ChangeRequestStatus.closed);
 	}
 
@@ -155,35 +96,32 @@ public class InspectorController {
 
 	// function for popup windows:
 	public static ArrayList<User> informationEngineers;
-	public static requirementForTable selectedReqFromTable;
 
 	public static void getInformationEngineers() {
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.getAllUsersByJob, Job.informationEngineer));
 	}
 
-	public static void approveDueTime(boolean approve, requirementForTable req,String reason) {
-		ChangeRequest selectedRequest = getReq(req);
+	public static void approveDueTime(boolean approve, ChangeRequest req,String reason) {
 		InspectorUpdateDescription report;;
 		if (approve) {
-			selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
+			req.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 			report= new InspectorUpdateDescription(UserForm.user,reason,LocalDate.now(),inspectorUpdateKind.approveDueTime);
-			selectedRequest.addInspectorUpdate(report);
+			req.addInspectorUpdate(report);
 		}
 		else {
-			selectedRequest.getProcessStage().setCurrentSubStage(subStages.determiningDueTime);
-			selectedRequest.getProcessStage().setDueDate(null);
+			req.getProcessStage().setCurrentSubStage(subStages.determiningDueTime);
+			req.getProcessStage().setDueDate(null);
 			report= new InspectorUpdateDescription(UserForm.user,reason,LocalDate.now(),inspectorUpdateKind.DisapproveDueTime);
-			selectedRequest.addInspectorUpdate(report);
+			req.addInspectorUpdate(report);
 		}
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 	}
 
-	public static void changeRole(requirementForTable req, User user) {
-		ChangeRequest selectedRequest = getReq(req);
-		selectedRequest.getProcessStage().newStageSupervisor(user); // set user to be supervisor
-		selectedRequest.getProcessStage().setCurrentSubStage(subStages.determiningDueTime); // next sub stage
+	public static void changeRole(ChangeRequest req, User user) {
+		req.getProcessStage().newStageSupervisor(user); // set user to be supervisor
+		req.getProcessStage().setCurrentSubStage(subStages.determiningDueTime); // next sub stage
 
-		switch (selectedRequest.getProcessStage().getCurrentStage()) {
+		switch (req.getProcessStage().getCurrentStage()) {
 			// give permission to user
 			case meaningEvaluation:
 				user.getICMPermissions().add(ICMPermissions.estimator);
@@ -193,28 +131,27 @@ public class InspectorController {
 				break;
 			default:
 				throw new IllegalArgumentException(
-						"Inspector can\"t approve role to stage " + selectedRequest.getProcessStage().getCurrentStage());
+						"Inspector can\"t approve role to stage " + req.getProcessStage().getCurrentStage());
 		}
 		// send request to server
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 		// send user with the new permission to the server.
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateUser, user));
 
 	}
 
-	public static void approveExtension(boolean approve, requirementForTable req,String reactionReason) {
-		ChangeRequest selectedRequest = getReq(req);
+	public static void approveExtension(boolean approve, ChangeRequest req,String reactionReason) {
 		InspectorUpdateDescription report;
 		
 		if (approve) {
-			selectedRequest.getProcessStage().setFlagExtensionRequestHandled();
+			req.getProcessStage().setFlagExtensionRequestHandled();
 			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.approveExtension);
 		}else {
-			selectedRequest.getProcessStage().setFlagExtensionRequestNotHandled();
+			req.getProcessStage().setFlagExtensionRequestNotHandled();
 			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.DisapproveExtension);
 		}
-		selectedRequest.addInspectorUpdate(report);
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, selectedRequest));
+		req.addInspectorUpdate(report);
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 	}
 	// functions for server - client protocol:
 

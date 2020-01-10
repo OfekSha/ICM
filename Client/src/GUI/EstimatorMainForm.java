@@ -1,17 +1,15 @@
 package GUI;
 
 import Controllers.EstimatorController;
-import Controllers.InspectorController;
-import Controllers.InspectorController.requirementForTable;
+import Entity.RequestTableView;
+import Entity.RequestTableView.requirementForTable;
 import WindowApp.ClientLauncher;
-import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EstimatorMainForm extends UserForm implements IcmForm {
+public class EstimatorMainForm extends UserForm {
 
 		@FXML
 		public Button btnGetDetails;
@@ -37,23 +35,23 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 
 		// menu items of menubtnWatch (the types of request):
 		@FXML
-		private MenuItem NeedToWriteAReport;
+		private MenuItem DueTimeFilter;
 		@FXML
-		private MenuItem NeedToSetDueTime;
+		private MenuItem ReportFilter;
 		
-
-		@FXML
-		public TableView<InspectorController.requirementForTable> tblviewRequests;
-		// table columns:
-		@FXML
-		public TableColumn<requirementForTable, String> columnId;
-		@FXML
-		public TableColumn<InspectorController.requirementForTable, Object> columnStatus;
-		@FXML
-		public TableColumn<InspectorController.requirementForTable, Object> columnDueTime;
+		private RequestTableView table;
 		
 		@FXML
-		public TableColumn<requirementForTable, String> columnMessage;
+		private TableView tblView;
+		@FXML
+		private TableColumn idColumn;
+		@FXML
+		private TableColumn statusColumn;
+		@FXML
+		private TableColumn dueTimeColumn;
+		@FXML
+		private TableColumn messageColumn;
+		
 		public static Stage popupWindow;
 		@FXML
 		public void setDueTimeClicked(ActionEvent event) {
@@ -71,7 +69,14 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 				// not work because the fxml work only with execution leader.
 				popupWindow("GetExtension.fxml",event);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println(e.getCause());
+			}
+		}
+		@FXML
+		private void writeReportClicked(ActionEvent event) {
+			try {
+				popupWindow("EstimateReport.fxml",event);
+			} catch (IOException e) {
 				System.out.println(e.getCause());
 			}
 		}
@@ -93,32 +98,22 @@ public class EstimatorMainForm extends UserForm implements IcmForm {
 		}
 		@Override
 		public void initialize(URL arg0, ResourceBundle arg1) {
-			// TODO Auto-generated method stub
 			ClientLauncher.client.setClientUI(this);
-			initializeTableView();
+			table=new RequestTableView(tblView,idColumn,statusColumn,null,dueTimeColumn,messageColumn);
+			
 		}
+		@Override
 		public void getFromServer(Object message) {
 			EstimatorController.messageFromServer(message);
-		}
-		
-		private void initializeTableView() {
-			columnMessage.setCellValueFactory(new PropertyValueFactory<InspectorController.requirementForTable, String>("message")); // set
-																												// values
-																												// for
-																												// messages
-			columnId.setCellValueFactory(new PropertyValueFactory<InspectorController.requirementForTable, String>("id")); // set values for id
-			columnStatus.setCellValueFactory(new PropertyValueFactory<requirementForTable, Object>("status")); // set values
-																												// for
-																												// status
-			columnDueTime.setCellValueFactory(new PropertyValueFactory<InspectorController.requirementForTable, Object>("dueTime"));
-
+			table.setData(EstimatorController.requests);
+			
 		}
 		public void filterRequests(ActionEvent event) { // get event from the menuItem.
 			EstimatorController.filterRequests(((MenuItem) event.getSource()));
 		}
 		public void onRequestClicked(MouseEvent event) {
 
-			requirementForTable selectedReq = tblviewRequests.getSelectionModel().getSelectedItem();
+			requirementForTable selectedReq = table.onRequirementClicked(event);
 			if (selectedReq == null)
 				return;
 			EstimatorController.setSelectedRequest(selectedReq);

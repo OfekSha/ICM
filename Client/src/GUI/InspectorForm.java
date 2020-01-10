@@ -1,22 +1,19 @@
 package GUI;
 
 import Controllers.InspectorController;
-import Controllers.InspectorController.requirementForTable;
 import Entity.ChangeRequest;
 import Entity.ProcessStage.ChargeRequestStages;
+import Entity.RequestTableView;
+import Entity.RequestTableView.requirementForTable;
 import GUI.PopUpWindows.ApproveRoleForm;
 import GUI.PopUpWindows.ApproveRoleForm.Role;
 import WindowApp.ClientLauncher;
-import WindowApp.IcmForm;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,7 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class InspectorForm extends UserForm implements IcmForm {
+public class InspectorForm extends UserForm {
 	// fxml vars:
 	@FXML
 	public Button btnGetDetails;
@@ -83,37 +80,23 @@ public class InspectorForm extends UserForm implements IcmForm {
 
 	@FXML
 	public TableColumn<requirementForTable, String> columnMessage;
-
+	RequestTableView table;
 	// not fxml vars:
 	public static ArrayList<ChangeRequest> reqList;
-	private ObservableList<requirementForTable> tableData;
 	private static Stage popupWindow;
 	public static Stage inspectorWindow;
+	private requirementForTable selectedReq;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
-		initializeTableView();
-	}
-
-	private void initializeTableView() {
-		columnMessage.setCellValueFactory(new PropertyValueFactory<>("message")); // set
-																											// values
-																											// for
-																											// messages
-		columnId.setCellValueFactory(new PropertyValueFactory<>("id")); // set values for id
-		columnStatus.setCellValueFactory(new PropertyValueFactory<>("status")); // set values
-																											// for
-																											// status
-		columnStage.setCellValueFactory(new PropertyValueFactory<>("stage"));
-		columnDueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
+		table=new RequestTableView(tblViewRequests,columnId,columnStatus,columnStage,columnDueTime,columnMessage);
 	}
 
 	@Override
 	public void getFromServer(Object message) {
 		InspectorController.messageFromServer(message);
-		tableData = FXCollections.observableArrayList(InspectorController.requirementForTableList(reqList));
-		tblViewRequests.setItems(tableData);
+		table.setData(InspectorController.requests);
 
 	}
 
@@ -145,15 +128,14 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
-		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
 		case ongoing:
-			InspectorController.freeze(selectedReq);
+			InspectorController.freeze(selectedReq.getOriginalRequest());
 			btnFreezeUnfreeze.setText("Unfreeze");
 			break;
 		case suspended:
-			InspectorController.unfreeze(selectedReq);
+			InspectorController.unfreeze(selectedReq.getOriginalRequest());
 			btnFreezeUnfreeze.setText("freeze");
 			break;
 		default:
@@ -162,7 +144,7 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void roleApprove(ActionEvent event) throws Exception {
-		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
+		
 		switch (selectedReq.getStage().getCurrentStage()) {
 		case meaningEvaluation: // need to approve Estimator
 			ApproveRoleForm.role=Role.estimator;
@@ -191,11 +173,10 @@ public class InspectorForm extends UserForm implements IcmForm {
 	}
 
 	public void onRequirementClicked(MouseEvent event) {
-
-		requirementForTable selectedReq = tblViewRequests.getSelectionModel().getSelectedItem();
+		 selectedReq = table.onRequirementClicked(event);
+		 InspectorController.selectedRequest=selectedReq.getOriginalRequest();
 		if (selectedReq == null)
 			return;
-		InspectorController.selectedReqFromTable = selectedReq;
 		btnGetDetails.setDisable(false);
 
 		// when extension is on:

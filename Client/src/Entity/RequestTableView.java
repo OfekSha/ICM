@@ -3,23 +3,40 @@ package Entity;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
+
+
 /**
  * 
- * Build Table View use the FXML components from this class only.
- * 
- *  make new class with no parametrs and you will get the table ready for use.
- *  
- *  use function onRequirementClicked for get selected row in the table.
- * 
+ * Build Table View use the FXML components from this class only.<br>
+ *  make new class with no parametrs and you will get the table ready for use.<br>
+ *  use function onRequirementClicked for get selected row in the table.<br>
+ *  list of fxml can use:
+ *  <li> tblviewRequests - the table</li>
+ * 	<li>columnId</li>
+ *  <li>columnStatus</li>
+ * 	<li>columnStage</li>
+ *  <li>columnDueTime</li>
+ *  <li>columnMessage</li>
+ *  <li>columninitiator</li>
+ *  <li>columnStartDate</li>
+ *  <li>columnSystem</li>
+ *  <li>columnProblemDescription</li>
+ *  <li>columnWhyChange</li>
+ *  <li>columnComment</li>
+ *  <li>columnDoc</li>
  * @author ooffe
  *
  */
@@ -55,8 +72,54 @@ public class RequestTableView {
 	@FXML
 	public TableColumn<requirementForTable, Object> columnDoc;
 
+	/**
+	 * Initialize the table and the properties of the columns.<br>
+	 * To insert data use method setData.
+	 * @see setData 
+	 */
 	public RequestTableView() {
 		initializeTableView();
+	}
+	/**
+	 * Initialize the table and the properties of the columns.<br>
+	 * If you don't use one of the column send null.<br>
+	 * To insert data use method setData.
+	 * @see setData 
+	 * @param table - fxml table view
+	 * @param id - id fxml column.
+	 * @param status -status fxml column.
+	 * @param stage - stage fxml column.
+	 * @param dueTime - due time fxml column.
+	 * @param message - message fxml column.
+	 */
+	public RequestTableView(TableView table,TableColumn id,TableColumn status,TableColumn stage,TableColumn dueTime,TableColumn message) {
+		tblviewRequests=table;
+		columnId=id;
+		columnStatus=status;
+		columnStage=stage;
+		columnDueTime=dueTime;
+		columnMessage=message;
+		initializeTableView();
+	}
+	/**
+	 * This method set data into the table.
+	 * @param requests - arrayList of requests (changeRequest)
+	 */
+	public void setData(ArrayList <ChangeRequest> requests) {
+		ObservableList<requirementForTable> tableData;
+		tableData=FXCollections.observableArrayList(requirementForTableList(requests));
+		tblviewRequests.setItems(tableData);
+	}
+	/**
+	 * This method build new array list from requests that adapt to table view.
+	 * @param reqList - arrayList of all requests (changeRequest)
+	 * @return newList - arrayList of requirementForTable
+	 */
+	private static ArrayList<requirementForTable> requirementForTableList(ArrayList<ChangeRequest> reqList) {
+		ArrayList<requirementForTable> newList = new ArrayList<>();
+		for (ChangeRequest req : reqList)
+			newList.add(new requirementForTable(req));
+		return newList;
 	}
 
 	/**
@@ -65,24 +128,36 @@ public class RequestTableView {
 	 * 
 	 */
 	private void initializeTableView() {
+		if (columnMessage!=null)
 		columnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
+		if (columnId!=null)
 		columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		if (columnStatus!=null)
 		columnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+		if (columnStage!=null)
 		columnStage.setCellValueFactory(new PropertyValueFactory<>("stage"));
+		if (columnDueTime!=null)
 		columnDueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
+		if (columninitiator!=null)
 
 		columninitiator.setCellValueFactory(new PropertyValueFactory<>("initiator"));
+		if (columnStartDate!=null)
 
 		columnStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+		if (columnSystem!=null)
 
 		columnSystem.setCellValueFactory(new PropertyValueFactory<>("system"));
+		if (columnProblemDescription!=null)
 
 		columnProblemDescription
 				.setCellValueFactory(new PropertyValueFactory<>("problemDescription"));
+		if (columnWhyChange!=null)
 
 		columnWhyChange.setCellValueFactory(new PropertyValueFactory<>("whyChange"));
+		if (columnComment!=null)
 
 		columnComment.setCellValueFactory(new PropertyValueFactory<>("comment"));
+		if (columnDoc!=null)
 
 		columnDoc.setCellValueFactory(new PropertyValueFactory<>("doc"));
 
@@ -110,6 +185,7 @@ public class RequestTableView {
 	 *
 	 */
 	public static class requirementForTable {
+		private ChangeRequest originalRequest; // this is the original request before make it adaptable to table view
 		private SimpleStringProperty message;
 		private SimpleStringProperty id;
 		private SimpleObjectProperty<ChangeRequestStatus> status;
@@ -174,6 +250,9 @@ public class RequestTableView {
 		public ArrayList<Document> getDoc() {
 			return doc.get();
 		}
+		public ChangeRequest getOriginalRequest() { // Be careful when changing the original it is not change the table.
+			return originalRequest;
+		}
 
 		/**
 		 * 
@@ -181,9 +260,10 @@ public class RequestTableView {
 		 * use SimpleStringProperty and SimpleObjectProperty
 		 * very important.
 		 * 
-		 * @param req ?
+		 * @param req -ChangeRequest
 		 */
 		public requirementForTable(ChangeRequest req) {
+			originalRequest=req;
 			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
 			id = new SimpleStringProperty(req.getRequestID());
 			status = new SimpleObjectProperty<>(req.getStatus());
@@ -200,4 +280,5 @@ public class RequestTableView {
 			doc = new SimpleObjectProperty<>(req.getDoc());
 		}
 	}
+
 }
