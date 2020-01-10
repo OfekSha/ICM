@@ -3,7 +3,6 @@ package Controllers;
 import Entity.*;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -87,38 +86,6 @@ public class SubmitRequestController {
 	  
 		
 	}//ENF of AddThefile()
-	
-	
-	/** class made for representing the change requests attached documents 
-	 * 
-	 *
-	 */
-	public static class DocumentForTable {
-		private SimpleStringProperty name;
-		private SimpleStringProperty size;
-		private Document theDoc;
-		public String getName() {
-			return name.get();
-		}
-
-		public String getSize() {
-			return size.get();
-		}
-		/**
-		 * @return The document we are representing in the table raw
-		 */
-		public Document gettheDoc() {
-			return theDoc;
-		}
-
-
-		public DocumentForTable(Document doc) {
-			name  =new SimpleStringProperty(doc.getFileName());
-			size =  new SimpleStringProperty( Double.toString((double)doc.getSize()/1E6));
-			theDoc =doc;
-		}
-
-	}
 	
 	
 	/** creates the list of documents witch are attached to the  change request for the table 

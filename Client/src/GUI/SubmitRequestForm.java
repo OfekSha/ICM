@@ -1,7 +1,7 @@
 package GUI;
 
 import Controllers.SubmitRequestController;
-import Controllers.SubmitRequestController.DocumentForTable;
+import Entity.DocumentForTable;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
