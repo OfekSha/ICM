@@ -80,9 +80,9 @@ public class InspectorForm extends UserForm {
 
 	@FXML
 	public TableColumn<requirementForTable, String> columnMessage;
-	RequestTableView table;
+	
 	// not fxml vars:
-	public static ArrayList<ChangeRequest> reqList;
+	RequestTableView table; // make adaptable class for table view.
 	private static Stage popupWindow;
 	public static Stage inspectorWindow;
 	private requirementForTable selectedReq;
@@ -253,21 +253,5 @@ public class InspectorForm extends UserForm {
 			}
 			break;
 		}
-	}
-	// TODO: the following methods are from the class diagram:
-
-	public void getUserId() {
-	}
-
-	public void getRule() {
-	}
-
-	public void getRequestId() {
-	}
-
-	public void getDoneReport() {
-	}
-
-	public void getTalkApprove() {
 	}
 }

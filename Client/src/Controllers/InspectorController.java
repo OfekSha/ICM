@@ -142,7 +142,6 @@ public class InspectorController {
 
 	public static void approveExtension(boolean approve, ChangeRequest req,String reactionReason) {
 		InspectorUpdateDescription report;
-		
 		if (approve) {
 			req.getProcessStage().setFlagExtensionRequestHandled();
 			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.approveExtension);
@@ -180,21 +179,21 @@ public class InspectorController {
 				watchRequests(watchChosen);
 				break;
 			case getChangeRequestByStatus:
-				InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
+				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 				if (watchChosen.getText().contains("Waiting for Extension")) {
 					ArrayList<ChangeRequest> newList = new ArrayList<>();
-					for (ChangeRequest req : InspectorForm.reqList) {
+					for (ChangeRequest req : requests) {
 						if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage()
 								.ordinal()] == 1)
 							newList.add(req);
 					}
-					InspectorForm.reqList = newList;
+					requests = newList;
 				}
 				break;
 			case getAllChangeRequestWithStatusAndStage:
 			case getAllChangeRequestWithStatusAndSubStageOnly:
 			case getAllChangeRequestWithStatusAndStageOnly:
-				InspectorForm.reqList = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
+				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 				break;
 			default:
 				throw new IllegalArgumentException(
