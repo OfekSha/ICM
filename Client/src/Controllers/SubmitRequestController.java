@@ -28,16 +28,16 @@ public class SubmitRequestController {
 	 * @param user ?
 	 * @return - true if the request was sent
 	 */
-	public boolean getSubmition(String requestDetails, String requestreason, String requestComment, String sys,
+	public boolean getSubmition(String requestDetails, String requestreason, String requestComment, String sys,String baseForChange,
 			User user) {
-		if (requestDetails.equals("") || requestreason.equals("") || sys.equals("")) {
+		if (requestDetails.equals("") || requestreason.equals("") || sys.equals("") || baseForChange.equals("") ) {
 			return false;
 		} else {
 			Initiator init = new Initiator(user, null);
 			LocalDate start = LocalDate.now();
 			// TODO: add doc
 			ChangeRequest change = new ChangeRequest(init, start, sys, requestDetails, requestreason, requestComment,
-					uploadedDocs);
+					baseForChange,uploadedDocs);
 			Object msg = new clientRequestFromServer(requestOptions.addRequest, change);//
 			ClientLauncher.client.handleMessageFromClientUI(msg);
 			// cleaning 
@@ -55,11 +55,13 @@ public class SubmitRequestController {
 	 * @param sys ?
 	 * @return ?
 	 */
-	public String AppendEmpty(String requestDetails, String requestreasonString,String sys) {
+	public String AppendEmpty(String requestDetails, String requestreasonString,String sys,String baseForChange) {
 		String appended ="";
+		if(baseForChange.equals("")) appended=appended+"\nBase for change ";
 		if(requestDetails.equals("")) appended=appended+"\nChange request details ";
 		if(requestreasonString.equals("")) appended=appended+"\nChange request reason ";
 		if(sys.equals("")) appended=appended+"\nInformation System ";
+		
 		return appended;
 	}
 	

@@ -56,8 +56,10 @@ public class ChangeRequestQuerys {
 	            		"problemDescription, " +
 	            		"changeReason, " +
 	                    "comment, " +
-	            		"status)" +
-	            		"VALUES(?, ?, ?, ?, ?, ?, ?);");
+	            		"status,"
+	            		+ "baseforChange"
+	            		+ ")" +
+	            		"VALUES(?, ?, ?, ?, ?, ?, ?,?);");
 	            stmt.setNString(1, String.valueOf(count));
 	            setChangeRequestFieldsStmnt(newRequest, stmt);
 	            stmt.execute(); // insert new row to requirement table
@@ -79,11 +81,12 @@ public class ChangeRequestQuerys {
 	            		+ "problemDescription = ?,"
 	            		+ "changeReason = ?,"
 	            		+ "comment = ?,"
-	            		+ "status = ?"
+	            		+ "status = ?,"
+	            		+ "baseforChange=?"
 	            		+ " WHERE (RequestID = ?);");
 	            stmt.setNString(1, changeRequest.getRequestID());
 	            setChangeRequestFieldsStmnt(changeRequest, stmt);
-	            stmt.setNString(8, changeRequest.getRequestID());
+	            stmt.setNString(9, changeRequest.getRequestID());
 
 	            stmt.execute(); // insert new row to requirement table
 	            stmt.close();
@@ -105,6 +108,7 @@ public class ChangeRequestQuerys {
 	        stmt.setNString(5, newRequest.getChangeReason());
 	        stmt.setNString(6, newRequest.getComment());
 	        stmt.setNString(7, newRequest.getStatus().name());
+	        stmt.setNString(8, newRequest.getBaseforChange());
 	    }
 
 	    
@@ -162,7 +166,7 @@ public class ChangeRequestQuerys {
 	    
 	        try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
-	                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
+	                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status, baseforChange " +
 	            		"from (SELECT icm.stage.RequestID " +
 	            		"FROM icm.stage " +
 	            		"WHERE currentStage = ? And currentSubStage = ?) as T " +
@@ -197,7 +201,7 @@ public class ChangeRequestQuerys {
 	    
 	        try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
-	                    "select K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
+	                    "select K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status, baseforChange " +
 	            		"from (SELECT icm.stage.RequestID " +
 	            		"FROM icm.stage " +
 	            		"WHERE currentStage = ? And currentSubStage = ? AND StageSupervisor = ?) as T " +
@@ -229,7 +233,7 @@ public class ChangeRequestQuerys {
 	    
 	        try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
-	                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status " +
+	                    "SELECT K.RequestID, startDate, `system`, problemDescription, changeReason, comment, status, baseforChange " +
 	            		"FROM (SELECT icm.stage.RequestID " +
 	            		"FROM icm.stage " +
 	            		"WHERE currentSubStage = ?) as T " +
@@ -258,7 +262,7 @@ public class ChangeRequestQuerys {
 	        ArrayList<ChangeRequest> toReturn = new ArrayList<>();
 	        try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
-	                    "SELECT K.RequestID, startDate,`system`, problemDescription, changeReason, comment, status " +
+	                    "SELECT K.RequestID, startDate,`system`, problemDescription, changeReason, comment, status, baseforChange " +
 	                    "FROM (SELECT icm.stage.RequestID " +
 	                    "FROM icm.stage " +
 	                    "WHERE currentStage = ?) as T " +
@@ -290,6 +294,7 @@ public class ChangeRequestQuerys {
 	            String reason = re.getString(5);
 	            String comment = re.getString(6);
 	            String status = re.getString(7);
+	            String baseforChange = re.getString(8);
 	            Initiator theInitiator =queryHandler.getInitiatorQuerys().getInitiator(RequestID);
 	            // TODO:
 	            Document doc = null;
@@ -298,7 +303,7 @@ public class ChangeRequestQuerys {
 
 	            ChangeRequestStatus statusEnum = ChangeRequest.ChangeRequestStatus.valueOf(status);
 
-	            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, null);
+	            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, baseforChange,null);
 	            toPut.setStatus(statusEnum);
 	            toPut.setRequestID(RequestID);
 	            toPut.setStage(stage);

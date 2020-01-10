@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
 //TextArea
 	@FXML
+	public TextArea taBaseForChange;
+	@FXML
 	public TextArea taRequestDetails;
 	@FXML
 	public TextArea taRequestReason;
@@ -82,7 +84,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	 *  if some fields are empty sends an alert 
 	 */
 	public void getRequestData() {
-		 if (submitRequestController.getSubmition( taRequestDetails.getText(),  taRequestReason.getText(), taComment.getText(), getSys(),user) ) {
+		 if (submitRequestController.getSubmition( taRequestDetails.getText(),  taRequestReason.getText(), taComment.getText(), getSys(),taRequestDetails.getText(),user) ) {
 		taRequestDetails.clear();
 		taRequestReason.clear();
 		taComment.clear();
@@ -91,7 +93,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		tblViewDocuments.setItems(tableData);
 		 }
 		 else {
-		String missing =submitRequestController.AppendEmpty( taRequestDetails.getText(),taRequestReason.getText(),getSys());
+		String missing =submitRequestController.AppendEmpty( taRequestDetails.getText(),taRequestReason.getText(),getSys(),taRequestDetails.getText());
 		alertWindowLauncher(AlertType.ERROR,"ERROR Dialog","Error:empty fields","The following fields must not be empty:"+missing);
 		 }
 	}

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Entity.Document;
+import Entity.InspectorUpdateDescription;
 import theServer.mysqlConnection;
 import theServer.*;;
 /**
@@ -40,10 +41,11 @@ public class FilesQuerys {
 					.prepareStatement("INSERT INTO `icm`.`docs`\n" + 
 							"(`FileID`,\n" + 
 							"`RequestID`,\n" + 
+							"`fileName`,\n" +
 							"`uploadedFile`)\n" + 
 							"VALUES\n" + 
 							"(?,\n" + 
-							"?,\n" + 
+							"?,?,\n" + 
 							"?);\n" + 
 							"");
 			setFile(stmt,each,Integer.toString(count));
@@ -59,8 +61,35 @@ public class FilesQuerys {
 		InputStream is = new ByteArrayInputStream(doc.getByteArr());
 		stmt.setNString(1,ID );
 		stmt.setNString(2, doc.getChangeRequestID());
-		stmt.setBlob(3, is);
+		stmt.setNString(3, doc.getFileName());
+		stmt.setBlob(4, is);
 		stmt.executeUpdate();
 	}// end of setFile()
+	
+	public ArrayList<Document> selectDocWithotFile(String RequestID ) {
+		ArrayList<Document> toReturn = new ArrayList<>();
+    	try {
+            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
+                    "SELECT `docs`.`FileID`,\r\n" + 
+                    "    `docs`.`RequestID`,\r\n" + 
+                    "    `docs`.`fileName`\r\n" + 
+                    "FROM `icm`.`docs`\r\n" + 
+                    " WHERE RequestID = ? ;\r\n" + 
+                    "");
+            stmt.setNString(1,RequestID);
+            ResultSet re =  stmt.executeQuery(); 
+            
+            
+            while (re.next()) {
+            	Document doc = new Document(re.getNString(3));
+            	doc.setFileID(re.getString(1));
+            	toReturn.add(doc);
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return toReturn;
+	}//END
     
 }

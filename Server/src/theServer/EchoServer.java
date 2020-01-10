@@ -257,7 +257,7 @@ public class EchoServer extends AbstractServer {
 		String []ExtensionExplanation=new String[5];
 		Initiator initiator = new Initiator(newUser, null);
 		LocalDate start = LocalDate.now();
-		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
+		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange", null);
 		// change request at stage 1
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
@@ -279,7 +279,7 @@ public class EchoServer extends AbstractServer {
 		initiator = new Initiator(newUser, null);
 		
 		// change request stage 2
-		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange", null);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
 		LocalDate[][] startEndArray = new LocalDate[5][3];
 		int[] WasThereAnExtensionRequest = new int[5];
@@ -301,7 +301,7 @@ public class EchoServer extends AbstractServer {
 		initiator = new Initiator(newUser, null);
 
 		// change request stage 3
-		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange",null);
 		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
@@ -322,7 +322,7 @@ public class EchoServer extends AbstractServer {
 		initiator = new Initiator(newUser, null);
 
 		// change request stage 4
-		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange", null);
 		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setStatus(ChangeRequestStatus.suspended);
@@ -347,7 +347,7 @@ public class EchoServer extends AbstractServer {
 		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
 		
 		// change request stage 5
-		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", null);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange", null);
 		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStatus(ChangeRequestStatus.closed);
 		changeRequest.setStage(stager);
@@ -419,6 +419,7 @@ public class EchoServer extends AbstractServer {
 	  for (Thread thread : clientThreadList) {
 	    try {
 	      User u= ((ConnectionToClient) thread).getConnectedUser();
+	      
 	      if(tryingToConnect.equals(u)) {
 	    	  return true;
 	      }

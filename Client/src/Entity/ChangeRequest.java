@@ -15,6 +15,7 @@ public class ChangeRequest implements Serializable {
     private String RequestID;
     private Initiator initiator;
     private LocalDate startDate;
+    private String  baseforChange ;
     private String system;
     private String problemDescription;
     private String changeReason;
@@ -26,7 +27,7 @@ public class ChangeRequest implements Serializable {
 
     public ChangeRequest(Initiator initiator, LocalDate startDate,
                          String system, String problemDescription,
-                         String changeReason, String comment, ArrayList<Document>  uploadedDocs ) {
+                         String changeReason, String comment,String baseforChange, ArrayList<Document>  uploadedDocs ) {
         this.comment = comment;
         if( initiator!=null) initiator.setRequest(this);
         this.initiator = initiator;    
@@ -35,6 +36,7 @@ public class ChangeRequest implements Serializable {
         this.problemDescription = problemDescription;
         this.changeReason = changeReason;
         this.uploadedDocs = uploadedDocs;
+        this.baseforChange=baseforChange;
     }
 
     // input
@@ -64,6 +66,9 @@ public class ChangeRequest implements Serializable {
     public void addInspectorUpdate(InspectorUpdateDescription inspectorUpdateDescription) {
     	inspectorUpdateDescription.setReferencedChangeRequest(this);
     	ionspectorUpdateDescription.add(inspectorUpdateDescription);
+    }
+    public void  setBaseforChange(String baseforChange) {
+    	this.baseforChange=baseforChange;
     }
 
     //update
@@ -137,5 +142,9 @@ public class ChangeRequest implements Serializable {
             return RequestID.equals(((ChangeRequest) another).RequestID);
         }
     	return false;
+    }
+    
+    public String getBaseforChange() {
+    	return baseforChange;
     }
 } // END of ChangeRequest class

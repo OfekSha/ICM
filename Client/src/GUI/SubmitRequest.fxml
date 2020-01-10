@@ -75,12 +75,14 @@
                <Label text=" Single file size limited to 16 Mb" />
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
+               <Label text="Base for change" />
+               <TextArea fx:id="taBaseForChange" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="102.0" prefWidth="480.0" />
                   <Label contentDisplay="BOTTOM" text="Change request details">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taRequestDetails" prefHeight="150.0" prefWidth="480.0" wrapText="true">
+                        <TextArea fx:id="taRequestDetails" prefHeight="102.0" prefWidth="480.0" wrapText="true">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -92,7 +94,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taRequestReason" prefHeight="150.0" prefWidth="480.0" wrapText="true" />
+                        <TextArea fx:id="taRequestReason" prefHeight="102.0" prefWidth="480.0" wrapText="true" />
                   </graphic>
                   </Label>
                   <Label alignment="CENTER" contentDisplay="BOTTOM" text="Your comment (optional)">
@@ -100,7 +102,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   <graphic>
-                        <TextArea fx:id="taComment" prefHeight="100.0" wrapText="true" />
+                        <TextArea fx:id="taComment" prefHeight="26.0" prefWidth="477.0" wrapText="true" />
                   </graphic>
                   </Label>
                   <Button fx:id="btnSubmit" contentDisplay="CENTER" mnemonicParsing="false" onAction="#getRequestData" text="Submit Change Request">
