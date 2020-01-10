@@ -1,6 +1,8 @@
 package Controllers;
 
 import Entity.ChangeRequest;
+import Entity.Document;
+import Entity.DocumentForTable;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.InspectorUpdateDescription;
 import Entity.InspectorUpdateDescription.inspectorUpdateKind;
@@ -199,5 +201,17 @@ public class InspectorController {
 				throw new IllegalArgumentException(
 						"the request " + response.getRequest() + " not implemented in the inspector controller.");
 		}
+	}
+	
+	
+	/** creates the list of documents witch are attached to the  change request for the table 
+	 * @return  DocumentForTable array list for table
+	 * @see DocumentForTable
+	 */
+	public static  ArrayList<DocumentForTable> DocumentForTableList() {
+		ArrayList<DocumentForTable> newList = new ArrayList<>();
+		for (Document doc : selectedRequest.getDoc())
+			newList.add(new DocumentForTable(doc));
+		return newList;
 	}
 }

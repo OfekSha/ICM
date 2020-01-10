@@ -5,11 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainMenuForm">
    <top>
@@ -17,7 +19,17 @@
             <ImageView fitHeight="200.0" fitWidth="200.0">
                   <Image url="@../img/ICMlogo.png" />
             </ImageView>
-         <VBox alignment="TOP_RIGHT" prefWidth="824.0" />
+         <VBox alignment="TOP_RIGHT" prefWidth="824.0">
+            <children>
+               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="205.0" prefWidth="829.0" text="Main menu" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="48.0" />
+                  </font>
+                  <effect>
+                     <DropShadow color="#030303" height="30.0" radius="14.5" width="30.0" />
+                  </effect>
+               </Label>
+            </children></VBox>
       </HBox>
    </top>
    <center>

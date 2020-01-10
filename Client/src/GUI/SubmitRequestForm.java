@@ -120,7 +120,7 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	 * 
 	 */
 	private void initializeTableView() {
-																									// messages
+																									
 		columnFileName.setCellValueFactory(new PropertyValueFactory<>("name")); // set values for id
 		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
 	
