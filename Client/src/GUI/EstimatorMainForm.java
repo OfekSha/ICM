@@ -57,7 +57,7 @@ public class EstimatorMainForm extends UserForm {
 		public void setDueTimeClicked(ActionEvent event) {
 			try {
 				// not work because the fxml work only with execution leader.
-				popupWindow("DeterminingDueTime.fxml",event);
+				popupWindow("/GUI/PopUpWindows/DeterminingDueTime.fxml",event);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getCause());
@@ -67,7 +67,7 @@ public class EstimatorMainForm extends UserForm {
 		public void askExtensionClicked(ActionEvent event) {
 			try {
 				// not work because the fxml work only with execution leader.
-				popupWindow("GetExtension.fxml",event);
+				popupWindow("/GUI/PopUpWindows/GetExtension.fxml",event);
 			} catch (IOException e) {
 				System.out.println(e.getCause());
 			}
@@ -75,7 +75,7 @@ public class EstimatorMainForm extends UserForm {
 		@FXML
 		private void writeReportClicked(ActionEvent event) {
 			try {
-				popupWindow("EstimateReport.fxml",event);
+				popupWindow("/GUI/PopUpWindows/EstimateReport.fxml",event);
 			} catch (IOException e) {
 				System.out.println(e.getCause());
 			}
@@ -127,6 +127,7 @@ public class EstimatorMainForm extends UserForm {
 			case supervisorAction:
 				btnWriteReport.setDisable(false);
 				btnSetDueTime.setDisable(true);
+				break;
 			default:
 				btnAskForTimeExtension.setDisable(true);
 				btnWriteReport.setDisable(true);

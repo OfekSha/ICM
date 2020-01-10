@@ -3,12 +3,14 @@ package GUI.PopUpWindows;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 import WindowApp.IcmForm;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 
 public class EstimatorReportForm extends AbstractPopUp implements IcmForm {
 	@FXML
@@ -32,9 +34,18 @@ public class EstimatorReportForm extends AbstractPopUp implements IcmForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		dueTimeEstimate.setTextFormatter(new TextFormatter<Integer>(c->{
-			return c;
-		}) );
+		// set due time text field could be only numbers.
+		UnaryOperator<Change> filter = change -> {
+		    String text = change.getText();
+
+		    if (text.matches("[0-9]*") && (change.getControlText().length()<3 || text.matches(""))) {
+		        return change;
+		    }
+
+		    return null;
+		};
+		TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+		dueTimeEstimate.setTextFormatter(textFormatter);
 		
 	}
 
