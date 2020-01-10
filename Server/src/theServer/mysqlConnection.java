@@ -128,11 +128,12 @@ public class mysqlConnection {
 					"  `estimatorReportID` VARCHAR(45) NOT NULL,\n" + 
 					"  `referencedRequestID` VARCHAR(45) NULL,\n" + 
 					"  `estimatorUsername` VARCHAR(45) NULL,\n" + 
-					"  `location` VARCHAR(45) NULL,\n" + 
-					"  `changeDescription` VARCHAR(45) NULL,\n" + 
-					"  `resultingResult` VARCHAR(45) NULL,\n" + 
-					"  `constraints` VARCHAR(45) NULL,\n" + 
-					"  `timeEstimate` VARCHAR(45) NULL,\n" + 
+					"  `location` TEXT NULL,\n" + 
+					"  `changeDescription` TEXT NULL,\n" + 
+					"  `resultingResult` TEXT NULL,\n" + 
+					"  `constraints` TEXT NULL,\n" + 
+					"  `timeEstimate` TEXT NULL,\n" + 
+					"  `risks` TEXT NULL,\n" + 
 					"  PRIMARY KEY (`estimatorReportID`));\n" + 
 					"");
 			stmt.close();

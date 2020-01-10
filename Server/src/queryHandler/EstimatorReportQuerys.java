@@ -51,7 +51,8 @@ public class EstimatorReportQuerys {
 	                    "`changeDescription`,\r\n" + 
 	                    "`resultingResult`,\r\n" + 
 	                    "`constraints`,\r\n" + 
-	                    "`timeEstimate`)\r\n" + 
+	                    "`timeEstimate`,"
+	                    + "`risks`)\r\n" + 
 	                    "VALUES\r\n" + 
 	                    "(?,\r\n" + 
 	                    "?,\r\n" + 
@@ -59,7 +60,7 @@ public class EstimatorReportQuerys {
 	                    "?,\r\n" + 
 	                    "?,\r\n" + 
 	                    "?,\r\n" + 
-	                    "?,\r\n" + 
+	                    "?,?,\r\n" + 
 	                    "?);\r\n" + 
 	                    "");
 	            stmt.setNString(1, String.valueOf(count));
@@ -88,6 +89,8 @@ public class EstimatorReportQuerys {
 	        stmt.setNString(6, newReport.getResultingResult());
 	        stmt.setNString(7, newReport.getConstraints());
 	        stmt.setNString(8, newReport.getTimeEstimate().toString());
+	        stmt.setNString(9, newReport.getRisks());
+
 
 	    }// end of setEstimatorReportFieldsStmnt()
 	 
@@ -108,12 +111,13 @@ public class EstimatorReportQuerys {
 	                    "`changeDescription` = ?,\r\n" + 
 	                    "`resultingResult` = ?,\r\n" + 
 	                    "`constraints` = ?,\r\n" + 
-	                    "`timeEstimate` = ?\r\n" + 
+	                    "`timeEstimate` = ?,\r\n" +
+	                    "`risks` = ?\r\n" + 
 	                    "WHERE `estimatorReportID` = ?;\r\n" + 
 	                    "");
 	            
 	            stmt.setNString(1, newReport.getEstimatorReportID());
-	            stmt.setNString(9, newReport.getEstimatorReportID());
+	            stmt.setNString(10, newReport.getEstimatorReportID());
 	            setEstimatorReportFieldsStmnt(newReport, stmt);
 	            stmt.execute(); 
 	            stmt.close();
@@ -138,7 +142,8 @@ public class EstimatorReportQuerys {
 	        	String resultingResult =re.getString(6);
 	        	String constraints =re.getString(7);
 	        	LocalDate date =LocalDate.parse(re.getString(8));
-	        	toPut=new EstimatorReport(user, loc, changeDescription, resultingResult,constraints,date);
+	        	String risks =re.getString(9);
+	        	toPut=new EstimatorReport(user, loc, changeDescription, resultingResult,constraints,risks,date);
 	        	toPut.setEstimatorReportID(ID);
 	        } catch (Exception e) {
 	            e.printStackTrace();
