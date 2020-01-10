@@ -23,7 +23,8 @@ public class clientRequestFromServer implements Serializable {
         getAllChangeRequestWithStatusAndSubStageOnly, //get all requests in a specified:  sub stage  AND state
         getAllChangeRequestWithStatusAndStageAndSupervisor, //  get all requests in a specified:  sub stage  AND state AND StageSupervisor
         LogIN ,//only for logging in - tests whether the user is logged in already
-        successfulLogInOut //Updated the server whether there is a user  related to the connection
+        successfulLogInOut, //Updated the server whether there is a user  related to the connection
+        getDoc // effectively downloding the  a requested document to the clients 
 
     }
 

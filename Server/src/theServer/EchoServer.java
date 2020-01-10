@@ -191,6 +191,9 @@ public class EchoServer extends AbstractServer {
 						client.setConnectedUser((User) request.getObject());
 						iWantResponse =false;
 						break;
+					case getDoc:
+						sendBackObject= queryHandler.getFilesQuerys().selectDocWithFile((Document) request.getObject());
+						break;
 					
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");

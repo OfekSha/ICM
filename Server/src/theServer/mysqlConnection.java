@@ -113,7 +113,8 @@ public class mysqlConnection {
 					"FileID VARCHAR(45) NOT NULL ,\n"+
 					"RequestID VARCHAR(45) NOT NULL," +
 					"fileName VARCHAR(45)  NULL," +
-					"uploadedFile MEDIUMBLOB,\n" +		
+					"uploadedFile MEDIUMBLOB,\n" +	
+					"size INT  NULL," +
 					"PRIMARY KEY (FileID)) ;\n");
 			stmt.execute("CREATE TABLE `icm`.`inspectorupdates` (\n" + 
 					"  `updateID` VARCHAR(45) NOT NULL,\n" + 

@@ -71,6 +71,9 @@ public class ChangeRequestQuerys {
 	    	return String.valueOf(count);
 	    } // end of InsertChangeRequest()
 
+	    /** updated a change request in DB
+	     * @param changeRequest - the change request witch will be updated in the DB
+	     */
 	    public void updateAllChangeRequestFields(ChangeRequest changeRequest) {
 	    	try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
@@ -296,14 +299,12 @@ public class ChangeRequestQuerys {
 	            String status = re.getString(7);
 	            String baseforChange = re.getString(8);
 	            Initiator theInitiator =queryHandler.getInitiatorQuerys().getInitiator(RequestID);
-	            // TODO:
-	            Document doc = null;
-	            //
-	            ProcessStage stage = queryHandler.getProccesStageQuerys().getProcessStage(RequestID);//<-----
+	             ArrayList<Document> docs = queryHandler.getFilesQuerys().selectDocWithotFile(RequestID);
+	            ProcessStage stage = queryHandler.getProccesStageQuerys().getProcessStage(RequestID);
 
 	            ChangeRequestStatus statusEnum = ChangeRequest.ChangeRequestStatus.valueOf(status);
 
-	            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, baseforChange,null);
+	            toPut = new ChangeRequest(theInitiator, startDate, system, description, reason, comment, baseforChange,docs);
 	            toPut.setStatus(statusEnum);
 	            toPut.setRequestID(RequestID);
 	            toPut.setStage(stage);

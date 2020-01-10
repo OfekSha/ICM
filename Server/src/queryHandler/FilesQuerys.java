@@ -1,6 +1,7 @@
 package queryHandler;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,10 +43,10 @@ public class FilesQuerys {
 							"(`FileID`,\n" + 
 							"`RequestID`,\n" + 
 							"`fileName`,\n" +
-							"`uploadedFile`)\n" + 
+							"`uploadedFile`,size)\n" + 
 							"VALUES\n" + 
 							"(?,\n" + 
-							"?,?,\n" + 
+							"?,?,?,\n" + 
 							"?);\n" + 
 							"");
 			setFile(stmt,each,Integer.toString(count));
@@ -63,6 +64,8 @@ public class FilesQuerys {
 		stmt.setNString(2, doc.getChangeRequestID());
 		stmt.setNString(3, doc.getFileName());
 		stmt.setBlob(4, is);
+		stmt.setInt(5, doc.getSize());
+
 		stmt.executeUpdate();
 	}// end of setFile()
 	
@@ -71,8 +74,7 @@ public class FilesQuerys {
     	try {
             PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
                     "SELECT `docs`.`FileID`,\r\n" + 
-                    "    `docs`.`RequestID`,\r\n" + 
-                    "    `docs`.`fileName`\r\n" + 
+                    "    `docs`.`fileName`,`docs`.`size`\r\n" + 
                     "FROM `icm`.`docs`\r\n" + 
                     " WHERE RequestID = ? ;\r\n" + 
                     "");
@@ -81,8 +83,9 @@ public class FilesQuerys {
             
             
             while (re.next()) {
-            	Document doc = new Document(re.getNString(3));
+            	Document doc = new Document(re.getNString(2));
             	doc.setFileID(re.getString(1));
+            	doc.setSize(re.getInt(3));
             	toReturn.add(doc);
             }
             stmt.close();
@@ -90,6 +93,37 @@ public class FilesQuerys {
             e.printStackTrace();
         }
     	return toReturn;
-	}//END
+	}//END selectDocWithotFile
+	
+	
+	/**
+	 * @param doc - the document withc file we want
+	 * @return
+	 */
+	public Document selectDocWithFile (Document doc) {
+		try {
+            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
+                    "SELECT `docs`.`uploadedFile`,`docs`.`size` FROM `icm`.`docs`\r\n" + 
+                    " WHERE FileID = ? ;\r\n" + 
+                    "");
+            stmt.setNString(1,doc.getFileID());
+            ResultSet re =  stmt.executeQuery(); 
+            
+            
+            while (re.next()) {
+            	Blob blob = re.getBlob(1);
+            	doc.setSize((int) blob.length());
+            	byte[] blobAsBytes = blob.getBytes(1, doc.getSize());
+            	doc.setMybytearray(blobAsBytes);
+            	//release the blob and free up memory. 
+            	blob.free();
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return doc ;
+	}// END selectDocWithFile
     
 }
