@@ -97,7 +97,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextArea fx:id="taRequestDetails" editable="false" prefHeight="164.0" prefWidth="203.0" wrapText="true">
+                                    <TextArea fx:id="RequestDetails" editable="false" prefHeight="164.0" prefWidth="203.0" wrapText="true">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -107,13 +107,13 @@
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextArea fx:id="taRequestReason" editable="false" prefHeight="120.0" prefWidth="203.0" wrapText="true" />
+                                    <TextArea fx:id="RequestReason" editable="false" prefHeight="120.0" prefWidth="203.0" wrapText="true" />
                                     <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="15.0" prefWidth="187.0" text="Comment">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextArea fx:id="taComment" editable="false" prefHeight="113.0" prefWidth="203.0" wrapText="true" />
+                                    <TextArea fx:id="Comment" editable="false" prefHeight="113.0" prefWidth="203.0" wrapText="true" />
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER" prefHeight="526.0" prefWidth="164.0">
@@ -123,7 +123,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextField editable="false" prefHeight="25.0" prefWidth="54.0" />
+                                    <TextField fx:id="system" editable="false" prefHeight="25.0" prefWidth="54.0" />
                                     <TableView fx:id="tblViewDocuments" prefHeight="407.0" prefWidth="164.0">
                                        <columns>
                                           <TableColumn fx:id="columnFileName" prefWidth="85.6666259765625" text="File name" />
@@ -142,13 +142,13 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <TextField editable="false" prefHeight="25.0" prefWidth="88.0" />
+                              <TextField fx:id="createdDate" editable="false" prefHeight="25.0" prefWidth="88.0" />
                               <Label text="Created By:">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <TextField editable="false" prefHeight="25.0" prefWidth="121.0" />
+                              <TextField fx:id="createdBy" editable="false" prefHeight="25.0" prefWidth="121.0" />
                            </children>
                         </HBox>
                      </children>

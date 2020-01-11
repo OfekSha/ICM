@@ -1,9 +1,14 @@
 package GUI;
 
 import Controllers.EstimatorController;
+import Controllers.InspectorController;
+import Entity.Document;
+import Entity.DocumentForTable;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import WindowApp.ClientLauncher;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class EstimatorMainForm extends UserForm {
@@ -38,7 +44,35 @@ public class EstimatorMainForm extends UserForm {
 		private MenuItem DueTimeFilter;
 		@FXML
 		private MenuItem ReportFilter;
-		
+		//initiator details:
+		@FXML
+	    private TextArea RequestDetails;
+
+	    @FXML
+	    private TextArea RequestReason;
+
+	    @FXML
+	    private TextArea Comment;
+
+	    @FXML
+	    private TextField system;
+	    @FXML
+	    private TableView<DocumentForTable> tblViewDocuments;
+
+	    @FXML
+	    private TableColumn<DocumentForTable, String> columnFileName;
+
+	    @FXML
+	    private TableColumn<DocumentForTable, String> columnFileSize;
+
+	    @FXML
+	    private TextField createdDate;
+
+	    @FXML
+	    private TextField createdBy;
+
+
+	    //end initiator details.
 		private RequestTableView table;
 		
 		@FXML
@@ -117,6 +151,19 @@ public class EstimatorMainForm extends UserForm {
 			if (selectedReq == null)
 				return;
 			EstimatorController.setSelectedRequest(selectedReq);
+			
+			//set details for initiator:
+			RequestDetails.setText(EstimatorController.selectedRequest.getBaseforChange());
+			RequestReason.setText(EstimatorController.selectedRequest.getChangeReason());
+			Comment.setText(EstimatorController.selectedRequest.getComment());
+			system.setText(EstimatorController.selectedRequest.getSystem());
+			createdDate.setText(EstimatorController.selectedRequest.getStartDate().toString());
+			createdBy.setText(EstimatorController.selectedRequest.getInitiator().getTheInitiator().getUserName());
+			ArrayList<Document> docs=EstimatorController.selectedRequest.getDoc();
+			DocumentForTable.setTableProperties(columnFileName, columnFileSize);
+			ObservableList<DocumentForTable> documentTableData = FXCollections.observableArrayList( DocumentForTable.createDocForTableArrayList(docs));
+			tblViewDocuments.setItems( documentTableData);
+			//end initiator details.
 			btnGetDetails.setDisable(false);
 			btnAskForTimeExtension.setDisable(false);
 			switch (selectedReq.getStage().getCurrentSubStage()) {

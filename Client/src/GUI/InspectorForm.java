@@ -236,10 +236,6 @@ public class InspectorForm extends UserForm {
 		InspectorController.watchRequests(((MenuItem) event.getSource()));
 	}
 
-	public void getDetails(ActionEvent event) {
-
-	}
-
 	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
