@@ -33,8 +33,7 @@ import java.util.ResourceBundle;
 
 public class InspectorForm extends UserForm {
 	// fxml vars:
-	@FXML
-	public Button btnGetDetails;
+
 	@FXML
 	public Button btnFreezeUnfreeze;
 	@FXML
@@ -283,6 +282,8 @@ public class InspectorForm extends UserForm {
 
 	public void onRequirementClicked(MouseEvent event) {
 		 selectedReq = table.onRequirementClicked(event);
+			if (selectedReq == null)
+				return;
 		 InspectorController.selectedRequest=selectedReq.getOriginalRequest();
 		 //set details into tab pane:
 		// requestDetails.setText(InspectorController.selectedRequest.);
@@ -355,10 +356,7 @@ public class InspectorForm extends UserForm {
 		documentTableData = FXCollections.observableArrayList( InspectorController.DocumentForTableList());
 		tblViewDocuments.setItems(documentTableData);
 
-		if (selectedReq == null)
-			return;
-		//@ yonathan to @ofeck  - the commented commend cused all the exceptions
-		//btnGetDetails.setDisable(false);
+	
 
 		// when extension is on:
 		if (selectedReq.getStage().getWasThereAnExtensionRequest()[selectedReq.getStage().getCurrentStage()
@@ -406,18 +404,12 @@ public class InspectorForm extends UserForm {
 		}
 		// when role, due time will be not disable
 		switch (selectedReq.getStage().getCurrentSubStage()) {
-		//enable due time approve
-		case determiningDueTime:
+		case ApprovingDueTime: //enable due time approve
 			btnDueTimeApprove.setDisable(false);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(true);
 			break;
-		case supervisorAction:
-			btnDueTimeApprove.setDisable(true);
-			btnCloseRequest.setDisable(true);
-			btnRoleApprove.setDisable(true);
-			break;
-		case supervisorAllocation:
+		case supervisorAllocation: // enable role approve
 			btnDueTimeApprove.setDisable(true);
 			btnCloseRequest.setDisable(true);
 			btnRoleApprove.setDisable(false);
@@ -429,6 +421,9 @@ public class InspectorForm extends UserForm {
 				btnRoleApprove.setText("Execution Leader Approve");
 				break;
 			default:
+				btnDueTimeApprove.setDisable(true);
+				btnCloseRequest.setDisable(true);
+				btnRoleApprove.setDisable(true);
 				btnRoleApprove.setText("Role Approve");
 				break;
 			}

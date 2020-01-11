@@ -35,6 +35,7 @@ public class EstimatorReportForm extends AbstractPopUp implements IcmForm {
 	@FXML
 	private void sendReport() {
 		EstimatorController.setReport(EstimatorController.selectedRequest, location.getText(), changeDescription.getText(), desiredResult.getText(), constraints.getText(), risks.getText());
+		getCancel();
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

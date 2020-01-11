@@ -57,14 +57,10 @@ public class EstimatorController {
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 	}
 	public static void setReport(ChangeRequest request,String location,String changeDescription,String desiredResult,String constraints,String risks) {
-		EstimatorReport report = request.getProcessStage().getEstimatorReport(); // get the report and change it.
-		report.setLocation(location); // set location.
-		report.setChangeDescription(changeDescription); // set change description.
-		report.setResultingResult(desiredResult); // set desired result.
-		report.setConstraints(constraints); // set constraints.
-		report.setRisks(risks); // set risks.
+		EstimatorReport report= new EstimatorReport(UserForm.user, location, changeDescription, desiredResult, constraints, risks, LocalDate.now());
+		request.getProcessStage().setEstimatorReport(report); // set new empty report for request.
 		//@@ TODO: need to add due date in days.. need int or string.
-		report.setEstimator(UserForm.user); // set this user as estimator.
+		request.getProcessStage().setEndDate(LocalDate.now());
 		request.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
 		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));

@@ -6,6 +6,7 @@ import Entity.Document;
 import Entity.DocumentForTable;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
+import GUI.PopUpWindows.DueTimeController;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -91,6 +92,7 @@ public class EstimatorMainForm extends UserForm {
 		public void setDueTimeClicked(ActionEvent event) {
 			try {
 				// not work because the fxml work only with execution leader.
+				DueTimeController.processStage=EstimatorController.selectedRequest.getProcessStage();
 				popupWindow("/GUI/PopUpWindows/DeterminingDueTime.fxml",event);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

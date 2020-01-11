@@ -55,6 +55,6 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnSendRequest" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" text="Send Report" />
+            <Button fx:id="btnSendRequest" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#sendReport" text="Send Report" />
       </HBox>
 </VBox>
