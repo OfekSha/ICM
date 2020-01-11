@@ -8,11 +8,13 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SubmitRequestForm">
    <top>
@@ -25,6 +27,14 @@
                   <Insets />
                </HBox.margin>
             </VBox>
+         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="205.0" prefWidth="829.0" text="Request submission" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="48.0" />
+            </font>
+            <effect>
+               <DropShadow color="#030303" height="30.0" radius="14.5" width="30.0" />
+            </effect>
+         </Label>
       </HBox>
    </top>
    <center>

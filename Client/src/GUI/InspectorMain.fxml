@@ -146,7 +146,8 @@
                                                       <TableColumn fx:id="columnFileSize" prefWidth="85.0" text="size (Mb)" />
                                                    </columns>
                                                 </TableView>
-                                                <Button fx:id="donwloadBtn" mnemonicParsing="false" text="Download" />
+
+                                                <Button fx:id="btnDownload" mnemonicParsing="false" text="Download" />
                                              </children>
                                           </VBox>
                                        </children>

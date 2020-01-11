@@ -2,19 +2,25 @@ package GUI;
 
 import Controllers.InspectorController;
 import Entity.ChangeRequest;
+
 import Entity.EstimatorReport;
+
+import Entity.DocumentForTable;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import GUI.PopUpWindows.ApproveRoleForm;
 import GUI.PopUpWindows.ApproveRoleForm.Role;
 import WindowApp.ClientLauncher;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -52,17 +58,6 @@ public class InspectorForm extends UserForm {
     @FXML
     private TextField informationSystem;
 
-    @FXML
-    private TableView<?> tblViewDocuments;
-
-    @FXML
-    private TableColumn<?, ?> columnFileName;
-
-    @FXML
-    private TableColumn<?, ?> columnFileSize;
-
-    @FXML
-    private Button donwloadBtn;
 
     @FXML
     private TextArea location;
@@ -184,6 +179,20 @@ public class InspectorForm extends UserForm {
 	@FXML
 	public TableColumn<requirementForTable, String> columnMessage;
 	
+	// document table vars
+	
+	// table stuff
+		@FXML
+		public TableView<DocumentForTable> tblViewDocuments;
+		// table columns:
+			@FXML
+			public TableColumn<DocumentForTable, String> columnFileName;
+			@FXML
+			public TableColumn<DocumentForTable, String> columnFileSize;
+			private ObservableList<DocumentForTable> documentTableData;
+			@FXML
+			public Button btnDownload;
+			
 	// not fxml vars:
 	RequestTableView table; // make adaptable class for table view.
 	private static Stage popupWindow;
@@ -194,6 +203,7 @@ public class InspectorForm extends UserForm {
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		table=new RequestTableView(tblViewRequests,columnId,columnStatus,columnStage,columnDueTime,columnMessage);
+		initializeDocumentTableView();
 	}
 
 	@Override
@@ -345,9 +355,14 @@ public class InspectorForm extends UserForm {
 		 extension5.setSelected(true);
 		}
 		 
+		 //setting up the document table
+		documentTableData = FXCollections.observableArrayList( InspectorController.DocumentForTableList());
+		tblViewDocuments.setItems(documentTableData);
+
 		if (selectedReq == null)
 			return;
-		btnGetDetails.setDisable(false);
+		//@ yonathan to @ofeck  - the commented commend cused all the exceptions
+		//btnGetDetails.setDisable(false);
 
 		// when extension is on:
 		if (selectedReq.getStage().getWasThereAnExtensionRequest()[selectedReq.getStage().getCurrentStage()
@@ -423,5 +438,15 @@ public class InspectorForm extends UserForm {
 			}
 			break;
 		}
+	}
+	
+	/** setting up the document  table columns 
+	 * 
+	 */
+	private void initializeDocumentTableView() {
+																									
+		columnFileName.setCellValueFactory(new PropertyValueFactory<>("name")); // set values for id
+		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
+	
 	}
 }
