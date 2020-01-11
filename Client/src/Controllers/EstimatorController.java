@@ -3,10 +3,12 @@ package Controllers;
 import Entity.ChangeRequest;
 import Entity.clientRequestFromServer;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.EstimatorReport;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer.requestOptions;
+import GUI.UserForm;
 import WindowApp.ClientLauncher;
 import javafx.scene.control.MenuItem;
 
@@ -54,8 +56,15 @@ public class EstimatorController {
 		request.getProcessStage().setCurrentSubStage(subStages.ApprovingDueTime);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 	}
-	public static void setReport(ChangeRequest request) {
-		//TODO:need to set report 
+	public static void setReport(ChangeRequest request,String location,String changeDescription,String desiredResult,String constraints,String risks) {
+		EstimatorReport report = request.getProcessStage().getEstimatorReport(); // get the report and change it.
+		report.setLocation(location); // set location.
+		report.setChangeDescription(changeDescription); // set change description.
+		report.setResultingResult(desiredResult); // set desired result.
+		report.setConstraints(constraints); // set constraints.
+		report.setRisks(risks); // set risks.
+		//@@ TODO: need to add due date in days.. need int or string.
+		report.setEstimator(UserForm.user); // set this user as estimator.
 		request.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
 		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));

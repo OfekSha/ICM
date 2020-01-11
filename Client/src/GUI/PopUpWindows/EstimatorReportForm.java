@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
+import Controllers.EstimatorController;
 import WindowApp.IcmForm;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -31,7 +32,10 @@ public class EstimatorReportForm extends AbstractPopUp implements IcmForm {
 		// TODO Auto-generated method stub
 
 	}
-
+	@FXML
+	private void sendReport() {
+		EstimatorController.setReport(EstimatorController.selectedRequest, location.getText(), changeDescription.getText(), desiredResult.getText(), constraints.getText(), risks.getText());
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// set due time text field could be only numbers.
