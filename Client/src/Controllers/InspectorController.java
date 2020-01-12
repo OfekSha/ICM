@@ -61,6 +61,9 @@ public class InspectorController {
 				toServerOption = requestOptions.getChangeRequestByStatus;
 				break;
 			case "Unfreeze Requests":
+				toServerFilter = ChangeRequestStatus.ongoing;
+				toServerOption = requestOptions.getChangeRequestByStatus;
+				break;
 			case "Waiting for Extension":
 				toServerFilter = ChangeRequestStatus.ongoing;
 				toServerOption = requestOptions.getChangeRequestByStatus;
