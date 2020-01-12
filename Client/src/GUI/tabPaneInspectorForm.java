@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
+import Entity.Document;
 import Entity.DocumentForTable;
 import Entity.EstimatorReport;
 import Entity.RequestTableView.requirementForTable;
@@ -220,5 +221,13 @@ public class tabPaneInspectorForm implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
+
+	public void pressedDownload() {	
+		DocumentForTable selectedDoc = tblViewDocuments.getSelectionModel().getSelectedItem();
+		if (selectedDoc != null) {
+			InspectorController.askForDownload(selectedDoc.gettheDoc());
+		}
+
+	} //END of pressedDownlode()
 
 }

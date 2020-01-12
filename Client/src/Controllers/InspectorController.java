@@ -20,7 +20,11 @@ import WindowApp.ClientLauncher;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.MenuItem;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -200,6 +204,9 @@ public class InspectorController {
 			case getAllChangeRequestWithStatusAndStageOnly:
 				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 				break;
+			case getDoc:
+				Download((Document) response.getObject());
+				break;
 			default:
 				throw new IllegalArgumentException(
 						"the request " + response.getRequest() + " not implemented in the inspector controller.");
@@ -216,5 +223,27 @@ public class InspectorController {
 		for (Document doc : selectedRequest.getDoc())
 			newList.add(new DocumentForTable(doc));
 		return newList;
-	}
+	} //END  of DocumentForTableList() 
+	
+	public static void askForDownload(Document doc) {
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.getDoc,doc));
+	} //END of askForDownload()
+	
+	public static void Download(Document doc) {
+		FileChooser fileChooser = new FileChooser();
+		File file =fileChooser.showSaveDialog(null);
+		
+		try {
+			OutputStream os = new FileOutputStream(file);
+			// Starts writing the bytes in it
+			os.write(doc.mybytearray);
+			os.close();
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	} //END of Download()
+	
+	
 }

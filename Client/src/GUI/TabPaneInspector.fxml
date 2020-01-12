@@ -69,7 +69,7 @@
                            </columns>
                         </TableView>
 
-                        <Button fx:id="btnDownload" mnemonicParsing="false" text="Download" />
+                        <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#pressedDownload" text="Download" />
                      </children>
                   </VBox>
                </children>

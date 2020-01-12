@@ -73,9 +73,12 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	 */
 	public void setSystemsComboBox() {
 		ArrayList<String> al = new ArrayList<>();
-		al.add("ICM");
+		al.add("Library system");
 		al.add("Moodle");
 		al.add("Information Station");
+		al.add("Computers in classrooms");
+		al.add("Labs and computer farms");
+		al.add("College Website");
 		ObservableList<String> list = FXCollections.observableArrayList(al);
 		cmbSystems.setItems(list);
 	}

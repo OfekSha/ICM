@@ -112,8 +112,9 @@ public class FilesQuerys {
             
             while (re.next()) {
             	Blob blob = re.getBlob(1);
-            	doc.setSize((int) blob.length());
+            	
             	byte[] blobAsBytes = blob.getBytes(1, doc.getSize());
+            	doc.setSize(blobAsBytes.length);
             	doc.setMybytearray(blobAsBytes);
             	//release the blob and free up memory. 
             	blob.free();

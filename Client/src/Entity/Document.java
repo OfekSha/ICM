@@ -38,7 +38,7 @@ public class Document implements Serializable {
 	}
 
 	public void setMybytearray(byte[] mybytearray) {
-
+		this.mybytearray =new byte[mybytearray.length];
 		for (int i = 0; i < mybytearray.length; i++)
 			this.mybytearray[i] = mybytearray[i];
 	}
