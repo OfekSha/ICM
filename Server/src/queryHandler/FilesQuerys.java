@@ -111,8 +111,7 @@ public class FilesQuerys {
             
             
             while (re.next()) {
-            	Blob blob = re.getBlob(1);
-            	
+            	Blob blob = re.getBlob(1);     	
             	byte[] blobAsBytes = blob.getBytes(1, doc.getSize());
             	doc.setSize(blobAsBytes.length);
             	doc.setMybytearray(blobAsBytes);

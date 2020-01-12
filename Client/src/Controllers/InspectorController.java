@@ -33,6 +33,8 @@ public class InspectorController {
 	public static ArrayList<ChangeRequest> requests = new ArrayList<ChangeRequest>();
 	// public ArrayList <lReport> getClosedRequests(){}
 	public static ChangeRequest selectedRequest;
+	public static Thread inspetor;
+	public static Document downloded;
 	// functions for bottom buttons:
 	private static void changeStatus(ChangeRequest req, ChangeRequestStatus newStatus) {
 		req.setStatus(newStatus);
@@ -205,7 +207,8 @@ public class InspectorController {
 				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 				break;
 			case getDoc:
-				Download((Document) response.getObject());
+				downloded=(Document) response.getObject();
+				wakeUpLunchedThread();
 				break;
 			default:
 				throw new IllegalArgumentException(
@@ -227,23 +230,51 @@ public class InspectorController {
 	
 	public static void askForDownload(Document doc) {
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.getDoc,doc));
+		putLunchedThreadToSleep();
+		Download();
 	} //END of askForDownload()
 	
-	public static void Download(Document doc) {
+	public static void Download() {
 		FileChooser fileChooser = new FileChooser();
+		fileChooser.setInitialFileName(downloded.getFileName());
 		File file =fileChooser.showSaveDialog(null);
-		
+	if (file!=null) {	
 		try {
 			OutputStream os = new FileOutputStream(file);
 			// Starts writing the bytes in it
-			os.write(doc.mybytearray);
+			os.write(downloded.mybytearray);
 			os.close();
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 	} //END of Download()
 	
+
+	/** Saves the the lunched thread and puts it to  sleep
+	 * 
+	 * - saves it so  wakeUpLunchedThread would be able to wake it up
+	 * 
+	 */
+	public static void putLunchedThreadToSleep(){
+		inspetor = Thread.currentThread();
+		try {
+			inspetor.sleep(9999999);
+		} catch (InterruptedException e) {
+		}
+	}
+	/** Wakes up the lunched thread
+	 * 
+	 */
+	public static void wakeUpLunchedThread() {
+		try {
+			inspetor.interrupt();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
