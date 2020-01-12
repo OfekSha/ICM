@@ -1,6 +1,7 @@
 package GUI;
 
 import Entity.ChangeRequest;
+import Entity.Document;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.User;
 import Entity.User.ICMPermissions;
@@ -29,6 +30,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import Controllers.DocmentTableForDownloadsController;
+
 import static Entity.clientRequestFromServer.requestOptions.getAll;
 
 public abstract class UserForm implements IcmForm {
@@ -47,6 +50,7 @@ public abstract class UserForm implements IcmForm {
 	public Button btnLogout;
 	public Button btnBack;
 	public ComboBox<String> cmbRequests;
+	
 
 	// UNDECORATED
 	private static double xOffset = 0;
@@ -233,6 +237,10 @@ public abstract class UserForm implements IcmForm {
 				allUsers = (ArrayList<User>) objectArray[0];
 				job = (Job) objectArray[1];
 				break;
+			case getDoc:
+				DocmentTableForDownloadsController.downloded=(Document) request.getObject();
+				DocmentTableForDownloadsController.wakeUpLunchedThread();
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
 		}
@@ -245,4 +253,7 @@ public abstract class UserForm implements IcmForm {
 	 public User getUser(User u) {
 		  return user;
 	}
+	 
+	 
+	 
 }// END of class UserForm

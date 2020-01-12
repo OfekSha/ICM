@@ -23,7 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class tabPaneInspectorForm implements Initializable {
+public class tabPaneInspectorForm  extends DocmentTableForDownloads implements Initializable{
 
 	@FXML
 	private  TabPane tabPane;
@@ -39,17 +39,6 @@ public class tabPaneInspectorForm implements Initializable {
 	@FXML
 	private TextField informationSystem;
 
-	@FXML
-	private TableView<DocumentForTable> tblViewDocuments;
-
-	@FXML
-	private TableColumn<DocumentForTable, String> columnFileName;
-
-	@FXML
-	private TableColumn<DocumentForTable, String> columnFileSize;
-
-	@FXML
-	private Button btnDownload;
 
 	@FXML
 	private TextArea location;
@@ -200,34 +189,17 @@ public class tabPaneInspectorForm implements Initializable {
 		}
 
 		// setting up the document table
-		ObservableList<DocumentForTable> documentTableData = FXCollections
-				.observableArrayList(InspectorController.DocumentForTableList());
-		tblViewDocuments.setItems(documentTableData);
+		onRequirementTableClick(InspectorController.selectedRequest);
 
 	}
 
-	/**
-	 * setting up the document table columns
-	 * 
-	 */
-	public void initializeDocumentTableView() {
 
-		columnFileName.setCellValueFactory(new PropertyValueFactory<>("name")); // set values for id
-		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
-
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
 
-	public void pressedDownload() {	
-		DocumentForTable selectedDoc = tblViewDocuments.getSelectionModel().getSelectedItem();
-		if (selectedDoc != null) {
-			InspectorController.askForDownload(selectedDoc.gettheDoc());
-		}
 
-	} //END of pressedDownlode()
 
 }
