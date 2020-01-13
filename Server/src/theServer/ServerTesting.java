@@ -3,7 +3,7 @@ package theServer;
 import java.util.EnumSet;
 
 import Entity.ChangeRequest;
-import Entity.Requirement.statusOptions;
+import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.User;
 import Entity.User.icmPermission;
 import queryHandler.QueryHandler;
@@ -39,7 +39,7 @@ public class ServerTesting {
 	 */
 	public boolean testIfRequestIsfrozen(User changer , ChangeRequest request ) {
 		ChangeRequest inDB =queryHandler.getChangeRequestQuerys().getChangeRequest(request.getRequestID());
-		if(inDB.getStatus().equals(statusOptions.suspended) ||inDB.getStatus().equals(statusOptions.closed) ) {
+		if(inDB.getStatus().equals(ChangeRequestStatus.suspended) ||inDB.getStatus().equals(ChangeRequestStatus.closed) ) {
 			EnumSet<icmPermission> Permissions = changer.getICMPermissions();
 			if(Permissions.contains(icmPermission.informationTechnologiesDepartmentManager)||Permissions.contains(icmPermission.inspector))
 				return true;
