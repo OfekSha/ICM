@@ -175,10 +175,9 @@ public class ProccesStageQuerys {
                     "`stage3ExtensionExplanation` = ?,\n" + 
                     "`stage4ExtensionExplanation` = ?,\n" + 
                     "`stage5ExtensionExplanation` = ?\n" + 
-                    "WHERE `RequestID` = ? AND `currentStage` = ?;\n" + 
-                    ""); //31 32
+                    "WHERE `RequestID` = ?;\n" + 
+                    ""); //31 
             stmt.setNString(31, processStage.getRequest().getRequestID());
-            stmt.setNString(32, processStage.getCurrentStage().name());
             setAllProcessStageStatement(processStage.getRequest(), processStage, stmt);
             queryHandler.getEstimatorReportQuerys().UpdateOrInsertEstimatorReport(processStage.getEstimatorReport(),processStage.getRequest().getRequestID());
         } catch (SQLException e) {

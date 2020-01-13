@@ -39,7 +39,6 @@ public class mysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			stmt.execute("CREATE SCHEMA icm;"); // create schema
-			// @building by yonathan - changes are coming !, maybe...
 			stmt.execute("CREATE TABLE icm.user (" + 
 					"userName VARCHAR(45) NOT NULL," + 	 										//[1]
 					"password VARCHAR(45) NOT NULL," + 											//[2]
@@ -98,7 +97,7 @@ public class mysqlConnection {
 					"stage3ExtensionExplanation TEXT NULL, " +						//29
 					"stage4ExtensionExplanation TEXT NULL, " +						//30
 					"stage5ExtensionExplanation TEXT NULL, " +						//32
-					"PRIMARY KEY (RequestID, currentStage));");
+					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID VARCHAR(45) NOT NULL," +
 					"startDate VARCHAR(45) NULL," +
