@@ -59,10 +59,7 @@ public class EchoServer extends AbstractServer {
 		Object sendBackObject = null;
 		Object[] objectArray;
 		Object[] returningObjectArray;
-		// only for login purposes -------------
-		ConnectionToClient tryingToLogInClient = null;
-		User tryingToLogInUser;
-		int usersAnswed = 0;
+
 		//---------------------------------------
 		boolean iWantResponse = true;
 
@@ -180,10 +177,26 @@ public class EchoServer extends AbstractServer {
 						break;
 
 					case LogIN:
-						tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
-						if (testAllClientsForUser(tryingToLogInUser))
-							sendBackObject = null;
-						else sendBackObject = tryingToLogInUser;
+					/*
+					 * tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String)
+					 * request.getObject())); if (testAllClientsForUser(tryingToLogInUser))
+					 * sendBackObject = null; else sendBackObject = tryingToLogInUser;
+					 */
+						Object[] returning =new Object[2];
+					User tryingToLogInUser = (User) request.getObject();
+					User UserInDB = queryHandler.getUserQuerys().selectUser(tryingToLogInUser.getUserName());
+									returning[0] =UserInDB;
+					if (UserInDB == null)
+						returning[1] = false;
+					else {
+						if (testAllClientsForUser(UserInDB))
+							returning[1] = false;
+						else if (UserInDB.getPassword().equals(tryingToLogInUser.getPassword()))
+							returning[1] = true;
+						else
+							returning[1] = false;
+					}
+					sendBackObject= returning;
 						break;
 					case successfulLogInOut:
 						client.setConnectedUser((User) request.getObject());

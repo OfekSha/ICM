@@ -30,9 +30,10 @@ public class SecurityController {
 	 * @return ?
 	 */
 	public boolean serveHandler(clientRequestFromServer request) {
-		user = (User) request.getObject();
+		Object[] obj =(Object[]) request.getObject();
+		user = (User) obj[0];
 		log.setUser(user);
-		return testPassword(user);
+		return (boolean) obj[1];
 	}
 
 	/** saves the user input and ask the server for further details
@@ -40,7 +41,8 @@ public class SecurityController {
 	 * @param password ?
 	 */
 	public void input(String username, String password) {
-		Object msg = new clientRequestFromServer(requestOptions.LogIN, username);
+		User log = new  User(username, password, null, null, null, null, null);
+		Object msg = new clientRequestFromServer(requestOptions.LogIN, log);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 		this.password = password;
 

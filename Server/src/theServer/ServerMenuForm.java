@@ -114,11 +114,12 @@ public class ServerMenuForm implements Initializable {
 	//	btnCloseTheServer.setDisable(false);
 	}
 
+
 	/** turning the server off 
 	 * @param event ?
 	 */
 	@FXML
-	void stopServer(ActionEvent event) {
+	void stopServer(ActionEvent event) { // TODO: throw connected users out 
 		if(echo == null) { 
 			System.out.print("there is no echo instans \n");
 			return;}

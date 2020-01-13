@@ -318,4 +318,23 @@ public class ChangeRequestQuerys {
 	        }
 	        return null;
 	    } //END of getChangeRequestsFromRes()
+	    
+	    
+	    public ChangeRequest getChangeRequest(String ID) {
+	        ChangeRequest toReturn = null;
+	        Statement stmt;
+	        ResultSet re;
+	        try {
+	            stmt = queryHandler.getmysqlConn().getConn().createStatement();
+	            re = stmt.executeQuery("SELECT * FROM icm.changerequest WHERE RequestID=? ;");
+	            while (re.next()) {
+	                toReturn= getChangeRequestsFromRes(re);
+	            }
+	            stmt.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        return toReturn;
+	    } // END of getAllChangeRequest();
 }// END of ChangeRequestQuerys

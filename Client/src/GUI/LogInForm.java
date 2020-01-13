@@ -118,7 +118,7 @@ public class LogInForm extends UserForm {
 		try {
 			log.sleep(9999999);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+		
 		}
 	}
 	/** Wakes up the lunched thread

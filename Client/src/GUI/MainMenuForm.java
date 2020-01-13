@@ -44,8 +44,10 @@ public class MainMenuForm extends UserForm {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//TODO Implement it before use
+		
 		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
+		
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
