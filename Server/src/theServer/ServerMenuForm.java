@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,32 +72,46 @@ public class ServerMenuForm implements Initializable {
 
 	}
 
-	/** moving the output to the messges text box
-	 *
+	/** moving the output to the messages text box and setting it up .
+	 *@see MessgesOutputStream
 	 */
 	public void initialize(URL location, ResourceBundle resources) {
-		/*
+		
+		// we dont want its size to change only scrolling
+		ChangeListener <String> arg0= new ChangeListener<String>() {	
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				Messages.setPrefWidth(Messages.getText().length() * 7);			
+			}
+		};
+		Messages.textProperty().addListener(arg0);
+		
+		// taking over the consul
 		ps = new PrintStream(new MessgesOutputStream(Messages));
 		old = System.out;
 		System.setOut(ps);
-		*/
+		// making sure echo is empty for the servers opening 
 		echo =null;
 		
 		//btnCloseTheServer.setDisable(true); 
 		}
 
+	/** ending the server gui and the server 
+	 * @param event
+	 */
 	@FXML
 	void ExitBtn(ActionEvent event) {
 		// resetting the console
-		/*
-		System.out.flush();
-		System.setOut(old);
-		*/
 		
+		System.out.flush();
+		System.setOut(old);	
 		stopeServer(event);
 		System.exit(0);
 	}
 
+	/** starts the server
+	 * @param event
+	 */
 	@FXML
 	void startServer(ActionEvent event) {
 		if(echo != null) { 
@@ -109,6 +125,9 @@ public class ServerMenuForm implements Initializable {
 	//	btnCloseTheServer.setDisable(false);
 	}
 
+	/** turning the server off 
+	 * @param event
+	 */
 	@FXML
 	void stopeServer(ActionEvent event) {
 		if(echo == null) { 
@@ -126,17 +145,26 @@ public class ServerMenuForm implements Initializable {
 		//btnCloseTheServer.setDisable(true);
 	}
 
+	
+	/**cleans the messeges text box
+	 * @param event
+	 */
 	@FXML
 	void RefreshMessges(ActionEvent event) {
 		refreshMessages();
 	}
 
-	/** cleaning the messages screan
+	/** assisting : RefreshMessges,
 	 * 
+	 * @see RefreshMessges
 	 */
 	public void refreshMessages() {
 		Messages.setText("");
 	}
+	/** Rebuilds the DB with examples 
+	 * @param event
+	 * @see mysqlConnection
+	 */
 	@FXML
 	public void reSetDB(ActionEvent event) {
 		mysqlConnection mysqlConn;

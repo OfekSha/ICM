@@ -6,6 +6,10 @@ import javafx.stage.Stage;
 
 import  theServer.ServerMenuForm;
 
+/**creates a server Menu scene 
+ * @see ServerMenuForm
+ *
+ */
 public class ServerMenuControler extends Application {
 
 	public  static ServerMenuForm aFrame;

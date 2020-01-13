@@ -6,35 +6,44 @@ import java.io.OutputStream;
 import javafx.scene.control.TextArea;
 
 /**
- * made to send the output stream to gui
+ * made to send the output stream to server gui
  *
  */
 public class MessgesOutputStream extends OutputStream {
+    /**the text area witch will replace the console
+     * 
+     */
     private TextArea Messges;
-    private int cnt=0;
+    /**the string where incomplete sentences are kept until complete 
+     * 
+     */
+    private String app="";
      
     public MessgesOutputStream(TextArea Messges) {
         this.Messges = Messges;
     }
-  /*   
-    @Override
-    public void write(int stuff)  {
-        Messges.appendText(String.valueOf((char)stuff));
-    	
-
-    }
-    */
-    
+    /**Receiving the stream input
+     * 
+     */
     @Override
     public   void write(int b) {
-    	cnt++;
         int[] bytes = {b};
         write(bytes, 0, bytes.length);
     }
 
+    /** creating the string to go in to the TextArea
+     * @param bytes
+     * @param offset
+     * @param length
+     */
     public void write(int[] bytes, int offset, int length) {
-        String s = new String(bytes, offset, length);
-        Messges.appendText(s);
+    	String s = new String(bytes, offset, length);
+    	app=app +s;
+    	// printing to text area only if full sentence  - to prevent problomes with the lunched thread
+         if(app.contains("\n")) { 
+        Messges.appendText(app);
+        app="";
+         }
    
 }
 }
