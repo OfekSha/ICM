@@ -54,8 +54,8 @@ public class MainMenuForm extends UserForm {
 		btnExaminer.setDisable(true);
 		btnChangeControlCommitteeChairman.setDisable(true);
 
-		EnumSet<User.permissionsICM> Permissions = user.getICMPermissions();
-		for (User.permissionsICM p : Permissions) {
+		EnumSet<User.icmPermission> Permissions = user.getICMPermissions();
+		for (User.icmPermission p : Permissions) {
 			switch (p) {
 				case informationTechnologiesDepartmentManager:
 					btnInformationTechnologiesDepartmentManager.setDisable(false);

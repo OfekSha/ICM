@@ -5,7 +5,7 @@ import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.collegeStatus;
-import Entity.User.permissionsICM;
+import Entity.User.icmPermission;
 import queryHandler.QueryHandler;
 
 import java.sql.*;
@@ -206,38 +206,38 @@ public class mysqlConnection {
 	
 	private void enterUsersToDB() {
 		// creating admin
-		EnumSet<permissionsICM> Permissions = EnumSet.allOf(User.permissionsICM.class);
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
 		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		// creating  information Technologies Department Manager
-		EnumSet<permissionsICM> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
-		lessPermissions.add(permissionsICM.informationTechnologiesDepartmentManager);
+		EnumSet<User.icmPermission> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
+		lessPermissions.add(User.icmPermission.informationTechnologiesDepartmentManager);
 		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.inspector);
+		lessPermissions.add(icmPermission.inspector);
 		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating estimator
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.estimator);
+		lessPermissions.add(icmPermission.estimator);
 		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating exeution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.executionLeader);
+		lessPermissions.add(icmPermission.executionLeader);
 		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.examiner);
-		lessPermissions.add(User.permissionsICM.changeControlCommitteeMember);
+		lessPermissions.add(User.icmPermission.examiner);
+		lessPermissions.add(User.icmPermission.changeControlCommitteeMember);
 		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.changeControlCommitteeChairman);
+		lessPermissions.add(icmPermission.changeControlCommitteeChairman);
 		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating student
@@ -246,8 +246,8 @@ public class mysqlConnection {
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {
-		EnumSet<permissionsICM> Permissions = EnumSet.allOf(User.permissionsICM.class);
-		EnumSet<permissionsICM> lessPermissions; //empty enum set
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
 		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
 		String []ExtensionExplanation=new String[5];
 		Initiator initiator = new Initiator(newUser, null);
@@ -263,13 +263,13 @@ public class mysqlConnection {
 		// estimatore 
 		//creating estimator
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.estimator);
+		lessPermissions.add(User.icmPermission.estimator);
 		 User estimator = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		 EstimatorReport estimiatorReoport = new EstimatorReport(estimator, "report", "report", "report", "report","risks" ,start);
 		
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.changeControlCommitteeChairman);
+		lessPermissions.add(User.icmPermission.changeControlCommitteeChairman);
 		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 		
@@ -291,7 +291,7 @@ public class mysqlConnection {
 		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
 		//creating execution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.executionLeader);
+		lessPermissions.add(User.icmPermission.executionLeader);
 		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
@@ -311,8 +311,8 @@ public class mysqlConnection {
 		startEndArray = new LocalDate[5][3];
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.examiner);
-		lessPermissions.add(User.permissionsICM.changeControlCommitteeMember);
+		lessPermissions.add(icmPermission.examiner);
+		lessPermissions.add(User.icmPermission.changeControlCommitteeMember);
 		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 
@@ -329,7 +329,7 @@ public class mysqlConnection {
 
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
-		lessPermissions.add(User.permissionsICM.inspector);
+		lessPermissions.add(User.icmPermission.inspector);
 		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
 

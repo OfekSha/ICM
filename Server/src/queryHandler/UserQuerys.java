@@ -1,7 +1,7 @@
 package queryHandler;
 import Entity.User;
 import Entity.User.collegeStatus;
-import Entity.User.permissionsICM;
+import Entity.User.icmPermission;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,9 +71,9 @@ public class UserQuerys {
         stmt.setInt(11, 0);
         stmt.setInt(12, 0);
         stmt.setInt(13, 0);
-        EnumSet<User.permissionsICM> Permissions = user.getICMPermissions();
+        EnumSet<icmPermission> Permissions = user.getICMPermissions();
         if (Permissions != null) {
-            for (User.permissionsICM e : Permissions) {
+            for (icmPermission e : Permissions) {
                 switch (e) {
                     case informationTechnologiesDepartmentManager:
                         stmt.setInt(7, 1);
@@ -204,28 +204,28 @@ public class UserQuerys {
         }
     }
     // converting to permissions set
-    EnumSet<User.permissionsICM> all = EnumSet.allOf(User.permissionsICM.class);
-    EnumSet<User.permissionsICM> Permissions = EnumSet.complementOf(all);
+    EnumSet<User.icmPermission> all = EnumSet.allOf(icmPermission.class);
+    EnumSet<icmPermission> Permissions = EnumSet.complementOf(all);
     if (informationTechnologiesDepartmentManagerPermission == 1) {
-        Permissions.add(User.permissionsICM.informationTechnologiesDepartmentManager);
+        Permissions.add(User.icmPermission.informationTechnologiesDepartmentManager);
     }
     if (inspectorPermission == 1) {
-        Permissions.add(User.permissionsICM.inspector);
+        Permissions.add(User.icmPermission.inspector);
     }
     if (estimatorPermission == 1) {
-        Permissions.add(User.permissionsICM.estimator);
+        Permissions.add(User.icmPermission.estimator);
     }
     if (executionLeaderPermission == 1) {
-        Permissions.add(permissionsICM.executionLeader);
+        Permissions.add(User.icmPermission.executionLeader);
     }
     if (examinerPermission == 1) {
-        Permissions.add(User.permissionsICM.examiner);
+        Permissions.add(User.icmPermission.examiner);
     }
     if (changeControlCommitteeChairman == 1) {
-        Permissions.add(User.permissionsICM.changeControlCommitteeChairman);
+        Permissions.add(User.icmPermission.changeControlCommitteeChairman);
     }
     if (changeControlCommitteeMember == 1) {
-        Permissions.add(User.permissionsICM.changeControlCommitteeMember);
+        Permissions.add(icmPermission.changeControlCommitteeMember);
     }
     toReturn = new User(userName, password, firstName, lastName, email, collegeStatus, Permissions);
     return toReturn;
@@ -280,7 +280,7 @@ public class UserQuerys {
     * @param prem ?
     * @return ?
     */
-   public ArrayList<User> getAllUsersWithICMPermissions(User.permissionsICM prem) {
+   public ArrayList<User> getAllUsersWithICMPermissions(User.icmPermission prem) {
        ArrayList<User> toReturn = new ArrayList<>();
        Statement stmt;
        ResultSet re = null;

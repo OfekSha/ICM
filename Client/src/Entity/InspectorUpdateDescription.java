@@ -3,7 +3,7 @@ package Entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import Entity.User.permissionsICM;
+import Entity.User.icmPermission;
 
 /**
  * Represents an update action the inspector can make.
@@ -52,7 +52,7 @@ public class InspectorUpdateDescription implements Serializable {
 	}
 
 	public void setInspector(User inspector) {
-		if(!inspector.getICMPermissions().contains(permissionsICM.inspector)) throw new IllegalArgumentException("only an inspector can make an Inspector Update ");
+		if(!inspector.getICMPermissions().contains(icmPermission.inspector)) throw new IllegalArgumentException("only an inspector can make an Inspector Update ");
 		this.inspector = inspector;
 	}
 

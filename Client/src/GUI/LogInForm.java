@@ -90,6 +90,7 @@ public class LogInForm extends UserForm {
 	public void getFromServer(Object message) {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		Object[] objectArray;
+		//TODO Warning:(93, 3) 'switch' statement has too few case labels (1), and should probably be replaced with an 'if' statement
 		switch (request.getRequest()) {
 		case LogIN:
 			if (securityController.serveHandler(request)) {
@@ -116,9 +117,9 @@ public class LogInForm extends UserForm {
 	private void putLaunchedThreadToSleep(){
 		log = Thread.currentThread();
 		try {
-			log.sleep(9999999);
+			Thread.sleep(9999999);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			//TODO Warning:(120, 5) Empty 'catch' block is a very bad practice
 		}
 	}
 	/** Wakes up the lunched thread
