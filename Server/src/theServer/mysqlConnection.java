@@ -1,8 +1,27 @@
 package theServer;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.EnumSet;
+
+import Entity.ChangeRequest;
+import Entity.EstimatorReport;
+import Entity.Initiator;
+import Entity.InspectorUpdateDescription;
+import Entity.ProcessStage;
+import Entity.User;
+import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.InspectorUpdateDescription.inspectorUpdateKind;
+import Entity.ProcessStage.ChargeRequestStages;
+import Entity.ProcessStage.subStages;
+import Entity.User.ICMPermissions;
+import Entity.User.Job;
+import queryHandler.QueryHandler;
 
 public class mysqlConnection {
 	private static Connection conn;
+	private QueryHandler queryHandler;
+
 
 	public mysqlConnection() {
 		this("root", "Aa123456", "localhost");
@@ -19,6 +38,7 @@ public class mysqlConnection {
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
+		 queryHandler = new QueryHandler(this);
 	}
 
 	public Connection getConn() {
@@ -34,7 +54,7 @@ public class mysqlConnection {
 		}
 	}
 
-	public static void buildDB() {
+	public  void buildDB() {
 		Statement stmt;
 		try {
 			stmt = conn.createStatement();
@@ -145,7 +165,7 @@ public class mysqlConnection {
 	/**
 	 * @return amount of schemas with name icm
 	 */
-	public static boolean checkExistence() {
+	public  boolean checkExistence() {
 		String result = "0";
 		try {
 			Statement stmt = conn.createStatement();
@@ -158,4 +178,183 @@ public class mysqlConnection {
 		}
 		return result.equals("1");
 	}
-}
+	
+	public static void dropDB() {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("DROP DATABASE `icm`;");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/** builds the DB with examples  
+	 * 
+	 */
+	protected  void DBwithExmples() {
+		if (!checkExistence()) {
+			buildDB();
+			enterUsersToDB();
+			enterChangeRequestToDB();
+			//testing
+			ArrayList<ChangeRequest>  a = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
+			System.out.println("New DB ready for use");
+		}
+	}
+	
+	protected void resetDB() {
+		if (checkExistence()) dropDB();
+		DBwithExmples();
+	} //END of
+	
+	
+	
+	private void enterUsersToDB() {
+		// creating admin
+		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		// creating  information Technologies Department Manager
+		EnumSet<ICMPermissions> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
+		lessPermissions.add(User.ICMPermissions.informationTechnologiesDepartmentManager);
+		newUser = new User("informationTechnologiesDepartmentManager", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//creating inspector
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.inspector);
+		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//creating estimator
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.estimator);
+		newUser = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//creating exeution Leader
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.executionLeader);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//creating examiner
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.examiner);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//creating change Control Committee Chairman
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//creating student
+		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", Job.student, null);
+		queryHandler.getUserQuerys().insertUser(newUser);
+	}// END of  enterUsersToDB()
+
+	private void enterChangeRequestToDB() {
+		EnumSet<ICMPermissions> Permissions = EnumSet.allOf(User.ICMPermissions.class);
+		EnumSet<ICMPermissions> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", Job.informationEngineer, Permissions);
+		String []ExtensionExplanation=new String[5];
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start = LocalDate.now();
+		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange1", null);
+		// change request at stage 1
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		
+		// estimatore 
+		//creating estimator
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.estimator);
+		 User estimator = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		 EstimatorReport estimiatorReoport = new EstimatorReport(estimator, "report", "report", "report", "report","risks" ,start);
+		
+		//creating change Control Committee Chairman
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeChairman);
+		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		initiator = new Initiator(newUser, null);
+		
+		// change request stage 2
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange2", null);
+		changeRequest.setStatus(ChangeRequestStatus.suspended);
+		LocalDate[][] startEndArray = new LocalDate[5][3];
+		int[] WasThereAnExtensionRequest = new int[5];
+		for (int i = 0; i < 5; i++) {
+			WasThereAnExtensionRequest[i] = 0;
+		}
+		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, estimator, "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		changeRequest.setStage(stager);
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		changeRequest.getProcessStage().setEstimatorReport(estimiatorReoport);
+		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
+		//creating execution Leader
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.executionLeader);
+		newUser = new User("executionLeader", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		initiator = new Initiator(newUser, null);
+
+		// change request stage 3
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange3",null);
+		stager = new ProcessStage(ChargeRequestStages.execution, subStages.determiningDueTime, newUser, "test3", "test3", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		changeRequest.setStage(stager);
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
+		// updating due date 
+		changeRequest.getProcessStage().setDueDate(LocalDate.now());
+		//test
+		//queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
+		startEndArray = new LocalDate[5][3];
+		//creating examiner
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.examiner);
+		lessPermissions.add(User.ICMPermissions.changeControlCommitteeMember);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		initiator = new Initiator(newUser, null);
+
+		// change request stage 4
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange4", null);
+		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAction, newUser, "test4", "test4", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		changeRequest.setStage(stager);
+		changeRequest.setStatus(ChangeRequestStatus.suspended);
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+
+		//creating inspector
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(User.ICMPermissions.inspector);
+		newUser = new User("inspector", "1234", "FirstName", "LastName", "mail@email.com", Job.informationEngineer, lessPermissions);
+		initiator = new Initiator(newUser, null);
+
+		
+		// adding  update 
+		InspectorUpdateDescription des =new InspectorUpdateDescription(newUser,"test",LocalDate.now(),inspectorUpdateKind.freeze);
+		changeRequest.addInspectorUpdate(des);
+		des=new InspectorUpdateDescription(newUser,"test",LocalDate.now(),inspectorUpdateKind.unfreeze);
+		changeRequest.addInspectorUpdate(des);
+		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
+		
+		// change request stage 5
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange5", null);
+		stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		changeRequest.setStatus(ChangeRequestStatus.closed);
+		changeRequest.setStage(stager);
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+	}// END of enterChangeRequestToDB
+}//END of mysqlConnection
