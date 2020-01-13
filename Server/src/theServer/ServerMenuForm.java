@@ -89,11 +89,12 @@ public class ServerMenuForm implements Initializable {
 	 */
 	@FXML
 	void ExitBtn(ActionEvent event) {
+	
+		stopServer(event);
 		// resetting the console
-		
 		System.out.flush();
 		System.setOut(old);	
-		stopeServer(event);
+		//closing the gui
 		System.exit(0);
 	}
 
@@ -117,7 +118,7 @@ public class ServerMenuForm implements Initializable {
 	 * @param event ?
 	 */
 	@FXML
-	void stopeServer(ActionEvent event) {
+	void stopServer(ActionEvent event) {
 		if(echo == null) { 
 			System.out.print("there is no echo instans \n");
 			return;}
