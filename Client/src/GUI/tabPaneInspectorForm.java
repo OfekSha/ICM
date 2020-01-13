@@ -119,7 +119,7 @@ public class tabPaneInspectorForm    implements Initializable{
 	private TextArea explain5;
 
 	@FXML
-	public DocmentTableForDownloadsForm  DocmentTableController; // tabs that get more info about request.
+	public DocmentTableForDownloadsForm  DocmentTableController; // the document table with download capability 
 
 	public void onRequirementClicked(requirementForTable selectedReq) {
 		// set details into tab pane:

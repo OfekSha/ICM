@@ -124,13 +124,7 @@
                                        </VBox.margin>
                                     </Label>
                                     <TextField fx:id="system" editable="false" prefHeight="25.0" prefWidth="54.0" />
-                                    <TableView fx:id="tblViewDocuments" prefHeight="407.0" prefWidth="164.0">
-                                       <columns>
-                                          <TableColumn fx:id="columnFileName" prefWidth="85.6666259765625" text="File name" />
-                                          <TableColumn fx:id="columnFileSize" prefWidth="85.0" text="size (Mb)" />
-                                       </columns>
-                                    </TableView>
-                                    <Button mnemonicParsing="false" text="Download" />
+                                    <fx:include fx:id="DocmentTable" source="DocmentTableForDownloads.fxml" />
                                  </children>
                               </VBox>
                            </children>
