@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import Entity.ChangeRequest;
 import Entity.Requirement.statusOptions;
 import Entity.User;
-import Entity.User.permissionsICM;
+import Entity.User.icmPermission;
 import queryHandler.QueryHandler;
 
 /**
@@ -25,8 +25,8 @@ public class ServerTesting {
 	 * @return true if the changing user can change users
 	 */
 	public boolean testUpstingUserCanUpdateUsers(User changer) {
-		EnumSet<permissionsICM> Permissions = changer.getICMPermissions();
-		if (Permissions.contains(permissionsICM.informationTechnologiesDepartmentManager)||Permissions.contains(permissionsICM.inspector))
+		EnumSet<icmPermission> Permissions = changer.getICMPermissions();
+		if (Permissions.contains(icmPermission.informationTechnologiesDepartmentManager)||Permissions.contains(icmPermission.inspector))
 			return true;
 		return false;
 	}// END  of testUpstingUserCanUpdateUsers
@@ -40,8 +40,8 @@ public class ServerTesting {
 	public boolean testIfRequestIsfrozen(User changer , ChangeRequest request ) {
 		ChangeRequest inDB =queryHandler.getChangeRequestQuerys().getChangeRequest(request.getRequestID());
 		if(inDB.getStatus().equals(statusOptions.suspended) ||inDB.getStatus().equals(statusOptions.closed) ) {
-			EnumSet<permissionsICM> Permissions = changer.getICMPermissions();
-			if(Permissions.contains(permissionsICM.informationTechnologiesDepartmentManager)||Permissions.contains(permissionsICM.inspector))
+			EnumSet<icmPermission> Permissions = changer.getICMPermissions();
+			if(Permissions.contains(icmPermission.informationTechnologiesDepartmentManager)||Permissions.contains(icmPermission.inspector))
 				return true;
 			else return false;
 		}

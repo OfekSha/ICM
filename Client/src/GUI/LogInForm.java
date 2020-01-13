@@ -117,13 +117,9 @@ public class LogInForm extends UserForm {
 	private void putLaunchedThreadToSleep(){
 		log = Thread.currentThread();
 		try {
-			Thread.sleep(9999999);
+			log.sleep(9999999);
 		} catch (InterruptedException e) {
-<<<<<<< HEAD
-		
-=======
-			//TODO Warning:(120, 5) Empty 'catch' block is a very bad practice
->>>>>>> 9f803a9a08ead9ad4eb49c5ab4790a673c9c514a
+//
 		}
 	}
 	/** Wakes up the lunched thread

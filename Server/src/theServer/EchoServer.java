@@ -177,7 +177,6 @@ public class EchoServer extends AbstractServer {
 						break;
 
 					case LogIN:
-<<<<<<< HEAD
 					/*
 					 * tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String)
 					 * request.getObject())); if (testAllClientsForUser(tryingToLogInUser))
@@ -198,12 +197,7 @@ public class EchoServer extends AbstractServer {
 							returning[1] = false;
 					}
 					sendBackObject= returning;
-=======
-						tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
-						if (testAllClientsForUser(tryingToLogInUser))
-							sendBackObject = null; //TODO Warning:(185, 8) Variable is already assigned to this value
-						else sendBackObject = tryingToLogInUser;
->>>>>>> 9f803a9a08ead9ad4eb49c5ab4790a673c9c514a
+					
 						break;
 					case successfulLogInOut:
 						client.setConnectedUser((User) request.getObject());
