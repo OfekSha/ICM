@@ -33,7 +33,7 @@ public class EstimatorReport implements Serializable {
 
 	// input
 	public void setEstimator(User estimator) {
-		if(!(estimator.getICMPermissions().contains(User.permissionsICM.estimator))) throw new IllegalArgumentException("only an estimator can make an estimator report ");
+		if(!(estimator.getICMPermissions().contains(User.icmPermission.estimator))) throw new IllegalArgumentException("only an estimator can make an estimator report ");
 		this.estimator = estimator;
 	}
 

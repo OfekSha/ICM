@@ -6,7 +6,6 @@ import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.Document;
 import Entity.User;
 import Entity.User.collegeStatus;
-import Entity.User.permissionsICM;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -40,7 +39,7 @@ public abstract class UserForm implements IcmForm {
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
 	static ChangeRequestStatus requestStatus;
-	static permissionsICM icmPermission;
+	static User.icmPermission icmPermission;
 	static collegeStatus collegeStatus;
 	static Stage popupWindow;
 
@@ -225,7 +224,7 @@ public abstract class UserForm implements IcmForm {
 			case getUsersByICMPermissions:
 				objectArray = (Object[]) request.getObject();
 				allUsers = (ArrayList<User>) objectArray[0];
-				icmPermission = (permissionsICM) objectArray[1];
+				icmPermission = (User.icmPermission) objectArray[1];
 				break;
 			case getAllUsersByJob:
 				objectArray = (Object[]) request.getObject();

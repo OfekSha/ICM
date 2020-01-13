@@ -106,10 +106,10 @@ public class UserTableView {
         private SimpleStringProperty firstname;
         private SimpleStringProperty lastname;
         private SimpleStringProperty email;
-        private SimpleObjectProperty<EnumSet<User.permissionsICM>> permission;
+        private SimpleObjectProperty<EnumSet<User.icmPermission>> permission;
         private SimpleObjectProperty<User.collegeStatus> collegeStatus;
 
-        public userForTable(User originalUser, SimpleStringProperty username, SimpleStringProperty firstname, SimpleStringProperty lastname, SimpleStringProperty email, SimpleObjectProperty<EnumSet<User.permissionsICM>> permission, SimpleObjectProperty<User.collegeStatus> collegeStatus) {
+        public userForTable(User originalUser, SimpleStringProperty username, SimpleStringProperty firstname, SimpleStringProperty lastname, SimpleStringProperty email, SimpleObjectProperty<EnumSet<User.icmPermission>> permission, SimpleObjectProperty<User.collegeStatus> collegeStatus) {
             this.originalUser = originalUser;
             this.username = username;
             this.firstname = firstname;
@@ -185,15 +185,15 @@ public class UserTableView {
             this.email.set(email);
         }
 
-        public EnumSet<User.permissionsICM> getPermission() {
+        public EnumSet<User.icmPermission> getPermission() {
             return permission.get();
         }
 
-        public SimpleObjectProperty<EnumSet<User.permissionsICM>> permissionProperty() {
+        public SimpleObjectProperty<EnumSet<User.icmPermission>> permissionProperty() {
             return permission;
         }
 
-        public void setPermission(EnumSet<User.permissionsICM> permission) {
+        public void setPermission(EnumSet<User.icmPermission> permission) {
             this.permission.set(permission);
         }
 

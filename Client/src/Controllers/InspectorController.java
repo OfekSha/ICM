@@ -8,7 +8,7 @@ import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User;
-import Entity.User.permissionsICM;
+import Entity.User.icmPermission;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.UserForm;
@@ -124,10 +124,10 @@ public class InspectorController  {
 		switch (req.getProcessStage().getCurrentStage()) {
 			// give permission to user
 			case meaningEvaluation:
-				user.getICMPermissions().add(permissionsICM.estimator);
+				user.getICMPermissions().add(icmPermission.estimator);
 				break;
 			case execution:
-				user.getICMPermissions().add(permissionsICM.executionLeader);
+				user.getICMPermissions().add(User.icmPermission.executionLeader);
 				break;
 			default:
 				throw new IllegalArgumentException(

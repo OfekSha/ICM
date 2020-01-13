@@ -11,12 +11,12 @@ import java.util.EnumSet;
 public class User implements Serializable {
 
 	// enums*********************************************
-	public enum permissionsICM {
+	public enum icmPermission {
 		informationTechnologiesDepartmentManager, inspector, estimator, executionLeader, examiner,
 		changeControlCommitteeChairman,changeControlCommitteeMember
 	}
 
-	// wil be used to determine who can be allocated permissionsICM
+	// wil be used to determine who can be allocated icmPermission
 	public enum collegeStatus {
 		student, informationEngineer
 	}
@@ -27,8 +27,8 @@ public class User implements Serializable {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private EnumSet<permissionsICM> Permissions = null;
-	//private permissionsICM[] Permissions;
+	private EnumSet<icmPermission> Permissions = null;
+	//private icmPermission[] Permissions;
 	private collegeStatus collegeStatus;
 // Contractors
 
@@ -41,10 +41,10 @@ public class User implements Serializable {
 	 * @param lastName    ?
 	 * @param email       ?
 	 * @param collegeStatus         -(enum-collegeStatus)
-	 * @param Permissions - (enum-permissionsICM)if the user is is a student send null
+	 * @param Permissions - (enum-icmPermission)if the user is is a student send null
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, collegeStatus collegeStatus,
-				EnumSet<permissionsICM> Permissions) {
+				EnumSet<icmPermission> Permissions) {
 		this.collegeStatus = collegeStatus;
 		updatePermissions(Permissions);
 		this.userName = userName;
@@ -64,7 +64,8 @@ public class User implements Serializable {
 	 */
 
 	//TODO Return value of the method is never used
-	public boolean updatePermissions(EnumSet<permissionsICM> Permissions) {
+	public boolean updatePermissions(EnumSet<icmPermission> Permissions) {
+		//TODO Warning:(68, 47) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
 		if (Permissions == null || collegeStatus == collegeStatus.student)
 			return false;
 		this.Permissions = Permissions;
@@ -80,11 +81,12 @@ public class User implements Serializable {
 	 *
 	 * @param Permission doesnt @return - returns true if permission is in the collection
 	 */
-	public void addPremmision(permissionsICM Permission) {
-
+	public void addPremmision(icmPermission Permission) {
+		//TODO Warning:(85, 24) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
 		if (collegeStatus == collegeStatus.student && Permission == null)
 			return;
 		//TODO Warning:(93, 34) Condition 'Permission != null' is always 'true' when reached
+		//TODO Warning:(88, 24) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
 		if (collegeStatus == collegeStatus.student && Permission != null) {
 			try {
 				throw new IllegalArgumentException("Students dont have Permissions in the system");
@@ -102,7 +104,7 @@ public class User implements Serializable {
 		}
 
 		if (this.Permissions == null) {
-			EnumSet<permissionsICM> all = EnumSet.allOf(permissionsICM.class);
+			EnumSet<icmPermission> all = EnumSet.allOf(icmPermission.class);
 			this.Permissions = EnumSet.complementOf(all);
 			this.Permissions.add(Permission);
 			return;
@@ -119,7 +121,7 @@ public class User implements Serializable {
 	 *
 	 * @param Permission ?
 	 */
-	public void removePermission(permissionsICM Permission) {
+	public void removePermission(icmPermission Permission) {
 		if (Permission == null || this.Permissions == null)
 			return;
 		this.Permissions.remove(Permission);
@@ -147,7 +149,7 @@ public class User implements Serializable {
 		return email;
 	}
 
-	public EnumSet<permissionsICM> getICMPermissions() {
+	public EnumSet<icmPermission> getICMPermissions() {
 		return Permissions;
 	}
 

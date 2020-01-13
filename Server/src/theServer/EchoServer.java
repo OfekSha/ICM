@@ -4,7 +4,7 @@ import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.collegeStatus;
-import Entity.User.permissionsICM;
+import Entity.User.icmPermission;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import queryHandler.QueryHandler;
@@ -118,7 +118,7 @@ public class EchoServer extends AbstractServer {
 						break;
 					case getUsersByICMPermissions:
 						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((permissionsICM) request.getObject());
+						objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((icmPermission) request.getObject());
 						objectArray[1] = request.getObject();
 						sendBackObject = objectArray;
 						break;
@@ -177,6 +177,7 @@ public class EchoServer extends AbstractServer {
 						break;
 
 					case LogIN:
+<<<<<<< HEAD
 					/*
 					 * tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String)
 					 * request.getObject())); if (testAllClientsForUser(tryingToLogInUser))
@@ -197,6 +198,12 @@ public class EchoServer extends AbstractServer {
 							returning[1] = false;
 					}
 					sendBackObject= returning;
+=======
+						tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
+						if (testAllClientsForUser(tryingToLogInUser))
+							sendBackObject = null; //TODO Warning:(185, 8) Variable is already assigned to this value
+						else sendBackObject = tryingToLogInUser;
+>>>>>>> 9f803a9a08ead9ad4eb49c5ab4790a673c9c514a
 						break;
 					case successfulLogInOut:
 						client.setConnectedUser((User) request.getObject());
@@ -265,7 +272,7 @@ public class EchoServer extends AbstractServer {
 	 * listening for connections.
 	 */
 	protected void serverStopped() {
-		mysqlConn.closeConnection();
+		mysqlConnection.closeConnection();
 		System.out.println("Server has stopped listening for connections.");
 	}
 

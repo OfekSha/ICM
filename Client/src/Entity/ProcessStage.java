@@ -27,7 +27,7 @@ public class ProcessStage implements Serializable {
 	private ChargeRequestStages currentStage = ChargeRequestStages.meaningEvaluation; // starting in the first stage
 	private subStages currentSubStage = subStages.supervisorAllocation; // first stage subStage
 	private User StageSupervisor = null;
-	private EnumSet<User.permissionsICM> Permissions = null;
+	private EnumSet<User.icmPermission> Permissions = null;
 	private EstimatorReport estimatorReport;
 	private String ExaminerFailReport = "";
 	private String inspectorDocumentation = "";
@@ -168,23 +168,23 @@ public class ProcessStage implements Serializable {
 
 	public void newStageSupervisor(User supervisor) {
 		if (supervisor != null) {
-			EnumSet<User.permissionsICM> supervisorPermissions = supervisor.getICMPermissions();
-			User.permissionsICM requiredPermission = null;
+			EnumSet<User.icmPermission> supervisorPermissions = supervisor.getICMPermissions();
+			User.icmPermission requiredPermission = null;
 			switch (currentStage) {
 			case meaningEvaluation:
-				requiredPermission = User.permissionsICM.estimator;
+				requiredPermission = User.icmPermission.estimator;
 				break;
 			case examinationAndDecision:
-				requiredPermission = User.permissionsICM.changeControlCommitteeChairman;
+				requiredPermission = User.icmPermission.changeControlCommitteeChairman;
 				break;
 			case execution:
-				requiredPermission = User.permissionsICM.executionLeader;
+				requiredPermission = User.icmPermission.executionLeader;
 				break;
 			case examination:
-				requiredPermission = User.permissionsICM.examiner;
+				requiredPermission = User.icmPermission.examiner;
 				break;
 			case closure:
-				requiredPermission = User.permissionsICM.inspector;
+				requiredPermission = User.icmPermission.inspector;
 				break;
 			}
 
@@ -224,7 +224,7 @@ public class ProcessStage implements Serializable {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
-			if (!(Permissions.contains(User.permissionsICM.examiner)))
+			if (!(Permissions.contains(User.icmPermission.examiner)))
 				throw new IllegalArgumentException("StageSupervisor must have Permission - examiner");
 			ExaminerFailReport = report;
 		} catch (IllegalArgumentException e) {
@@ -236,7 +236,7 @@ public class ProcessStage implements Serializable {
 		try {
 			if (StageSupervisor == null)
 				throw new IllegalArgumentException("StageSupervisor cannot be null");
-			if (!(Permissions.contains(User.permissionsICM.inspector)))
+			if (!(Permissions.contains(User.icmPermission.inspector)))
 				throw new IllegalArgumentException("StageSupervisor must have Permission - inspector");
 			inspectorDocumentation = report;
 		} catch (IllegalArgumentException e) {
