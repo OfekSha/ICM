@@ -43,7 +43,7 @@
                               </VBox.margin>
                   </Label>
                   <Button fx:id="btnStartTheServer" mnemonicParsing="false" onAction="#startServer" prefHeight="25.0" prefWidth="152.0" text="Start the server" />
-                  <Button fx:id="btnCloseTheServer" mnemonicParsing="false" onAction="#stopeServer" prefHeight="25.0" prefWidth="151.0" text="Close the server" />
+                  <Button fx:id="btnCloseTheServer" mnemonicParsing="false" onAction="#stopServer" prefHeight="25.0" prefWidth="151.0" text="Close the server" />
                   <Button fx:id="btnResetDB" mnemonicParsing="false" onAction="#reSetDB" prefHeight="25.0" prefWidth="150.0" text="ResetDB" />
                </children>
             </VBox>
