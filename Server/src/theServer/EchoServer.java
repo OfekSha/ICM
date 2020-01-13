@@ -3,10 +3,8 @@ import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
-import Entity.clientRequestFromServer.requestOptions;
-import Entity.InspectorUpdateDescription.inspectorUpdateKind;
+import Entity.User.collegeStatus;
+import Entity.User.permissionsICM;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import queryHandler.QueryHandler;
@@ -14,10 +12,7 @@ import queryHandler.QueryHandler;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.EnumSet;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -37,12 +32,12 @@ public class EchoServer extends AbstractServer {
 	 */
 	final public static int DEFAULT_PORT = 5555;
 	private QueryHandler queryHandler;
-	
-	 private  mysqlConnection mysqlConn ;
+	private mysqlConnection mysqlConn;
 	// Constructors ****************************************************
 
 	/**
 	 * Constructs an instance of the echo osf.server.
+	 *
 	 * @param port The port number to connect on.
 	 */
 	public EchoServer(int port) {
@@ -53,6 +48,7 @@ public class EchoServer extends AbstractServer {
 
 	/**
 	 * This method handles any messages received from the ocf.client.
+	 *
 	 * @param msg    The message received from the ocf.client.
 	 * @param client The connection from which the message originated.
 	 */
@@ -64,9 +60,9 @@ public class EchoServer extends AbstractServer {
 		Object[] objectArray;
 		Object[] returningObjectArray;
 		// only for login purposes -------------
-		ConnectionToClient tryingToLogInClient =null;
-		User tryingToLogInUser =null;
-		int usersAnswed=0;
+		ConnectionToClient tryingToLogInClient = null;
+		User tryingToLogInUser;
+		int usersAnswed = 0;
 		//---------------------------------------
 		boolean iWantResponse = true;
 
@@ -125,13 +121,13 @@ public class EchoServer extends AbstractServer {
 						break;
 					case getUsersByICMPermissions:
 						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((ICMPermissions) request.getObject());
+						objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((permissionsICM) request.getObject());
 						objectArray[1] = request.getObject();
 						sendBackObject = objectArray;
 						break;
 					case getAllUsersByJob:
 						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getUserQuerys().getAllUsersByJob((Job) request.getObject());
+						objectArray[0] = queryHandler.getUserQuerys().getAllUsersByJob((collegeStatus) request.getObject());
 						objectArray[1] = request.getObject();
 						sendBackObject = objectArray;
 						break;
@@ -142,9 +138,9 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray[2] = objectArray[1];
 						returningObjectArray[3] = objectArray[2];
 						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStage(
-								(ChargeRequestStages)objectArray[0],
-								(subStages)objectArray[1],
-								(ChangeRequestStatus)objectArray[2]);
+								(ChargeRequestStages) objectArray[0],
+								(subStages) objectArray[1],
+								(ChangeRequestStatus) objectArray[2]);
 						sendBackObject = returningObjectArray;
 						break;
 					case getAllChangeRequestWithStatusAndStageOnly:
@@ -153,8 +149,8 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray[1] = objectArray[0];
 						returningObjectArray[2] = objectArray[1];
 						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStageOnly(
-								(ChargeRequestStages)objectArray[0],
-								(ChangeRequestStatus)objectArray[1]);
+								(ChargeRequestStages) objectArray[0],
+								(ChangeRequestStatus) objectArray[1]);
 						sendBackObject = returningObjectArray;
 						break;
 					case getAllChangeRequestWithStatusAndSubStageOnly:
@@ -163,12 +159,12 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray[1] = objectArray[0];
 						returningObjectArray[2] = objectArray[1];
 						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndSubStageOnly(
-								(subStages)objectArray[0],
-								(ChangeRequestStatus)objectArray[1]);
+								(subStages) objectArray[0],
+								(ChangeRequestStatus) objectArray[1]);
 						sendBackObject = returningObjectArray;
 						break;
 					case getAllChangeRequestWithStatusAndStageAndSupervisor:
-						objectArray= (Object[]) request.getObject();
+						objectArray = (Object[]) request.getObject();
 						returningObjectArray = new Object[5];
 						returningObjectArray[1] = objectArray[0];
 						returningObjectArray[2] = objectArray[1];
@@ -176,27 +172,27 @@ public class EchoServer extends AbstractServer {
 						returningObjectArray[4] = objectArray[3];
 						returningObjectArray[0] = queryHandler.getChangeRequestQuerys()
 								.getAllChangeRequestWithStatusAndStageAndSupervisor(
-										(ChargeRequestStages)objectArray[0],
-										(subStages)objectArray[1],
-										(ChangeRequestStatus)objectArray[2],
-										(String)objectArray[3]);
+										(ChargeRequestStages) objectArray[0],
+										(subStages) objectArray[1],
+										(ChangeRequestStatus) objectArray[2],
+										(String) objectArray[3]);
 						sendBackObject = returningObjectArray;
 						break;
-					
+
 					case LogIN:
 						tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
-						if (testAllClientsForUser(tryingToLogInUser)) 
-							sendBackObject=null;
-						else sendBackObject =tryingToLogInUser;
+						if (testAllClientsForUser(tryingToLogInUser))
+							sendBackObject = null;
+						else sendBackObject = tryingToLogInUser;
 						break;
 					case successfulLogInOut:
 						client.setConnectedUser((User) request.getObject());
-						iWantResponse =false;
+						iWantResponse = false;
 						break;
 					case getDoc:
-						sendBackObject= queryHandler.getFilesQuerys().selectDocWithFile((Document) request.getObject());
+						sendBackObject = queryHandler.getFilesQuerys().selectDocWithFile((Document) request.getObject());
 						break;
-					
+
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 				}
@@ -214,11 +210,11 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
-	
 
 	/**
 	 * This method is responsible for the creation of the osf.server instance (there is
 	 * no UI in this phase).
+	 *
 	 * @param args The port number to listen on. Defaults to 5555 if no argument is entered.
 	 **/
 	public static void StartOcfServer(String[] args) {
@@ -231,13 +227,13 @@ public class EchoServer extends AbstractServer {
 		}
 
 		EchoServer sv = new EchoServer(port);
-		ServerMenuForm.echo= sv;
+		ServerMenuForm.echo = sv;
 		try {
 			sv.listen(); // Start listening for connections
 		} catch (Exception ex) {
 			System.out.println("ERROR - Could not listen for clients!\n  please test for other server instance\n");
 		}
-		
+
 	}
 
 	/**
@@ -246,11 +242,10 @@ public class EchoServer extends AbstractServer {
 	 */
 	protected void serverStarted() throws UnknownHostException {
 		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
-		 mysqlConn = new mysqlConnection();
+		mysqlConn = new mysqlConnection();
 		queryHandler = new QueryHandler(mysqlConn);
 		mysqlConn.DBwithExmples();
 	}
-
 
 	/**
 	 * This method overrides the one in the superclass. Called when the osf.server stops
@@ -260,29 +255,30 @@ public class EchoServer extends AbstractServer {
 		mysqlConn.closeConnection();
 		System.out.println("Server has stopped listening for connections.");
 	}
-	
-	/** tests all connections if the user trying  to connect is connected 
-	 * @param tryingToConnect
+
+	/**
+	 * tests all connections if the user trying  to connect is connected
+	 *
+	 * @param tryingToConnect ?
 	 * @return true if the user is already connected
 	 */
-	protected boolean testAllClientsForUser(User tryingToConnect)
-	{
-	  Thread[] clientThreadList = getClientConnections();
+	protected boolean testAllClientsForUser(User tryingToConnect) {
+		Thread[] clientThreadList = getClientConnections();
 
-	  for (Thread thread : clientThreadList) {
-	    try {
-	      User u= ((ConnectionToClient) thread).getConnectedUser();
-	      
-	      if(tryingToConnect.equals(u)) {
-	    	  return true;
-	      }
-	    } catch (Exception ex) {
-	      ex.printStackTrace();
-	    }
-	  }
-	  return false;
+		for (Thread thread : clientThreadList) {
+			try {
+				User u = ((ConnectionToClient) thread).getConnectedUser();
+
+				if (tryingToConnect.equals(u)) {
+					return true;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return false;
 	}// END of testAllClientsForUser
-	
+
 	public mysqlConnection getmysqlConnection() {
 		return mysqlConn;
 	}

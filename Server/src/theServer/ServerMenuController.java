@@ -4,13 +4,11 @@ package theServer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import  theServer.ServerMenuForm;
-
 /**creates a server Menu scene 
  * @see ServerMenuForm
  *
  */
-public class ServerMenuControler extends Application {
+public class ServerMenuController extends Application {
 
 	public  static ServerMenuForm aFrame;
 	public static String[] theArgs;
@@ -19,7 +17,7 @@ public class ServerMenuControler extends Application {
 	 * @param args ????
 	 */
 	public static void main(String[] args) {
-		theArgs =args;
+		theArgs = args;
 		launch(args); // Wait for data
 	}
 

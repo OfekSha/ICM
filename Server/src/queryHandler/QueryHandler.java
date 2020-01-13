@@ -1,25 +1,6 @@
 package queryHandler;
 
-import Entity.*;
-import Entity.ChangeRequest.ChangeRequestStatus;
-import Entity.ProcessStage.subStages;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
 import theServer.mysqlConnection;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.EnumSet;
-
-import static Entity.ProcessStage.ChargeRequestStages;
 
 /**
  * concentrates all existing query Classes

@@ -1,15 +1,14 @@
 package queryHandler;
+import Entity.User;
+import Entity.User.collegeStatus;
+import Entity.User.permissionsICM;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.EnumSet;
-
-import Entity.User;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
-import theServer.mysqlConnection;
 
 /**
  * concentrates  all querys  for the table user
@@ -63,7 +62,7 @@ public class UserQuerys {
         stmt.setNString(2, user.getPassword());
         stmt.setNString(3, user.getFirstName());
         stmt.setNString(4, user.getLastName());
-        stmt.setNString(5, user.getJob().name());
+        stmt.setNString(5, user.getCollegeStatus().name());
         stmt.setNString(6, user.getEmail());
         stmt.setInt(7, 0);
         stmt.setInt(8, 0);
@@ -72,9 +71,9 @@ public class UserQuerys {
         stmt.setInt(11, 0);
         stmt.setInt(12, 0);
         stmt.setInt(13, 0);
-        EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
+        EnumSet<User.permissionsICM> Permissions = user.getICMPermissions();
         if (Permissions != null) {
-            for (ICMPermissions e : Permissions) {
+            for (User.permissionsICM e : Permissions) {
                 switch (e) {
                     case informationTechnologiesDepartmentManager:
                         stmt.setInt(7, 1);
@@ -196,38 +195,39 @@ public class UserQuerys {
         e.printStackTrace();
     }
 
-    // converting job to enum
-    EnumSet<Job> Jobs = EnumSet.allOf(User.Job.class);
-    Job job = null;
-    for (Job e : Jobs) {
-        if (jobString != null && jobString.equals(e.name()))
-            job = e;
+    // converting collegeStatus to enum
+    EnumSet<collegeStatus> collegeJobs = EnumSet.allOf(collegeStatus.class);
+    User.collegeStatus collegeStatus = null;
+    for (collegeStatus e : collegeJobs) {
+        if (jobString != null && jobString.equals(e.name())) {
+            collegeStatus = e;
+        }
     }
     // converting to permissions set
-    EnumSet<ICMPermissions> all = EnumSet.allOf(User.ICMPermissions.class);
-    EnumSet<ICMPermissions> Permissions = EnumSet.complementOf(all);
+    EnumSet<User.permissionsICM> all = EnumSet.allOf(User.permissionsICM.class);
+    EnumSet<User.permissionsICM> Permissions = EnumSet.complementOf(all);
     if (informationTechnologiesDepartmentManagerPermission == 1) {
-        Permissions.add(ICMPermissions.informationTechnologiesDepartmentManager);
+        Permissions.add(User.permissionsICM.informationTechnologiesDepartmentManager);
     }
     if (inspectorPermission == 1) {
-        Permissions.add(ICMPermissions.inspector);
+        Permissions.add(User.permissionsICM.inspector);
     }
     if (estimatorPermission == 1) {
-        Permissions.add(ICMPermissions.estimator);
+        Permissions.add(User.permissionsICM.estimator);
     }
     if (executionLeaderPermission == 1) {
-        Permissions.add(ICMPermissions.executionLeader);
+        Permissions.add(permissionsICM.executionLeader);
     }
     if (examinerPermission == 1) {
-        Permissions.add(ICMPermissions.examiner);
+        Permissions.add(User.permissionsICM.examiner);
     }
     if (changeControlCommitteeChairman == 1) {
-        Permissions.add(ICMPermissions.changeControlCommitteeChairman);
+        Permissions.add(User.permissionsICM.changeControlCommitteeChairman);
     }
     if (changeControlCommitteeMember == 1) {
-        Permissions.add(ICMPermissions.changeControlCommitteeMember);
+        Permissions.add(User.permissionsICM.changeControlCommitteeMember);
     }
-    toReturn = new User(userName, password, firstName, lastName, email, job, Permissions);
+    toReturn = new User(userName, password, firstName, lastName, email, collegeStatus, Permissions);
     return toReturn;
 
     } // end of userStamentGets
@@ -254,15 +254,15 @@ public class UserQuerys {
        return toReturn;
    } // END of getAllUsers
    
-   /**  getting all users with the specified job
-    * @param job ?
+   /**  getting all users with the specified collegeStatus
+    * @param collegeStatus ?
     * @return ?
     */
-   public ArrayList<User> getAllUsersByJob(Job job){
+   public ArrayList<User> getAllUsersByJob(collegeStatus collegeStatus){
    	ArrayList<User> toReturn = new ArrayList<>();
    	 try {
             PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement("SELECT * FROM icm.user where job = ?;");
-            stmt.setNString(1, job.name());
+            stmt.setNString(1, collegeStatus.name());
             ResultSet re = stmt.executeQuery();
            while (re.next()) {
 
@@ -280,7 +280,7 @@ public class UserQuerys {
     * @param prem ?
     * @return ?
     */
-   public ArrayList<User> getAllUsersWithICMPermissions(ICMPermissions prem) {
+   public ArrayList<User> getAllUsersWithICMPermissions(User.permissionsICM prem) {
        ArrayList<User> toReturn = new ArrayList<>();
        Statement stmt;
        ResultSet re = null;

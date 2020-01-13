@@ -1,28 +1,21 @@
 package theServer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ServerMenuForm implements Initializable {
 
@@ -78,12 +71,7 @@ public class ServerMenuForm implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		// we dont want its size to change only scrolling
-		ChangeListener <String> arg0= new ChangeListener<String>() {	
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				Messages.setPrefWidth(Messages.getText().length() * 7);			
-			}
-		};
+		ChangeListener <String> arg0 = (observable, oldValue, newValue) -> Messages.setPrefWidth(Messages.getText().length() * 7);
 		Messages.textProperty().addListener(arg0);
 		
 		// taking over the consul
@@ -97,7 +85,7 @@ public class ServerMenuForm implements Initializable {
 		}
 
 	/** ending the server gui and the server 
-	 * @param event
+	 * @param event ?
 	 */
 	@FXML
 	void ExitBtn(ActionEvent event) {
@@ -110,7 +98,7 @@ public class ServerMenuForm implements Initializable {
 	}
 
 	/** starts the server
-	 * @param event
+	 * @param event ?
 	 */
 	@FXML
 	void startServer(ActionEvent event) {
@@ -119,14 +107,14 @@ public class ServerMenuForm implements Initializable {
 			return;
 		}
 	
-			EchoServer.StartOcfServer(ServerMenuControler.theArgs);
+			EchoServer.StartOcfServer(ServerMenuController.theArgs);
 
 	//	btnStartTheServer.setDisable(true);
 	//	btnCloseTheServer.setDisable(false);
 	}
 
 	/** turning the server off 
-	 * @param event
+	 * @param event ?
 	 */
 	@FXML
 	void stopeServer(ActionEvent event) {
@@ -147,22 +135,22 @@ public class ServerMenuForm implements Initializable {
 
 	
 	/**cleans the messeges text box
-	 * @param event
+	 * @param event ?
 	 */
 	@FXML
-	void RefreshMessges(ActionEvent event) {
+	void RefreshMessages(ActionEvent event) {
 		refreshMessages();
 	}
 
-	/** assisting : RefreshMessges,
+	/** assisting : RefreshMessages,
 	 * 
-	 * @see RefreshMessges
-	 */
+	 * //@see RefreshMessages
+	 * */
 	public void refreshMessages() {
 		Messages.setText("");
 	}
 	/** Rebuilds the DB with examples 
-	 * @param event
+	 * @param event ?
 	 * @see mysqlConnection
 	 */
 	@FXML

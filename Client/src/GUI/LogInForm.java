@@ -1,12 +1,8 @@
 package GUI;
 
 import Controllers.SecurityController;
-import Entity.ChangeRequest;
 import Entity.User;
 import Entity.clientRequestFromServer;
-import Entity.ChangeRequest.ChangeRequestStatus;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
@@ -14,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -22,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -73,7 +67,7 @@ public class LogInForm extends UserForm {
 		eventIput = event;
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
 			securityController.input(tfUserName.getText(), pfPassword.getText());
-			putLunchedThreadToSleep();
+			putLaunchedThreadToSleep();
 			if (canLogIn) {
 				successfulLogIn(user);
 				lunchMain();
@@ -119,11 +113,12 @@ public class LogInForm extends UserForm {
 	 * - saves it so  wakeUpLunchedThread would be able to wake it up
 	 * 
 	 */
-	private void putLunchedThreadToSleep(){
+	private void putLaunchedThreadToSleep(){
 		log = Thread.currentThread();
 		try {
 			log.sleep(9999999);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	/** Wakes up the lunched thread

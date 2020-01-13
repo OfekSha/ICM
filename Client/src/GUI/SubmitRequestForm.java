@@ -3,12 +3,10 @@ package GUI;
 import Controllers.SubmitRequestController;
 import Entity.DocumentForTable;
 import WindowApp.ClientLauncher;
-import WindowApp.IcmForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,7 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class SubmitRequestForm extends UserForm implements Initializable, IcmForm {
+public class SubmitRequestForm extends UserForm {
 //TextArea
 	@FXML
 	public TextArea taBaseForChange;
@@ -42,21 +40,18 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	@FXML
 	private ComboBox<String> cmbSystems;
 
-	
-	
 	// table stuff
 	@FXML
 	public TableView<DocumentForTable> tblViewDocuments;
 	// table columns:
-		@FXML
-		public TableColumn<DocumentForTable, String> columnFileName;
-		@FXML
-		public TableColumn<DocumentForTable, String> columnFileSize;
-		
-		
-		private ObservableList<DocumentForTable> tableData;
+	@FXML
+	public TableColumn<DocumentForTable, String> columnFileName;
+	@FXML
+	public TableColumn<DocumentForTable, String> columnFileSize;
+
+	private ObservableList<DocumentForTable> tableData;
 	// the  forms controller 
-		private SubmitRequestController submitRequestController;
+	private SubmitRequestController submitRequestController;
 	/**
 	 *
 	 */
@@ -87,18 +82,17 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	 *  if some fields are empty sends an alert 
 	 */
 	public void getRequestData() {
-		 if (submitRequestController.getSubmition( taRequestDetails.getText(),  taRequestReason.getText(), taComment.getText(), getSys(),taRequestDetails.getText(),user) ) {
-		taRequestDetails.clear();
-		taRequestReason.clear();
-		taComment.clear();
-		cmbSystems.setValue("");
-		tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
-		tblViewDocuments.setItems(tableData);
-		 }
-		 else {
-		String missing =submitRequestController.AppendEmpty( taRequestDetails.getText(),taRequestReason.getText(),getSys(),taRequestDetails.getText());
-		alertWindowLauncher(AlertType.ERROR,"ERROR Dialog","Error:empty fields","The following fields must not be empty:"+missing);
-		 }
+		if (submitRequestController.getSubmition(taRequestDetails.getText(), taRequestReason.getText(), taComment.getText(), getSys(), taRequestDetails.getText(), user)) {
+			taRequestDetails.clear();
+			taRequestReason.clear();
+			taComment.clear();
+			cmbSystems.setValue("");
+			tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
+			tblViewDocuments.setItems(tableData);
+		} else {
+			String missing = submitRequestController.AppendEmpty(taRequestDetails.getText(), taRequestReason.getText(), getSys(), taRequestDetails.getText());
+			alertWindowLauncher(AlertType.ERROR, "ERROR Dialog", "Error:empty fields", "The following fields must not be empty:" + missing);
+		}
 	}
 	
 	/** Attaches a file to request<p>
@@ -108,31 +102,29 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 	public void AddFile() throws IOException {
 
 		FileChooser fileChooser = new FileChooser();
-		File file =fileChooser.showOpenDialog(null);
-		if(file!=null) {
-		
-		if (!submitRequestController.AddThefile(file))
-			alertWindowLauncher(AlertType.ERROR, "ERROR Dialog", "Error:file to large",
-					"file must be smaller then 16mb");
-		tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
-		tblViewDocuments.setItems(tableData);
+		File file = fileChooser.showOpenDialog(null);
+		if (file != null) {
+			if (!submitRequestController.AddThefile(file))
+				alertWindowLauncher(AlertType.ERROR, "ERROR Dialog", "Error:file to large",
+						"file must be smaller then 16mb");
+			tableData = FXCollections.observableArrayList(submitRequestController.DocumentForTableList());
+			tblViewDocuments.setItems(tableData);
 		}
 	}
 	
 	/** setting up the table columns 
 	 * 
 	 */
-	private void initializeTableView() {
-																									
+	private void initializeTableView() { // messages
 		columnFileName.setCellValueFactory(new PropertyValueFactory<>("name")); // set values for id
 		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
-	
 	}
+
 	public void removeFile() {
 		DocumentForTable selectedDoc = tblViewDocuments.getSelectionModel().getSelectedItem();
-		if(selectedDoc!=null) {
-		tblViewDocuments.getItems().remove(selectedDoc);
-		submitRequestController.removeDoc(selectedDoc.gettheDoc());
+		if (selectedDoc != null) {
+			tblViewDocuments.getItems().remove(selectedDoc);
+			submitRequestController.removeDoc(selectedDoc.gettheDoc());
 		}
 	}
 	
@@ -146,11 +138,11 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 				|| !((getSys()).equals(""))) {
 			if (areYouSureAlert(AlertType.CONFIRMATION, "Living the submit form",
 					"Are you ok with  stoping the request submition?", "The detials you enterd will not be saved")) {
-				logingOut(event);
+				loggingOut(event);
 			}
 
 		} else {
-			logingOut(event);
+			loggingOut(event);
 		}
 	}
 	
@@ -172,26 +164,23 @@ public class SubmitRequestForm extends UserForm implements Initializable, IcmFor
 		}
 	}
 
-/** 
- * @return  the  pressed system  String form  combo box
- */
-private String getSys() {
-	String sys = "";
-	Object temp = cmbSystems.getSelectionModel().getSelectedItem();
-	if (temp != null) sys = temp.toString();
-	return sys;
-}
+	/**
+	 * @return  the  pressed system  String form  combo box
+ 	*/
+	private String getSys() {
+		String sys = "";
+		Object temp = cmbSystems.getSelectionModel().getSelectedItem();
+		if (temp != null) sys = temp.toString();
+		return sys;
+	}
 
-/** Telling the server the user logged out and lunching the log in screen 
- * @param event ?
- * @throws Exception ?
- */
-private  void logingOut (ActionEvent event) throws Exception  {
-	setUserLogOff();
-	user = null;
-	NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+	/** Telling the server the user logged out and lunching the log in screen
+	 * @param event ?
+	 * @throws Exception ?
+	 */
+	private void loggingOut(ActionEvent event) throws Exception  {
+		setUserLogOff();
+		user = null;
+		NextWindowLauncher(event, "/GUI/LogInForm.fxml", this, true);
+	}
 }
-	
-}
-
-

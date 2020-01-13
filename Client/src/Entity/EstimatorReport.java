@@ -2,9 +2,6 @@ package Entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalTime;
-
-import Entity.User.ICMPermissions;
 
 /**
  * represents a estimators report
@@ -36,7 +33,7 @@ public class EstimatorReport implements Serializable {
 
 	// input
 	public void setEstimator(User estimator) {
-		if(!(estimator.getICMPermissions().contains(ICMPermissions.estimator))) throw new IllegalArgumentException("only an estimator can make an estimator report ");
+		if(!(estimator.getICMPermissions().contains(User.permissionsICM.estimator))) throw new IllegalArgumentException("only an estimator can make an estimator report ");
 		this.estimator = estimator;
 	}
 

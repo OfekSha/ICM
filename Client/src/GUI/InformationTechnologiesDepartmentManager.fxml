@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.InformationTechnologiesDepartmentManagerForm">
+    <top>
+        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="200.0" fitWidth="200.0">
+                <Image url="@../img/ICMlogo.png" />
+            </ImageView>
+        </HBox>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+            <VBox alignment="BOTTOM_CENTER" spacing="10.0">
+                <Button fx:id="btnBack" mnemonicParsing="false" onAction="#MainScene" prefHeight="0.0" prefWidth="180.0" text="Back">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Button>
+                <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#LogOutButton" prefWidth="180.0" text="Log out" />
+                <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Exit">
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Button>
+            </VBox>
+            <VBox alignment="TOP_CENTER" spacing="10.0">
+               <TabPane accessibleRole="TAB_ITEM" tabClosingPolicy="UNAVAILABLE">
+                   <Tab fx:id="tabCommitteeAccredit" text="Committee Accredit">
+                           <HBox prefHeight="527.0">
+                                 <VBox alignment="TOP_CENTER" fillWidth="false" prefWidth="615.0" spacing="10.0">
+                                       <MenuButton fx:id="mbUserFilter" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="200.0" text="User Filter">
+                                         <items>
+                                           <MenuItem mnemonicParsing="false" text="Students" />
+                                           <MenuItem mnemonicParsing="false" text="IT Engineer" />
+                                         </items>
+                                          <VBox.margin>
+                                             <Insets top="10.0" />
+                                          </VBox.margin>
+                                       </MenuButton>
+                                       <TableView fx:id="tblViewUsers" prefHeight="430.0" prefWidth="600.0">
+                                         <columns>
+                                           <TableColumn fx:id="colFirstname" prefWidth="110.0" text="Firstname" />
+                                           <TableColumn fx:id="colLastname" prefWidth="110.0" text="Lastname" />
+                                             <TableColumn fx:id="colEmail" prefWidth="200.0" text="E-mail" />
+                                             <TableColumn fx:id="colPermissions" prefWidth="193.0" text="Permissions" />
+                                         </columns>
+                                       </TableView>
+                                       <HBox alignment="CENTER" spacing="15.0">
+                                             <Button fx:id="btnInspector" mnemonicParsing="false" text="Set as Inspector" />
+                                             <Button fx:id="btnChairman" mnemonicParsing="false" text="Set as Chairman" />
+                                             <Button fx:id="btnMember1" mnemonicParsing="false" text="Set as Member 1" />
+                                             <Button fx:id="btnMember2" mnemonicParsing="false" text="Set as Member 2" />
+                                          <VBox.margin>
+                                             <Insets top="-5.0" />
+                                          </VBox.margin>
+                                       </HBox>
+                                 </VBox>
+                                 <VBox alignment="TOP_CENTER" fillWidth="false" prefWidth="200.0" spacing="10.0">
+                                       <Label style="-fx-font-weight: bold;" text="Change Control Committee">
+                                          <VBox.margin>
+                                             <Insets top="10.0" />
+                                          </VBox.margin>
+                                       </Label>
+                                       <Label alignment="CENTER" contentDisplay="BOTTOM" text="Inspector">
+                                          <graphic>
+                                             <TextField fx:id="tfInspector" alignment="CENTER" editable="false" prefWidth="180.0" />
+                                          </graphic>
+                                       </Label>
+                                       <Label alignment="CENTER" contentDisplay="BOTTOM" text="Chairman">
+                                          <graphic>
+                                             <TextField fx:id="tfChairman" alignment="CENTER" editable="false" prefWidth="180.0" />
+                                          </graphic>
+                                       </Label>
+                                       <Label alignment="CENTER" contentDisplay="BOTTOM" text="Member 1">
+                                          <graphic>
+                                             <TextField fx:id="tfMember1" alignment="CENTER" editable="false" prefWidth="180.0" />
+                                          </graphic>
+                                       </Label>
+                                       <Label alignment="CENTER" contentDisplay="BOTTOM" text="Member 2">
+                                          <graphic>
+                                             <TextField fx:id="tfMember2" alignment="CENTER" editable="false" prefWidth="180.0" />
+                                          </graphic>
+                                       </Label>
+                                 </VBox>
+                           </HBox>
+                   </Tab>
+                   <Tab text="Untitled Tab 2">
+                       <AnchorPane />
+                   </Tab>
+               </TabPane>
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>

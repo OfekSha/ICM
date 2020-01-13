@@ -5,8 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
-import static GUI.ExecutionLeaderForm.processStage;
 import static GUI.ExecutionLeaderForm.sendUpdateForRequest;
+import static GUI.PopUpWindows.DueTimeController.processStage;
 
 public class GetExtensionController extends AbstractPopUp {
 

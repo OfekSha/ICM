@@ -1,7 +1,6 @@
 package GUI;
 
 import Entity.User;
-import Entity.User.ICMPermissions;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -55,8 +54,8 @@ public class MainMenuForm extends UserForm {
 		btnExaminer.setDisable(true);
 		btnChangeControlCommitteeChairman.setDisable(true);
 
-		EnumSet<ICMPermissions> Permissions = user.getICMPermissions();
-		for (User.ICMPermissions p : Permissions) {
+		EnumSet<User.permissionsICM> Permissions = user.getICMPermissions();
+		for (User.permissionsICM p : Permissions) {
 			switch (p) {
 				case informationTechnologiesDepartmentManager:
 					btnInformationTechnologiesDepartmentManager.setDisable(false);
@@ -89,9 +88,8 @@ public class MainMenuForm extends UserForm {
 		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true);
 	}
 
-	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
+	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {
+		 NextWindowLauncher(event, "/GUI/InformationTechnologiesDepartmentManager.fxml", this, true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
