@@ -120,12 +120,11 @@ public class InspectorController  {
 	public static void changeRole(ChangeRequest req, User user) {
 		req.getProcessStage().newStageSupervisor(user); // set user to be supervisor
 		req.getProcessStage().setCurrentSubStage(subStages.determiningDueTime); // next sub stage
-		req.getProcessStage().setStartDate(LocalDate.now());
-
 		switch (req.getProcessStage().getCurrentStage()) {
 			// give permission to user
 			case meaningEvaluation:
 				user.getICMPermissions().add(icmPermission.estimator);
+				req.getProcessStage().setStartDate(LocalDate.now());
 				break;
 			case execution:
 				user.getICMPermissions().add(User.icmPermission.executionLeader);
