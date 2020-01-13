@@ -15,7 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class DocmentTableForDownloads extends  UserForm{
+public class DocmentTableForDownloadsForm   {
 
 	@FXML
 	public TableView<DocumentForTable> tblViewDocuments;
@@ -56,9 +56,4 @@ public class DocmentTableForDownloads extends  UserForm{
 
 	} //END of pressedDownlode()
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
 }

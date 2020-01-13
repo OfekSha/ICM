@@ -11,15 +11,14 @@ import java.util.EnumSet;
 public class User implements Serializable {
 
 	// enums*********************************************
-	public enum ICMPermissions {
+	public enum icmPermission {
 		informationTechnologiesDepartmentManager, inspector, estimator, executionLeader, examiner,
 		changeControlCommitteeChairman,changeControlCommitteeMember
 	}
 
-	// wil be used to determan who can be allocted ICMPermissions
-	public enum Job {
+	// wil be used to determine who can be allocated icmPermission
+	public enum collegeStatus {
 		student, informationEngineer
-
 	}
 
 	// Variables
@@ -28,9 +27,9 @@ public class User implements Serializable {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private EnumSet<ICMPermissions> Permissions = null;
-	//private ICMPermissions[] Permissions;
-	private Job job;
+	private EnumSet<icmPermission> Permissions = null;
+	//private icmPermission[] Permissions;
+	private collegeStatus collegeStatus;
 // Contractors
 
 	/**
@@ -41,12 +40,12 @@ public class User implements Serializable {
 	 * @param firstName   ?
 	 * @param lastName    ?
 	 * @param email       ?
-	 * @param job         -(enum-Job)
-	 * @param Permissions - (enum-ICMPermissions)if the user is is a student send null
+	 * @param collegeStatus         -(enum-collegeStatus)
+	 * @param Permissions - (enum-icmPermission)if the user is is a student send null
 	 */
-	public User(String userName, String password, String firstName, String lastName, String email, Job job,
-				EnumSet<ICMPermissions> Permissions) {
-		this.job = job;
+	public User(String userName, String password, String firstName, String lastName, String email, collegeStatus collegeStatus,
+				EnumSet<icmPermission> Permissions) {
+		this.collegeStatus = collegeStatus;
 		updatePermissions(Permissions);
 		this.userName = userName;
 		this.password = password;
@@ -65,8 +64,9 @@ public class User implements Serializable {
 	 */
 
 	//TODO Return value of the method is never used
-	public boolean updatePermissions(EnumSet<ICMPermissions> Permissions) {
-		if (Permissions == null || job == Job.student)
+	public boolean updatePermissions(EnumSet<icmPermission> Permissions) {
+		//TODO Warning:(68, 47) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
+		if (Permissions == null || collegeStatus == collegeStatus.student)
 			return false;
 		this.Permissions = Permissions;
 		return true;
@@ -81,12 +81,13 @@ public class User implements Serializable {
 	 *
 	 * @param Permission doesnt @return - returns true if permission is in the collection
 	 */
-	public void addPremmision(ICMPermissions Permission) {
-
-		if (job == Job.student && Permission == null)
+	public void addPremmision(icmPermission Permission) {
+		//TODO Warning:(85, 24) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
+		if (collegeStatus == collegeStatus.student && Permission == null)
 			return;
 		//TODO Warning:(93, 34) Condition 'Permission != null' is always 'true' when reached
-		if (job == Job.student && Permission != null) {
+		//TODO Warning:(88, 24) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
+		if (collegeStatus == collegeStatus.student && Permission != null) {
 			try {
 				throw new IllegalArgumentException("Students dont have Permissions in the system");
 			} catch (IllegalArgumentException e) {
@@ -103,7 +104,7 @@ public class User implements Serializable {
 		}
 
 		if (this.Permissions == null) {
-			EnumSet<ICMPermissions> all = EnumSet.allOf(ICMPermissions.class);
+			EnumSet<icmPermission> all = EnumSet.allOf(icmPermission.class);
 			this.Permissions = EnumSet.complementOf(all);
 			this.Permissions.add(Permission);
 			return;
@@ -120,7 +121,7 @@ public class User implements Serializable {
 	 *
 	 * @param Permission ?
 	 */
-	public void removePermission(ICMPermissions Permission) {
+	public void removePermission(icmPermission Permission) {
 		if (Permission == null || this.Permissions == null)
 			return;
 		this.Permissions.remove(Permission);
@@ -148,12 +149,12 @@ public class User implements Serializable {
 		return email;
 	}
 
-	public EnumSet<ICMPermissions> getICMPermissions() {
+	public EnumSet<icmPermission> getICMPermissions() {
 		return Permissions;
 	}
 
-	public Job getJob() {
-		return job;
+	public collegeStatus getCollegeStatus() {
+		return collegeStatus;
 	}
 
 

@@ -1,6 +1,7 @@
 package Controllers;
 
 import Entity.ChangeRequest;
+import Entity.Document;
 import Entity.clientRequestFromServer;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.EstimatorReport;
@@ -43,6 +44,10 @@ public class EstimatorController {
 		switch (response.getRequest()) { //TODO too few cases in switch
 			case getAllChangeRequestWithStatusAndStage:
 				requests = (ArrayList <ChangeRequest>) ((Object[])response.getObject())[0];
+				break;
+			case getDoc:
+				DocmentTableForDownloadsController.downloded=(Document) response.getObject();
+				DocmentTableForDownloadsController.wakeUpLunchedThread();
 				break;
 			default:throw new IllegalArgumentException(
 					"the request " + response.getRequest() + " not implemented in the Estimator controller.");	

@@ -44,7 +44,6 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        getRequests();
 		initUI();
 	}
 
@@ -55,7 +54,12 @@ public class ExecutionLeaderForm extends EstimatorExecutorForm {
 		btnGetExtension.setDisable(true);
 		taExaminerReport.clear();
 		taInitiatorRequest.clear();
-        Platform.runLater(this::setTableRequests);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Platform.runLater(this::setTableRequests);
 	}
 
 	protected void setTableRequests() {

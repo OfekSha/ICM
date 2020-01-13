@@ -23,7 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class tabPaneInspectorForm  extends DocmentTableForDownloads implements Initializable{
+public class tabPaneInspectorForm    implements Initializable{
 
 	@FXML
 	private  TabPane tabPane;
@@ -118,6 +118,8 @@ public class tabPaneInspectorForm  extends DocmentTableForDownloads implements I
 	@FXML
 	private TextArea explain5;
 
+	@FXML
+	public DocmentTableForDownloadsForm  DocmentTableController; // the document table with download capability 
 
 	public void onRequirementClicked(requirementForTable selectedReq) {
 		// set details into tab pane:
@@ -189,8 +191,8 @@ public class tabPaneInspectorForm  extends DocmentTableForDownloads implements I
 		}
 
 		// setting up the document table
-		onRequirementTableClick(InspectorController.selectedRequest);
-
+		//onRequirementTableClick(InspectorController.selectedRequest);
+		DocmentTableController.onRequirementTableClick(InspectorController.selectedRequest);
 	}
 
 

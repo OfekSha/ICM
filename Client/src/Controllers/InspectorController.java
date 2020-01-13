@@ -2,35 +2,25 @@ package Controllers;
 
 import Entity.ChangeRequest;
 import Entity.Document;
-import Entity.DocumentForTable;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.InspectorUpdateDescription;
 import Entity.InspectorUpdateDescription.inspectorUpdateKind;
-import Entity.ProcessStage;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
+import Entity.User.icmPermission;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
-import GUI.InspectorForm;
 import GUI.UserForm;
 import WindowApp.ClientLauncher;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.MenuItem;
-import javafx.stage.FileChooser;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class InspectorController  {
 
-	public static ArrayList<ChangeRequest> requests = new ArrayList<ChangeRequest>();
+	public static ArrayList<ChangeRequest> requests = new ArrayList<>();
 	// public ArrayList <lReport> getClosedRequests(){}
 	public static ChangeRequest selectedRequest;
 
@@ -108,11 +98,11 @@ public class InspectorController  {
 	public static ArrayList<User> informationEngineers;
 
 	public static void getInformationEngineers() {
-		requestToServerProtocol(new clientRequestFromServer(requestOptions.getAllUsersByJob, Job.informationEngineer));
+		requestToServerProtocol(new clientRequestFromServer(requestOptions.getAllUsersByJob, User.collegeStatus.informationEngineer));
 	}
 
 	public static void approveDueTime(boolean approve, ChangeRequest req,String reason) {
-		InspectorUpdateDescription report;;
+		InspectorUpdateDescription report;
 		if (approve) {
 			req.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 			report= new InspectorUpdateDescription(UserForm.user,reason,LocalDate.now(),inspectorUpdateKind.approveDueTime);
@@ -135,10 +125,10 @@ public class InspectorController  {
 		switch (req.getProcessStage().getCurrentStage()) {
 			// give permission to user
 			case meaningEvaluation:
-				user.getICMPermissions().add(ICMPermissions.estimator);
+				user.getICMPermissions().add(icmPermission.estimator);
 				break;
 			case execution:
-				user.getICMPermissions().add(ICMPermissions.executionLeader);
+				user.getICMPermissions().add(User.icmPermission.executionLeader);
 				break;
 			default:
 				throw new IllegalArgumentException(

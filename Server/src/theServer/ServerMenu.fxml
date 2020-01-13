@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="theServer.ServerMenuForm">
+   <top>
+      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="200.0" fitWidth="200.0">
+                  <Image url="@../../../Client/src/img/ICMlogo.png" />
+            </ImageView>
+         <VBox alignment="TOP_RIGHT" prefWidth="824.0">
+            <children>
+               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="205.0" prefWidth="829.0" text="Server menu" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="48.0" />
+                  </font>
+                  <effect>
+                     <DropShadow color="#030303" height="30.0" radius="14.5" width="30.0" />
+                  </effect>
+               </Label>
+            </children></VBox>
+      </HBox>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="17.0">
+            <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="17.0">
+               <children>
+                           <Label alignment="CENTER" contentDisplay="BOTTOM" text="Actions">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                  </Label>
+                  <Button fx:id="btnStartTheServer" mnemonicParsing="false" onAction="#startServer" prefHeight="25.0" prefWidth="152.0" text="Start the server" />
+                  <Button fx:id="btnCloseTheServer" mnemonicParsing="false" onAction="#stopServer" prefHeight="25.0" prefWidth="151.0" text="Close the server" />
+                  <Button fx:id="btnResetDB" mnemonicParsing="false" onAction="#reSetDB" prefHeight="25.0" prefWidth="150.0" text="ResetDB" />
+               </children>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="400.0" />
+               </VBox.margin>
+                  <Button fx:id="btnExit" mnemonicParsing="false" onAction="#ExitBtn" prefWidth="180.0" text="Exit">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin></Button>
+            </VBox>
+            </VBox>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="566.0" prefWidth="817.0" spacing="10.0">
+                  <Label text="Messages">
+                  <VBox.margin>
+                     <Insets top="10.0" />
+                  </VBox.margin></Label>
+                  <TextArea fx:id="Messages" prefHeight="449.0" prefWidth="797.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin></TextArea>
+               <Button fx:id="btnRefreshMessges" mnemonicParsing="false" onAction="#RefreshMessages" text="Refresh messges" />
+                  </VBox>
+            </HBox>
+      </SplitPane>
+   </center>
+</BorderPane>

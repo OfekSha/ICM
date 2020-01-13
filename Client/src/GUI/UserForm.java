@@ -1,11 +1,11 @@
 package GUI;
 
+import Controllers.DocmentTableForDownloadsController;
 import Entity.ChangeRequest;
-import Entity.Document;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import Entity.Document;
 import Entity.User;
-import Entity.User.ICMPermissions;
-import Entity.User.Job;
+import Entity.User.collegeStatus;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -30,8 +30,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import Controllers.DocmentTableForDownloadsController;
-
 import static Entity.clientRequestFromServer.requestOptions.getAll;
 
 public abstract class UserForm implements IcmForm {
@@ -41,8 +39,8 @@ public abstract class UserForm implements IcmForm {
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
 	static ChangeRequestStatus requestStatus;
-	static ICMPermissions iCMPermission;
-	static Job job;
+	static User.icmPermission icmPermission;
+	static collegeStatus collegeStatus;
 	static Stage popupWindow;
 
 	@FXML
@@ -50,7 +48,6 @@ public abstract class UserForm implements IcmForm {
 	public Button btnLogout;
 	public Button btnBack;
 	public ComboBox<String> cmbRequests;
-	
 
 	// UNDECORATED
 	private static double xOffset = 0;
@@ -195,9 +192,6 @@ public abstract class UserForm implements IcmForm {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		System.out.print("\n["
 				+ LocalTime.now()
-				//+ ZonedDateTime.now().toString()
-				//.split("T")[1]
-				//.split("\\+")[0]
 				+ "]: Message from server -> " + message.toString());
 		Object[] objectArray;
 		switch (request.getRequest()) {
@@ -230,12 +224,12 @@ public abstract class UserForm implements IcmForm {
 			case getUsersByICMPermissions:
 				objectArray = (Object[]) request.getObject();
 				allUsers = (ArrayList<User>) objectArray[0];
-				iCMPermission = (ICMPermissions) objectArray[1];
+				icmPermission = (User.icmPermission) objectArray[1];
 				break;
 			case getAllUsersByJob:
 				objectArray = (Object[]) request.getObject();
 				allUsers = (ArrayList<User>) objectArray[0];
-				job = (Job) objectArray[1];
+				collegeStatus = (collegeStatus) objectArray[1];
 				break;
 			case getDoc:
 				DocmentTableForDownloadsController.downloded=(Document) request.getObject();
@@ -253,7 +247,5 @@ public abstract class UserForm implements IcmForm {
 	 public User getUser(User u) {
 		  return user;
 	}
-	 
-	 
-	 
+
 }// END of class UserForm

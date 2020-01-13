@@ -3,7 +3,6 @@ package GUI;
 import Controllers.EstimatorController;
 import Controllers.InspectorController;
 import Entity.Document;
-import Entity.DocumentForTable;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import GUI.PopUpWindows.DueTimeController;
@@ -27,6 +26,9 @@ import java.util.ResourceBundle;
 
 public class EstimatorMainForm extends UserForm {
 
+	
+	@FXML
+	public DocmentTableForDownloadsForm  DocmentTableController; // the document table with download capability 
 		@FXML
 		public Button btnGetDetails;
 		@FXML
@@ -57,14 +59,6 @@ public class EstimatorMainForm extends UserForm {
 
 	    @FXML
 	    private TextField system;
-	    @FXML
-	    private TableView<DocumentForTable> tblViewDocuments;
-
-	    @FXML
-	    private TableColumn<DocumentForTable, String> columnFileName;
-
-	    @FXML
-	    private TableColumn<DocumentForTable, String> columnFileSize;
 
 	    @FXML
 	    private TextField createdDate;
@@ -136,6 +130,7 @@ public class EstimatorMainForm extends UserForm {
 		public void initialize(URL arg0, ResourceBundle arg1) {
 			ClientLauncher.client.setClientUI(this);
 			table=new RequestTableView(tblView,idColumn,statusColumn,null,dueTimeColumn,messageColumn);
+			DocmentTableController.initializeDocumentTableView();
 			
 		}
 		@Override
@@ -161,10 +156,6 @@ public class EstimatorMainForm extends UserForm {
 			system.setText(EstimatorController.selectedRequest.getSystem());
 			createdDate.setText(EstimatorController.selectedRequest.getStartDate().toString());
 			createdBy.setText(EstimatorController.selectedRequest.getInitiator().getTheInitiator().getUserName());
-			ArrayList<Document> docs=EstimatorController.selectedRequest.getDoc();
-			DocumentForTable.setTableProperties(columnFileName, columnFileSize);
-			ObservableList<DocumentForTable> documentTableData = FXCollections.observableArrayList( DocumentForTable.createDocForTableArrayList(docs));
-			tblViewDocuments.setItems( documentTableData);
 			//end initiator details.
 			btnGetDetails.setDisable(false);
 			btnAskForTimeExtension.setDisable(false);
@@ -183,7 +174,7 @@ public class EstimatorMainForm extends UserForm {
 				btnSetDueTime.setDisable(true);
 				break;
 			}
-			
+			DocmentTableController.onRequirementTableClick(EstimatorController.selectedRequest);
 		}
 		
 }

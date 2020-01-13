@@ -232,7 +232,7 @@ public abstract class AbstractServer implements Runnable
         ex.printStackTrace();
       }
       // When thread already dead.
-
+      System.out.println(" server thread   dead");
       serverClosed();
     }
   }

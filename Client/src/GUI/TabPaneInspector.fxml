@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -60,18 +57,7 @@
                         <TextField fx:id="informationSystem" editable="false" prefHeight="25.0" prefWidth="148.0" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="147.0" prefWidth="366.0">
-                     <children>
-                        <TableView fx:id="tblViewDocuments" prefHeight="120.0" prefWidth="172.0">
-                           <columns>
-                              <TableColumn fx:id="columnFileName" prefWidth="85.6666259765625" text="File name" />
-                              <TableColumn fx:id="columnFileSize" prefWidth="85.0" text="size (Mb)" />
-                           </columns>
-                        </TableView>
-
-                        <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#pressedDownload" text="Download" />
-                     </children>
-                  </VBox>
+                  <fx:include fx:id="DocmentTable" source="DocmentTableForDownloads.fxml" />
                </children>
             </VBox>
          </content>
