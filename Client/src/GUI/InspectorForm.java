@@ -97,7 +97,7 @@ public class InspectorForm extends UserForm {
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		table=new RequestTableView(tblViewRequests,columnId,columnStatus,columnStage,columnDueTime,columnMessage);
-		tabPaneController.initializeDocumentTableView();
+		tabPaneController.DocmentTableController.initializeDocumentTableView();
 	}
 
 	@Override
