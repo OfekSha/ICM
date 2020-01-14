@@ -33,18 +33,22 @@ public class InspectorUpdatesQuerys {
 	 * @return - the new updates id
 	 * @see InspectorUpdateDescription
 	 */
-	public String InsertInspectorUpdates(InspectorUpdateDescription newUpdate) {
-	    	int count = 0;
-	        try {
-	            Statement numTest = queryHandler.getmysqlConn().getConn().createStatement();
-	            ResultSet re = numTest.executeQuery("SELECT updateID FROM icm.inspectorupdates");// get all numbers submissions.
-	            while (re.next()) { // generate number for submission.
-	                count++;
-	            }
-	            } catch (SQLException e) {
-	            count = 0;
-	        }
-	        count++;
+	public int InsertInspectorUpdates(InspectorUpdateDescription newUpdate) {
+	 	int count = 0;
+			//
+			
+			try {
+				Statement numbTest = queryHandler.getmysqlConn().getConn().createStatement();
+				ResultSet re = numbTest.executeQuery("SELECT Max(updateID) FROM icm.inspectorupdates");																																																
+			while(	re.next()) // generate number for
+			{
+					count = re.getInt(1);		
+			}
+			count ++;
+			} catch (SQLException e) {
+				System.out.println("Database is empty, or no schema for ICM - insertRequirement");
+				count = 1;
+			}
 	    	try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
 	                    "INSERT INTO `icm`.`inspectorupdates`\r\n" + 
@@ -62,14 +66,14 @@ public class InspectorUpdatesQuerys {
 	                    "?,\r\n" + 
 	                    "?);\r\n" + 
 	                    "");
-	            stmt.setNString(1, String.valueOf(count));
+	            stmt.setInt(1, count);
 	            setinspectorUpdateDescriptionFieldsStmnt(newUpdate, stmt);
 	            stmt.execute(); // insert new row to requirement table
 	            stmt.close();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	    	return String.valueOf(count);
+	    	return count;
 	    } // end of InsertInspectorUpdates()
 	 
 	  /** sets inspectorUpdateDescription in a statement 
@@ -105,8 +109,8 @@ public class InspectorUpdatesQuerys {
                     "`updateKind` = ?\r\n" + 
                     "WHERE `updateID` = ?;\r\n" + 
                     "");
-            stmt.setNString(1, newUpdate.getUpdateID());
-            stmt.setNString(7, newUpdate.getUpdateID());
+            stmt.setInt(1, newUpdate.getUpdateID());
+            stmt.setInt(7, newUpdate.getUpdateID());
             setinspectorUpdateDescriptionFieldsStmnt(newUpdate, stmt);
             stmt.execute(); 
             stmt.close();
@@ -125,7 +129,7 @@ public class InspectorUpdatesQuerys {
     private InspectorUpdateDescription getinspectorUpdateDescriptionFromRes(ResultSet re) {
     	InspectorUpdateDescription toPut =null;
         try {
-        	String ID =re.getString(1);
+        	int ID =re.getInt(1);
         	User user =queryHandler.getUserQuerys().selectUser(re.getString(3));
         	String dec =re.getString(4);
         	LocalDate date =LocalDate.parse(re.getString(5));

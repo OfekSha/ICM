@@ -32,7 +32,7 @@ import java.util.ArrayList;
  *  <li>columnWhyChange</li>
  *  <li>columnComment</li>
  *  <li>columnDoc</li>
- * @author ooffe
+ *
  *
  */
 public class RequestTableView {
@@ -162,7 +162,7 @@ public class RequestTableView {
 	 * 
 	 * Special class for Table View.
 	 * 
-	 * @author Ofek
+	 * 
 	 *
 	 */
 	public static class requirementForTable {

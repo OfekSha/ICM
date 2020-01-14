@@ -23,17 +23,20 @@ public class FilesQuerys {
 	        this.queryHandler = queryHandler;
 	    }
 	public  void InsertFile(  ArrayList<Document> uploadedDocs) {
-    	int count=0;
-    	try {
-    	Statement numTest = queryHandler.getmysqlConn().getConn().createStatement();
-        ResultSet re = numTest.executeQuery("SELECT FileID FROM icm.docs");// get all numbers submissions.
-        while (re.next()) { // generate number for submission.
-            count++;
-        }
-    	}catch (SQLException e) {
-    		// TODO Auto-generated catch block
-    		e.printStackTrace();
-    		}
+		int count = 0;
+		//
+		
+		try {
+			Statement numbTest = queryHandler.getmysqlConn().getConn().createStatement();
+			ResultSet re = numbTest.executeQuery("SELECT Max(FileID) FROM icm.docs");																																																
+		while(	re.next()) // generate number for
+		{
+				count = re.getInt(1);		
+		}
+		} catch (SQLException e) {
+			System.out.println("Database is empty, or no schema for ICM - insertRequirement");
+			count = 1;
+		}
     	
     	for(Document each : uploadedDocs) {
 			 try {
@@ -49,7 +52,8 @@ public class FilesQuerys {
 							"?,?,?,\n" + 
 							"?);\n" + 
 							"");
-			setFile(stmt,each,Integer.toString(count));
+			 
+			setFile(stmt,each,count);
 		} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -58,9 +62,9 @@ public class FilesQuerys {
 		
     }//END of updateFile
     
-	public void setFile(PreparedStatement stmt, Document doc, String ID) throws SQLException {
+	public void setFile(PreparedStatement stmt, Document doc, int ID) throws SQLException {
 		InputStream is = new ByteArrayInputStream(doc.getByteArr());
-		stmt.setNString(1,ID );
+		stmt.setInt(1,ID );
 		stmt.setInt(2, doc.getChangeRequestID());
 		stmt.setNString(3, doc.getFileName());
 		stmt.setBlob(4, is);
@@ -84,7 +88,7 @@ public class FilesQuerys {
             
             while (re.next()) {
             	Document doc = new Document(re.getNString(2));
-            	doc.setFileID(re.getString(1));
+            	doc.setFileID(re.getInt(1));
             	doc.setSize(re.getInt(3));
             	toReturn.add(doc);
             }
@@ -106,7 +110,7 @@ public class FilesQuerys {
                     "SELECT `docs`.`uploadedFile`,`docs`.`size` FROM `icm`.`docs`\r\n" + 
                     " WHERE FileID = ? ;\r\n" + 
                     "");
-            stmt.setNString(1,doc.getFileID());
+            stmt.setInt(1,doc.getFileID());
             ResultSet re =  stmt.executeQuery(); 
             
             

@@ -17,7 +17,7 @@ public class InspectorUpdateDescription implements Serializable {
 	/** the updateds DB  key
 	 * 
 	 */
-	private String updateID; 
+	private int updateID; 
 	/**the inspector who made the update
 	 * 
 	 */
@@ -46,7 +46,7 @@ public class InspectorUpdateDescription implements Serializable {
 	}// END of inspectorUpdateDescription()
 
 //input 
-	public void setUpdateID(String ID) {
+	public void setUpdateID(int ID) {
 		updateID =ID ;
 		
 	}
@@ -72,7 +72,7 @@ public class InspectorUpdateDescription implements Serializable {
 	}
 
 //output
-	public String getUpdateID() {
+	public int getUpdateID() {
 		return updateID;
 	}
 

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class EstimatorReport implements Serializable {
 
 	private User estimator;
-	private String estimatorReportID;
+	private int estimatorReportID;
 	private ChangeRequest referencedRequest;
 
 	private String location;
@@ -37,7 +37,7 @@ public class EstimatorReport implements Serializable {
 		this.estimator = estimator;
 	}
 
-	public void setEstimatorReportID(String reportID) {
+	public void setEstimatorReportID(int reportID) {
 		this.estimatorReportID = reportID;
 	}
 
@@ -74,7 +74,7 @@ public class EstimatorReport implements Serializable {
 		return estimator;
 	}
 	
-	public String getEstimatorReportID() {
+	public int getEstimatorReportID() {
 		return estimatorReportID;
 	}
 	public ChangeRequest getReferencedRequest() {

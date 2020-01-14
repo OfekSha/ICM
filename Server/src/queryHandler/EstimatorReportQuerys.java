@@ -30,17 +30,21 @@ public class EstimatorReportQuerys {
 	 */
 	public String InsertEstimatorReport (EstimatorReport newReport) {
 		 if(newReport!=null) {
-	    	int count = 0;
-	        try {
-	            Statement numTest = queryHandler.getmysqlConn().getConn().createStatement();
-	            ResultSet re = numTest.executeQuery("SELECT estimatorReportID FROM icm.estimatorreports");// get all numbers submissions.
-	            while (re.next()) { // generate number for submission.
-	                count++;
-	            }
-	            } catch (SQLException e) {
-	            count = 0;
-	        }
-	        count++;
+			 	int count = 0;
+				//
+				
+				try {
+					Statement numbTest = queryHandler.getmysqlConn().getConn().createStatement();
+					ResultSet re = numbTest.executeQuery("SELECT Max(estimatorReportID) FROM icm.estimatorreports");																																																
+				while(	re.next()) // generate number for
+				{
+						count = re.getInt(1);		
+				}
+				count ++;
+				} catch (SQLException e) {
+					System.out.println("Database is empty, or no schema for ICM - insertRequirement");
+					count = 1;
+				}
 	    	try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
 	                    "INSERT INTO `icm`.`estimatorreports`\r\n" + 
@@ -63,7 +67,7 @@ public class EstimatorReportQuerys {
 	                    "?,?,\r\n" + 
 	                    "?);\r\n" + 
 	                    "");
-	            stmt.setNString(1, String.valueOf(count));
+	            stmt.setInt(1, count);
 	            setEstimatorReportFieldsStmnt(newReport, stmt);
 	            stmt.execute(); // insert new row to requirement table
 	            stmt.close();
@@ -116,8 +120,8 @@ public class EstimatorReportQuerys {
 	                    "WHERE `estimatorReportID` = ?;\r\n" + 
 	                    "");
 	            
-	            stmt.setNString(1, newReport.getEstimatorReportID());
-	            stmt.setNString(10, newReport.getEstimatorReportID());
+	            stmt.setInt(1, newReport.getEstimatorReportID());
+	            stmt.setInt(10, newReport.getEstimatorReportID());
 	            setEstimatorReportFieldsStmnt(newReport, stmt);
 	            stmt.execute(); 
 	            stmt.close();
@@ -135,7 +139,7 @@ public class EstimatorReportQuerys {
 	private EstimatorReport getEstimatorReportFromRes(ResultSet re) {
 		   EstimatorReport toPut =null;
 	        try {
-	        	String ID =re.getString(1);
+	        	int ID =re.getInt(1);
 	        	User user =queryHandler.getUserQuerys().selectUser(re.getString(3));
 	        	String loc =re.getString(4);
 	        	String changeDescription =re.getString(5);

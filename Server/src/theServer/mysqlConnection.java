@@ -124,14 +124,14 @@ public class mysqlConnection {
 					"baseforChange VARCHAR(45) NULL," +
 					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.docs (\n" +
-					"FileID VARCHAR(45) NOT NULL ,\n"+
+					"FileID INT NOT NULL ,\n"+
 					"RequestID INT NOT NULL," +
 					"fileName VARCHAR(45)  NULL," +
 					"uploadedFile MEDIUMBLOB,\n" +	
 					"size INT  NULL," +
 					"PRIMARY KEY (FileID)) ;\n");
 			stmt.execute("CREATE TABLE `icm`.`inspectorupdates` (\n" + 
-					"  `updateID` VARCHAR(45) NOT NULL,\n" + 
+					"  `updateID` INT NOT NULL,\n" + 
 					"  `RequestID` INT NULL,\n" + 
 					"  `inspector` VARCHAR(45) NULL,\n" + 
 					"  `updatDescription` TEXT NULL,\n" + 
@@ -140,7 +140,7 @@ public class mysqlConnection {
 					"  PRIMARY KEY (`updateID`));\n" + 
 					"");
 			stmt.execute("CREATE TABLE `icm`.`estimatorreports` (\n" + 
-					"  `estimatorReportID` VARCHAR(45) NOT NULL,\n" + 
+					"  `estimatorReportID` INT NOT NULL,\n" + 
 					"  `referencedRequestID` INT NULL,\n" + 
 					"  `estimatorUsername` VARCHAR(45) NULL,\n" + 
 					"  `location` TEXT NULL,\n" + 

@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class Document implements Serializable {
 
-	private String FileID;
+	private int FileID;
 	private String fileName = null;
 	private int size = 0;
 	public byte[] mybytearray;
@@ -29,7 +29,7 @@ public class Document implements Serializable {
 		this.request = request;
 	}
 
-	public void setFileID(String FileID) {
+	public void setFileID(int FileID) {
 		this.FileID = FileID;
 	}
 
@@ -56,7 +56,7 @@ public class Document implements Serializable {
 		return size;
 	}
 
-	public String getFileID() {
+	public int getFileID() {
 		return FileID;
 	}
 
