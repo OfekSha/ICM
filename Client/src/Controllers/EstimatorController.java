@@ -27,7 +27,7 @@ public class EstimatorController {
 	}
 	public static ChangeRequest getReq(requirementForTable tableReq) throws NullPointerException {
 		for (ChangeRequest regular : requests) {
-			if (regular.getRequestID().equals(tableReq.getId()))
+			if (Integer.toString(regular.getRequestID()).equals(tableReq.getId()))
 				return regular;
 		}
 		throw new NullPointerException("The table view not match to the regular change requests.");

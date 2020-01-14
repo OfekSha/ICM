@@ -80,7 +80,7 @@ public class ProccesStageQuerys {
      */
     private void setAllProcessStageStatement(ChangeRequest changeRequest, ProcessStage processStage,
                                              PreparedStatement stmt) throws SQLException {
-        stmt.setNString(1, changeRequest.getRequestID());
+        stmt.setInt(1, changeRequest.getRequestID());
         stmt.setNString(2, processStage.getCurrentStage().name());
         if (processStage.getStageSupervisor() == null) {
             stmt.setNString(3, null);
@@ -177,7 +177,7 @@ public class ProccesStageQuerys {
                     "`stage5ExtensionExplanation` = ?\n" + 
                     "WHERE `RequestID` = ?;\n" + 
                     ""); //31 
-            stmt.setNString(31, processStage.getRequest().getRequestID());
+            stmt.setInt(31, processStage.getRequest().getRequestID());
             setAllProcessStageStatement(processStage.getRequest(), processStage, stmt);
             queryHandler.getEstimatorReportQuerys().UpdateOrInsertEstimatorReport(processStage.getEstimatorReport(),processStage.getRequest().getRequestID());
         } catch (SQLException e) {
@@ -190,12 +190,12 @@ public class ProccesStageQuerys {
 	 * @param RequestID ?
 	 * @return ?
 	 */
-	public ProcessStage getProcessStage(String RequestID) {
+	public ProcessStage getProcessStage(int RequestID) {
 		ProcessStage returnProcessStage = null;
 		try {
 			PreparedStatement stmt = queryHandler.getmysqlConn().getConn()
 					.prepareStatement("SELECT * FROM icm.stage where stage.RequestID = ?;");
-			stmt.setNString(1, RequestID);
+			stmt.setInt(1, RequestID);
 			ResultSet re = stmt.executeQuery();
 			while (re.next()) {
 				String currentStageString = re.getNString(2);

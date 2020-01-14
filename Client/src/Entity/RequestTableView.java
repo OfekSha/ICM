@@ -246,7 +246,7 @@ public class RequestTableView {
 		public requirementForTable(ChangeRequest req) {
 			originalRequest = req;
 			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
-			id = new SimpleStringProperty(req.getRequestID());
+			id = new SimpleStringProperty(Integer.toString(req.getRequestID()));
 			status = new SimpleObjectProperty<>(req.getStatus());
 			message = new SimpleStringProperty("test");
 			stage = new SimpleObjectProperty<>(req.getProcessStage());

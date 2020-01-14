@@ -81,7 +81,7 @@ public class InspectorUpdatesQuerys {
 	 * @see PreparedStatement
 	 */
 	private void setinspectorUpdateDescriptionFieldsStmnt(InspectorUpdateDescription newUpdate, PreparedStatement stmt) throws SQLException {
-	        stmt.setNString(2, newUpdate.getReferencedChangeRequest().getRequestID());
+	        stmt.setInt(2, newUpdate.getReferencedChangeRequest().getRequestID());
 	        stmt.setNString(3, newUpdate.getInspector().getUserName());
 	        stmt.setNString(4, newUpdate.getUpdateDescription());
 	        stmt.setNString(5, newUpdate.getUpdateDate().toString());
@@ -143,7 +143,7 @@ public class InspectorUpdatesQuerys {
 	 * @param RequestID - the request witch updates the method will get
 	 * @return  all the of change request's inspector updates
 	 */
-	public ArrayList<InspectorUpdateDescription> SelectInspectorUpdates( String RequestID) {
+	public ArrayList<InspectorUpdateDescription> SelectInspectorUpdates( int RequestID) {
 		ArrayList<InspectorUpdateDescription> toReturn = new ArrayList<>();
     	try {
             PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
@@ -155,7 +155,7 @@ public class InspectorUpdatesQuerys {
                     "    `inspectorupdates`.`updateKind`\r\n" + 
                     "FROM `icm`.`inspectorupdates` WHERE RequestID = ? ;\r\n" + 
                     "");
-            stmt.setNString(1,RequestID);
+            stmt.setInt(1,RequestID);
             ResultSet re =  stmt.executeQuery(); 
             
             
@@ -173,7 +173,7 @@ public class InspectorUpdatesQuerys {
 	 * @param newUpdates  - the updates  
 	 * @param RequestID -  the related request 
 	 */
-	public void UpdateOrInsertInspectorUpdates(ArrayList<InspectorUpdateDescription>  newUpdates,String RequestID) {
+	public void UpdateOrInsertInspectorUpdates(ArrayList<InspectorUpdateDescription>  newUpdates,int RequestID) {
 		if (newUpdates!=null) {
 			ArrayList<InspectorUpdateDescription>  oldUpdates =SelectInspectorUpdates(RequestID);
 	    	for (InspectorUpdateDescription e: newUpdates) {

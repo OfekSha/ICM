@@ -12,7 +12,7 @@ public class ChangeRequest implements Serializable {
     public enum ChangeRequestStatus { //
         ongoing, suspended, closed
     }
-    private String RequestID;
+    private int RequestID;
     private Initiator initiator;
     private LocalDate startDate;
     private String  baseforChange ;
@@ -43,7 +43,7 @@ public class ChangeRequest implements Serializable {
     public void setStatus(ChangeRequestStatus newStat) {
         status = newStat;
     }
-    public void setRequestID(String id) {
+    public void setRequestID(int id) {
         RequestID = id;
     }
     
@@ -92,7 +92,7 @@ public class ChangeRequest implements Serializable {
     }
     
     // output
-    public String getRequestID(){
+    public int getRequestID(){
         return RequestID ;
     }
 
@@ -139,7 +139,7 @@ public class ChangeRequest implements Serializable {
     @Override // Override object method: equals (use for lists)
     public boolean equals(Object another) {
     	if (another instanceof ChangeRequest) {
-            return RequestID.equals(((ChangeRequest) another).RequestID);
+            return RequestID==((ChangeRequest)another).getRequestID();
         }
     	return false;
     }

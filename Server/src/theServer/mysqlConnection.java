@@ -71,11 +71,11 @@ public class mysqlConnection {
 					"PRIMARY KEY (userName));"); // create user table
 			//
 			stmt.execute("CREATE TABLE icm.initiator (" +
-					"RequestID VARCHAR(45) NOT NULL," +		
+					"RequestID INT NOT NULL," +		
 					"userName VARCHAR(45) NOT NULL," +
 					"PRIMARY KEY (RequestID, userName));");
 			stmt.execute("CREATE TABLE icm.stage (" +
-					"RequestID VARCHAR(45) NOT NULL, " +						//1
+					"RequestID INT NOT NULL, " +						//1
 					"currentStage ENUM ('meaningEvaluation'," +					//2
 										"'examinationAndDecision'," +
 										"'execution'," +
@@ -114,7 +114,7 @@ public class mysqlConnection {
 					"stage5ExtensionExplanation TEXT NULL, " +						//32
 					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
-					"RequestID VARCHAR(45) NOT NULL," +
+					"RequestID INT NOT NULL," +
 					"startDate VARCHAR(45) NULL," +
 					"`system` VARCHAR(45) NULL," +
 					"problemDescription TEXT NULL," +
@@ -125,14 +125,14 @@ public class mysqlConnection {
 					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.docs (\n" +
 					"FileID VARCHAR(45) NOT NULL ,\n"+
-					"RequestID VARCHAR(45) NOT NULL," +
+					"RequestID INT NOT NULL," +
 					"fileName VARCHAR(45)  NULL," +
 					"uploadedFile MEDIUMBLOB,\n" +	
 					"size INT  NULL," +
 					"PRIMARY KEY (FileID)) ;\n");
 			stmt.execute("CREATE TABLE `icm`.`inspectorupdates` (\n" + 
 					"  `updateID` VARCHAR(45) NOT NULL,\n" + 
-					"  `RequestID` VARCHAR(45) NULL,\n" + 
+					"  `RequestID` INT NULL,\n" + 
 					"  `inspector` VARCHAR(45) NULL,\n" + 
 					"  `updatDescription` TEXT NULL,\n" + 
 					"  `updateDate` VARCHAR(45) NULL,\n" + 
@@ -141,7 +141,7 @@ public class mysqlConnection {
 					"");
 			stmt.execute("CREATE TABLE `icm`.`estimatorreports` (\n" + 
 					"  `estimatorReportID` VARCHAR(45) NOT NULL,\n" + 
-					"  `referencedRequestID` VARCHAR(45) NULL,\n" + 
+					"  `referencedRequestID` INT NULL,\n" + 
 					"  `estimatorUsername` VARCHAR(45) NULL,\n" + 
 					"  `location` TEXT NULL,\n" + 
 					"  `changeDescription` TEXT NULL,\n" + 

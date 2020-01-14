@@ -61,7 +61,7 @@ public class FilesQuerys {
 	public void setFile(PreparedStatement stmt, Document doc, String ID) throws SQLException {
 		InputStream is = new ByteArrayInputStream(doc.getByteArr());
 		stmt.setNString(1,ID );
-		stmt.setNString(2, doc.getChangeRequestID());
+		stmt.setInt(2, doc.getChangeRequestID());
 		stmt.setNString(3, doc.getFileName());
 		stmt.setBlob(4, is);
 		stmt.setInt(5, doc.getSize());
@@ -69,7 +69,7 @@ public class FilesQuerys {
 		stmt.executeUpdate();
 	}// end of setFile()
 	
-	public ArrayList<Document> selectDocWithotFile(String RequestID ) {
+	public ArrayList<Document> selectDocWithotFile(int RequestID ) {
 		ArrayList<Document> toReturn = new ArrayList<>();
     	try {
             PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
@@ -78,7 +78,7 @@ public class FilesQuerys {
                     "FROM `icm`.`docs`\r\n" + 
                     " WHERE RequestID = ? ;\r\n" + 
                     "");
-            stmt.setNString(1,RequestID);
+            stmt.setInt(1,RequestID);
             ResultSet re =  stmt.executeQuery(); 
             
             

@@ -65,7 +65,7 @@ public class User implements Serializable {
 	
 	public void updatePermissions(EnumSet<icmPermission> Permissions) {
 		try {
-		if ( collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
+		if ( (collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) && Permissions !=null)
 			throw new IllegalArgumentException(collegeStatus.name()+  " cannot have icmPermissions\n") ;
 		this.Permissions = Permissions;
 		}catch (IllegalArgumentException e) {

@@ -158,4 +158,20 @@ public class QueryHandler {
 								 * (re.getObject(i + 1)).toString(); } toReturn.add(toPut); } stmt.close(); }
 								 * catch (SQLException e) { e.printStackTrace(); } return toReturn; }
 								 */
+	
+	
+	
+	
+   	
+	// old counting rows methode
+	
+/*
+ * try { Statement numTest =
+ * queryHandler.getmysqlConn().getConn().createStatement(); ResultSet re =
+ * numTest.executeQuery("SELECT RequestID FROM icm.changeRequest");// get all
+ * numbers submissions. while (re.next()) { // generate number for submission.
+ * count++; } } catch (SQLException e) { System.out.
+ * println("Database is empty, or no schema for ICM - InsertChangeRequest");
+ * count = 0; } count++;
+ */
 }

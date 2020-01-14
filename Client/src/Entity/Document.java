@@ -75,7 +75,7 @@ public class Document implements Serializable {
 	public byte getMybytearray(int i) {
 		return mybytearray[i];
 	}
-	public String getChangeRequestID() {
+	public int getChangeRequestID() {
 		 return request.getRequestID();
 	}
 	public ChangeRequest getChangeRequest() {

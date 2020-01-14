@@ -85,7 +85,7 @@ public class SubmitRequestController {
 	      return false;
 	  
 		
-	}//ENF of AddThefile()
+	}//END of AddThefile()
 	
 	
 	/** creates the list of documents witch are attached to the  change request for the table 

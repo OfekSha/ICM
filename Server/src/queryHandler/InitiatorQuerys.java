@@ -43,7 +43,7 @@ public class InitiatorQuerys {
 	     * @throws SQLException ?
 	     */
 	    private void setAllInitiatorFieldsStatement(Initiator initiator ,PreparedStatement stmt) throws SQLException {
-	    	 stmt.setNString(1, initiator.getrequest().getRequestID());
+	    	 stmt.setInt(1, initiator.getrequest().getRequestID());
 	         stmt.setNString(2, initiator.getTheInitiator().getUserName());
 	         stmt.execute(); // insert new row 
 	         stmt.close();
@@ -55,7 +55,7 @@ public class InitiatorQuerys {
 	                    "UPDATE icm.initiator " +
 	            		"SET RequestID = ?, userName = ? " +
 	            		"WHERE requestID = ?;");
-	            stmt.setNString(3,initiator.getrequest().getRequestID());
+	            stmt.setInt(3,initiator.getrequest().getRequestID());
 	            setAllInitiatorFieldsStatement(initiator,stmt);
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -68,13 +68,13 @@ public class InitiatorQuerys {
 	     * @param RequestID ?
 	     * @return ?
 	    */
-	    public Initiator getInitiator(String RequestID) {
+	    public Initiator getInitiator(int RequestID) {
 	        Initiator returnInitiator = null;
 	        String Username = null;
 	        try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
 	                    "SELECT * FROM icm.initiator WHERE initiator.RequestID = ?;");
-	            stmt.setNString(1, RequestID);
+	            stmt.setInt(1, RequestID);
 	            ResultSet re = stmt.executeQuery();
 	            while (re.next()) {
 	                Username = re.getString(2);

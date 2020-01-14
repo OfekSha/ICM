@@ -34,19 +34,23 @@ public class ChangeRequestQuerys {
 	     * @param newRequest ?
 	     * @return string  - given id of the request
 	     */
-	    public String InsertChangeRequest(ChangeRequest newRequest) {
+	    public int InsertChangeRequest(ChangeRequest newRequest) {
 	    	int count = 0;
-	        try {
-	            Statement numTest = queryHandler.getmysqlConn().getConn().createStatement();
-	            ResultSet re = numTest.executeQuery("SELECT RequestID FROM icm.changeRequest");// get all numbers submissions.
-	            while (re.next()) { // generate number for submission.
-	                count++;
-	            }
-	        } catch (SQLException e) {
-	            System.out.println("Database is empty, or no schema for ICM - InsertChangeRequest");
-	            count = 0;
-	        }
-	        count++;
+		//
+		
+		try {
+			Statement numbTest = queryHandler.getmysqlConn().getConn().createStatement();
+			ResultSet re = numbTest.executeQuery("SELECT Max(RequestID) FROM icm.changeRequest");																																																
+		while(	re.next()) // generate number for
+		{
+				count = re.getInt(1);		
+		}
+		count ++;
+		} catch (SQLException e) {
+			System.out.println("Database is empty, or no schema for ICM - insertRequirement");
+			count = 1;
+		}
+	 
 	    	try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
 	                    "INSERT INTO icm.changerequest " +
@@ -60,7 +64,7 @@ public class ChangeRequestQuerys {
 	            		+ "baseforChange"
 	            		+ ")" +
 	            		"VALUES(?, ?, ?, ?, ?, ?, ?,?);");
-	            stmt.setNString(1, String.valueOf(count));
+	            stmt.setInt(1, count);
 	            setChangeRequestFieldsStmnt(newRequest, stmt);
 	            stmt.execute(); // insert new row to requirement table
 	            stmt.close();
@@ -68,7 +72,7 @@ public class ChangeRequestQuerys {
 	            e.printStackTrace();
 	        }
 	    	queryHandler.getInspectorUpdatesQuerys().UpdateOrInsertInspectorUpdates(newRequest.getInspectorUpdateDescription(),newRequest.getRequestID());
-	    	return String.valueOf(count);
+	    	return count;
 	    } // end of InsertChangeRequest()
 
 	    /** updated a change request in DB
@@ -87,9 +91,9 @@ public class ChangeRequestQuerys {
 	            		+ "status = ?,"
 	            		+ "baseforChange=?"
 	            		+ " WHERE (RequestID = ?);");
-	            stmt.setNString(1, changeRequest.getRequestID());
+	            stmt.setInt(1, changeRequest.getRequestID());
 	            setChangeRequestFieldsStmnt(changeRequest, stmt);
-	            stmt.setNString(9, changeRequest.getRequestID());
+	            stmt.setInt(9, changeRequest.getRequestID());
 
 	            stmt.execute(); // insert new row to requirement table
 	            stmt.close();
@@ -287,7 +291,7 @@ public class ChangeRequestQuerys {
 	    private ChangeRequest getChangeRequestsFromRes(ResultSet re) {
 	        ChangeRequest toPut;
 	        try {
-	            String RequestID = re.getString(1);
+	            int RequestID = re.getInt(1);
 	            LocalDate startDate;
 	            if (re.getString(2) != null) {
 	                startDate = LocalDate.parse(re.getString(2));
@@ -320,13 +324,15 @@ public class ChangeRequestQuerys {
 	    } //END of getChangeRequestsFromRes()
 	    
 	    
-	    public ChangeRequest getChangeRequest(String ID) {
+	    public ChangeRequest getChangeRequest(int ID) {
 	        ChangeRequest toReturn = null;
-	        Statement stmt;
+	        PreparedStatement stmt;
 	        ResultSet re;
 	        try {
-	            stmt = queryHandler.getmysqlConn().getConn().createStatement();
-	            re = stmt.executeQuery("SELECT * FROM icm.changerequest WHERE RequestID=? ;");
+	            stmt = queryHandler.getmysqlConn().getConn().prepareStatement("SELECT * FROM icm.changerequest WHERE RequestID=? ;");
+	            stmt.setInt(1,ID);
+	            re = stmt.executeQuery();
+	            
 	            while (re.next()) {
 	                toReturn= getChangeRequestsFromRes(re);
 	            }

@@ -82,7 +82,7 @@ public class EstimatorReportQuerys {
 	 */
 	private void setEstimatorReportFieldsStmnt(EstimatorReport newReport, PreparedStatement stmt) throws SQLException {
 		 
-	        stmt.setNString(2, newReport.getReferencedRequest().getRequestID());
+	        stmt.setInt(2, newReport.getReferencedRequest().getRequestID());
 	        stmt.setNString(3, newReport.getEstimator().getUserName());
 	        stmt.setNString(4, newReport.getlocation());
 	        stmt.setNString(5, newReport.getChangeDescription());
@@ -157,12 +157,12 @@ public class EstimatorReportQuerys {
 		 * @param RequestID - the request withch the report is linked to 
 		 * @return  the linked to the request EstimatorReport
 		 */
-		public EstimatorReport SelectEstimatorreports( String RequestID) {
+		public EstimatorReport SelectEstimatorreports( int RequestID) {
 			EstimatorReport toReturn = null;
 	    	try {
 	            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
 	                    "SELECT * FROM icm.estimatorreports WHERE referencedRequestID = ? ;");
-	            stmt.setNString(1,RequestID);
+	            stmt.setInt(1,RequestID);
 	            ResultSet re =  stmt.executeQuery(); 
 	            
 	            while (re.next()) {
@@ -180,7 +180,7 @@ public class EstimatorReportQuerys {
 		 * @param newUpdates
 		 * @param RequestID
 		 */
-		public void UpdateOrInsertEstimatorReport(EstimatorReport newUpdates,String RequestID) {
+		public void UpdateOrInsertEstimatorReport(EstimatorReport newUpdates,int RequestID) {
 			if (newUpdates!=null) {
 				EstimatorReport  old =SelectEstimatorreports(RequestID);
 		    		if(old!=null) UpdateEstimatorReport(newUpdates);
