@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.EnumSet;
 
 /**
- * @author Yonathan entity containing all of the users details Also enforces
+ *  entity containing all of the users details Also enforces
  *         some of the story's constraints
  *
  */
@@ -16,9 +16,9 @@ public class User implements Serializable {
 		changeControlCommitteeChairman,changeControlCommitteeMember
 	}
 
-	// wil be used to determine who can be allocated icmPermission
+	// will be used to determine who can be allocated icmPermission
 	public enum collegeStatus {
-		student, informationEngineer
+		student, informationEngineer,lecturer
 	}
 
 	// Variables
@@ -60,16 +60,17 @@ public class User implements Serializable {
 	 * updates all of the user entity Permissions while enforcing constraints
 	 *
 	 * @param Permissions - EnumSet of the Permissions the user has
-	 * @return - returns true if the update was done
+	 * @throws  IllegalArgumentException when can not update the Permissions
 	 */
-
-	//TODO Return value of the method is never used
-	public boolean updatePermissions(EnumSet<icmPermission> Permissions) {
-		//TODO Warning:(68, 47) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
-		if (Permissions == null || collegeStatus == collegeStatus.student)
-			return false;
+	
+	public void updatePermissions(EnumSet<icmPermission> Permissions) {
+		try {
+		if ( collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
+			throw new IllegalArgumentException(collegeStatus.name()+  " cannot have icmPermissions\n") ;
 		this.Permissions = Permissions;
-		return true;
+		}catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -77,47 +78,37 @@ public class User implements Serializable {
 	// TODO test this method
 
 	/**
-	 * adding a Permission to user entity [NOT YET TESTED]
+	 * adding a Permission to user entity 
 	 *
-	 * @param Permission doesnt @return - returns true if permission is in the collection
+	 * @param Permission 
 	 */
 	public void addPremmision(icmPermission Permission) {
-		//TODO Warning:(85, 24) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
-		if (collegeStatus == collegeStatus.student && Permission == null)
-			return;
-		//TODO Warning:(93, 34) Condition 'Permission != null' is always 'true' when reached
-		//TODO Warning:(88, 24) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
-		if (collegeStatus == collegeStatus.student && Permission != null) {
-			try {
-				throw new IllegalArgumentException("Students dont have Permissions in the system");
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			}
-			return;
-		}
+		
+		
 		try {
+			if ( collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
+				throw new IllegalArgumentException(collegeStatus.name()+  " cannot have icmPermissions\n") ;
 			if (Permission == null)
-				throw new IllegalArgumentException("null  is not a Permission");
+				throw new IllegalArgumentException("null  is not a Permission\n");
+			if (this.Permissions == null) {
+				EnumSet<icmPermission> all = EnumSet.allOf(icmPermission.class);
+				this.Permissions = EnumSet.complementOf(all);
+				this.Permissions.add(Permission);
+				return;
+			}
+			if (this.Permissions.contains(Permission))
+				return;
+			this.Permissions.add(Permission);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			System.exit(0); // must exit -EnumSet cannot receive null
 		}
 
-		if (this.Permissions == null) {
-			EnumSet<icmPermission> all = EnumSet.allOf(icmPermission.class);
-			this.Permissions = EnumSet.complementOf(all);
-			this.Permissions.add(Permission);
-			return;
-		}
-		if (this.Permissions.contains(Permission))
-			return;
-		this.Permissions.add(Permission);
+		
 	} // END of addPermmision()
 
-	// TODO test this method
 
 	/**
-	 * removes the Permission from the user [NOT YET TESTED]
+	 * removes the Permission from the user
 	 *
 	 * @param Permission ?
 	 */

@@ -10,8 +10,8 @@ import WindowApp.IcmForm;
 
 import java.io.IOException;
 
-/**
- * @author Yonathan TODO : needs testing
+/**  dose logics for the log in form
+ * 
  *
  */
 public class SecurityController {
@@ -51,6 +51,7 @@ public class SecurityController {
 	/** tests if the use given password matches the  password in DB
 	 * @param user ?
 	 * @return ?
+	 * @deprecated
 	 */
 	public boolean testPassword(User user) {
 		if (!(user == null)) {
@@ -60,9 +61,9 @@ public class SecurityController {
 	}// End of testPassword()
  
 	/** connects to the server with given ip
-	 * @param host ?
-	 * @param form ?
-	 * @return ?
+	 * @param host ? - server to connect to 
+	 * @param form ?- the controlling form  , the form witch is currently open
+	 * @return  true when a successful connection is established 
 	 */
 	public boolean connectToServer(String host, IcmForm form) {
 		if (host == null)

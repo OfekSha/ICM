@@ -2,6 +2,8 @@ package GUI;
 
 import Controllers.SubmitRequestController;
 import Entity.DocumentForTable;
+import Entity.User;
+
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,6 +73,22 @@ public class SubmitRequestForm extends UserForm {
 		al.add("Library system");
 		al.add("Moodle");
 		al.add("Information Station");
+		
+		
+		switch(user.getCollegeStatus()) {
+		case student:
+			al.add("Student Information Station");	
+			break;
+		case lecturer:
+			al.add("Lecturer Information Station");	
+			break;
+		case informationEngineer:
+			al.add("Student Information Station");	
+			al.add("Lecturer Information Station");	
+			al.add("Worker Information Station");	
+			break;
+		}
+		
 		al.add("Computers in classrooms");
 		al.add("Labs and computer farms");
 		al.add("College Website");

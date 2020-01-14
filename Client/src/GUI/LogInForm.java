@@ -63,6 +63,12 @@ public class LogInForm extends UserForm {
 		// ----
 	}
 
+	/** <h1>takes the input the user had given in the three fields and: </h1>
+	 * <li>try to connect to the ip </li>
+	 * <ul><li>sends server the user name and password</li>
+	 * <ul><li> acting according  to the server response (moving the user in to the system or not ) </li>
+	 * @param event 
+	 */
 	public void getInput(ActionEvent event) {
 		eventIput = event;
 		if (securityController.connectToServer(tfIP.getAccessibleText(), this)) {
@@ -85,12 +91,14 @@ public class LogInForm extends UserForm {
 	
 
 	} // END of getInput;
-
+	/** Determines how the client form will react to server messages 
+	 *
+	 */
 	@Override
 	public void getFromServer(Object message) {
 		clientRequestFromServer request = (clientRequestFromServer) message;
 		Object[] objectArray;
-		//TODO Warning:(93, 3) 'switch' statement has too few case labels (1), and should probably be replaced with an 'if' statement
+		//TODO : add case for server testing if user connected - when the feature is added on server side
 		switch (request.getRequest()) {
 		case LogIN:
 			if (securityController.serveHandler(request)) {
@@ -134,6 +142,9 @@ public class LogInForm extends UserForm {
 		}
 	}
 
+	/**
+	 *  lunches the main scene
+	 */
 	private void  lunchMain() {
 		try {
 			MainScene(eventIput);
@@ -142,6 +153,9 @@ public class LogInForm extends UserForm {
 		}
 	}
 	
+	/**
+	 * @param user
+	 */
 	private void successfulLogIn(User user) {
 		Object msg = new clientRequestFromServer(requestOptions.successfulLogInOut, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
