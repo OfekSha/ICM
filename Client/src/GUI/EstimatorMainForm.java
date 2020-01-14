@@ -6,6 +6,7 @@ import Entity.Document;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import GUI.PopUpWindows.DueTimeController;
+import GUI.PopUpWindows.GetExtensionController;
 import WindowApp.ClientLauncher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -97,6 +98,7 @@ public class EstimatorMainForm extends UserForm {
 		public void askExtensionClicked(ActionEvent event) {
 			try {
 				// not work because the fxml work only with execution leader.
+				GetExtensionController.processStage=EstimatorController.selectedRequest.getProcessStage();
 				popupWindow("/GUI/PopUpWindows/GetExtension.fxml",event);
 			} catch (IOException e) {
 				System.out.println(e.getCause());
