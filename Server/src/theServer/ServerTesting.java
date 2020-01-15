@@ -14,9 +14,17 @@ import queryHandler.QueryHandler;
  */
 public class ServerTesting {
 	
-	 private QueryHandler queryHandler;
+	 private  QueryHandler queryHandler;
 	 
-	 public ServerTesting(QueryHandler queryHandler) {
+	  public enum whatHappend{
+		failedNoPermission,
+		failedAlreadyExists,
+		success,
+		failedIsFrozen
+		
+	 }
+	  
+	public  ServerTesting(QueryHandler queryHandler) {
 		 this.queryHandler=queryHandler;
 	 }
 
@@ -24,11 +32,11 @@ public class ServerTesting {
 	 * @param changer - the user attempting to change a user in DB
 	 * @return true if the changing user can change users
 	 */
-	public boolean testUpstingUserCanUpdateUsers(User changer) {
+	public  whatHappend testUpstingUserCanUpdateUsers(User changer) {
 		EnumSet<icmPermission> Permissions = changer.getICMPermissions();
 		if (Permissions.contains(icmPermission.informationTechnologiesDepartmentManager)||Permissions.contains(icmPermission.inspector))
-			return true;
-		return false;
+			return whatHappend.success;
+		return whatHappend.failedNoPermission;
 	}// END  of testUpstingUserCanUpdateUsers
 	
 	
@@ -37,22 +45,35 @@ public class ServerTesting {
 	 * @param request	- the request he is attempting to change
 	 * @return true if the changer can change this request
 	 */
-	public boolean testIfRequestIsfrozen(User changer , ChangeRequest request ) {
+	public  whatHappend testIfRequestIsfrozen(User changer , ChangeRequest request ) {
 		ChangeRequest inDB =queryHandler.getChangeRequestQuerys().getChangeRequest(request.getRequestID());
 		if(inDB.getStatus().equals(ChangeRequestStatus.suspended) ||inDB.getStatus().equals(ChangeRequestStatus.closed) ) {
 			EnumSet<icmPermission> Permissions = changer.getICMPermissions();
 			if(Permissions.contains(icmPermission.informationTechnologiesDepartmentManager)||Permissions.contains(icmPermission.inspector))
-				return true;
-			else return false;
+				return whatHappend.success;
+			else return whatHappend.failedNoPermission;
 		}
-		else return false;
+		else return whatHappend.failedIsFrozen;
 	}// END of testIfRequestIsfrozen()
 	
 	
+	
+	
+	/**@in buiding
+	 * 
+	 */
 	public boolean testsIFTheUserCanLogIn(User tryingToLogInUser) {
 		return false;
 		
 	} // END testsIFTheUserCanLogIn
+	//input
+	public  void setQueryHandler(QueryHandler queryHandlerIN) {
+		queryHandler=queryHandlerIN;
+	}
 	
+	//output
+	 public QueryHandler  getQueryHandler() {
+		 return queryHandler;
+	 }
 	
 }// END of ServerTesting

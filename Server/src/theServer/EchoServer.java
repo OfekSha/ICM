@@ -296,5 +296,13 @@ public class EchoServer extends AbstractServer {
 	public mysqlConnection getmysqlConnection() {
 		return mysqlConn;
 	}
+	
+	/**once the server is closed the clients will be notified 
+	 *
+	 */
+	@Override
+	public  void serverClosed() {
+		
+	}
 }
 //End of EchoServer class
