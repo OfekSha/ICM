@@ -1,8 +1,11 @@
 package GUI.PopUpWindows;
 
+import java.time.LocalDate;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 
 
@@ -10,7 +13,8 @@ public class GetExtensionController extends AbstractPopUp {
 
     @FXML
     private TextArea taExplanation;
-
+	@FXML
+	private DatePicker dpDueTime;
     @FXML
     private Button btnSendRequest;
 
@@ -19,7 +23,8 @@ public class GetExtensionController extends AbstractPopUp {
     @FXML
     void sendExtensionRequest() {
         String explanation = taExplanation.getText();
-        if (explanation.isEmpty()) {
+        LocalDate dueDate=dpDueTime.getValue();
+        if (explanation.isEmpty()|| dueDate==null ) {
             Approve = false;
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Explanation is empty");
@@ -30,6 +35,7 @@ public class GetExtensionController extends AbstractPopUp {
             Approve = true;
             processStage.setExtensionExplanation(explanation);
             processStage.setFlagExtensionRequested();
+            processStage.setExtensionDate(dueDate);
             sendUpdateForRequest();
             getCancel();
         }

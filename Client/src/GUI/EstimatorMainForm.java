@@ -63,6 +63,7 @@ public class EstimatorMainForm extends UserForm {
 
 
 	//end initiator details.
+
 	private RequestTableView table;
 
 	@FXML

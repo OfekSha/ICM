@@ -4,25 +4,26 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="323.0" spacing="15.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.ApproveExtensionController">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" spacing="15.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.ApproveExtensionController">
          <Label fx:id="title" text="Do you approve extension?" textAlignment="CENTER" textFill="WHITE">
             <font>
                <Font size="14.0" />
             </font>
          </Label>
-   <HBox prefHeight="81.0" prefWidth="325.0">
+   <HBox prefHeight="184.0" prefWidth="441.0">
       <children>
-         <VBox prefHeight="81.0" prefWidth="147.0">
+         <VBox prefHeight="181.0" prefWidth="297.0">
             <children>
                <Label text="Extension explanation:" textFill="WHITE" />
                <TextArea fx:id="extensionExplanation" editable="false" prefHeight="200.0" prefWidth="200.0" />
             </children>
          </VBox>
-         <VBox prefHeight="81.0" prefWidth="175.0">
+         <VBox prefHeight="181.0" prefWidth="301.0">
             <children>
                <Label text="Your reason to your reaction:" textFill="WHITE" />
                <TextArea fx:id="reactionReason" prefHeight="200.0" prefWidth="200.0" />
@@ -30,7 +31,13 @@
          </VBox>
       </children>
    </HBox>
-      <HBox alignment="CENTER">
+   <HBox prefHeight="33.0" prefWidth="341.0">
+      <children>
+         <Label text="Extension due date:" textFill="WHITE" />
+         <TextField editable="false" />
+      </children>
+   </HBox>
+      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="230.0">
             <Button fx:id="btnApprove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#getApprove" text="Approve">
                <opaqueInsets>
                   <Insets left="50.0" right="50.0" />

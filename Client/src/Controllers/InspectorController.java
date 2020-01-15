@@ -144,11 +144,13 @@ public class InspectorController  {
 		InspectorUpdateDescription report;
 		if (approve) {
 			req.getProcessStage().setFlagExtensionRequestHandled();
+			req.getProcessStage().setDueDate(req.getProcessStage().getExtensionDate());
 			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.approveExtension);
 		}else {
 			req.getProcessStage().setFlagExtensionRequestNotHandled();
 			report= new InspectorUpdateDescription(UserForm.user,reactionReason,LocalDate.now(),inspectorUpdateKind.DisapproveExtension);
 		}
+		req.getProcessStage().setExtensionDate(null); // clear the extension date after approve or disapprove.
 		req.addInspectorUpdate(report);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 	}
