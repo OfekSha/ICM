@@ -1,27 +1,18 @@
 package GUI;
 
-import java.io.IOException;
+import Controllers.InspectorController;
+import Entity.EstimatorReport;
+import Entity.RequestTableView.requirementForTable;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-
-import Controllers.InspectorController;
-import Entity.Document;
-import Entity.DocumentForTable;
-import Entity.EstimatorReport;
-import Entity.RequestTableView.requirementForTable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class tabPaneInspectorForm    implements Initializable{
 
@@ -119,7 +110,7 @@ public class tabPaneInspectorForm    implements Initializable{
 	private TextArea explain5;
 
 	@FXML
-	public DocmentTableForDownloadsForm  DocmentTableController; // the document table with download capability 
+	public DocumentTableForDownloadsForm DocumentTableController; // the document table with download capability
 
 	public void onRequirementClicked(requirementForTable selectedReq) {
 		// set details into tab pane:
@@ -192,7 +183,7 @@ public class tabPaneInspectorForm    implements Initializable{
 
 		// setting up the document table
 		//onRequirementTableClick(InspectorController.selectedRequest);
-		DocmentTableController.onRequirementTableClick(InspectorController.selectedRequest);
+		DocumentTableController.onRequirementTableClick(InspectorController.selectedRequest);
 	}
 
 
