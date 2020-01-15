@@ -73,11 +73,18 @@ public class EstimatorController {
 		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 	}
-
+	public static boolean checkExtension(ChangeRequest request) {
+		LocalDate threeDaysBefore=request.getProcessStage().getDueDate().minusDays(3);
+		return threeDaysBefore.isBefore(LocalDate.now());
+			
+		
+	}
 	public static void askExtension(ChangeRequest request,String explanation) {
+		if(checkExtension(request)) {
 		request.getProcessStage().setFlagExtensionRequested();
 		request.getProcessStage().setExtensionExplanation(explanation);
 		requestToServerProtocol(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
+		}
 	}
 	// end functions for request.
 	

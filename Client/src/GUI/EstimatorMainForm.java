@@ -165,7 +165,7 @@ public class EstimatorMainForm extends UserForm {
 		createdDate.setText(EstimatorController.selectedRequest.getStartDate().toString());
 		createdBy.setText(EstimatorController.selectedRequest.getInitiator().getTheInitiator().getUserName());
 		//end initiator details.
-		btnAskForTimeExtension.setDisable(false);
+		btnAskForTimeExtension.setDisable(!(EstimatorController.checkExtension(EstimatorController.selectedRequest)));
 		switch (selectedReq.getStage().getCurrentSubStage()) {
 			case determiningDueTime:
 				btnSetDueTime.setDisable(false);

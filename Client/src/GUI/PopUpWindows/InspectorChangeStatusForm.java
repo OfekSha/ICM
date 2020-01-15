@@ -10,6 +10,8 @@ import Entity.clientRequestFromServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -66,6 +68,13 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
     	if (((clientRequestFromServer) message).getRequest()==updateProcessStage ) {
     		InspectorController.messageFromServer(message);
     		getCancel();
+    	}
+    	else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Error");
+    		alert.setHeaderText(null);
+    		alert.setContentText("The change didn't work please try again.");
+    		alert.showAndWait();
     	}
     }
 }
