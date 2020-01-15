@@ -296,7 +296,7 @@ public class mysqlConnection {
 		for (int i = 0; i < 5; i++) {
 			WasThereAnExtensionRequest[i] = 0;
 		}
-		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, estimator, "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
+		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", startEndArray, WasThereAnExtensionRequest,ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
@@ -368,8 +368,15 @@ public class mysqlConnection {
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 		ServerTesting tester = new ServerTesting(queryHandler);
 		whatHappend wh = tester.testIfRequestIsfrozen(estimator, changeRequest);
-		// testing
-
-		
+		// testing***********
+		Object[] arr =tester.testifUserIcmPermissionCanBeRmoved(estimator, icmPermission.estimator);
+		// creating examiner
+		lessPermissions = EnumSet.complementOf(Permissions);
+		lessPermissions.add(icmPermission.examiner);
+		lessPermissions.add(User.icmPermission.changeControlCommitteeMember);
+		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com",
+				collegeStatus.informationEngineer, lessPermissions);
+		Object[] arr2 = tester.testifUserIcmPermissionCanBeRmoved(newUser, icmPermission.examiner);
+				//creating examiner
 	}// END of enterChangeRequestToDB
 }//END of mysqlConnection

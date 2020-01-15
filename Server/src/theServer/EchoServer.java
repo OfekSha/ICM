@@ -218,7 +218,9 @@ public class EchoServer extends AbstractServer {
 					case getDoc:
 						sendBackObject = queryHandler.getFilesQuerys().selectDocWithFile((Document) request.getObject());
 						break;
-
+					case removeUserIcmPermission:
+						objectArray = (Object[]) request.getObject();
+						sendBackObject =tester.testifUserIcmPermissionCanBeRmoved((User)objectArray[0],(icmPermission)objectArray[1]);
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 				}

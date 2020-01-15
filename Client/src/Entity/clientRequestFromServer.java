@@ -25,7 +25,8 @@ public class clientRequestFromServer implements Serializable {
         LogIN ,//only for logging in - tests whether the user is logged in already
         successfulLogInOut, //Updated the server whether there is a user  related to the connection
         getDoc, // effectively downloding the  a requested document to the clients
-        updateUser //TODO : remove
+        updateUser, //TODO : remove
+        removeUserIcmPermission // removes icmPermission from user while testing if can be done
 
     }
 

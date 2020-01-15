@@ -1,8 +1,11 @@
 package theServer;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import Entity.ChangeRequest;
+import Entity.ProcessStage;
+import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.User;
 import Entity.User.icmPermission;
@@ -20,7 +23,8 @@ public class ServerTesting {
 		failedNoPermission,
 		failedAlreadyExists,
 		success,
-		failedIsFrozen
+		failedIsFrozen,
+		failedIsResponsibleForAstage 
 		
 	 }
 	  
@@ -57,6 +61,51 @@ public class ServerTesting {
 	}// END of testIfRequestIsfrozen()
 	
 	
+	
+	/** making sure the user is not using his icm Permission 
+	 * @param changedUser - the  user we want to remove a  permission to 
+	 * @param permission - the permission we want to remove from the user
+	 * @return <li> if can be changed : arr[0] = whatHappend.success </li>
+  				<li>if cant be changed : arr[0] = whatHappend.failedIsResponsibleForAstage , arr[1] =ArrayList<ChangeRequest> he is involved in  </li>
+  				
+	 */
+	public Object[] testifUserIcmPermissionCanBeRmoved(User changedUser , icmPermission  permission) {
+		Object[] arr =new Object[2];
+		arr[0]=null;
+		arr[1]=null;
+		ChargeRequestStages stage =null;
+		switch (permission) {
+		case informationTechnologiesDepartmentManager:
+			arr[0]= whatHappend.failedNoPermission;
+			break;
+		case inspector:
+			stage= ChargeRequestStages.closure;
+			break;
+		case estimator:
+			stage = ChargeRequestStages.meaningEvaluation;
+			break;
+		case executionLeader:
+			stage = ChargeRequestStages.execution;
+			break;
+		case examiner:
+			stage = ChargeRequestStages.examination;
+			break;
+		case changeControlCommitteeChairman:
+			stage = ChargeRequestStages.examinationAndDecision;
+			break;
+		case changeControlCommitteeMember:
+			stage = ChargeRequestStages.examination;
+			break;
+		}
+		if(arr[0]==null) {		
+		ArrayList<ChangeRequest> involved  =queryHandler.getProccesStageQuerys().getProcessStageByStageSupervisorAndStage(changedUser,stage);
+		if (involved.isEmpty())  arr[0]= whatHappend.success;
+		else {arr[0]= whatHappend.failedIsResponsibleForAstage;
+			arr[1] =involved;
+		}
+		}
+		return arr;
+	}// END of testifUserIcmPermissionCanBeRmoved()
 	
 	
 	/**@in buiding
