@@ -35,60 +35,25 @@ public class InspectorForm extends UserForm {
 	// fxml vars:
 
 	@FXML
-	public Button btnFreezeUnfreeze;
+	private Button btnFreezeUnfreeze,btnRoleApprove,btnDueTimeApprove,btnExtensionApprove,btnCloseRequest;
 	@FXML
-	public Button btnRoleApprove;
-	@FXML
-	public Button btnDueTimeApprove;
-	@FXML
-	public Button btnExtensionApprove;
-	@FXML
-	public Button btnCloseRequest;
-	@FXML
-	public MenuButton menubtnWatch;
+	private MenuButton menubtnWatch;
 	@FXML
 	private tabPaneInspectorForm  tabPaneController; // tabs that get more info about request.
 	// menu items of menubtnWatch (the types of request):
 	@FXML
-	private MenuItem freeze;
-	@FXML
-	private MenuItem unfreeze;
-	@FXML
-	private MenuItem estimator;
-	@FXML
-	private MenuItem executionLeader;
-	@FXML
-	private MenuItem dueTime;
-	@FXML
-	private MenuItem close;
-	@FXML
-	private MenuItem extension;
+	private MenuItem freeze,unfreeze,estimator,executionLeader,dueTime,close,extension;
 
 	@FXML
-	public TableView<requirementForTable> tblViewRequests;
+	private TableView<requirementForTable> tblViewRequests;
 	// table colums:
 	@FXML
-	public TableColumn<requirementForTable, String> columnId;
+	private TableColumn<requirementForTable, String> columnId,columnMessage;
 	@FXML
-	public TableColumn<requirementForTable, Object> columnStatus;
-	@FXML
-	public TableColumn<requirementForTable, Object> columnStage;
-	@FXML
-	public TableColumn<requirementForTable, Object> columnDueTime;
-
-	/*
-	 * //for test only:
-	 * 
-	 * @FXML public TableColumn<requirementForTable, String> columnStage;
-	 * 
-	 * @FXML public TableColumn<requirementForTable, String> columnDueTime;
-	 */
-
-	@FXML
-	public TableColumn<requirementForTable, String> columnMessage;
+	private TableColumn<requirementForTable, Object> columnStatus,columnStage,columnDueTime;
 			
 	// not fxml vars:
-	RequestTableView table; // make adaptable class for table view.
+	private RequestTableView table; // make adaptable class for table view.
 	private static Stage popupWindow;
 	public static Stage inspectorWindow;
 	private requirementForTable selectedReq;
@@ -108,7 +73,7 @@ public class InspectorForm extends UserForm {
 	}
 
 	// functions for gui:
-	private void popupWindow(String target, ActionEvent event) throws IOException {
+	private void popupWindow(String target) throws IOException {
 		// inspectorWindow.setScene(((Node)event.getTarget()).getScene());
 		popupWindow = new Stage();
 		Parent root = FXMLLoader.load(this.getClass().getResource(target));
@@ -116,7 +81,7 @@ public class InspectorForm extends UserForm {
 		popupWindow.setScene(scene);
 		popupWindow.initModality(Modality.APPLICATION_MODAL);
 		popupWindow.show();
-		InspectorForm icmForm = this;
+		InspectorForm icmForm = this; //this just works to inspector.
 
 		// what happened when close window from out or from stage.close / stage.hide
 		// method
@@ -125,11 +90,11 @@ public class InspectorForm extends UserForm {
 		// stage.close / stage.hide method
 		popupWindow.setOnHidden(we -> ClientLauncher.client.setClientUI(icmForm));
 	}
-
+	@FXML
 	public void watchRequest(ActionEvent event) { // get event from the menuItem.
 		InspectorController.watchRequests(((MenuItem) event.getSource()));
 	}
-
+	@FXML
 	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
 		switch (selectedReq.getStatus()) {
 		// the requirement wasn't freeze.
@@ -145,7 +110,7 @@ public class InspectorForm extends UserForm {
 			throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.");
 		}
 	}
-
+	@FXML
 	public void roleApprove(ActionEvent event) throws Exception {
 		
 		switch (selectedReq.getStage().getCurrentStage()) {
@@ -159,101 +124,92 @@ public class InspectorForm extends UserForm {
 			// need to throw new exception.
 			break;
 		}
-		popupWindow("/GUI/PopUpWindows/ApproveRole.fxml", event);
+		popupWindow("/GUI/PopUpWindows/ApproveRole.fxml");
 	}
-
+	@FXML
 	public void dueTimeApprove(ActionEvent event) throws Exception {
-		popupWindow("/GUI/PopUpWindows/ApproveDueTime.fxml", event);
+		popupWindow("/GUI/PopUpWindows/ApproveDueTime.fxml");
 	}
-
+	@FXML
 	public void extensionApprove(ActionEvent event) throws Exception {
-		popupWindow("/GUI/PopUpWindows/ApproveExtension.fxml", event);
+		popupWindow("/GUI/PopUpWindows/ApproveExtension.fxml");
 
 	}
-
-	public void closeRequest(ActionEvent event) {
+	@FXML
+	public void closeRequest(ActionEvent event) { // @@ TODO: add pop up window.
 
 	}
-
+	@FXML
 	public void onRequirementClicked(MouseEvent event) {
 		 selectedReq = table.onRequirementClicked(event);
-			if (selectedReq == null)
+			if (selectedReq == null) {
+				setButtons(false,false,false,false,false);
 				return;
+			}
 		 InspectorController.selectedRequest=selectedReq.getOriginalRequest();
 		 tabPaneController.onRequirementClicked(selectedReq);
-		
-
-		// when extension is on:
-		if (selectedReq.getStage().getWasThereAnExtensionRequest()[selectedReq.getStage().getCurrentStage()
-				.ordinal()] == 1) {
-			btnExtensionApprove.setDisable(false);
-		} else
-			btnExtensionApprove.setDisable(true);
-
-		// when freeze / unfreeze and close will be not disable:
 		//enable close:
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
-			btnFreezeUnfreeze.setText("Freeze / Unfreeze");
-			btnRoleApprove.setText("Role Approve");
-			btnCloseRequest.setDisable(false);
-			btnFreezeUnfreeze.setDisable(true);
-			btnExtensionApprove.setDisable(true);
-			btnDueTimeApprove.setDisable(true);
-			btnRoleApprove.setDisable(true);
+			setButtons(false, false, false, false, true);
 			return;
 		}
+		// when extension is on:
+		int stageLevel=selectedReq.getStage().getCurrentStage().ordinal(); // 0-4
+		boolean turnExtension=selectedReq.getStage().getWasThereAnExtensionRequest()[stageLevel] == 1; // need approve of inspector.
 
 		switch (selectedReq.getStatus()) {
 		//enable freeze:
 		case ongoing:
-			btnFreezeUnfreeze.setDisable(false);
 			btnFreezeUnfreeze.setText("Freeze");
+			switch (selectedReq.getStage().getCurrentSubStage()) {
+			case ApprovingDueTime: //enable due time approve
+				setButtons(true, false, true, turnExtension, false);
+				break;
+			case supervisorAllocation: // enable role approve
+				setButtons(true,true,false,turnExtension,false);
+				switch (selectedReq.getStage().getCurrentStage()) {
+				case meaningEvaluation: // need to approve Estimator
+					btnRoleApprove.setText("Estimator Approve");
+					break;
+				case execution: // need to approve Execution Leader
+					btnRoleApprove.setText("Execution Leader Approve");
+					break;
+				default:
+					btnDueTimeApprove.setDisable(true);
+					btnCloseRequest.setDisable(true);
+					btnRoleApprove.setDisable(true);
+					btnRoleApprove.setText("Role Approve");
+					break;
+				}
+				break;
+			default:// TODO: throw exception?
+				break;
+			}
 			break;
 		//enable unfreeze:
 		case suspended:
-			btnFreezeUnfreeze.setDisable(false);
+			setButtons(true,false,false,turnExtension,false);
 			btnFreezeUnfreeze.setText("Unfreeze");
 			break;
 			// when requirement is close (not need to be).
 		case closed:
-			btnFreezeUnfreeze.setText("Freeze / Unfreeze");
-			btnCloseRequest.setDisable(true);
-			btnFreezeUnfreeze.setDisable(true);
-			btnExtensionApprove.setDisable(true);
-			btnDueTimeApprove.setDisable(true);
-			btnRoleApprove.setDisable(true);
+			setButtons(false,false,false,turnExtension,false);
 		default:
 			btnFreezeUnfreeze.setDisable(true);
 			// @@need to throw new Exception.
 			break;
 		}
 		// when role, due time will be not disable
-		switch (selectedReq.getStage().getCurrentSubStage()) {
-		case ApprovingDueTime: //enable due time approve
-			btnDueTimeApprove.setDisable(false);
-			btnCloseRequest.setDisable(true);
-			btnRoleApprove.setDisable(true);
-			break;
-		case supervisorAllocation: // enable role approve
-			btnDueTimeApprove.setDisable(true);
-			btnCloseRequest.setDisable(true);
-			btnRoleApprove.setDisable(false);
-			switch (selectedReq.getStage().getCurrentStage()) {
-			case meaningEvaluation: // need to approve Estimator
-				btnRoleApprove.setText("Estimator Approve");
-				break;
-			case execution: // need to approve Execution Leader
-				btnRoleApprove.setText("Execution Leader Approve");
-				break;
-			default:
-				btnDueTimeApprove.setDisable(true);
-				btnCloseRequest.setDisable(true);
-				btnRoleApprove.setDisable(true);
-				btnRoleApprove.setText("Role Approve");
-				break;
-			}
-			break;
-		}
+		
+	}
+	private void setButtons(boolean freezeOrUn,boolean role,boolean dueTime,boolean extension,boolean close) {
+		btnFreezeUnfreeze.setDisable(!freezeOrUn);
+		btnRoleApprove.setDisable(!role);
+		btnDueTimeApprove.setDisable(!dueTime);
+		btnExtensionApprove.setDisable(!extension);
+		btnCloseRequest.setDisable(!close);
+		if (!role) btnRoleApprove.setText("Role Approve");
+		if (!freezeOrUn) btnFreezeUnfreeze.setText("Freeze / Unfreeze");
 	}
 
 }

@@ -1,19 +1,49 @@
 package GUI.PopUpWindows;
 
+import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
+
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import Entity.ProcessStage;
+import Entity.clientRequestFromServer;
+import WindowApp.ClientLauncher;
+import WindowApp.IcmForm;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public abstract class AbstractPopUp {
-
+public abstract class AbstractPopUp implements IcmForm{
+	 public static ProcessStage processStage;
     @FXML
     private Button btnCancel;
 
     @FXML
     public void getCancel() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
+        processStage=null;
         stage.close();
         Platform.setImplicitExit(true);
+    }
+    public static void sendUpdateForRequest() {
+		if (processStage != null) {
+			clientRequestFromServer newRequest =
+					new clientRequestFromServer(updateProcessStage, processStage);
+			ClientLauncher.client.handleMessageFromClientUI(newRequest);
+		}
+	}
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    	ClientLauncher.client.setClientUI(this);
+    	
+    }
+    @Override
+    public void getFromServer(Object message) {
+    	// TODO: need to get message from server that client update succeed. 
+    	if (((clientRequestFromServer) message).getRequest()==updateProcessStage ) {
+    		// do something.
+    	}
     }
 }

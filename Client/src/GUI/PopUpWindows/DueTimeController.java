@@ -1,6 +1,6 @@
 package GUI.PopUpWindows;
 
-import Entity.ProcessStage;
+
 import Entity.ProcessStage.subStages;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,11 +10,10 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
-import static GUI.ExecutionLeaderForm.sendUpdateForRequest;
 
 public class DueTimeController extends AbstractPopUp {
 
-    public static ProcessStage processStage;
+   
 
     @FXML
     private DatePicker dpDueTime;
