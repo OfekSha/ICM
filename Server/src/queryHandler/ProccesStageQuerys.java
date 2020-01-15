@@ -3,6 +3,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import Entity.ChangeRequest;
 import Entity.EstimatorReport;
@@ -253,4 +254,34 @@ public class ProccesStageQuerys {
 		}
 		return returnProcessStage;
 	}// END getProcessStage()
+	
+	
+
+	/**  gets all ChangeRequests in DB where user is responsible for a stage 
+	 * @param supervisor - the user responsible for the stage
+	 * @param stage - the current stage he is Supervising 
+	 * @return  an  ArrayList of all the ChangeRequest which the user is responsible for and  are in the stage requierd 
+	 */
+	public ArrayList<ChangeRequest> getProcessStageByStageSupervisorAndStage(User supervisor,ChargeRequestStages stage) {
+		ArrayList<ChangeRequest> retList =new ArrayList();
+		ChangeRequest toList;
+		try { 
+			PreparedStatement stmt = queryHandler.getmysqlConn().getConn()
+					.prepareStatement("SELECT RequestID\r\n" + 
+							"FROM `icm`.`stage` where StageSupervisor =? And currentStage =? ;\r\n");
+			stmt.setString(1, supervisor.getUserName());
+			stmt.setString(2, stage.name());
+			ResultSet re = stmt.executeQuery();
+			while (re.next()) {
+				toList= queryHandler.getChangeRequestQuerys().getChangeRequest(re.getInt(1));
+				retList.add(toList);
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return retList;
+	}//getProcessStageByStageSupervisorAndStage()
+	
+	
 }// END of ProccesStageQuerys()
