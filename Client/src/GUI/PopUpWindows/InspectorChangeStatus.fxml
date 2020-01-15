@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="323.0" spacing="15.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.ApproveDueTimeController">
+         <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" text="Approve Change Status" textFill="WHITE">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+   <Label text="Description:" textFill="WHITE" />
+   <TextArea fx:id="description" prefHeight="200.0" prefWidth="200.0" />
+      <HBox alignment="CENTER" spacing="80.0">
+            <Button fx:id="btnApprove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#getApprove" text="Approve">
+               <opaqueInsets>
+                  <Insets left="50.0" right="50.0" />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnCancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#getCancel" text="Cancel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+      </HBox>
+</VBox>

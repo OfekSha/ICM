@@ -15,11 +15,25 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * abstract pop up window use as extends to use general buttons and function
+ * @see #getCancel
+ * @see #btnCancel
+ */
 public abstract class AbstractPopUp implements IcmForm{
-	 public static ProcessStage processStage;
-    @FXML
-    private Button btnCancel;
 
+	public static ProcessStage processStage; // the selected process stage to change.
+    /**
+     * cancel button to close window
+     * @see #getCancel
+     */
+    @FXML
+    private Button btnCancel; // 
+
+    /**
+     * function that connected to the cancel button.
+     * @see #btnCancel
+     */
     @FXML
     public void getCancel() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
