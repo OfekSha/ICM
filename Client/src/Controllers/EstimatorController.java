@@ -49,7 +49,7 @@ public class EstimatorController {
 				DocmentTableForDownloadsController.downloded=(Document) response.getObject();
 				DocmentTableForDownloadsController.wakeUpLunchedThread();
 				break;
-			case updateProcessStage: 
+			case updateProcessStage: case updateChangeRequest: // when update done, do refresh. 
 				filterRequests(filterSelected);
 				break;
 			default:throw new IllegalArgumentException(

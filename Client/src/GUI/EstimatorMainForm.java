@@ -25,8 +25,7 @@ public class EstimatorMainForm extends UserForm {
 
 	@FXML
 	public DocumentTableForDownloadsForm DocumentTableController; // the document table with download capability
-	@FXML
-	public Button btnGetDetails;
+
 	@FXML
 	public Button btnSetDueTime;
 	@FXML
@@ -145,7 +144,7 @@ public class EstimatorMainForm extends UserForm {
 		table.setData(EstimatorController.requests);
 
 	}
-
+	@FXML
 	public void filterRequests(ActionEvent event) { // get event from the menuItem.
 		EstimatorController.filterRequests(((MenuItem) event.getSource()));
 	}
@@ -165,7 +164,6 @@ public class EstimatorMainForm extends UserForm {
 		createdDate.setText(EstimatorController.selectedRequest.getStartDate().toString());
 		createdBy.setText(EstimatorController.selectedRequest.getInitiator().getTheInitiator().getUserName());
 		//end initiator details.
-		btnGetDetails.setDisable(false);
 		btnAskForTimeExtension.setDisable(false);
 		switch (selectedReq.getStage().getCurrentSubStage()) {
 			case determiningDueTime:

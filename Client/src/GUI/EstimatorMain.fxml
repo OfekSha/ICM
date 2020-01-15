@@ -150,7 +150,6 @@
                </children>
             </HBox>
                <HBox alignment="CENTER" prefHeight="33.0" prefWidth="816.0" spacing="10.0">
-                   <Button fx:id="btnGetDetails" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Get Details" />
                    <Button fx:id="btnSetDueTime" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#setDueTimeClicked" text="Set Due Time" />
                    <Button fx:id="btnWriteReport" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#writeReportClicked" text="Write Report" />
                    <Button fx:id="btnAskForTimeExtension" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#askExtensionClicked" text="Ask For Time Extension" />
