@@ -1,10 +1,6 @@
 package GUI;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import Controllers.DocmentTableForDownloadsController;
-import Controllers.InspectorController;
 import Entity.ChangeRequest;
 import Entity.DocumentForTable;
 import javafx.collections.FXCollections;
@@ -15,7 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class DocmentTableForDownloadsForm   {
+public class DocumentTableForDownloadsForm {
 
 	@FXML
 	public TableView<DocumentForTable> tblViewDocuments;
@@ -28,18 +24,17 @@ public class DocmentTableForDownloadsForm   {
 
 	@FXML
 	public Button btnDownload;
-	
-	public DocmentTableForDownloadsController controller =new DocmentTableForDownloadsController();
+
+	public DocmentTableForDownloadsController controller = new DocmentTableForDownloadsController();
 
 	public void onRequirementTableClick(ChangeRequest selectedRequest) {
 		ObservableList<DocumentForTable> documentTableData = FXCollections
 				.observableArrayList(controller.DocumentForTableList(selectedRequest));
 		tblViewDocuments.setItems(documentTableData);
 	}// END of onRequirementTableClick()
-	
+
 	/**
 	 * setting up the document table columns
-	 * 
 	 */
 	public void initializeDocumentTableView() {
 
@@ -47,13 +42,12 @@ public class DocmentTableForDownloadsForm   {
 		columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size")); // set values
 
 	} //END of initializeDocumentTableView()
-	
-	public void pressedDownload() {	
+
+	public void pressedDownload() {
 		DocumentForTable selectedDoc = tblViewDocuments.getSelectionModel().getSelectedItem();
 		if (selectedDoc != null) {
 			controller.askForDownload(selectedDoc.gettheDoc());
 		}
 
-	} //END of pressedDownlode()
-
+	} //END of pressedDownload()
 }
