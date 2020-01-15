@@ -65,8 +65,8 @@ public class User implements Serializable {
 
 	public void updatePermissions(EnumSet<icmPermission> Permissions) {
 		try {
-			//TODO Warning:(68, 26) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
-			if ((collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) && Permissions != null)
+			if(Permissions == null ) throw new IllegalArgumentException("Permissions shold not be null");
+			if ((collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) &&(!Permissions.isEmpty()) )
 				throw new IllegalArgumentException(collegeStatus.name() + " cannot have icmPermissions\n");
 			this.Permissions = Permissions;
 		} catch (IllegalArgumentException e) {
