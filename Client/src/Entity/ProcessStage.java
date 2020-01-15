@@ -53,6 +53,8 @@ public class ProcessStage implements Serializable {
 	 * [stage number -1 ][1] - due date for stage
 	 * <p>
 	 * [stage number -1 ][2] - ending date of stage
+	 * <p>
+	 * [4][1] - using for ask extension.
 	 */
 	private LocalDate[][] startEndArray = new LocalDate[5][3]; //
 

@@ -21,7 +21,7 @@ public class EstimatorController {
 	
 	public static ArrayList <ChangeRequest> requests; // requests the controller holds
 	public static ChangeRequest selectedRequest; // request that was selected from the forms.
-	
+	private MenuItem filterSelected;
 	public static void setSelectedRequest(requirementForTable selectedReq) {
 		selectedRequest=getReq(selectedReq);
 	}
@@ -48,6 +48,9 @@ public class EstimatorController {
 			case getDoc:
 				DocmentTableForDownloadsController.downloded=(Document) response.getObject();
 				DocmentTableForDownloadsController.wakeUpLunchedThread();
+				break;
+			case updateProcessStage: 
+				filterRequests();
 				break;
 			default:throw new IllegalArgumentException(
 					"the request " + response.getRequest() + " not implemented in the Estimator controller.");	
@@ -79,6 +82,7 @@ public class EstimatorController {
 	// end functions for request.
 	
 	public static void filterRequests(MenuItem menuItem) {
+		filterSelected=menuItem;
 		Object toServerFilter = null;
 		requestOptions toServerOption = null;
 		switch (menuItem.getText()) { // choose what string to send to server
