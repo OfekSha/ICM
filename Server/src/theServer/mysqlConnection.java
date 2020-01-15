@@ -244,6 +244,20 @@ public class mysqlConnection {
 		//creating student
 		newUser = new User("student", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.student, null);
 		queryHandler.getUserQuerys().insertUser(newUser);
+		
+		//creating lecturer
+		newUser = new User("lecturer", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.student, null);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		queryHandler.getUserQuerys().updateCollegeStatus(newUser, collegeStatus.lecturer);
+		//creating a worker with no Permission
+		lessPermissions = EnumSet.complementOf(Permissions);
+		newUser = new User("worker", "1234", "FirstName", "LastName", "mail@email.com",
+		collegeStatus.informationEngineer, lessPermissions);
+		queryHandler.getUserQuerys().insertUser(newUser);
+		//tests
+		queryHandler.getUserQuerys().updateIcmPermission(newUser, icmPermission.changeControlCommitteeChairman, 1);
+		queryHandler.getUserQuerys().updateIcmPermission(newUser, icmPermission.changeControlCommitteeChairman, 0);
+
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {

@@ -104,10 +104,10 @@ public class UserQuerys {
     }
 
     
-    /** updates all user fields in the DB
+    /** updates all user fields in the DB 
     *
     * @param user ?
-    * 
+    * @deprecated
     */
    public void updateAllUserFields(User user) {
        PreparedStatement updStatus;
@@ -134,15 +134,86 @@ public class UserQuerys {
            e.printStackTrace();
        }
    }
+   
+   /** updates CollegeStatus field in the DB 
+   *
+   * @param user - the user being updated 
+   * @param newStatus - new status
+   */
+  public void updateCollegeStatus(User user,collegeStatus newStatus) {
+      PreparedStatement updStatus;
+      try {
+          updStatus = queryHandler.getmysqlConn().getConn().prepareStatement(
+          		"UPDATE `icm`.`user`\r\n" + 
+          		"SET\r\n" + 
+          		"`job` = ?\r\n" + 
+          		"WHERE userName = ?;\r\n" + 
+          		"");
+          updStatus.setNString(1, newStatus.name());
+          updStatus.setNString(2, user.getUserName());
+          updStatus.execute();
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+  }//END of updateCollegeStatus()
+  
+
+ /**
+ * @param user - the user witch icmPermission we are changing
+ * @param permission  - the icmPermission which is beening changed 
+ * @param hasOrnot :	 <li>send 1 if updating he has the icmPermission </li> <li>send 0 if updating he dose not have the icmPermission </li>
+ */
+public void updateIcmPermission(User user,icmPermission permission, int hasOrnot) {
+     PreparedStatement updStatus;
+     String prem ="";
+		switch (permission) {
+		case informationTechnologiesDepartmentManager:
+			prem = "informationTechnologiesDepartmentMangerPermission";
+			break;
+		case inspector:
+			prem = "inspectorPermission";
+			break;
+		case estimator:
+			prem = "estimatorPermission";
+			break;
+		case executionLeader:
+			prem = "executionLeaderPermission";
+			break;
+		case examiner:
+			prem = "examinerPermission";
+			break;
+		case changeControlCommitteeChairman:
+			prem = "changeControlCommitteeChairman";
+			break;
+		case changeControlCommitteeMember:
+			prem = "changeControlCommitteeMember";
+			break;
+		}
+     
+     
+     try {
+         updStatus = queryHandler.getmysqlConn().getConn().prepareStatement(
+         		"UPDATE `icm`.`user`\r\n" + 
+         		"SET\r\n" + 
+         		prem+" = ?\r\n" + 
+         		"WHERE userName = ?;\r\n" + 
+         		"");
+         updStatus.setInt(1, hasOrnot);
+         updStatus.setNString(2, user.getUserName());
+         updStatus.execute();
+     } catch (SQLException e) {
+         e.printStackTrace();
+     }
+ }//END of updateIcmPermission()
+
 
    /** returns a user form db  by username
     * @param username ?
     * @return User ?
    */
-   public User selectUser(String username) { // @building by yonathan not finished.
+   public User selectUser(String username) { 
        User toReturn = null;
        try {
-           //TODO: is PreparedStatement needed ?> yes
            PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement("SELECT * FROM icm.user where user.userName = ?;");
            stmt.setNString(1, username);
 
@@ -209,22 +280,22 @@ public class UserQuerys {
     if (informationTechnologiesDepartmentManagerPermission == 1) {
         Permissions.add(User.icmPermission.informationTechnologiesDepartmentManager);
     }
-    if (inspectorPermission == 1) {
+    if (inspectorPermission > 0) {
         Permissions.add(User.icmPermission.inspector);
     }
-    if (estimatorPermission == 1) {
+    if (estimatorPermission > 0) {
         Permissions.add(User.icmPermission.estimator);
     }
-    if (executionLeaderPermission == 1) {
+    if (executionLeaderPermission > 0) {
         Permissions.add(User.icmPermission.executionLeader);
     }
-    if (examinerPermission == 1) {
+    if (examinerPermission > 0) {
         Permissions.add(User.icmPermission.examiner);
     }
-    if (changeControlCommitteeChairman == 1) {
+    if (changeControlCommitteeChairman > 0) {
         Permissions.add(User.icmPermission.changeControlCommitteeChairman);
     }
-    if (changeControlCommitteeMember == 1) {
+    if (changeControlCommitteeMember > 0) {
         Permissions.add(icmPermission.changeControlCommitteeMember);
     }
     toReturn = new User(userName, password, firstName, lastName, email, collegeStatus, Permissions);

@@ -13,7 +13,7 @@ public class clientRequestFromServer implements Serializable {
         updateStatus,   // change requirement status (ongoing ,closed,etc)
         getRequirement, // get requirement from DB by his id.
         getUser ,       // get one user from DB by his user name.
-        updateUser,     // updates all users details
+        updateUserCollegeStatus,     // updates user college statues
         getAllUsers,			// getting all users from DB
         getChangeRequestByStatus, // getting all requests with the specified status
         getUsersByICMPermissions,// Getting all users with the  specified ICMPermission
