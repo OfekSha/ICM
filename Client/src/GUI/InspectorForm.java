@@ -148,14 +148,14 @@ public class InspectorForm extends UserForm {
 			}
 		 InspectorController.selectedRequest=selectedReq.getOriginalRequest();
 		 tabPaneController.onRequirementClicked(selectedReq);
-		// when freeze / unfreeze and close will be not disable:
 		//enable close:
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
 			setButtons(false, false, false, false, true);
 			return;
 		}
 		// when extension is on:
-		boolean turnExtension=selectedReq.getStage().getWasThereAnExtensionRequest()[selectedReq.getStage().getCurrentStage().ordinal()] == 1;
+		int stageLevel=selectedReq.getStage().getCurrentStage().ordinal(); // 0-4
+		boolean turnExtension=selectedReq.getStage().getWasThereAnExtensionRequest()[stageLevel] == 1; // need approve of inspector.
 
 		switch (selectedReq.getStatus()) {
 		//enable freeze:
