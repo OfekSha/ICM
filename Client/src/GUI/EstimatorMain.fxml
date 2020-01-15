@@ -124,7 +124,7 @@
                                        </VBox.margin>
                                     </Label>
                                     <TextField fx:id="system" editable="false" prefHeight="25.0" prefWidth="54.0" />
-                                    <fx:include fx:id="DocmentTable" source="DocmentTableForDownloads.fxml" />
+                                    <fx:include fx:id="DocumentTable" source="DocmentTableForDownloads.fxml" />
                                  </children>
                               </VBox>
                            </children>
