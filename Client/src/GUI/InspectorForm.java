@@ -181,17 +181,18 @@ public class InspectorForm extends UserForm {
 						}
 						break;
 					default:// TODO: throw exception?
+						setButtons(true, false, false, turnExtension, false);
 						break;
 				}
 				break;
 			//enable unfreeze:
 			case suspended:
-				setButtons(true, false, false, turnExtension, false);
+				setButtons(true, false, false, false, false);
 				btnFreezeUnfreeze.setText("Unfreeze");
 				break;
 			// when requirement is close (not need to be).
 			case closed:
-				setButtons(false, false, false, turnExtension, false);
+				setButtons(false, false, false, false, false);
 			default:
 				btnFreezeUnfreeze.setDisable(true);
 				// @@need to throw new Exception.
