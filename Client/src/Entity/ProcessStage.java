@@ -118,7 +118,13 @@ public class ProcessStage implements Serializable {
 	}
 
 	// TODO: add constraints to date methods
-
+	/**
+	 * when client ask extension before inspector accept.
+	 * @param due - date for extension
+	 */
+	public void setExtensionDate(LocalDate due) {
+		startEndArray[4][1]=due;
+	}
 	/**
 	 * adding a start date to the current stage
 	 *
@@ -135,6 +141,12 @@ public class ProcessStage implements Serializable {
 	 */
 	public void setDueDate(LocalDate due) {
 		startEndArray[currentStage.ordinal()][1] = due;
+	}
+	/**
+	 * @return the extension date.
+	 */
+	public LocalDate getExtensionDate() {
+		return startEndArray[4][1];
 	}
 
 	public LocalDate getDueDate() {
