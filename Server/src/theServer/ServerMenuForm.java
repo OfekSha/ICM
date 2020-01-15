@@ -10,12 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static GUI.UserForm.setUndecorated;
 
 public class ServerMenuForm implements Initializable {
 
@@ -40,10 +41,7 @@ public class ServerMenuForm implements Initializable {
 	// vars
 	public PrintStream ps;
 	public PrintStream old;
-	public static EchoServer   echo;
-	
-	private static double xOffset = 0;
-	private static double yOffset = 0;
+	public static EchoServer echo;
 
 	public void start(Stage primaryStage) throws Exception {
 		// scene
@@ -51,92 +49,94 @@ public class ServerMenuForm implements Initializable {
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("Server menu");
 		primaryStage.setScene(scene);
-//set style
-		primaryStage.initStyle(StageStyle.UNDECORATED);
-		root.setOnMousePressed(event -> {
-			xOffset = event.getSceneX();
-			yOffset = event.getSceneY();
-		});
-		root.setOnMouseDragged(event -> {
-			primaryStage.setX(event.getScreenX() - xOffset);
-			primaryStage.setY(event.getScreenY() - yOffset);
-		});
+		//set style
+		setUndecorated(primaryStage, root);
 		primaryStage.show();
-
 	}
 
-	/** moving the output to the messages text box and setting it up .
-	 *@see MessgesOutputStream
+	/**
+	 * moving the output to the messages text box and setting it up .
+	 *
+	 * @see MessgesOutputStream
 	 */
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		// we dont want its size to change only scrolling
-		ChangeListener <String> arg0 = (observable, oldValue, newValue) -> Messages.setPrefWidth(Messages.getText().length() * 7);
+		ChangeListener<String> arg0 = (observable, oldValue, newValue) -> Messages.setPrefWidth(Messages.getText().length() * 7);
 		Messages.textProperty().addListener(arg0);
-		
+
 		// taking over the consul
 		ps = new PrintStream(new MessgesOutputStream(Messages));
 		old = System.out;
 		System.setOut(ps);
 		// making sure echo is empty for the servers opening 
-		echo =null;
-		
-		//btnCloseTheServer.setDisable(true); 
-		}
+		echo = null;
 
-	/** ending the server gui and the server 
+		//btnCloseTheServer.setDisable(true); 
+	}
+
+	/**
+	 * ending the server gui and the server
+	 *
 	 * @param event ?
 	 */
 	@FXML
 	void ExitBtn(ActionEvent event) {
-	
+
 		stopServer(event);
 		// resetting the console
 		System.out.flush();
-		System.setOut(old);	
+		System.setOut(old);
 		//closing the gui
 		System.exit(0);
 	}
 
-	/** starts the server
+	/**
+	 * starts the server
+	 *
 	 * @param event ?
 	 */
 	@FXML
 	void startServer(ActionEvent event) {
-		if(echo != null) { 
+		if (echo != null) {
 			System.out.print("there is a echo instans  close it \n");
 			return;
 		}
-	
-			EchoServer.StartOcfServer(ServerMenuController.theArgs);
 
-	//	btnStartTheServer.setDisable(true);
-	//	btnCloseTheServer.setDisable(false);
+		EchoServer.StartOcfServer(ServerMenuController.theArgs);
+
+		//	btnStartTheServer.setDisable(true);
+		//	btnCloseTheServer.setDisable(false);
 	}
 
 
-	/** turning the server off 
+	/**
+	 * turning the server off
+	 *
 	 * @param event ?
 	 */
 	@FXML
 	void stopServer(ActionEvent event) { // TODO: throw connected users out 
-		if(echo == null) { 
+		if (echo == null) {
 			System.out.print("there is no echo instans \n");
-			return;}
+			return;
+		}
 		try {
 			echo.close();
-			echo=null;
+			echo = null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//btnStartTheServer.setDisable(false);
 		//btnCloseTheServer.setDisable(true);
 	}
 
-	
-	/**cleans the messeges text box
+
+	/**
+	 * cleans the messeges text box
+	 *
 	 * @param event ?
 	 */
 	@FXML
@@ -144,14 +144,18 @@ public class ServerMenuForm implements Initializable {
 		refreshMessages();
 	}
 
-	/** assisting : RefreshMessages,
-	 * 
+	/**
+	 * assisting : RefreshMessages,
+	 * <p>
 	 * //@see RefreshMessages
-	 * */
+	 */
 	public void refreshMessages() {
 		Messages.setText("");
 	}
-	/** Rebuilds the DB with examples 
+
+	/**
+	 * Rebuilds the DB with examples
+	 *
 	 * @param event ?
 	 * @see mysqlConnection
 	 */
@@ -160,8 +164,7 @@ public class ServerMenuForm implements Initializable {
 		mysqlConnection mysqlConn;
 		if (echo == null)
 			mysqlConn = new mysqlConnection();
-		else
-		{
+		else {
 			//TODO : add are you sure you want to reset during running server  the run
 			mysqlConn = echo.getmysqlConnection();
 
@@ -169,6 +172,4 @@ public class ServerMenuForm implements Initializable {
 
 		mysqlConn.resetDB();
 	} //End of reSetDB
-	
-
 }
