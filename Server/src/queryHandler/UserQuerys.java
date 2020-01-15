@@ -107,7 +107,7 @@ public class UserQuerys {
     /** updates all user fields in the DB 
     *
     * @param user ?
-    * @deprecated
+    * 
     */
    public void updateAllUserFields(User user) {
        PreparedStatement updStatus;

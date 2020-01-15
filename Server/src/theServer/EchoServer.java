@@ -98,7 +98,13 @@ public class EchoServer extends AbstractServer {
 					queryHandler.getFilesQuerys().InsertFile(change.getDoc());
 					iWantResponse =false;
 					break;
-	
+				case updateUser:
+					varWhatHappend =tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
+					sendBackObject =varWhatHappend;
+					if (whatHappend.success==varWhatHappend) 			
+					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
+					break;
+					
 				case updateUserCollegeStatus:
 					varWhatHappend = tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
 					sendBackObject = varWhatHappend;
