@@ -257,7 +257,7 @@ public class mysqlConnection {
 		//tests
 		queryHandler.getUserQuerys().updateIcmPermission(newUser, icmPermission.changeControlCommitteeChairman, 1);
 		queryHandler.getUserQuerys().updateIcmPermission(newUser, icmPermission.changeControlCommitteeChairman, 0);
-		queryHandler.getUserQuerys().getAllUsers();
+		 ArrayList<User> a =queryHandler.getUserQuerys().getAllUsers();
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {

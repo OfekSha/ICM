@@ -2,6 +2,7 @@ package Controllers;
 
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.User.collegeStatus;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.LogInForm;
 import WindowApp.ClientLauncher;
@@ -9,6 +10,7 @@ import WindowApp.IcmClient;
 import WindowApp.IcmForm;
 
 import java.io.IOException;
+import java.util.EnumSet;
 
 /**  dose logics for the log in form
  * 
@@ -41,7 +43,9 @@ public class SecurityController {
 	 * @param password ?
 	 */
 	public void input(String username, String password) {
-		User log = new  User(username, password, null, null, null, null, null);
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions = EnumSet.complementOf(Permissions); //empty enum set
+		User log = new  User(username, password, null, null, null, null, lessPermissions);
 		Object msg = new clientRequestFromServer(requestOptions.LogIN, log);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 		this.password = password;

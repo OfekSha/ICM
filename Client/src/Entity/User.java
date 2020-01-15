@@ -41,7 +41,7 @@ public class User implements Serializable {
 	 * @param lastName      ?
 	 * @param email         ?
 	 * @param collegeStatus -(enum-collegeStatus)
-	 * @param Permissions   - (enum-icmPermission)if the user is is a student send null
+	 * @param Permissions   - (enum-icmPermission)
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, collegeStatus collegeStatus,
 				EnumSet<icmPermission> Permissions) {
@@ -84,9 +84,7 @@ public class User implements Serializable {
 	 */
 	public void addPremmision(icmPermission Permission) {
 
-
 		try {
-			//TODO Warning:(88, 25) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
 			if (collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
 				throw new IllegalArgumentException(collegeStatus.name() + " cannot have icmPermissions\n");
 			if (Permission == null)
