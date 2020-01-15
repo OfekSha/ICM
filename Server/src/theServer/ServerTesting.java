@@ -51,9 +51,9 @@ public class ServerTesting {
 			EnumSet<icmPermission> Permissions = changer.getICMPermissions();
 			if(Permissions.contains(icmPermission.informationTechnologiesDepartmentManager)||Permissions.contains(icmPermission.inspector))
 				return whatHappend.success;
-			else return whatHappend.failedNoPermission;
+			else return whatHappend.failedIsFrozen;
 		}
-		else return whatHappend.failedIsFrozen;
+		else return whatHappend.success;
 	}// END of testIfRequestIsfrozen()
 	
 	

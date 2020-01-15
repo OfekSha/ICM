@@ -8,6 +8,7 @@ import Entity.User.icmPermission;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import queryHandler.QueryHandler;
+import theServer.ServerTesting.whatHappend;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -55,26 +56,34 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		clientRequestFromServer request = (clientRequestFromServer) msg; // request from ocf.client
 		System.out.println(LocalTime.now() + ": Message received [" + request.getName() + "] of\n" + request.getObject() + "\t" + " from " + client.getInetAddress());
-		//ArrayList<Requirement> ReqListForClient = new ArrayList<>();
 		Object sendBackObject = null;
 		Object[] objectArray;
 		Object[] returningObjectArray;
+		ServerTesting tester = new ServerTesting(queryHandler);
+		whatHappend varWhatHappend ;
 
 		//---------------------------------------
 		boolean iWantResponse = true;
 
 		try {
-			//	Those 4 cases doesn't answer to client not, but they have to!!
+			
 			switch (request.getRequest()) {
 				case changeInLogIn:
 					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
+					iWantResponse =false;
 					break;
 
-				case updateProcessStage: // change stage		 
+				case updateProcessStage: 	
+					 varWhatHappend =tester.testIfRequestIsfrozen(client.getConnectedUser(),((ProcessStage) request.getObject()).getRequest());
+					sendBackObject =varWhatHappend;
+					if (whatHappend.success==varWhatHappend) 			
 					queryHandler.getProccesStageQuerys().updateAllProcessStageFields((ProcessStage) request.getObject());
 					break;
 
 				case updateChangeRequest:
+					varWhatHappend =tester.testIfRequestIsfrozen(client.getConnectedUser(),(ChangeRequest) request.getObject());
+					sendBackObject =varWhatHappend;
+					if (whatHappend.success==varWhatHappend) 			
 					queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields((ChangeRequest) request.getObject());
 					break;
 
@@ -87,12 +96,15 @@ public class EchoServer extends AbstractServer {
 					queryHandler.getProccesStageQuerys().InsertProcessStage(change, change.getProcessStage());
 					change.updateDocs();
 					queryHandler.getFilesQuerys().InsertFile(change.getDoc());
+					iWantResponse =false;
 					break;
-			}
-			if (request.getRequest().ordinal() < 4) iWantResponse = false;
-			else {
-				//	Those cases answer to client
-				switch (request.getRequest()) {
+					
+				case updateUser:
+					varWhatHappend =tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
+					sendBackObject =varWhatHappend;
+					if (whatHappend.success==varWhatHappend) 			
+					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
+					break;	
 					// read all ChangeRequest data
 					case getAll:
 						sendBackObject = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
@@ -100,10 +112,6 @@ public class EchoServer extends AbstractServer {
 
 					case getUser:
 						sendBackObject = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
-						break;
-
-					case updateUser:
-						queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
 						break;
 
 					case getAllUsers:
@@ -177,12 +185,7 @@ public class EchoServer extends AbstractServer {
 						break;
 
 					case LogIN:
-					/*
-					 * tryingToLogInUser = queryHandler.getUserQuerys().selectUser(((String)
-					 * request.getObject())); if (testAllClientsForUser(tryingToLogInUser))
-					 * sendBackObject = null; else sendBackObject = tryingToLogInUser;
-					 */
-						Object[] returning =new Object[2];
+					Object[] returning =new Object[2];
 					User tryingToLogInUser = (User) request.getObject();
 					User UserInDB = queryHandler.getUserQuerys().selectUser(tryingToLogInUser.getUserName());
 									returning[0] =UserInDB;
@@ -210,7 +213,7 @@ public class EchoServer extends AbstractServer {
 					default:
 						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 				}
-			}
+			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}

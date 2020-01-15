@@ -7,6 +7,7 @@ import Entity.ProcessStage.subStages;
 import Entity.User.collegeStatus;
 import Entity.User.icmPermission;
 import queryHandler.QueryHandler;
+import theServer.ServerTesting.whatHappend;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -193,7 +194,7 @@ public class mysqlConnection {
 			enterChangeRequestToDB();
 			//testing
 			ArrayList<ChangeRequest>  a = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
-			System.out.println("New DB ready for use");
+			System.out.println("New DB ready for use !");
 		}
 	}
 	
@@ -351,5 +352,10 @@ public class mysqlConnection {
 		changeRequest.updateStage();
 		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		ServerTesting tester = new ServerTesting(queryHandler);
+		whatHappend wh = tester.testIfRequestIsfrozen(estimator, changeRequest);
+		// testing
+
+		
 	}// END of enterChangeRequestToDB
 }//END of mysqlConnection
