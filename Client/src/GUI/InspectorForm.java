@@ -5,6 +5,8 @@ import Entity.ProcessStage.ChargeRequestStages;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import GUI.PopUpWindows.ApproveRoleForm;
+import GUI.PopUpWindows.InspectorChangeStatusForm;
+import GUI.PopUpWindows.InspectorChangeStatusForm.Status;
 import GUI.PopUpWindows.ApproveRoleForm.Role;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
@@ -91,16 +93,15 @@ public class InspectorForm extends UserForm {
 		switch (selectedReq.getStatus()) {
 			// the requirement wasn't freeze.
 			case ongoing:
-				InspectorController.freeze(selectedReq.getOriginalRequest());
-				btnFreezeUnfreeze.setText("Unfreeze");
+				InspectorChangeStatusForm.status=Status.freeze;
 				break;
 			case suspended:
-				InspectorController.unfreeze(selectedReq.getOriginalRequest());
-				btnFreezeUnfreeze.setText("freeze");
+				InspectorChangeStatusForm.status=Status.unfreeze;
 				break;
 			default:
-				throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.");
+				throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.(closed)");
 		}
+		popupWindow("/GUI/PopUpWindows/InspectorChangeStatus.fxml");
 	}
 
 	@FXML

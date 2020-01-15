@@ -58,6 +58,7 @@ public abstract class AbstractPopUp implements IcmForm{
     	// TODO: need to get message from server that client update succeed. 
     	if (((clientRequestFromServer) message).getRequest()==updateProcessStage ) {
     		// do something.
+    		getCancel();
     	}
     }
 }

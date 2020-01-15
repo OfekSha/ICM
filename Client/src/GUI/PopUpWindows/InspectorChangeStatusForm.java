@@ -1,9 +1,12 @@
 package GUI.PopUpWindows;
 
+import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
+import Entity.clientRequestFromServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,10 +58,14 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
 			InspectorController.unfreeze(InspectorController.selectedRequest);
 			break;
 		}
+		getCancel();
 	}
-
-	@FXML
-	void getCancel(ActionEvent event) {
-
-	}
+	@Override
+    public void getFromServer(Object message) {
+    	// TODO: need to get message from server that client update succeed. 
+    	if (((clientRequestFromServer) message).getRequest()==updateProcessStage ) {
+    		InspectorController.messageFromServer(message);
+    		getCancel();
+    	}
+    }
 }
