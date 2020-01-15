@@ -57,17 +57,17 @@
                                        </MenuButton>
                                        <TableView fx:id="tblViewUsers" prefHeight="430.0" prefWidth="600.0">
                                          <columns>
-                                           <TableColumn fx:id="colFirstname" prefWidth="110.0" text="Firstname" />
-                                           <TableColumn fx:id="colLastname" prefWidth="110.0" text="Lastname" />
-                                             <TableColumn fx:id="colEmail" prefWidth="200.0" text="E-mail" />
-                                             <TableColumn fx:id="colPermissions" prefWidth="193.0" text="Permissions" />
+                                           <TableColumn fx:id="colFirstName" editable="false" prefWidth="125.0" resizable="false" text="Firstname" />
+                                           <TableColumn fx:id="colLastName" editable="false" prefWidth="125.0" resizable="false" text="Lastname" />
+                                             <TableColumn fx:id="colEmail" editable="false" prefWidth="145.0" resizable="false" text="E-mail" />
+                                             <TableColumn fx:id="colPermissions" editable="false" prefWidth="203.0" resizable="false" text="Permissions" />
                                          </columns>
                                        </TableView>
                                        <HBox alignment="CENTER" spacing="15.0">
-                                             <Button fx:id="btnInspector" mnemonicParsing="false" text="Set as Inspector" />
-                                             <Button fx:id="btnChairman" mnemonicParsing="false" text="Set as Chairman" />
-                                             <Button fx:id="btnMember1" mnemonicParsing="false" text="Set as Member 1" />
-                                             <Button fx:id="btnMember2" mnemonicParsing="false" text="Set as Member 2" />
+                                             <Button fx:id="btnInspector" mnemonicParsing="false" onAction="#setInspector" text="Set as Inspector" />
+                                             <Button fx:id="btnChairman" mnemonicParsing="false" onAction="#setChairman" text="Set as Chairman" />
+                                             <Button fx:id="btnMember1" mnemonicParsing="false" onAction="#setFirstMember" text="Set as Member 1" />
+                                             <Button fx:id="btnMember2" mnemonicParsing="false" onAction="#setSecondMember" text="Set as Member 2" />
                                           <VBox.margin>
                                              <Insets top="-5.0" />
                                           </VBox.margin>

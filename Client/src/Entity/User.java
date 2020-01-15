@@ -13,12 +13,12 @@ public class User implements Serializable {
 	// enums*********************************************
 	public enum icmPermission {
 		informationTechnologiesDepartmentManager, inspector, estimator, executionLeader, examiner,
-		changeControlCommitteeChairman,changeControlCommitteeMember
+		changeControlCommitteeChairman, changeControlCommitteeMember
 	}
 
 	// will be used to determine who can be allocated icmPermission
 	public enum collegeStatus {
-		student, informationEngineer,lecturer
+		student, informationEngineer, lecturer
 	}
 
 	// Variables
@@ -35,13 +35,13 @@ public class User implements Serializable {
 	/**
 	 * creates user entity while enforcing constraints
 	 *
-	 * @param userName    ?
-	 * @param password    ?
-	 * @param firstName   ?
-	 * @param lastName    ?
-	 * @param email       ?
-	 * @param collegeStatus         -(enum-collegeStatus)
-	 * @param Permissions - (enum-icmPermission)if the user is is a student send null
+	 * @param userName      ?
+	 * @param password      ?
+	 * @param firstName     ?
+	 * @param lastName      ?
+	 * @param email         ?
+	 * @param collegeStatus -(enum-collegeStatus)
+	 * @param Permissions   - (enum-icmPermission)if the user is is a student send null
 	 */
 	public User(String userName, String password, String firstName, String lastName, String email, collegeStatus collegeStatus,
 				EnumSet<icmPermission> Permissions) {
@@ -60,34 +60,35 @@ public class User implements Serializable {
 	 * updates all of the user entity Permissions while enforcing constraints
 	 *
 	 * @param Permissions - EnumSet of the Permissions the user has
-	 * @throws  IllegalArgumentException when can not update the Permissions
+	 * @throws IllegalArgumentException when can not update the Permissions
 	 */
-	
+
 	public void updatePermissions(EnumSet<icmPermission> Permissions) {
 		try {
-		if ( (collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) && Permissions !=null)
-			throw new IllegalArgumentException(collegeStatus.name()+  " cannot have icmPermissions\n") ;
-		this.Permissions = Permissions;
-		}catch (IllegalArgumentException e) {
+			//TODO Warning:(68, 26) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
+			if ((collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) && Permissions != null)
+				throw new IllegalArgumentException(collegeStatus.name() + " cannot have icmPermissions\n");
+			this.Permissions = Permissions;
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}
 
 
-
 	// TODO test this method
 
 	/**
-	 * adding a Permission to user entity 
+	 * adding a Permission to user entity
 	 *
-	 * @param Permission 
+	 * @param Permission ?
 	 */
 	public void addPremmision(icmPermission Permission) {
-		
-		
+
+
 		try {
-			if ( collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
-				throw new IllegalArgumentException(collegeStatus.name()+  " cannot have icmPermissions\n") ;
+			//TODO Warning:(88, 25) Static member 'Entity.User.collegeStatus.student' accessed via instance reference
+			if (collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
+				throw new IllegalArgumentException(collegeStatus.name() + " cannot have icmPermissions\n");
 			if (Permission == null)
 				throw new IllegalArgumentException("null  is not a Permission\n");
 			if (this.Permissions == null) {
@@ -103,7 +104,7 @@ public class User implements Serializable {
 			e.printStackTrace();
 		}
 
-		
+
 	} // END of addPermmision()
 
 
@@ -144,17 +145,28 @@ public class User implements Serializable {
 		return Permissions;
 	}
 
+	public String getICMPermissionString() {
+		if (Permissions != null) {
+			StringBuilder permission = new StringBuilder();
+			for (User.icmPermission icmPermission : Permissions) {
+				permission.append(icmPermission.name()).append(", ");
+			}
+			permission.delete(permission.length() - 2, permission.length());
+			permission.trimToSize();
+			return String.valueOf(permission);
+		} else return "none";
+	}
+
 	public collegeStatus getCollegeStatus() {
 		return collegeStatus;
 	}
-
 
 	@Override
 	public String toString() {
 		return userName;
 	}
-	
-	
+
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {

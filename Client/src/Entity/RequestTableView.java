@@ -231,6 +231,7 @@ public class RequestTableView {
 		public ArrayList<Document> getDoc() {
 			return doc.get();
 		}
+
 		public ChangeRequest getOriginalRequest() { // Be careful when changing the original it is not change the table.
 			return originalRequest;
 		}

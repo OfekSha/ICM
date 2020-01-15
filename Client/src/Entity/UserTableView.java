@@ -1,41 +1,53 @@
 package Entity;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 public class UserTableView {
 
-    public TableView<UserTableView.userForTable> tblViewUsers;
+    public TableView<userForTable> tblViewUsers;
     // table columns:
-    public TableColumn<UserTableView.userForTable, String> colUsername;
-    public TableColumn<UserTableView.userForTable, String> colFirstname;
-    public TableColumn<UserTableView.userForTable, String> colLastname;
-    public TableColumn<UserTableView.userForTable, String> colEmail;
-    public TableColumn<UserTableView.userForTable, Object> colPermissions;
-    public TableColumn<UserTableView.userForTable, Object> colStatus;
+    public TableColumn<userForTable, String> colUserName;
+    public TableColumn<userForTable, String> colFirstName;
+    public TableColumn<userForTable, String> colLastName;
+    public TableColumn<userForTable, String> colEmail;
+    public TableColumn<userForTable, String> colPermissions;
+    public TableColumn<userForTable, String> colStatus;
 
-    public UserTableView(TableView<UserTableView.userForTable> table,
-                            TableColumn<UserTableView.userForTable, String> username,
-                            TableColumn<UserTableView.userForTable, String> firstname,
-                            TableColumn<UserTableView.userForTable, String> lastname,
-                            TableColumn<UserTableView.userForTable, String> email,
-                            TableColumn<UserTableView.userForTable, Object> permissions,
-                            TableColumn<UserTableView.userForTable, Object> status) {
+    public UserTableView(TableView<userForTable> table,
+                         TableColumn<userForTable, String> firstName,
+                         TableColumn<userForTable, String> lastName,
+                         TableColumn<userForTable, String> eMail,
+                         TableColumn<userForTable, String> permissions)
+    {
+        colEmail = eMail;
         tblViewUsers = table;
-        colUsername = username;
-        colFirstname = firstname;
-        colLastname = lastname;
-        colEmail = email;
+        colLastName = lastName;
+        colFirstName = firstName;
         colPermissions = permissions;
+        initializeTableView();
+    }
+
+    public UserTableView(TableView<userForTable> table,
+                         TableColumn<userForTable, String> userName,
+                         TableColumn<userForTable, String> firstName,
+                         TableColumn<userForTable, String> lastName,
+                         TableColumn<userForTable, String> eMail,
+                         TableColumn<userForTable, String> permissions,
+                         TableColumn<userForTable, String> status)
+    {
+        colEmail = eMail;
         colStatus = status;
+        tblViewUsers = table;
+        colUserName = userName;
+        colLastName = lastName;
+        colFirstName = firstName;
+        colPermissions = permissions;
         initializeTableView();
     }
 
@@ -44,9 +56,8 @@ public class UserTableView {
      * @param users - arrayList of users (Entity.User)
      */
     public void setData(ArrayList<User> users) {
-        ObservableList<UserTableView.userForTable> tableData;
-        tableData = FXCollections.observableArrayList(usersForTableList(users));
-        tblViewUsers.setItems(tableData);
+        tblViewUsers.setItems(
+                FXCollections.observableArrayList(usersForTableList(users)));
     }
 
     /**
@@ -54,43 +65,41 @@ public class UserTableView {
      * @param usersList - arrayList of all users (changeRequest)
      * @return newList - arrayList of requirementForTable
      */
-    private static ArrayList<UserTableView.userForTable> usersForTableList(ArrayList<User> usersList) {
+    private static ArrayList<userForTable> usersForTableList(ArrayList<User> usersList) {
         ArrayList<UserTableView.userForTable> newList = new ArrayList<>();
-        usersList.forEach(u -> newList.add(new userForTable(u)));
+        usersList.forEach(u -> {
+            newList.add(new userForTable(u));
+            System.out.println(u.getICMPermissionString());
+        });
         return newList;
     }
 
-    public UserTableView() {
-        initializeTableView();
-    }
-
     private void initializeTableView() {
-        if (colUsername != null) {
-            colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
-        }
-        if (colFirstname != null) {
-            colFirstname.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-        }
-        if (colLastname != null) {
-            colLastname.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-        }
         if (colEmail != null) {
-            colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        }
-        if (colPermissions != null) {
-            colPermissions.setCellValueFactory(new PropertyValueFactory<>("permissions"));
+            colEmail.setCellValueFactory(new PropertyValueFactory<>("eMail"));
         }
         if (colStatus != null) {
             colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        }
+        if (colUserName != null) {
+            colUserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        }
+        if (colLastName != null) {
+            colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        }
+        if (colFirstName != null) {
+            colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        }
+        if (colPermissions != null) {
+            colPermissions.setCellValueFactory(new PropertyValueFactory<>("permissions"));
         }
     }
 
     /**
      *
-     * This function return the selected request in the table.
-     * @return requirementForTable - this is special class for table for get the object requirementForTable.getObject();
+     * This function return the selected user in the table.
      */
-    public UserTableView.userForTable onRequirementClicked() {
+    public UserTableView.userForTable onUserClicked() {
         return tblViewUsers.getSelectionModel().getSelectedItem();
     }
 
@@ -101,114 +110,80 @@ public class UserTableView {
      * very important.
      */
     public static class userForTable {
-        private User originalUser; // this is the original request before make it adaptable to table view
-        private SimpleStringProperty username;
-        private SimpleStringProperty firstname;
-        private SimpleStringProperty lastname;
-        private SimpleStringProperty email;
-        private SimpleObjectProperty<EnumSet<User.icmPermission>> permission;
-        private SimpleObjectProperty<User.collegeStatus> collegeStatus;
+        private User originalUser;
+        private SimpleStringProperty eMail;
+        private SimpleStringProperty userName;
+        private SimpleStringProperty lastName;
+        private SimpleStringProperty firstName;
+        private SimpleStringProperty permission;
+        private SimpleStringProperty collegeStatus;
 
-        public userForTable(User originalUser, SimpleStringProperty username, SimpleStringProperty firstname, SimpleStringProperty lastname, SimpleStringProperty email, SimpleObjectProperty<EnumSet<User.icmPermission>> permission, SimpleObjectProperty<User.collegeStatus> collegeStatus) {
-            this.originalUser = originalUser;
-            this.username = username;
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.email = email;
+        public userForTable(User originalUser,
+                            SimpleStringProperty userName,
+                            SimpleStringProperty firstName,
+                            SimpleStringProperty lastName,
+                            SimpleStringProperty eMail,
+                            SimpleStringProperty permission,
+                            SimpleStringProperty collegeStatus) {
+            this.eMail = eMail;
+            this.userName = userName;
+            this.lastName = lastName;
+            this.firstName = firstName;
             this.permission = permission;
+            this.originalUser = originalUser;
             this.collegeStatus = collegeStatus;
         }
 
-        public userForTable(User originalUser) {
-            new userForTable(originalUser,
-                    new SimpleStringProperty(originalUser.getUserName()),
-                    new SimpleStringProperty(originalUser.getFirstName()),
-                    new SimpleStringProperty(originalUser.getLastName()),
-                    new SimpleStringProperty(originalUser.getEmail()),
-                    new SimpleObjectProperty<>(originalUser.getICMPermissions()),
-                    new SimpleObjectProperty<>(originalUser.getCollegeStatus()));
+        public userForTable(User user) {
+            originalUser = user;
+            eMail = new SimpleStringProperty(user.getEmail());
+            userName = new SimpleStringProperty(user.getUserName());
+            lastName = new SimpleStringProperty(user.getLastName());
+            firstName = new SimpleStringProperty(user.getFirstName());
+            permission = new SimpleStringProperty(user.getICMPermissionString());
+            collegeStatus = new SimpleStringProperty(user.getCollegeStatus().name());
+            System.out.println(permission);
         }
 
-        public User getOriginalUser() {
-            return originalUser;
+        public SimpleStringProperty eMailProperty() {
+            return eMail;
         }
-
-        public void setOriginalUser(User originalUser) {
-            this.originalUser = originalUser;
+        public SimpleStringProperty lastNameProperty() {
+            return lastName;
         }
-
-        public String getUsername() {
-            return username.get();
+        public SimpleStringProperty userNameProperty() {
+            return userName;
         }
-
-        public SimpleStringProperty usernameProperty() {
-            return username;
+        public SimpleStringProperty firstNameProperty() {
+            return firstName;
         }
-
-        public void setUsername(String username) {
-            this.username.set(username);
-        }
-
-        public String getFirstname() {
-            return firstname.get();
-        }
-
-        public SimpleStringProperty firstnameProperty() {
-            return firstname;
-        }
-
-        public void setFirstname(String firstname) {
-            this.firstname.set(firstname);
-        }
-
-        public String getLastname() {
-            return lastname.get();
-        }
-
-        public SimpleStringProperty lastnameProperty() {
-            return lastname;
-        }
-
-        public void setLastname(String lastname) {
-            this.lastname.set(lastname);
-        }
-
-        public String getEmail() {
-            return email.get();
-        }
-
-        public SimpleStringProperty emailProperty() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email.set(email);
-        }
-
-        public EnumSet<User.icmPermission> getPermission() {
-            return permission.get();
-        }
-
-        public SimpleObjectProperty<EnumSet<User.icmPermission>> permissionProperty() {
+        public SimpleStringProperty permissionProperty() {
             return permission;
         }
-
-        public void setPermission(EnumSet<User.icmPermission> permission) {
-            this.permission.set(permission);
-        }
-
-        public User.collegeStatus getCollegeStatus() {
-            return collegeStatus.get();
-        }
-
-        public SimpleObjectProperty<User.collegeStatus> collegeStatusProperty() {
+        public SimpleStringProperty collegeStatusProperty() {
             return collegeStatus;
         }
 
-        public void setCollegeStatus(User.collegeStatus collegeStatus) {
-            this.collegeStatus.set(collegeStatus);
+        public String geteMail() {
+            return eMail.get();
+        }
+        public String getUserName() {
+            return userName.get();
+        }
+        public String getLastName() {
+            return lastName.get();
+        }
+        public String getFirstName() {
+            return firstName.get();
+        }
+        public User getOriginalUser() {
+            return originalUser;
+        }
+        public String getPermission() {
+            return permission.get();
+        }
+        public String getCollegeStatus() {
+            return collegeStatus.get();
         }
     }
 }
-
-
