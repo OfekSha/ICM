@@ -64,7 +64,7 @@
             </VBox>
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
                   <VBox alignment="TOP_CENTER" prefWidth="500.0" spacing="10.0">
-                        <Label alignment="CENTER" contentDisplay="BOTTOM" text="Rule menus">
+                        <Label alignment="CENTER" contentDisplay="BOTTOM" text="Role menus">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
