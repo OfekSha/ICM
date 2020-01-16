@@ -34,7 +34,7 @@
    <HBox prefHeight="33.0" prefWidth="341.0">
       <children>
          <Label text="Extension due date:" textFill="WHITE" />
-         <TextField editable="false" />
+         <TextField fx:id="extensionDueDate" editable="false" />
       </children>
    </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="230.0">
