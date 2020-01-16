@@ -1,17 +1,15 @@
 package GUI;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
-public class CCCChairmanForm extends StageSupervisorForm  implements Initializable, IcmForm {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class CCCChairmanForm extends StageSupervisorForm implements IcmForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

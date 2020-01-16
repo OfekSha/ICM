@@ -6,6 +6,7 @@ import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.Document;
 import Entity.User;
 import Entity.User.collegeStatus;
+import Entity.User.icmPermission;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
@@ -24,7 +25,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -39,9 +39,10 @@ public abstract class UserForm implements IcmForm {
 	static ArrayList<ChangeRequest> changeRequests = null;
 	static ArrayList<User> allUsers = null;
 	static ChangeRequestStatus requestStatus;
-	static User.icmPermission icmPermission;
+	static icmPermission icmPermission;
 	static collegeStatus collegeStatus;
 	static Stage popupWindow;
+	static boolean launched;
 
 	@FXML
 	public Button btnExit;
@@ -68,6 +69,7 @@ public abstract class UserForm implements IcmForm {
 
 	// Standard buttons for each scene
 	public void MainScene(ActionEvent event) throws Exception {
+		launched = false;
 		NextWindowLauncher(event, "/GUI/MainMenu.fxml", this, true);
 	}
 
@@ -79,9 +81,9 @@ public abstract class UserForm implements IcmForm {
 
 	public void ExitBtn() {
 		// if there is no server there will be no client
-		if (user != null ) {
+		if (user != null) {
 			//TODO: replace alert with -areYouSureAlert()
-			
+
 			// making sure the user wants to exit
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Exit");
@@ -97,8 +99,8 @@ public abstract class UserForm implements IcmForm {
 			System.exit(0);
 	}
 
-	/**updating server user is logged out
-	 * 
+	/**
+	 * updating server user is logged out
 	 */
 	protected void setUserLogOff() {
 		Object msg = new clientRequestFromServer(requestOptions.successfulLogInOut, null);
@@ -137,26 +139,29 @@ public abstract class UserForm implements IcmForm {
 		popupWindow.setScene(scene);
 		popupWindow.showAndWait();
 	}
-	
-	
-	/** creates an alert and shows it 
-	 * @param type ?
-	 * @param title ?
-	 * @param header ?
+
+	/**
+	 * creates an alert and shows it
+	 *
+	 * @param type    ?
+	 * @param title   ?
+	 * @param header  ?
 	 * @param Content ?
-	 * 
 	 */
 	protected void alertWindowLauncher(AlertType type, String title, String header, String Content) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
 		alert.setContentText(Content);
-		alert.showAndWait();	
+		alert.showAndWait();
 	}
-	/** lunches an alert with the option to click OK or Cancel
-	 * @param type - the alert type 
-	 * @param title ?
-	 * @param header ?
+
+	/**
+	 * lunches an alert with the option to click OK or Cancel
+	 *
+	 * @param type    - the alert type
+	 * @param title   ?
+	 * @param header  ?
 	 * @param Content ?
 	 * @return - true if ok was clicked
 	 */
@@ -171,7 +176,7 @@ public abstract class UserForm implements IcmForm {
 			return true;
 		} else {
 			alert.close();
-		return false;
+			return false;
 		}
 	}
 
@@ -224,7 +229,7 @@ public abstract class UserForm implements IcmForm {
 			case getUsersByICMPermissions:
 				objectArray = (Object[]) request.getObject();
 				allUsers = (ArrayList<User>) objectArray[0];
-				icmPermission = (User.icmPermission) objectArray[1];
+				icmPermission = (icmPermission) objectArray[1];
 				break;
 			case getAllUsersByJob:
 				objectArray = (Object[]) request.getObject();
@@ -232,7 +237,7 @@ public abstract class UserForm implements IcmForm {
 				collegeStatus = (collegeStatus) objectArray[1];
 				break;
 			case getDoc:
-				DocmentTableForDownloadsController.downloded=(Document) request.getObject();
+				DocmentTableForDownloadsController.downloded = (Document) request.getObject();
 				DocmentTableForDownloadsController.wakeUpLunchedThread();
 				break;
 			default:
@@ -241,11 +246,12 @@ public abstract class UserForm implements IcmForm {
 		System.out.println();
 	}
 
-	 public void setUser(User u) {
-		 user = u;
+	public void setUser(User u) {
+		user = u;
 	}
-	 public User getUser(User u) {
-		  return user;
+
+	public User getUser(User u) {
+		return user;
 	}
 
 }// END of class UserForm
