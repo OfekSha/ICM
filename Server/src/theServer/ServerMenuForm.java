@@ -36,7 +36,7 @@ public class ServerMenuForm implements Initializable {
 	private TextArea Messages;
 
 	@FXML
-	private Button btnRefreshMessges;
+	private Button btnRefreshMessages;
 
 	// vars
 	public PrintStream ps;
