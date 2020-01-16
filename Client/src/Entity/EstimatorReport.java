@@ -1,7 +1,6 @@
 package Entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * represents a estimators report
@@ -98,7 +97,7 @@ public class EstimatorReport implements Serializable {
 	public String getConstraints() {
 		return constraints;
 	}
-	public  int getTimeEstimate() {
+	public int getTimeEstimate() {
 		return  timeEstimate;
 	}
 	public String getRisks(){

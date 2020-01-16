@@ -12,8 +12,11 @@ public class User implements Serializable {
 
 	// enums*********************************************
 	public enum icmPermission {
-		informationTechnologiesDepartmentManager, inspector, estimator, executionLeader, examiner,
-		changeControlCommitteeChairman, changeControlCommitteeMember
+		informationTechnologiesDepartmentManager,
+		inspector,
+		estimator, executionLeader, examiner,
+		changeControlCommitteeChairman,
+		changeControlCommitteeMember
 	}
 
 	// will be used to determine who can be allocated icmPermission
@@ -43,7 +46,8 @@ public class User implements Serializable {
 	 * @param collegeStatus -(enum-collegeStatus)
 	 * @param Permissions   - (enum-icmPermission)
 	 */
-	public User(String userName, String password, String firstName, String lastName, String email, collegeStatus collegeStatus,
+	public User(String userName, String password, String firstName,
+				String lastName, String email, collegeStatus collegeStatus,
 				EnumSet<icmPermission> Permissions) {
 		this.collegeStatus = collegeStatus;
 		updatePermissions(Permissions);
@@ -65,8 +69,8 @@ public class User implements Serializable {
 
 	public void updatePermissions(EnumSet<icmPermission> Permissions) {
 		try {
-			if(Permissions == null ) throw new IllegalArgumentException("Permissions shold not be null");
-			if ((collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) &&(!Permissions.isEmpty()) )
+			if (Permissions == null) throw new IllegalArgumentException("Permissions shold not be null");
+			if ((collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer) && (!Permissions.isEmpty()))
 				throw new IllegalArgumentException(collegeStatus.name() + " cannot have icmPermissions\n");
 			this.Permissions = Permissions;
 		} catch (IllegalArgumentException e) {
@@ -82,7 +86,7 @@ public class User implements Serializable {
 	 *
 	 * @param Permission ?
 	 */
-	public void addPremmision(icmPermission Permission) {
+	public void addPermission(icmPermission Permission) {
 
 		try {
 			if (collegeStatus == collegeStatus.student || collegeStatus == collegeStatus.lecturer)
@@ -144,14 +148,13 @@ public class User implements Serializable {
 	}
 
 	public String getICMPermissionString() {
-		if (Permissions != null) {
-			StringBuilder permission = new StringBuilder();
-			for (User.icmPermission icmPermission : Permissions) {
-				permission.append(icmPermission.name()).append(", ");
-			}
-			permission.delete(permission.length() - 2, permission.length());
-			permission.trimToSize();
-			return String.valueOf(permission);
+		if (Permissions != null && Permissions.size() > 0) {
+			StringBuilder permissions = new StringBuilder();
+			Permissions.forEach(permission ->
+					permissions.append(permission.name()).append(", "));
+			permissions.delete(permissions.length() - 2, permissions.length());
+			permissions.trimToSize();
+			return String.valueOf(permissions);
 		} else return "none";
 	}
 
@@ -164,6 +167,9 @@ public class User implements Serializable {
 		return userName;
 	}
 
+	public String getFullName() {
+		return getFirstName() + " " + getLastName();
+	}
 
 	@Override
 	public boolean equals(Object o) {
