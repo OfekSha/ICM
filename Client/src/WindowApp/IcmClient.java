@@ -1,11 +1,14 @@
 package WindowApp;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import ocsf.client.AbstractClient;
 
 import java.io.IOException;
 import java.time.LocalTime;
+
+import Entity.clientRequestFromServer;
 
 public class IcmClient extends AbstractClient {
 
@@ -38,7 +41,18 @@ public class IcmClient extends AbstractClient {
 	 */
 	public void handleMessageFromServer(Object msg) {
 		clientUI.getFromServer(msg);
+		clientRequestFromServer serverMsg=(clientRequestFromServer) msg;
+		switch( serverMsg.getRequest()) {
+		case alertClient:
+		Platform.runLater(()->{Alert alert= new Alert(AlertType.INFORMATION);
+		alert.setContentText((String)serverMsg.getObject());
+		alert.showAndWait();});
+		break;
+		default:
+			break;
+		}
 	}
+		
 
 	/**
 	 * This method handles all data coming from the UI
