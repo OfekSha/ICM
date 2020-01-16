@@ -43,7 +43,7 @@ public class ApproveDueTimeController extends AbstractPopUp implements IcmForm {
 
 	@Override
 	public void getFromServer(Object message) {
-		InspectorController.messageFromServer(message);
+		controller.messageFromServer(message);
 		
 	}
 }

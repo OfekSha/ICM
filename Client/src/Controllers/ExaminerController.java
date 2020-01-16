@@ -10,8 +10,8 @@ import Entity.clientRequestFromServer.requestOptions;
 import javafx.scene.control.MenuItem;
 
 public class ExaminerController extends StageSupervisorController {
-
-	public static void filterRequests(MenuItem menuItem) {
+	@Override
+	public void filterRequests(MenuItem menuItem) {
 		filterSelected = menuItem;
 		Object toServerFilter = null;
 		requestOptions toServerOption = null;

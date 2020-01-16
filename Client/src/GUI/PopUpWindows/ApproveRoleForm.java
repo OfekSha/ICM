@@ -45,15 +45,15 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		switch (role) {
 		case estimator:
 			title.setText("Approve Estimator for request " + InspectorController.selectedRequest.getRequestID());
 			break;
 		case executionLeader:
-			title.setText("Approve Execution Leader for request "+InspectorController.selectedRequest.getRequestID());
+			title.setText("Approve Execution Leader for request " + InspectorController.selectedRequest.getRequestID());
 			break;
-			
+
 		}
 		ClientLauncher.client.setClientUI(this);
 		InspectorController.getInformationEngineers();
@@ -61,7 +61,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 
 	@Override
 	public void getFromServer(Object message) {
-		InspectorController.messageFromServer(message);
+		controller.messageFromServer(message);
 		userList = FXCollections.observableArrayList(InspectorController.informationEngineers);
 		cmbITMembers.setItems(userList);
 	}

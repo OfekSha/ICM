@@ -38,16 +38,16 @@ public class ExaminerForm extends StageSupervisorForm {
 			requirementForTable selectedReq = table.onRequirementClicked(event);
 			if (selectedReq == null)
 				return;
-			ExaminerController.setSelectedRequest(selectedReq);
+			controller.setSelectedRequest(selectedReq);
 
 			//set details for initiator:
-			location.setText(ExaminerController.selectedRequest.getBaseforChange());
-			changeDescription.setText(ExaminerController.selectedRequest.getChangeReason());
-			desiredResult.setText(ExaminerController.selectedRequest.getComment());
-			constraints.setText(ExaminerController.selectedRequest.getSystem());
-			risks.setText(ExaminerController.selectedRequest.getSystem());
-			createdDate.setText(ExaminerController.selectedRequest.getStartDate().toString());
-			createdBy.setText(ExaminerController.selectedRequest.getInitiator().getTheInitiator().getUserName());
+			location.setText(controller.selectedRequest.getBaseforChange());
+			changeDescription.setText(controller.selectedRequest.getChangeReason());
+			desiredResult.setText(controller.selectedRequest.getComment());
+			constraints.setText(controller.selectedRequest.getSystem());
+			risks.setText(controller.selectedRequest.getSystem());
+			createdDate.setText(controller.selectedRequest.getStartDate().toString());
+			createdBy.setText(controller.selectedRequest.getInitiator().getTheInitiator().getUserName());
 			//end initiator details.
 			btnAskForTimeExtension.setDisable(false);
 			switch (selectedReq.getStage().getCurrentSubStage()) {
@@ -69,7 +69,7 @@ public class ExaminerForm extends StageSupervisorForm {
 
 	    @FXML
 		public void filterRequests(ActionEvent event) {
-	    	ExaminerController.filterRequests(((MenuItem) event.getSource()));
+	    	controller.filterRequests(((MenuItem) event.getSource()));
 	    }
 
 	    @FXML
@@ -109,7 +109,7 @@ public class ExaminerForm extends StageSupervisorForm {
 	@Override
 	public ChangeRequest getSelectedReq() {
 		
-		return ExaminerController.selectedRequest;
+		return controller.selectedRequest;
 	}
 
 	@Override

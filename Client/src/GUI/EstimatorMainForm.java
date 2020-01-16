@@ -58,7 +58,6 @@ public class EstimatorMainForm extends StageSupervisorForm {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		icmForm = this;
 		ClientLauncher.client.setClientUI(icmForm);
 		DocumentTableController.initializeDocumentTableView();
 		table = new RequestTableView(tblView, idColumn, statusColumn, null, dueTimeColumn, messageColumn);
@@ -74,7 +73,7 @@ public class EstimatorMainForm extends StageSupervisorForm {
 
 	@FXML
 	public void filterRequests(ActionEvent event) { // get event from the menuItem.
-		EstimatorController.filterRequests(((MenuItem) event.getSource()));
+		controller.filterRequests(((MenuItem) event.getSource()));
 	}
 
 	@Override

@@ -126,7 +126,7 @@ public class tabPaneInspectorForm    implements Initializable{
 			desiredResult.setText(estimatorReport.getResultingResult());
 			constraints.setText(estimatorReport.getConstraints());
 			risks.setText(estimatorReport.getRisks());
-			dueTimeEstimate.setText(estimatorReport.getTimeEstimate().toString());
+			//dueTimeEstimate.setText(estimatorReport.getTimeEstimate().toString());
 		}
 		String[] explanations = selectedReq.getStage().getAllExtensionExplanation();
 		LocalDate[][] allDates = selectedReq.getStage().getDates();

@@ -66,7 +66,7 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
     public void getFromServer(Object message) {
     	// TODO: need to get message from server that client update succeed. 
     	if (((clientRequestFromServer) message).getRequest()==updateProcessStage ) {
-    		InspectorController.messageFromServer(message);
+    		controller.messageFromServer(message);
     		getCancel();
     	}
     	else {

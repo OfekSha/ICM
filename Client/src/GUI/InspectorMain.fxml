@@ -61,13 +61,13 @@
                            <VBox id="Requests filltered" alignment="TOP_CENTER" prefHeight="518.0" prefWidth="460.0">
                         <MenuButton fx:id="menubtnWatch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefWidth="200.0" text="Filter" textAlignment="CENTER">
                           <items>
-                            <MenuItem fx:id="freeze" mnemonicParsing="false" onAction="#watchRequest" text="Freeze Requests" />
-                            <MenuItem fx:id="unfreeze" mnemonicParsing="false" onAction="#watchRequest" text="Unfreeze Requests" />
-                              <MenuItem fx:id="estimator" mnemonicParsing="false" onAction="#watchRequest" text="Approve Estimator" />
-                              <MenuItem fx:id="executionLeader" mnemonicParsing="false" onAction="#watchRequest" text="Approve Execution Leader" />
-                              <MenuItem fx:id="dueTime" mnemonicParsing="false" onAction="#watchRequest" text="Approve Due Time" />
-                              <MenuItem fx:id="close" mnemonicParsing="false" onAction="#watchRequest" text="Waiting for close" />
-                              <MenuItem fx:id="extension" mnemonicParsing="false" onAction="#watchRequest" text="Waiting for Extension" />
+                            <MenuItem fx:id="freeze" mnemonicParsing="false" onAction="#filterRequests" text="Freeze Requests" />
+                            <MenuItem fx:id="unfreeze" mnemonicParsing="false" onAction="#filterRequests" text="Unfreeze Requests" />
+                              <MenuItem fx:id="estimator" mnemonicParsing="false" onAction="#filterRequests" text="Approve Estimator" />
+                              <MenuItem fx:id="executionLeader" mnemonicParsing="false" onAction="#filterRequests" text="Approve Execution Leader" />
+                              <MenuItem fx:id="dueTime" mnemonicParsing="false" onAction="#filterRequests" text="Approve Due Time" />
+                              <MenuItem fx:id="close" mnemonicParsing="false" onAction="#filterRequests" text="Waiting for close" />
+                              <MenuItem fx:id="extension" mnemonicParsing="false" onAction="#filterRequests" text="Waiting for Extension" />
                           </items>
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
@@ -76,13 +76,13 @@
                               <Font size="14.0" />
                            </font>
                         </MenuButton>
-                        <TableView fx:id="tblViewRequests" onMouseClicked="#onRequirementClicked" prefHeight="474.0" prefWidth="410.0">
+                        <TableView fx:id="tblView" onMouseClicked="#onRequestClicked" prefHeight="474.0" prefWidth="410.0">
                           <columns>
-                            <TableColumn fx:id="columnId" prefWidth="39.0" text="ID" />
-                            <TableColumn fx:id="columnStatus" prefWidth="111.0" text="Status" />
-                              <TableColumn fx:id="columnStage" prefWidth="117.0" text="Stage" />
-                              <TableColumn fx:id="columnDueTime" prefWidth="90.0" text="Due Time" />
-                              <TableColumn fx:id="columnMessage" prefWidth="92.0" text="Message" />
+                            <TableColumn fx:id="idColumn" prefWidth="39.0" text="ID" />
+                            <TableColumn fx:id="statusColumn" prefWidth="111.0" text="Status" />
+                              <TableColumn fx:id="stageColumn" prefWidth="117.0" text="Stage" />
+                              <TableColumn fx:id="dueTimeColumn" prefWidth="90.0" text="Due Time" />
+                              <TableColumn fx:id="messageColumn" prefWidth="92.0" text="Message" />
                           </columns>
                         </TableView>
                            </VBox>

@@ -1,6 +1,8 @@
 package GUI;
 
 import Controllers.InspectorController;
+import Controllers.StageSupervisorController;
+import Entity.ChangeRequest;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
@@ -9,27 +11,22 @@ import GUI.PopUpWindows.InspectorChangeStatusForm;
 import GUI.PopUpWindows.InspectorChangeStatusForm.Status;
 import GUI.PopUpWindows.ApproveRoleForm.Role;
 import WindowApp.ClientLauncher;
+import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InspectorForm extends UserForm {
+public class InspectorForm extends StageSupervisorForm {
 	// fxml vars:
 
 	@FXML
 	private Button btnFreezeUnfreeze, btnRoleApprove, btnDueTimeApprove, btnExtensionApprove, btnCloseRequest;
-	@FXML
-	private MenuButton menubtnWatch;
+	
 	@FXML
 	private tabPaneInspectorForm tabPaneController; // tabs that get more info about request.
 	// menu items of menubtnWatch (the types of request):
@@ -37,57 +34,25 @@ public class InspectorForm extends UserForm {
 	private MenuItem freeze, unfreeze, estimator, executionLeader, dueTime, close, extension;
 
 	@FXML
-	private TableView<requirementForTable> tblViewRequests;
-	// table colums:
-	@FXML
-	private TableColumn<requirementForTable, String> columnId, columnMessage;
-	@FXML
-	private TableColumn<requirementForTable, Object> columnStatus, columnStage, columnDueTime;
+	private TableColumn<requirementForTable, Object> stageColumn;
 
 	// not fxml vars:
-	private RequestTableView table; // make adaptable class for table view.
-	private static Stage popupWindow;
-	public static Stage inspectorWindow;
 	private requirementForTable selectedReq;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
-		table = new RequestTableView(tblViewRequests, columnId, columnStatus, columnStage, columnDueTime, columnMessage);
+		table = new RequestTableView(tblView, idColumn, statusColumn, stageColumn, dueTimeColumn, messageColumn);
 		tabPaneController.DocumentTableController.initializeDocumentTableView();
 	}
 
 	@Override
 	public void getFromServer(Object message) {
-		InspectorController.messageFromServer(message);
-		table.setData(InspectorController.requests);
+		controller.messageFromServer(message);
+		table.setData(controller.requests);
 
 	}
 
 	// functions for gui:
-	private void popupWindow(String target) throws IOException {
-		// inspectorWindow.setScene(((Node)event.getTarget()).getScene());
-		popupWindow = new Stage();
-		Parent root = FXMLLoader.load(this.getClass().getResource(target));
-		Scene scene = new Scene(root);
-		popupWindow.setScene(scene);
-		popupWindow.initModality(Modality.APPLICATION_MODAL);
-		popupWindow.show();
-		InspectorForm icmForm = this; //this just works to inspector.
-
-		// what happened when close window from out or from stage.close / stage.hide
-		// method
-		popupWindow.setOnCloseRequest(windowEvent ->  // close from out (alt +f4)
-				ClientLauncher.client.setClientUI(icmForm));
-		// stage.close / stage.hide method
-		popupWindow.setOnHidden(we -> ClientLauncher.client.setClientUI(icmForm));
-	}
-
-	@FXML
-	public void watchRequest(ActionEvent event) { // get event from the menuItem.
-		InspectorController.watchRequests(((MenuItem) event.getSource()));
-	}
-
 	@FXML
 	public void freezeOrUnfreeze(ActionEvent event) throws Exception {
 		switch (selectedReq.getStatus()) {
@@ -138,13 +103,13 @@ public class InspectorForm extends UserForm {
 	}
 
 	@FXML
-	public void onRequirementClicked(MouseEvent event) {
-		selectedReq = table.onRequirementClicked(event);
+	public void onRequestClicked(MouseEvent event) {
+		 selectedReq = table.onRequirementClicked(event);
 		if (selectedReq == null) {
 			setButtons(false, false, false, false, false);
 			return;
 		}
-		InspectorController.selectedRequest = selectedReq.getOriginalRequest();
+		controller.setSelectedRequest(selectedReq);
 		tabPaneController.onRequirementClicked(selectedReq);
 		//enable close:
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
@@ -210,5 +175,25 @@ public class InspectorForm extends UserForm {
 		btnCloseRequest.setDisable(!close);
 		if (!role) btnRoleApprove.setText("Role Approve");
 		if (!freezeOrUn) btnFreezeUnfreeze.setText("Freeze / Unfreeze");
+	}
+
+	@Override
+	public StageSupervisorController getController() {
+		return new InspectorController();
+	}
+
+	@Override
+	public IcmForm getIcmForm() {
+		return this;
+	}
+
+	@Override
+	public void filterRequests(ActionEvent event) {
+		controller.filterRequests((MenuItem) event.getSource());
+	}
+
+	@Override
+	public ChangeRequest getSelectedReq() {
+		return controller.selectedRequest;
 	}
 }

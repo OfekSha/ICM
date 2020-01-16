@@ -41,7 +41,7 @@ public class EstimatorController extends StageSupervisorController {
 	}
 
 	// function for request:
-	public void setReport(ChangeRequest request, String location, String changeDescription, String desiredResult,
+	public static void  setReport(ChangeRequest request, String location, String changeDescription, String desiredResult,
 			String constraints, String risks) {
 		EstimatorReport report = new EstimatorReport(UserForm.user, location, changeDescription, desiredResult,
 				constraints, risks, 11);
@@ -54,8 +54,8 @@ public class EstimatorController extends StageSupervisorController {
 	}
 
 	// end functions for request.
-
-	public static void filterRequests(MenuItem menuItem) {
+	@Override
+	public void filterRequests(MenuItem menuItem) {
 		filterSelected = menuItem;
 		Object toServerFilter = null;
 		requestOptions toServerOption = null;
