@@ -1,6 +1,7 @@
 package GUI.PopUpWindows;
 
 import Controllers.InspectorController;
+import Controllers.StageSupervisorController;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ public class ApproveDueTimeController extends AbstractPopUp implements IcmForm {
     private Label title;
     @FXML
     private TextArea description;
+    public static StageSupervisorController controller;
     @FXML
     void getApprove(ActionEvent event) {
     	InspectorController.approveDueTime(true, InspectorController.selectedRequest,description.getText());

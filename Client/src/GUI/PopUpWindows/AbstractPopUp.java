@@ -30,16 +30,13 @@ public abstract class AbstractPopUp implements IcmForm{
      */
     @FXML
     private Button btnCancel; // 
-    protected StageSupervisorController controller;
+    
     /**
      * function that connected to the cancel button.
      * close the window.
      * @see #btnCancel
      */
     @FXML
-    public void setController(StageSupervisorController controller) {
-    	this.controller=controller;
-    }
     public void getCancel() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         processStage=null;

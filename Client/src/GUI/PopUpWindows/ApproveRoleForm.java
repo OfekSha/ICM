@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
+import Controllers.StageSupervisorController;
 import Entity.User;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
@@ -31,7 +32,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 	public enum Role {
 		estimator, executionLeader
 	};
-
+	public static StageSupervisorController controller;
 	public static Role role;
 
 	@FXML

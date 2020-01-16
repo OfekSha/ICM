@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
+import Controllers.StageSupervisorController;
 import Entity.clientRequestFromServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +30,7 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
 		freeze,unfreeze,close
 	}
 	public static Status status;
-
+	public static StageSupervisorController controller;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);

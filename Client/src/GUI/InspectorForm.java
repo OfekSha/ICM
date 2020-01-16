@@ -6,6 +6,8 @@ import Entity.ChangeRequest;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
+import GUI.PopUpWindows.ApproveDueTimeController;
+import GUI.PopUpWindows.ApproveExtensionController;
 import GUI.PopUpWindows.ApproveRoleForm;
 import GUI.PopUpWindows.InspectorChangeStatusForm;
 import GUI.PopUpWindows.InspectorChangeStatusForm.Status;
@@ -66,6 +68,7 @@ public class InspectorForm extends StageSupervisorForm {
 			default:
 				throw new Exception("clicked freeze / unfreeze on request thats not ongoing or susspended status.(closed)");
 		}
+		InspectorChangeStatusForm.controller=controller;
 		popupWindow("/GUI/PopUpWindows/InspectorChangeStatus.fxml");
 	}
 
@@ -83,11 +86,13 @@ public class InspectorForm extends StageSupervisorForm {
 				// need to throw new exception.
 				break;
 		}
+		ApproveRoleForm.controller=controller;
 		popupWindow("/GUI/PopUpWindows/ApproveRole.fxml");
 	}
 
 	@FXML
 	public void dueTimeApprove(ActionEvent event) throws Exception {
+		ApproveDueTimeController.controller=controller;
 		popupWindow("/GUI/PopUpWindows/ApproveDueTime.fxml");
 	}
 
