@@ -44,7 +44,7 @@ public class EstimatorController extends StageSupervisorController {
 	public void setReport(ChangeRequest request, String location, String changeDescription, String desiredResult,
 			String constraints, String risks) {
 		EstimatorReport report = new EstimatorReport(UserForm.user, location, changeDescription, desiredResult,
-				constraints, risks, LocalDate.now());
+				constraints, risks, 11);
 		request.getProcessStage().setEstimatorReport(report); // set new empty report for request.
 		// @@ TODO: need to add due date in days.. need int or string.
 		request.getProcessStage().setEndDate(LocalDate.now());

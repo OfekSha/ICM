@@ -92,7 +92,7 @@ public class EstimatorReportQuerys {
 	        stmt.setNString(5, newReport.getChangeDescription());
 	        stmt.setNString(6, newReport.getResultingResult());
 	        stmt.setNString(7, newReport.getConstraints());
-	        stmt.setNString(8, newReport.getTimeEstimate().toString());
+	        stmt.setInt(8, newReport.getTimeEstimate());
 	        stmt.setNString(9, newReport.getRisks());
 
 
@@ -145,7 +145,7 @@ public class EstimatorReportQuerys {
 	        	String changeDescription =re.getString(5);
 	        	String resultingResult =re.getString(6);
 	        	String constraints =re.getString(7);
-	        	LocalDate date =LocalDate.parse(re.getString(8));
+	        	int date =re.getInt(8);
 	        	String risks =re.getString(9);
 	        	toPut=new EstimatorReport(user, loc, changeDescription, resultingResult,constraints,risks,date);
 	        	toPut.setEstimatorReportID(ID);

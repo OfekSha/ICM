@@ -148,7 +148,7 @@ public class mysqlConnection {
 					"  `changeDescription` TEXT NULL,\n" + 
 					"  `resultingResult` TEXT NULL,\n" + 
 					"  `constraints` TEXT NULL,\n" + 
-					"  `timeEstimate` TEXT NULL,\n" + 
+					"  `timeEstimate` INT NULL,\n" + 
 					"  `risks` TEXT NULL,\n" + 
 					"  PRIMARY KEY (`estimatorReportID`));\n" + 
 					"");
@@ -194,6 +194,7 @@ public class mysqlConnection {
 			enterChangeRequestToDB();
 			//testing
 			ArrayList<ChangeRequest>  a = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
+			 ArrayList<User> b =queryHandler.getUserQuerys().getAllUsers();
 			System.out.println("New DB ready for use !");
 		}
 	}
@@ -257,7 +258,6 @@ public class mysqlConnection {
 		//tests
 		queryHandler.getUserQuerys().updateIcmPermission(newUser, icmPermission.changeControlCommitteeChairman, 1);
 		queryHandler.getUserQuerys().updateIcmPermission(newUser, icmPermission.changeControlCommitteeChairman, 0);
-		 ArrayList<User> a =queryHandler.getUserQuerys().getAllUsers();
 	}// END of  enterUsersToDB()
 
 	private void enterChangeRequestToDB() {
@@ -280,7 +280,7 @@ public class mysqlConnection {
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.icmPermission.estimator);
 		 User estimator = new User("estimator", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
-		 EstimatorReport estimiatorReoport = new EstimatorReport(estimator, "report", "report", "report", "report","risks" ,start);
+		 EstimatorReport estimiatorReoport = new EstimatorReport(estimator, "report", "report", "report", "report","risks" ,10);
 		
 		//creating change Control Committee Chairman
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -321,6 +321,9 @@ public class mysqlConnection {
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
 		// updating due date 
 		changeRequest.getProcessStage().setDueDate(LocalDate.now());
+		//addin estimators report
+		changeRequest.getProcessStage().setEstimatorReport(estimiatorReoport);
+		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
 		//test
 		//queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
 		startEndArray = new LocalDate[5][3];

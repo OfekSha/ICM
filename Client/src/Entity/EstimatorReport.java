@@ -18,10 +18,10 @@ public class EstimatorReport implements Serializable {
 	private String resultingResult;
 	private String constraints;
 	private String risks;
-	private LocalDate timeEstimate;
+	private int timeEstimate;	// in days
 	
 	public EstimatorReport(User estimator, String location, String changeDescription, String resultingResult,
-			String constraints, String risks,LocalDate timeEstimate) {
+			String constraints, String risks,int timeEstimate) {
 		setEstimator(estimator);
 		setLocation(location);
 		setChangeDescription(changeDescription);
@@ -61,7 +61,7 @@ public class EstimatorReport implements Serializable {
 		this.constraints = constraints;
 	}
 
-	public void setTimeEstimate(LocalDate timeEstimate) {
+	public void setTimeEstimate(int timeEstimate) {
 		this.timeEstimate = timeEstimate;
 	}
 	public void setRisks(String risks) {
@@ -98,7 +98,7 @@ public class EstimatorReport implements Serializable {
 	public String getConstraints() {
 		return constraints;
 	}
-	public  LocalDate getTimeEstimate() {
+	public  int getTimeEstimate() {
 		return  timeEstimate;
 	}
 	public String getRisks(){
