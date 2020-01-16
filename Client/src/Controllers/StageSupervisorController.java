@@ -14,8 +14,9 @@ import javafx.scene.control.MenuItem;
 public abstract class StageSupervisorController {
 	public static ArrayList <ChangeRequest> requests; // requests the controller holds
 	public static ChangeRequest selectedRequest; // request that was selected from the forms.
-	public static MenuItem filterSelected; // menu item choose to filter.
+	protected static MenuItem filterSelected; // menu item choose to filter.
 	abstract public void messageFromServer(Object message); // handle server-client message.
+	abstract public void filterRequests(MenuItem menuItem);
 	public StageSupervisorController(){
 		requests=new ArrayList <ChangeRequest>();
 	}

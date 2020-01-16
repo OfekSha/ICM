@@ -3,8 +3,12 @@ package GUI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Controllers.StageSupervisorController;
+import Entity.ChangeRequest;
 import WindowApp.IcmForm;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class CCCChairmanForm extends StageSupervisorForm  implements Initializable, IcmForm {
@@ -37,5 +41,35 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 	}
 
 	public void getAssessmentReport() {
+	}
+
+	@Override
+	public StageSupervisorController getController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IcmForm getIcmForm() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void filterRequests(ActionEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void onRequestClicked(MouseEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ChangeRequest getSelectedReq() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
