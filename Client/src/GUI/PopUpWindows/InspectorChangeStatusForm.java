@@ -3,10 +3,13 @@ package GUI.PopUpWindows;
 import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Controllers.InspectorController;
 import Controllers.StageSupervisorController;
+import Entity.ChangeRequest;
+import Entity.User;
 import Entity.clientRequestFromServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,15 +38,22 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);
 		title.setText("Approve Change Status");
+		ChangeRequest req=InspectorController.selectedRequest;
 		switch (status) {
 		case close:
-			title.setText("Close request ID "+InspectorController.selectedRequest.getRequestID());
+			title.setText("Close request ID "+req.getRequestID());
+			String str=sendMail(req.getInitiator().getTheInitiator(),req.getRequestID(),(req.getProcessStage().getDates()[3][0]));
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information");
+			alert.setHeaderText("email and sms was sent to the user");
+			alert.setContentText("The message is: " +str);
+			alert.showAndWait();
 			break;
 		case freeze:
-			title.setText("Freeze request ID "+InspectorController.selectedRequest.getRequestID());
+			title.setText("Freeze request ID "+req.getRequestID());
 			break;
 		case unfreeze:
-			title.setText("Unfreeze request ID "+InspectorController.selectedRequest.getRequestID());
+			title.setText("Unfreeze request ID "+req.getRequestID());
 			break;
 		}
 	}
@@ -78,4 +88,12 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
     		alert.showAndWait();
     	}
     }
+	private static String sendMail(User user,int id,LocalDate stage4StartDate) {
+		String closeStr= "request ID "+ id+ " closed";
+		 String description;
+		if (stage4StartDate==null)description=" The request was rejected";
+		else description=" The request handled successfully.";
+		return closeStr+description;
+		
+	}
 }
