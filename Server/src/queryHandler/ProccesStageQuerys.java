@@ -33,37 +33,44 @@ public class ProccesStageQuerys {
         try {
             PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
                     "INSERT INTO icm.stage " +
-                    "(RequestID," +                             //[1]
-                    "currentStage," +                           //[2]
-                    "StageSupervisor," +                        //[3]
-                    "ExaminerFailReport," +                     //[5]
-                    "inspectorDocumentation," +                 //[6]
-                    "meaningEvaluationStartDate," +             //[7]
-                    "meaningEvaluationDueDate," +               //[8]
-                    "meaningEvaluationEndDate," +               //[9]
-                    "examinationAndDecisionStartDate," +        //[10]
-                    "stageColExaminationAndDecisionDueDate," +  //[11]
-                    "examinationAndDecisionEndDate," +          //[12]
-                    "executionStartDate," +                     //[13]
-                    "executionDueDate," +                       //[14]
-                    "executionEndDate," +                       //[15]
-                    "examinationStartDate," +                   //[16]
-                    "examinationDueDate," +                     //[17]
-                    "examinationEndDate," +                     //[18]
-                    "closureStarDate," +                        //[19]
-                    "closureEndDate," +                         //[20]
-                    "stage1extension," +                        //[21]
-                    "stage2extension," +                        //[22]
-                    "stage3extension," +                        //[23]
-                    "stage4extension," +                        //[24]
-                    "stage5extension," +                        //[25]
-                    "currentSubStage," +                        //[26]
-                    "stage1ExtensionExplanation, " +//27
-					"stage2ExtensionExplanation, " +//28
-					"stage3ExtensionExplanation, " +//29
-					"stage4ExtensionExplanation, " +//30
-					"stage5ExtensionExplanation) " +//31
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "(RequestID," +                             
+                    "currentStage," +                           
+                    "StageSupervisor," +                        
+                    "ExaminerFailReport," +                     
+                    "inspectorDocumentation," +                 
+                    "meaningEvaluationStartDate," +             
+                    "meaningEvaluationDueDate," +               
+                    "meaningEvaluationEndDate," +               
+                    "examinationAndDecisionStartDate," +        
+                    "stageColExaminationAndDecisionDueDate," +  
+                    "examinationAndDecisionEndDate," +          
+                    "executionStartDate," +                     
+                    "executionDueDate," +                      
+                    "executionEndDate," +                       
+                    "examinationStartDate," +                   
+                    "examinationDueDate," +                     
+                    "examinationEndDate," +                     
+                    "closureStarDate," +                        
+                    "closureEndDate," +                         
+                    "stage1extension," +                        
+                    "stage2extension," +                        
+                    "stage3extension," +                        
+                    "stage4extension," +                        
+                    "currentSubStage," +                        
+                    "stage1ExtensionExplanation, " +
+					"stage2ExtensionExplanation, " +
+					"stage3ExtensionExplanation, " +
+					"stage4ExtensionExplanation, " +
+					"`stage1dueDateExtension`,\n" + 
+                    "`stage2dueDateExtension`,\n" + 
+                    "`stage3dueDateExtension`,\n" + 
+                    "`stage4dueDateExtension`,\n" + 
+                    "`extensionRequestDate`\n" + 
+					") " +//33
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                    + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                    + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                    + " ?,?,?)");
             setAllProcessStageStatement(changeRequest, processStage , stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,26 +121,33 @@ public class ProccesStageQuerys {
         }
         int[] bool = processStage.getWasThereAnExtensionRequest();
         int v = 20;
-        for (int j = 0; j < 5; j++) {
-            if (bool[j] == 2) {
-                stmt.setInt(v, 2);
-            } 
-            if (bool[j] == 1){
-            	stmt.setInt(v, 1);
-            } else {
-                stmt.setInt(v, 0);
-            }
-            v++;
-        }
-        stmt.setString(25, processStage.getCurrentSubStage().name());
+		for (int j = 0; j < 4; j++) {
+			if ( Integer.compare(bool[j], 2) ==0)
+				stmt.setInt(v, 2);
+			else {
+				if (Integer.compare(bool[j], 1) ==0) {
+					stmt.setInt(v, 1);
+				} else {
+					stmt.setInt(v, 0);
+				}
+			}
+			v++;
+		}
+        stmt.setString(24, processStage.getCurrentSubStage().name());
         String[] s =processStage.getAllExtensionExplanation();
         
-        stmt.setString(26, s[0]);
-        stmt.setString(27, s[1]);
-        stmt.setString(28, s[2]);
-        stmt.setString(29, s[3]);
-        stmt.setString(30, s[4]);
-        
+        stmt.setString(25, s[0]);
+        stmt.setString(26, s[1]);
+        stmt.setString(27, s[2]);
+        stmt.setString(28, s[3]);    
+        LocalDate[] dates= processStage.getAllDueDateExtension();
+        for (int i =0 ; i<4 ; i++ ) {
+        	if(dates[i]!=null)
+            stmt.setString(29+i, dates[i].toString());    
+        	else stmt.setString(29+i, null);
+        }
+        if (processStage.getExtensionRequestDate()==null) stmt.setString(33, null);
+        else  stmt.setString(33, processStage.getExtensionRequestDate().toString());
         stmt.execute();
         stmt.close();
     }//END setAllProcessStageStatement()
@@ -146,9 +160,9 @@ public class ProccesStageQuerys {
             PreparedStatement stmt = queryHandler.getmysqlConn().getConn().prepareStatement(
                     "UPDATE `icm`.`stage`\n" + 
                     "SET\n" + 
-                    "`RequestID` = ?,\n" + 
+                    "`RequestID` = ?,\n" + //33
                     "`currentStage` = ?,\n" + 
-                    "`StageSupervisor` = ?,\n" + 
+                    "`StageSupervisor` = ?,\n" + //10
                     "`ExaminerFailReport` = ?,\n" + 
                     "`inspectorDocumentation` = ?,\n" + 
                     "`meaningEvaluationStartDate` = ?,\n" + 
@@ -168,17 +182,20 @@ public class ProccesStageQuerys {
                     "`stage1extension` = ?,\n" + 
                     "`stage2extension` = ?,\n" + 
                     "`stage3extension` = ?,\n" + 
-                    "`stage4extension` = ?,\n" + 
-                    "`stage5extension` = ?,\n" + 
+                    "`stage4extension` = ?,\n" + 	
                     "`currentSubStage` = ?,\n" + 
                     "`stage1ExtensionExplanation` = ?,\n" + 
                     "`stage2ExtensionExplanation` = ?,\n" + 
                     "`stage3ExtensionExplanation` = ?,\n" + 
-                    "`stage4ExtensionExplanation` = ?,\n" + 
-                    "`stage5ExtensionExplanation` = ?\n" + 
+                    "`stage4ExtensionExplanation` = ?,\n" +
+                    "`stage1dueDateExtension` = ?,\n" + 
+                    "`stage2dueDateExtension` = ?,\n" + 
+                    "`stage3dueDateExtension` = ?,\n" + 
+                    "`stage4dueDateExtension` = ?,\n" + 
+                    "`extensionRequestDate` = ?\n" + 
                     "WHERE `RequestID` = ?;\n" + 
-                    ""); //31 
-            stmt.setInt(31, processStage.getRequest().getRequestID());
+                    ""); //33 
+            stmt.setInt(34, processStage.getRequest().getRequestID());
             setAllProcessStageStatement(processStage.getRequest(), processStage, stmt);
             queryHandler.getEstimatorReportQuerys().UpdateOrInsertEstimatorReport(processStage.getEstimatorReport(),processStage.getRequest().getRequestID());
         } catch (SQLException e) {
@@ -230,23 +247,34 @@ public class ProccesStageQuerys {
 
 				int[] WasThereAnExtensionRequest = new int[5];
 				u = 20;
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 4; i++) {
                     WasThereAnExtensionRequest[i] = re.getInt(u) ;
 					u++;
 				}
-				String currentSubStageString = re.getString(25);
+				String currentSubStageString = re.getString(24);
                 subStages currentSubStage = subStages.valueOf(currentSubStageString);
-                String[] s =new String[5];
-                s[0] =re.getNString(26);
-                s[1] =re.getNString(27);
-                s[2] =re.getNString(28);
-                s[3] =re.getNString(29);
-                s[4] =re.getNString(30);
+                String[] s =new String[4];
+                s[0] =re.getNString(25);
+                s[1] =re.getNString(26);
+                s[2] =re.getNString(27);
+                s[3] =re.getNString(28);
+                LocalDate[] extensiondate = new LocalDate[4];
+                for(int i=0;i<4;i++) {
+                	if(re.getNString(29+i) ==null) extensiondate[i]= null;
+                	else extensiondate[i]=LocalDate.parse(re.getNString(29+i));
+                }
+                LocalDate date ;
+                if(re.getString(33)==null) date=null;
+                else date=LocalDate.parse(re.getNString(33));
+                
+                
                 EstimatorReport estimatorReport =queryHandler.getEstimatorReportQuerys().SelectEstimatorreports(RequestID);
 				returnProcessStage = new ProcessStage(currentStage, currentSubStage,
                         StageSupervisor, ExaminerFailReport,
                         inspectorDocumentation, startEndArray, WasThereAnExtensionRequest,s);
 				returnProcessStage.setEstimatorReport(estimatorReport);
+				returnProcessStage.setAllDueDateExtension(extensiondate);
+				returnProcessStage.setExtensionRequestDate(date);
 			}
 			
 		} catch (SQLException e) {

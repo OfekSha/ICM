@@ -104,7 +104,6 @@ public class mysqlConnection {
 					"stage2extension TINYINT(1) NOT NULL, "+						//22
 					"stage3extension TINYINT(1) NOT NULL, "+						//23
 					"stage4extension TINYINT(1) NOT NULL, "+						//24
-					"stage5extension TINYINT(1) NOT NULL, "+						//25
 					"currentSubStage ENUM ('supervisorAllocation'," +				//26
 					"'determiningDueTime'," +										
 					"'supervisorAction','ApprovingDueTime')," +										
@@ -112,7 +111,11 @@ public class mysqlConnection {
 					"stage2ExtensionExplanation TEXT NULL, " +						//28
 					"stage3ExtensionExplanation TEXT NULL, " +						//29
 					"stage4ExtensionExplanation TEXT NULL, " +						//30
-					"stage5ExtensionExplanation TEXT NULL, " +						//32
+					"stage1dueDateExtension VARCHAR(45) NULL, " +						//27
+					"stage2dueDateExtension VARCHAR(45) NULL, " +						//28
+					"stage3dueDateExtension VARCHAR(45) NULL, " +						//29
+					"stage4dueDateExtension VARCHAR(45) NULL, " +
+					"extensionRequestDate VARCHAR(45) NULL, " +
 					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID INT NOT NULL," +
@@ -321,9 +324,14 @@ public class mysqlConnection {
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());	
 		// updating due date 
 		changeRequest.getProcessStage().setDueDate(LocalDate.now());
+		changeRequest.getProcessStage().setDueDateExtension(LocalDate.of(2100 ,9, 22));
 		//addin estimators report
 		changeRequest.getProcessStage().setEstimatorReport(estimiatorReoport);
+		changeRequest.getProcessStage().setFlagExtensionRequestHandled();
 		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
+		for (int i = 0; i < 5; i++) {
+			WasThereAnExtensionRequest[i] = 0;
+		}
 		//test
 		//queryHandler.updateAllProcessStageFields(changeRequest.getProcessStage());
 		startEndArray = new LocalDate[5][3];
@@ -344,7 +352,7 @@ public class mysqlConnection {
 		changeRequest.updateStage();
 		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
-
+		
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.icmPermission.inspector);
@@ -357,7 +365,12 @@ public class mysqlConnection {
 		changeRequest.addInspectorUpdate(des);
 		des=new InspectorUpdateDescription(newUser,"test",LocalDate.now(),inspectorUpdateKind.unfreeze);
 		changeRequest.addInspectorUpdate(des);
+		changeRequest.getProcessStage().setExtensionRequestDate(LocalDate.of(2050, 8, 30));
+		changeRequest.getProcessStage().setFlagExtensionRequested();
 		queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields(changeRequest);
+		for (int i = 0; i < 5; i++) {
+			WasThereAnExtensionRequest[i] = 0;
+		}
 		
 		// change request stage 5
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test","baseforChange5", null);

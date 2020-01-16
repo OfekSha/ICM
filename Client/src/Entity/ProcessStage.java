@@ -40,11 +40,11 @@ public class ProcessStage implements Serializable {
 	 * WasThereAnExtensionRequest = 2 - inspector approved/disapproved
 	 * 
 	 */
-	private int[] WasThereAnExtensionRequest = new int[5];
+	private int[] WasThereAnExtensionRequest = new int[4];
 	/**
 	 * an array whit what stages asked for extension [stage number-1]
 	 */
-	private String[] ExtensionExplanation = new String[5];
+	private String[] ExtensionExplanation = new String[4];
 	/**
 	 * startEndArray is -an array with the start date and end date for each stage
 	 * <p>
@@ -53,11 +53,19 @@ public class ProcessStage implements Serializable {
 	 * [stage number -1 ][1] - due date for stage
 	 * <p>
 	 * [stage number -1 ][2] - ending date of stage
-	 * <p>
-	 * [4][1] - using for ask extension.
+	 * 
+	 * 
 	 */
 	private LocalDate[][] startEndArray = new LocalDate[5][3]; //
-
+	
+	/** [stage number -1] = the extended due date of the stage
+	 * 
+	 */
+	private LocalDate[] dueDateExtension  = new LocalDate[4];
+	/** the current extension Request Date  -the new requested date for ending the stage
+	 * 
+	 */
+	private LocalDate extensionRequestDate ;
 	/**
 	 * Constructor for client
 	 * 
@@ -65,10 +73,11 @@ public class ProcessStage implements Serializable {
 	 */
 	public ProcessStage(ChangeRequest Request) {
 		this.Request = Request;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			WasThereAnExtensionRequest[i] = 0;
 		}
 	}
+	
 
 	/**
 	 * Constructor for DB and testing
@@ -99,6 +108,15 @@ public class ProcessStage implements Serializable {
 
 	// input methods
 
+	public void setExtensionRequestDate(LocalDate extensionRequestDate) {
+		this.extensionRequestDate=extensionRequestDate;
+	}
+	public void setDueDateExtension(LocalDate dueDateExtension) {
+		this.dueDateExtension[currentStage.ordinal()]=dueDateExtension;
+	}
+	public void setAllDueDateExtension(LocalDate[] dueDateExtension) {
+		this.dueDateExtension=dueDateExtension;
+	}
 	/**
 	 * input an extension explanation
 	 * 
@@ -121,6 +139,7 @@ public class ProcessStage implements Serializable {
 	/**
 	 * when client ask extension before inspector accept.
 	 * @param due - date for extension
+	 * @deprecated
 	 */
 	public void setExtensionDate(LocalDate due) {
 		startEndArray[4][1]=due;
@@ -327,4 +346,14 @@ public class ProcessStage implements Serializable {
 	public String[] getAllExtensionExplanation() {
 		return ExtensionExplanation;
 	}
+	public LocalDate getDueDateExtension() {
+		return dueDateExtension[currentStage.ordinal()];
+	}
+	public LocalDate[] getAllDueDateExtension() {
+		return dueDateExtension;
+	}
+	public LocalDate getExtensionRequestDate() {
+		return extensionRequestDate;
+	}
+	
 }// END of Stage
