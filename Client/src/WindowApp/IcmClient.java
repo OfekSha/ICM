@@ -41,14 +41,23 @@ public class IcmClient extends AbstractClient {
 	 */
 	public void handleMessageFromServer(Object msg) {
 		clientUI.getFromServer(msg);
-		clientRequestFromServer serverMsg=(clientRequestFromServer) msg;
+		getAlert(msg);
+		
+	}
+	/**
+	 * get message from server check if is it alert, and then pop up alert with message.
+	 * @param msg -clientRequestFromServer
+	 */
+	private void getAlert(Object msg) {
+		clientRequestFromServer serverMsg=(clientRequestFromServer) msg; // convert message.
 		switch( serverMsg.getRequest()) {
-		case alertClient:
+		case alertClient: // tests alert client
+			// run javafx methods in the background while thread running:
 		Platform.runLater(()->{Alert alert= new Alert(AlertType.INFORMATION);
-		alert.setContentText((String)serverMsg.getObject());
+		alert.setContentText((String)serverMsg.getObject()); // the message from server
 		alert.showAndWait();});
 		break;
-		default:
+		default: // not alert client
 			break;
 		}
 	}
