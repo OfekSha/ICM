@@ -2,9 +2,10 @@ package GUI;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+
+import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
@@ -41,7 +42,7 @@ import javafx.stage.Stage;
 public abstract class StageSupervisorForm extends UserForm {
 	@FXML
 	public MenuButton menubtnWatch; // the filter button
-
+	public StageSupervisorController controller;
 	@FXML
 	public MenuItem DueTimeFilter, ActionFilter; // for filter requests
 	@FXML
@@ -53,11 +54,23 @@ public abstract class StageSupervisorForm extends UserForm {
 	@FXML
 	public Button btnSetDueTime, btnAskForTimeExtension; // the actions for every supervisor.
 	public static RequestTableView table; // make request adaptable for table view.
-	public static IcmForm icmForm; // use for connections and set up. need to implement in initialize.
+	public static IcmForm icmForm; // use for connections and set up.
 	private static Stage popupWindow; 
-
+	abstract public StageSupervisorController getController(); // need to setup controller
+	abstract public IcmForm getIcmForm(); // need to set up icm form.
 	abstract public void initialize(URL location, ResourceBundle resources);
+	@FXML
+	abstract public void filterRequests(ActionEvent event); // use for filter by MenuItem
 
+	@FXML
+	protected abstract void onRequestClicked(MouseEvent event); // save the selected request and enable buttons.
+
+	@Override
+	public abstract void getFromServer(Object message); // get messages from server
+	public StageSupervisorForm() {
+		controller=getController();
+		icmForm=getIcmForm();
+	}
 	/**
 	 * This method create pop up window by source and set connection back when closed.
 	 * @param target - the source fxml file. 
@@ -97,14 +110,7 @@ public abstract class StageSupervisorForm extends UserForm {
 		}
 	}
 
-	@FXML
-	abstract public void filterRequests(ActionEvent event); // use for filter by MenuItem
-
-	@FXML
-	protected abstract void onRequestClicked(MouseEvent event); // save the selected request and enable buttons.
-
-	@Override
-	public abstract void getFromServer(Object message); // get messages from server
+	
 
 	@FXML
 	public void setDueTimeClicked(ActionEvent event) {

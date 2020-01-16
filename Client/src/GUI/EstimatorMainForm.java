@@ -1,10 +1,12 @@
 package GUI;
 
 import Controllers.EstimatorController;
+import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import WindowApp.ClientLauncher;
+import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -65,7 +67,7 @@ public class EstimatorMainForm extends StageSupervisorForm {
 
 	@Override
 	public void getFromServer(Object message) {
-		EstimatorController.messageFromServer(message);
+		controller.messageFromServer(message);
 		table.setData(EstimatorController.requests);
 
 	}
@@ -115,6 +117,17 @@ public class EstimatorMainForm extends StageSupervisorForm {
 	@Override
 	public ChangeRequest getSelectedReq() {
 		return EstimatorController.selectedRequest;
+	}
+
+	@Override
+	public StageSupervisorController getController() {
+		return new EstimatorController();
+	}
+
+	@Override
+	public IcmForm getIcmForm() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 }

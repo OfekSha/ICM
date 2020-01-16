@@ -6,10 +6,12 @@ import java.util.ResourceBundle;
 
 
 import Controllers.ExaminerController;
+import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import WindowApp.ClientLauncher;
+import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -108,6 +110,18 @@ public class ExaminerForm extends StageSupervisorForm {
 	public ChangeRequest getSelectedReq() {
 		
 		return ExaminerController.selectedRequest;
+	}
+
+	@Override
+	public StageSupervisorController getController() {
+		
+		return new ExaminerController();
+	}
+
+	@Override
+	public IcmForm getIcmForm() {
+		
+		return this;
 	}
 
 }
