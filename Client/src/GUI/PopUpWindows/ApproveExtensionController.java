@@ -44,7 +44,7 @@ public class ApproveExtensionController extends AbstractPopUp implements IcmForm
 	public void initialize(URL location, ResourceBundle resources) {
 		title.setText("Do you approve extension for request " +InspectorController.selectedRequest.getRequestID());
 		extensionExplanation.setText(InspectorController.selectedRequest.getProcessStage().getExtensionExplanation());
-		extensionDueDate.setText(InspectorController.selectedRequest.getProcessStage().getExtensionDate().toString());
+		extensionDueDate.setText(InspectorController.selectedRequest.getProcessStage().getExtensionRequestDate().toString());
 		
 	}
 

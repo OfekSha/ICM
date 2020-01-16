@@ -138,8 +138,9 @@ public class InspectorController extends StageSupervisorController {
 	public static void approveExtension(boolean approve, ChangeRequest req, String reactionReason) {
 		InspectorUpdateDescription report;
 		if (approve) {
+			LocalDate requestDate=req.getProcessStage().getExtensionRequestDate();
 			req.getProcessStage().setFlagExtensionRequestHandled();
-			req.getProcessStage().setDueDate(req.getProcessStage().getExtensionDate());
+			req.getProcessStage().setDueDateExtension(requestDate);
 			report = new InspectorUpdateDescription(UserForm.user, reactionReason, LocalDate.now(),
 					inspectorUpdateKind.approveExtension);
 		} else {
@@ -147,7 +148,7 @@ public class InspectorController extends StageSupervisorController {
 			report = new InspectorUpdateDescription(UserForm.user, reactionReason, LocalDate.now(),
 					inspectorUpdateKind.DisapproveExtension);
 		}
-		req.getProcessStage().setExtensionDate(null); // clear the extension date after approve or disapprove.
+		req.getProcessStage().setExtensionRequestDate(null);// clear the extension date after approve or disapprove.
 		req.addInspectorUpdate(report);
 		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 	}

@@ -42,11 +42,10 @@ public class EstimatorController extends StageSupervisorController {
 
 	// function for request:
 	public static void  setReport(ChangeRequest request, String location, String changeDescription, String desiredResult,
-			String constraints, String risks) {
+			String constraints, String risks,String dueDaysEstimate) {
 		EstimatorReport report = new EstimatorReport(UserForm.user, location, changeDescription, desiredResult,
-				constraints, risks, 11);
-		request.getProcessStage().setEstimatorReport(report); // set new empty report for request.
-		// @@ TODO: need to add due date in days.. need int or string.
+				constraints, risks, Integer.valueOf(dueDaysEstimate));
+		request.getProcessStage().setEstimatorReport(report); // set new report for request.
 		request.getProcessStage().setEndDate(LocalDate.now());
 		request.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
 		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision);

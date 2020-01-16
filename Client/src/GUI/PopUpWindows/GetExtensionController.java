@@ -35,7 +35,7 @@ public class GetExtensionController extends AbstractPopUp {
             Approve = true;
             processStage.setExtensionExplanation(explanation);
             processStage.setFlagExtensionRequested();
-            processStage.setExtensionDate(dueDate);
+            processStage.setExtensionRequestDate(dueDate);
             sendUpdateForRequest();
             getCancel();
         }
