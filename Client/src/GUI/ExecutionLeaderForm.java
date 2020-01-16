@@ -24,7 +24,7 @@ import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
 import static GUI.PopUpWindows.DueTimeController.processStage;
 import static GUI.PopUpWindows.GetExtensionController.Approve;
 
-public class ExecutionLeaderForm extends EstimatorExecutorForm {
+public class ExecutionLeaderForm extends UserForm {
 
 	@FXML
 	public Button btnDueTime;

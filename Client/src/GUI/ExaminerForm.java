@@ -6,41 +6,21 @@ import java.util.ResourceBundle;
 
 
 import Controllers.ExaminerController;
+import Entity.ChangeRequest;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
-import GUI.PopUpWindows.GetExtensionController;
 import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-public class ExaminerForm extends UserForm {
 
 
-		@FXML
-	    private MenuButton menubtnWatch;
+public class ExaminerForm extends StageSupervisorForm {
 
-	    @FXML
-	    private MenuItem DueTimeFilter,ReportFilter;
-
-	    @FXML
-		private TableView<requirementForTable> tblView;
-		@FXML
-		private TableColumn<requirementForTable, String> idColumn,messageColumn;
-		@FXML
-		private TableColumn<requirementForTable, Object> statusColumn,dueTimeColumn;
 
 	    @FXML
 	    private TextArea location,changeDescription,desiredResult,constraints,risks;
@@ -51,23 +31,6 @@ public class ExaminerForm extends UserForm {
 	    @FXML
 	    private Button btnSetDueTime,btnWriteReport,btnAskForTimeExtension;
 		private RequestTableView table;
-
-		private void popupWindow(String target, ActionEvent event) throws IOException {
-			popupWindow = new Stage();
-			Parent root = FXMLLoader.load(this.getClass().getResource(target));
-			Scene scene = new Scene(root);
-			popupWindow.setScene(scene);
-			popupWindow.initModality(Modality.APPLICATION_MODAL);
-			popupWindow.show();
-			ExaminerForm icmForm = this;
-
-			// what happened when close window from out or from stage.close / stage.hide
-			// method
-			popupWindow.setOnCloseRequest(windowEvent ->  // close from out (alt +f4)
-					ClientLauncher.client.setClientUI(icmForm));
-			// stage.close / stage.hide method
-			popupWindow.setOnHidden(we -> ClientLauncher.client.setClientUI(icmForm));
-		}
 		public void onRequestClicked(MouseEvent event) {
 
 			requirementForTable selectedReq = table.onRequirementClicked(event);
@@ -101,20 +64,9 @@ public class ExaminerForm extends UserForm {
 					break;
 			}
 		}
-	    @FXML
-	    void askExtensionClicked(ActionEvent event) {
-	    	try {
-				// not work because the fxml work only with execution leader.
-				GetExtensionController.processStage = ExaminerController.selectedRequest.getProcessStage();
-				popupWindow("/GUI/PopUpWindows/GetExtension.fxml", event);
-			} catch (IOException e) {
-				//TODO Warning:(103, 23) Throwable argument 'e.getCause()' to 'System.out.println()' call
-				System.out.println(e.getCause());
-			}
-	    }
 
 	    @FXML
-	    void filterRequests(ActionEvent event) {
+		public void filterRequests(ActionEvent event) {
 	    	ExaminerController.filterRequests(((MenuItem) event.getSource()));
 	    }
 
@@ -124,24 +76,20 @@ public class ExaminerForm extends UserForm {
 	    }
 
 	    @FXML
-	    void setDueTimeClicked(ActionEvent event) {
+		public void setDueTimeClicked(ActionEvent event) {
 
 	    }
 
 	    @FXML
 	    void writeReportClicked(ActionEvent event) {
 	    	try {
-				popupWindow("/GUI/PopUpWindows/EstimateReport.fxml", event);
+				popupWindow("/GUI/PopUpWindows/EstimateReport.fxml");
 			} catch (IOException e) {
 				//TODO Warning:(113, 23) Throwable argument 'e.getCause()' to 'System.out.println()' call
 				System.out.println(e.getCause());
 			}
 	    }
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void getFromServer(Object message) {
@@ -150,8 +98,16 @@ public class ExaminerForm extends UserForm {
 	}
 	
 	//TODO: the following  methods are from the class diagram:  
-
-	public void ExecApproved() {}
-	public void ExecDesapproved() {}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		icmForm = this;
+		ClientLauncher.client.setClientUI(icmForm);
+		table = new RequestTableView(tblView, idColumn, statusColumn, null, dueTimeColumn, messageColumn);
+	}
+	@Override
+	public ChangeRequest getSelectedReq() {
+		
+		return ExaminerController.selectedRequest;
+	}
 
 }
