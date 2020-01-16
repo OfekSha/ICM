@@ -1,5 +1,6 @@
 package WindowApp;
 
+import Entity.clientRequestFromServer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -7,8 +8,6 @@ import ocsf.client.AbstractClient;
 
 import java.io.IOException;
 import java.time.LocalTime;
-
-import Entity.clientRequestFromServer;
 
 public class IcmClient extends AbstractClient {
 
@@ -37,43 +36,46 @@ public class IcmClient extends AbstractClient {
 
 	/**
 	 * This method handles all data that comes in from the server.
+	 *
 	 * @param msg The message from the server.
 	 */
 	public void handleMessageFromServer(Object msg) {
 		clientUI.getFromServer(msg);
 		getAlert(msg);
-		
+
 	}
+
 	/**
 	 * get message from server check if is it alert, and then pop up alert with message.
+	 *
 	 * @param msg -clientRequestFromServer
 	 */
 	private void getAlert(Object msg) {
-		clientRequestFromServer serverMsg=(clientRequestFromServer) msg; // convert message.
-		switch( serverMsg.getRequest()) {
-		case alertClient: // tests alert client
-			// run javafx methods in the background while thread running:
-		Platform.runLater(()->{Alert alert= new Alert(AlertType.INFORMATION);
-		alert.setContentText((String)serverMsg.getObject()); // the message from server
-		alert.showAndWait();});
-		break;
-		default: // not alert client
-			break;
+		clientRequestFromServer serverMsg = (clientRequestFromServer) msg; // convert message.
+		switch (serverMsg.getRequest()) {
+			case alertClient: // tests alert client
+				// run javafx methods in the background while thread running:
+				Platform.runLater(() -> {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setContentText((String) serverMsg.getObject()); // the message from server
+					alert.showAndWait();
+				});
+				break;
+			default: // not alert client
+				break;
 		}
 	}
-		
+
 
 	/**
 	 * This method handles all data coming from the UI
+	 *
 	 * @param message The message from the UI.
 	 */
 	public void handleMessageFromClientUI(Object message) {
 		try {
 			System.out.print("\n["
 					+ LocalTime.now()
-					//+ ZonedDateTime.now().toString()
-					//.split("T")[1]
-					//.split("\\+")[0]
 					+ "]: Message to server <- " + message);
 			sendToServer(message);
 		} catch (IOException e) {
@@ -94,22 +96,21 @@ public class IcmClient extends AbstractClient {
 		}
 		System.exit(0);
 	}
-	/**@author Yonathan 
-	 *	if we lose the connection  we need organized message to the client
+
+	/**
+	 * @author Yonathan
+	 * if we lose the connection  we need organized message to the client
 	 */
 	@Override
-	  public void sendToServer(Object msg) throws IOException
-	  {
-	    if (clientSocket == null || output == null) {
-	    	Alert alert = new Alert(AlertType.ERROR);
+	public void sendToServer(Object msg) throws IOException {
+		if (clientSocket == null || output == null) {
+			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("no connection");
 			alert.setHeaderText("You have lost you connection to the server");
 			alert.setContentText("Things you can do:\n1) Make sure the server is running\n");
 			alert.showAndWait();
 			// TODO : re lunch the client insted
-			System.exit(0);		
-	    }
-
-	    else  output.writeObject(msg);
-	  }
+			System.exit(0);
+		} else output.writeObject(msg);
+	}
 }
