@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CCCChairmanForm">
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CCCChairmanForm">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <ImageView fitHeight="200.0" fitWidth="200.0">
@@ -78,7 +78,7 @@
                                     <Insets bottom="10.0" top="10.0" />
                                  </VBox.margin>
                               </MenuButton>
-                              <TableView fx:id="tblView" onMouseClicked="#onRequestClicked" onSort="#onRequestClicked" prefHeight="507.0" prefWidth="450.0">
+                              <TableView fx:id="tblView" onMouseClicked="#onRequestClicked" prefHeight="507.0" prefWidth="450.0">
                                  <columns>
                                     <TableColumn fx:id="idColumn" prefWidth="39.0" text="ID" />
                                     <TableColumn fx:id="statusColumn" prefWidth="111.0" text="Status" />

@@ -4,8 +4,7 @@ package GUI;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.awt.Button;
-import java.awt.TextField;
+
 import Controllers.ChairmanController;
 import Controllers.ExaminerController;
 import Controllers.StageSupervisorController;
@@ -17,12 +16,14 @@ import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -47,19 +48,19 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     private MenuItem ReportFilter;
 
     @FXML
-    private TableView<?> tblView;
+    private TableView<requirementForTable> tblView;
 
     @FXML
-    private TableColumn<?, ?> idColumn;
+    private TableColumn<requirementForTable, String> idColumn;
 
     @FXML
-    private TableColumn<?, ?> statusColumn;
+    private TableColumn<requirementForTable, Object> statusColumn;
 
     @FXML
-    private TableColumn<?, ?> dueTimeColumn;
+    private TableColumn<requirementForTable, Object> dueTimeColumn;
 
     @FXML
-    private TableColumn<?, ?> messageColumn;
+    private TableColumn<requirementForTable, String> messageColumn;
 
     @FXML
     private TextArea location;
@@ -135,7 +136,7 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 	    }
 
 	    @FXML
-	    void onRequestClicked(ActionEvent event) {
+		protected void onRequestClicked(MouseEvent event) {
 	    	requirementForTable selectedReq = table.onRequirementClicked(event);
 			if (selectedReq == null)
 				return;
@@ -203,4 +204,5 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 		// TODO Auto-generated method stub
 		return StageSupervisorController.selectedRequest;
 	}
+
 }
