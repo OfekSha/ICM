@@ -99,9 +99,6 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     @FXML
     private Button btnAppointAnExaminer;
 
-    @FXML
-    void ApproveExecution(ActionEvent event) {
-
     private RequestTableView table;
 
     @FXML
