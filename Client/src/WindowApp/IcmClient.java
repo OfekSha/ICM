@@ -1,5 +1,6 @@
 package WindowApp;
 
+import Entity.Message;
 import Entity.clientRequestFromServer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -57,7 +58,7 @@ public class IcmClient extends AbstractClient {
 				// run javafx methods in the background while thread running:
 				Platform.runLater(() -> {
 					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setContentText((String) serverMsg.getObject()); // the message from server
+					alert.setContentText(((Message) serverMsg.getObject()).toString()); // the message from server
 					alert.showAndWait();
 				});
 				break;

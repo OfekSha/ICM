@@ -55,8 +55,8 @@ public class Message  implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Message: from:" + from + ", to:" + to + "\n"
-				+ " messege=" + messege + "\n\n";
+		return "Message: \nfrom: " + from + ", \nto: " + to + "\n"
+				 + messege + "\n\n";
 	}
 
 	

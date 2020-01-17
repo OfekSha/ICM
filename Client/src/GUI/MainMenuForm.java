@@ -56,6 +56,12 @@ public class MainMenuForm extends UserForm {
 		ClientLauncher.client.handleMessageFromClientUI(msg);
 		 msg = new clientRequestFromServer(requestOptions.getAllMessges,null);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
+		
+		// test  messeges
+		// msg = new clientRequestFromServer(requestOptions.alertClient,new Message(user.getUserName(),"admin","the messege"));
+		//ClientLauncher.client.handleMessageFromClientUI(msg);
+		//
+			
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
