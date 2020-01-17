@@ -18,8 +18,7 @@ import java.util.ResourceBundle;
 
 import static Entity.ProcessStage.ChargeRequestStages.examination;
 import static Entity.ProcessStage.ChargeRequestStages.execution;
-import static Entity.ProcessStage.subStages.determiningDueTime;
-import static Entity.ProcessStage.subStages.supervisorAllocation;
+import static Entity.ProcessStage.subStages.*;
 import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
 import static GUI.PopUpWindows.DueTimeController.processStage;
 import static GUI.PopUpWindows.GetExtensionController.Approve;
@@ -85,7 +84,7 @@ public class ExecutionLeaderForm extends UserForm {
 
 			if (selectedID != null) {
 				changeRequests.forEach(cR -> {
-					if (selectedID.equals(cR.getRequestID())) {
+					if (selectedID.equals(String.valueOf(cR.getRequestID()))) {
 						changeRequest = cR;
 						processStage = cR.getProcessStage();
 					}
@@ -120,6 +119,8 @@ public class ExecutionLeaderForm extends UserForm {
 			if (currentDueTime != null) {
 				btnDueTime.setDisable(true);
 				btnApprove.setDisable(false);
+				processStage.setCurrentSubStage(ApprovingDueTime);
+				sendUpdateForRequest();
 				setGetExtensionEnabled();
 			}
 		});
@@ -165,7 +166,8 @@ public class ExecutionLeaderForm extends UserForm {
 	}
 
 	private void setGetExtensionEnabled() {
-		if (currentDueTime != null && processStage.getExtensionExplanation().isEmpty() &&
+		if (currentDueTime != null &&
+				processStage.getExtensionExplanation() != null &&
 				currentDueTime.minusDays(3).isBefore(LocalDate.now())) {
 			btnGetExtension.setDisable(false);
 		} else btnGetExtension.setDisable(true);

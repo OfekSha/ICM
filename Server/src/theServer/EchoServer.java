@@ -8,7 +8,7 @@ import Entity.User.icmPermission;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import queryHandler.QueryHandler;
-import theServer.ServerTesting.whatHappend;
+import theServer.ServerTesting.whatHappened;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -60,31 +60,33 @@ public class EchoServer extends AbstractServer {
 		Object[] objectArray;
 		Object[] returningObjectArray;
 		ServerTesting tester = new ServerTesting(queryHandler);
-		whatHappend varWhatHappend ;
+		whatHappened varWhatHappened;
 
 		//---------------------------------------
 		boolean iWantResponse = true;
 
 		try {
-			
+
 			switch (request.getRequest()) {
 				case changeInLogIn:
 					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
-					iWantResponse =false;
+					iWantResponse = false;
 					break;
 
-				case updateProcessStage: 	
-					 varWhatHappend =tester.testIfRequestIsfrozen(client.getConnectedUser(),((ProcessStage) request.getObject()).getRequest());
-					sendBackObject =varWhatHappend;
-					if (whatHappend.success==varWhatHappend) 			
-					queryHandler.getProccesStageQuerys().updateAllProcessStageFields((ProcessStage) request.getObject());
+				case updateProcessStage:
+					varWhatHappened = tester.testIfRequestIsFrozen(client.getConnectedUser(), ((ProcessStage) request.getObject()).getRequest());
+					sendBackObject = varWhatHappened;
+					if (whatHappened.success == varWhatHappened) {
+						queryHandler.getProccesStageQuerys().updateAllProcessStageFields((ProcessStage) request.getObject());
+					}
 					break;
 
 				case updateChangeRequest:
-					varWhatHappend =tester.testIfRequestIsfrozen(client.getConnectedUser(),(ChangeRequest) request.getObject());
-					sendBackObject =varWhatHappend;
-					if (whatHappend.success==varWhatHappend) 			
-					queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields((ChangeRequest) request.getObject());
+					varWhatHappened = tester.testIfRequestIsFrozen(client.getConnectedUser(), (ChangeRequest) request.getObject());
+					sendBackObject = varWhatHappened;
+					if (whatHappened.success == varWhatHappened) {
+						queryHandler.getChangeRequestQuerys().updateAllChangeRequestFields((ChangeRequest) request.getObject());
+					}
 					break;
 
 				case addRequest:
@@ -96,136 +98,141 @@ public class EchoServer extends AbstractServer {
 					queryHandler.getProccesStageQuerys().InsertProcessStage(change, change.getProcessStage());
 					change.updateDocs();
 					queryHandler.getFilesQuerys().InsertFile(change.getDoc());
-					iWantResponse =false;
+					iWantResponse = false;
 					break;
+
 				case updateUser:
+
 					//varWhatHappend =tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
 					//sendBackObject =varWhatHappend;
 					sendBackObject =whatHappend.success;
 					//if (whatHappend.success==varWhatHappend) 			
 					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
+
 					break;
-					
+
 				case updateUserCollegeStatus:
-					varWhatHappend = tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
-					sendBackObject = varWhatHappend;
-					if (whatHappend.success == varWhatHappend) {
+					varWhatHappened = tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
+					sendBackObject = varWhatHappened;
+					if (whatHappened.success == varWhatHappened) {
 						returningObjectArray = (Object[]) request.getObject();
 						queryHandler.getUserQuerys().updateCollegeStatus((User) returningObjectArray[0],
 								(collegeStatus) returningObjectArray[1]);
 					}
 					break;
-			// read all ChangeRequest data
-					case getAll:
-						sendBackObject = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
-						break;
+				// read all ChangeRequest data
+				case getAll:
+					sendBackObject = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
+					break;
 
-					case getUser:
-						sendBackObject = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
-						break;
+				case getUser:
+					sendBackObject = queryHandler.getUserQuerys().selectUser(((String) request.getObject()));
+					break;
 
-					case getAllUsers:
-						sendBackObject = queryHandler.getUserQuerys().getAllUsers();
-						break;
+				case getAllUsers:
+					sendBackObject = queryHandler.getUserQuerys().getAllUsers();
+					break;
 
-					case getChangeRequestByStatus:
-						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
-						objectArray[1] = request.getObject();
-						sendBackObject = objectArray;
-						break;
-					case getUsersByICMPermissions:
-						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((icmPermission) request.getObject());
-						objectArray[1] = request.getObject();
-						sendBackObject = objectArray;
-						break;
-					case getAllUsersByJob:
-						objectArray = new Object[2];
-						objectArray[0] = queryHandler.getUserQuerys().getAllUsersByJob((collegeStatus) request.getObject());
-						objectArray[1] = request.getObject();
-						sendBackObject = objectArray;
-						break;
-					case getAllChangeRequestWithStatusAndStage:
-						objectArray = (Object[]) request.getObject();
-						returningObjectArray = new Object[4];
-						returningObjectArray[1] = objectArray[0];
-						returningObjectArray[2] = objectArray[1];
-						returningObjectArray[3] = objectArray[2];
-						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStage(
-								(ChargeRequestStages) objectArray[0],
-								(subStages) objectArray[1],
-								(ChangeRequestStatus) objectArray[2]);
-						sendBackObject = returningObjectArray;
-						break;
-					case getAllChangeRequestWithStatusAndStageOnly:
-						objectArray = (Object[]) request.getObject();
-						returningObjectArray = new Object[3];
-						returningObjectArray[1] = objectArray[0];
-						returningObjectArray[2] = objectArray[1];
-						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStageOnly(
-								(ChargeRequestStages) objectArray[0],
-								(ChangeRequestStatus) objectArray[1]);
-						sendBackObject = returningObjectArray;
-						break;
-					case getAllChangeRequestWithStatusAndSubStageOnly:
-						objectArray = (Object[]) request.getObject();
-						returningObjectArray = new Object[3];
-						returningObjectArray[1] = objectArray[0];
-						returningObjectArray[2] = objectArray[1];
-						returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndSubStageOnly(
-								(subStages) objectArray[0],
-								(ChangeRequestStatus) objectArray[1]);
-						sendBackObject = returningObjectArray;
-						break;
-					case getAllChangeRequestWithStatusAndStageAndSupervisor:
-						objectArray = (Object[]) request.getObject();
-						returningObjectArray = new Object[5];
-						returningObjectArray[1] = objectArray[0];
-						returningObjectArray[2] = objectArray[1];
-						returningObjectArray[3] = objectArray[2];
-						returningObjectArray[4] = objectArray[3];
-						returningObjectArray[0] = queryHandler.getChangeRequestQuerys()
-								.getAllChangeRequestWithStatusAndStageAndSupervisor(
-										(ChargeRequestStages) objectArray[0],
-										(subStages) objectArray[1],
-										(ChangeRequestStatus) objectArray[2],
-										(String) objectArray[3]);
-						sendBackObject = returningObjectArray;
-						break;
+				case getChangeRequestByStatus:
+					objectArray = new Object[2];
+					objectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatus((ChangeRequestStatus) request.getObject());
+					objectArray[1] = request.getObject();
+					sendBackObject = objectArray;
+					break;
+				case getUsersByICMPermissions:
+					objectArray = new Object[2];
+					objectArray[0] = queryHandler.getUserQuerys().getAllUsersWithICMPermissions((icmPermission) request.getObject());
+					objectArray[1] = request.getObject();
+					sendBackObject = objectArray;
+					break;
+				case getAllUsersByJob:
+					objectArray = new Object[2];
+					objectArray[0] = queryHandler.getUserQuerys().getAllUsersByJob((collegeStatus) request.getObject());
+					objectArray[1] = request.getObject();
+					sendBackObject = objectArray;
+					break;
+				case getAllChangeRequestWithStatusAndStage:
+					objectArray = (Object[]) request.getObject();
+					returningObjectArray = new Object[4];
+					returningObjectArray[1] = objectArray[0];
+					returningObjectArray[2] = objectArray[1];
+					returningObjectArray[3] = objectArray[2];
+					returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStage(
+							(ChargeRequestStages) objectArray[0],
+							(subStages) objectArray[1],
+							(ChangeRequestStatus) objectArray[2]);
+					sendBackObject = returningObjectArray;
+					break;
+				case getAllChangeRequestWithStatusAndStageOnly:
+					objectArray = (Object[]) request.getObject();
+					returningObjectArray = new Object[3];
+					returningObjectArray[1] = objectArray[0];
+					returningObjectArray[2] = objectArray[1];
+					returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndStageOnly(
+							(ChargeRequestStages) objectArray[0],
+							(ChangeRequestStatus) objectArray[1]);
+					sendBackObject = returningObjectArray;
+					break;
+				case getAllChangeRequestWithStatusAndSubStageOnly:
+					objectArray = (Object[]) request.getObject();
+					returningObjectArray = new Object[3];
+					returningObjectArray[1] = objectArray[0];
+					returningObjectArray[2] = objectArray[1];
+					returningObjectArray[0] = queryHandler.getChangeRequestQuerys().getAllChangeRequestWithStatusAndSubStageOnly(
+							(subStages) objectArray[0],
+							(ChangeRequestStatus) objectArray[1]);
+					sendBackObject = returningObjectArray;
+					break;
+				case getAllChangeRequestWithStatusAndStageAndSupervisor:
+					objectArray = (Object[]) request.getObject();
+					returningObjectArray = new Object[5];
+					returningObjectArray[1] = objectArray[0];
+					returningObjectArray[2] = objectArray[1];
+					returningObjectArray[3] = objectArray[2];
+					returningObjectArray[4] = objectArray[3];
+					returningObjectArray[0] = queryHandler.getChangeRequestQuerys()
+							.getAllChangeRequestWithStatusAndStageAndSupervisor(
+									(ChargeRequestStages) objectArray[0],
+									(subStages) objectArray[1],
+									(ChangeRequestStatus) objectArray[2],
+									(String) objectArray[3]);
+					sendBackObject = returningObjectArray;
+					break;
 
-					case LogIN:
-					Object[] returning =new Object[2];
+				case LogIN:
+					Object[] returning = new Object[2];
 					User tryingToLogInUser = (User) request.getObject();
 					User UserInDB = queryHandler.getUserQuerys().selectUser(tryingToLogInUser.getUserName());
-									returning[0] =UserInDB;
+					returning[0] = UserInDB;
 					if (UserInDB == null)
 						returning[1] = false;
 					else {
 						if (testAllClientsForUser(UserInDB))
 							returning[1] = false;
-						else if (UserInDB.getPassword().equals(tryingToLogInUser.getPassword()))
+						else returning[1] = UserInDB.getPassword().equals(tryingToLogInUser.getPassword());
+					/*	if (UserInDB.getPassword().equals(tryingToLogInUser.getPassword()))
 							returning[1] = true;
 						else
 							returning[1] = false;
+					*/
 					}
-					sendBackObject= returning;
-					
-						break;
-					case successfulLogInOut:
-						client.setConnectedUser((User) request.getObject());
-						iWantResponse = false;
-						break;
-					case getDoc:
-						sendBackObject = queryHandler.getFilesQuerys().selectDocWithFile((Document) request.getObject());
-						break;
-					case removeUserIcmPermission:
-						objectArray = (Object[]) request.getObject();
-						sendBackObject =tester.testifUserIcmPermissionCanBeRmoved((User)objectArray[0],(icmPermission)objectArray[1]);
-					default:
-						throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
-				}
-			
+					sendBackObject = returning;
+
+					break;
+				case successfulLogInOut:
+					client.setConnectedUser((User) request.getObject());
+					iWantResponse = false;
+					break;
+				case getDoc:
+					sendBackObject = queryHandler.getFilesQuerys().selectDocWithFile((Document) request.getObject());
+					break;
+				case removeUserIcmPermission:
+					objectArray = (Object[]) request.getObject();
+					sendBackObject = tester.testIfUserIcmPermissionCanBeRemoved((User) objectArray[0], (icmPermission) objectArray[1]);
+				default:
+					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
+			}
+
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -273,7 +280,7 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Server listening for connections on host " + InetAddress.getLocalHost().getHostAddress() + ':' + getPort());
 		mysqlConn = new mysqlConnection();
 		queryHandler = new QueryHandler(mysqlConn);
-		mysqlConn.DBwithExmples();
+		mysqlConn.DBwithExamples();
 	}
 
 	/**
@@ -311,13 +318,13 @@ public class EchoServer extends AbstractServer {
 	public mysqlConnection getmysqlConnection() {
 		return mysqlConn;
 	}
-	
-	/**once the server is closed the clients will be notified 
-	 *
+
+	/**
+	 * once the server is closed the clients will be notified
 	 */
 	@Override
-	public  void serverClosed() {
-		
+	public void serverClosed() {
+
 	}
 }
 //End of EchoServer class

@@ -26,7 +26,8 @@ public class clientRequestFromServer implements Serializable {
         successfulLogInOut, //Updated the server whether there is a user  related to the connection
         getDoc, // effectively downloding the  a requested document to the clients
         updateUser, //TODO : remove
-        removeUserIcmPermission // removes icmPermission from user while testing if can be done
+        removeUserIcmPermission, // removes icmPermission from user while testing if can be done
+        alertClient // send string message to client.
 
     }
 

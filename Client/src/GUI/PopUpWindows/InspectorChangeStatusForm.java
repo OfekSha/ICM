@@ -40,7 +40,7 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
 		title.setText("Approve Change Status");
 		ChangeRequest req=InspectorController.selectedRequest;
 		switch (status) {
-		case close:
+		case close: // TODO : implement send to server alertClient.
 			title.setText("Close request ID "+req.getRequestID());
 			String str=sendMail(req.getInitiator().getTheInitiator(),req.getRequestID(),(req.getProcessStage().getDates()[3][0]));
 			Alert alert = new Alert(AlertType.INFORMATION);
