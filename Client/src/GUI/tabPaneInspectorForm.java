@@ -68,6 +68,7 @@ public class tabPaneInspectorForm    implements Initializable{
 	public DocumentTableForDownloadsForm DocumentTableController; // the document table with download capability
 
 	public void onRequirementClicked(requirementForTable selectedReq) {
+		resetDetails();
 		// set details into tab pane:
 		baseForChange.setText(InspectorController.selectedRequest.getBaseforChange());
 		requestDetails.setText(InspectorController.selectedRequest.getProblemDescription());
@@ -83,7 +84,6 @@ public class tabPaneInspectorForm    implements Initializable{
 			constraints.setText(estimatorReport.getConstraints());
 			risks.setText(estimatorReport.getRisks());
 			dueTimeEstimate.setText(String.valueOf(estimatorReport.getTimeEstimate()));
-			//dueTimeEstimate.setText(estimatorReport.getTimeEstimate().toString());
 		}
 		String[] explanations = selectedReq.getStage().getAllExtensionExplanation();
 		LocalDate[][] allDates = selectedReq.getStage().getDates();
@@ -122,39 +122,51 @@ public class tabPaneInspectorForm    implements Initializable{
 		// setting up the document table
 		DocumentTableController.onRequirementTableClick(InspectorController.selectedRequest);
 	}
+	/**
+	 *  empty all fields 
+	 */
 	private void resetDetails() {
+		//Estimator report:
+		location.setText(null);
+		changeDescription.setText(null);
+		desiredResult.setText(null);
+		constraints.setText(null);
+		risks.setText(null);
+		dueTimeEstimate.setText(null);
+		//Initiator request details:
 		DocumentTableController.onRequirementTableClick(null);
 		baseForChange.setText(null);
 		requestDetails.setText(null);
 		requestReason.setText(null);
 		comment.setText(null);
 		informationSystem.setText(null);
-		start1.setText("");
-		end1.setText("");
-		explain1.setText("");
+		//stages details:
+		start1.setText(null);
+		end1.setText(null);
+		explain1.setText(null);
 		extension1.setSelected(false);
-		start2.setText("");
-		end2.setText("");
-		explain2.setText("");
+		start2.setText(null);
+		end2.setText(null);
+		explain2.setText(null);
 		extension2.setSelected(false);
-		start3.setText("");
-		end3.setText("");
-		explain3.setText("");
+		start3.setText(null);
+		end3.setText(null);
+		explain3.setText(null);
 		extension3.setSelected(false);
-		start4.setText("");
-		end4.setText("");
-		explain4.setText("");
+		start4.setText(null);
+		end4.setText(null);
+		explain4.setText(null);
 		extension4.setSelected(false);
-		start5.setText("");
-		end5.setText("");
-		explain5.setText("");
+		start5.setText(null);
+		end5.setText(null);
+		explain5.setText(null);
 		extension5.setSelected(false);
 	}
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		resetDetails();
 	}
 
 

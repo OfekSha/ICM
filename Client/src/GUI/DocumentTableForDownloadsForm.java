@@ -28,6 +28,10 @@ public class DocumentTableForDownloadsForm {
 	public DocmentTableForDownloadsController controller = new DocmentTableForDownloadsController();
 
 	public void onRequirementTableClick(ChangeRequest selectedRequest) {
+		if (selectedRequest==null) { 
+			tblViewDocuments.setItems(null);
+			return;
+		}
 		ObservableList<DocumentForTable> documentTableData = FXCollections
 				.observableArrayList(controller.DocumentForTableList(selectedRequest));
 		tblViewDocuments.setItems(documentTableData);
