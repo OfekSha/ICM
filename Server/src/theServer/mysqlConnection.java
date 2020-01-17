@@ -305,10 +305,18 @@ public class mysqlConnection {
 			queryHandler.getMessagesQuerys().InsertMessags(new Message("system", "admin", "the messege1"));
 			queryHandler.getMessagesQuerys().InsertMessags(new Message("system", "admin", "the messege2"));
 			queryHandler.getMessagesQuerys().InsertMessags(new Message("system", "admin", "the messege2"));
-			
+			 // messeges
 			EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
 			User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
 			ArrayList<Message> d = queryHandler.getMessagesQuerys().SelectMessages(newUser);
+			
+			EnumSet<User.icmPermission> lessPermissions = EnumSet.complementOf(Permissions); 
+			lessPermissions.add(icmPermission.estimator);
+			//testing 
+			ServerTesting tes =new ServerTesting(queryHandler);
+			newUser = new User("estimator", "1234", "Mrs.", "Estimator", "estimator@email.com", collegeStatus.informationEngineer, lessPermissions);
+			Object[] tt=tes.testifUserIcmPermissionCanBeAdded(newUser, icmPermission.executionLeader,queryHandler.getChangeRequestQuerys().getChangeRequest(3));
+			
 			System.out.println("New DB ready for use !");
 		}
 	}
@@ -342,7 +350,7 @@ public class mysqlConnection {
 		//creating exeution Leader
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(icmPermission.executionLeader);
-		newUser = new User("executionLeader", "1234", "Mrs.", "ExecLeader", "executor@email.com", collegeStatus.informationEngineer, lessPermissions);
+		newUser = new User("executionLeader", "1234", "Mr.", "ExecLeader", "executor@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating examiner
 		lessPermissions = EnumSet.complementOf(Permissions);
@@ -356,7 +364,7 @@ public class mysqlConnection {
 		newUser = new User("changeControlCommitteeChairman", "1234", "Mrs.", "CCCChairman", "chairman@email.com", collegeStatus.informationEngineer, lessPermissions);
 		queryHandler.getUserQuerys().insertUser(newUser);
 		//creating student
-		newUser = new User("student", "1234", "Mrs.", "Student", "student@email.com", collegeStatus.student, EnumSet.complementOf(Permissions));
+		newUser = new User("student", "1234", "Mr.", "Student", "student@email.com", collegeStatus.student, EnumSet.complementOf(Permissions));
 		queryHandler.getUserQuerys().insertUser(newUser);
 
 		//creating lecturer

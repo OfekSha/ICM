@@ -254,12 +254,16 @@ public class EchoServer extends AbstractServer {
 					if (otherClient!=null) {
 						try {otherClient.sendToClient(new clientRequestFromServer(request.getRequest(), request.getObject()));
 						} catch (IOException e) {e.printStackTrace();}
+						sendBackObject =whatHappened.success;
 					}
-					sendBackObject =whatHappened.success;
+					else  sendBackObject =whatHappened.failedNoSuchUser;	
 					break;
 				case getAllMessges:
 					sendBackObject = queryHandler.getMessagesQuerys().SelectMessages(client.getConnectedUser());
 					break;
+				case addUserIcmPermission:
+					objectArray = (Object[]) request.getObject();
+					sendBackObject = tester.testifUserIcmPermissionCanBeAdded((User) objectArray[0], (icmPermission) objectArray[1],(ChangeRequest)objectArray[2]);
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
