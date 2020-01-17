@@ -1,5 +1,6 @@
 package theServer;
 import Entity.*;
+import Entity.ActivitiesReport.reportScope;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -13,6 +14,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumSet;
+
+import Controllers.ReportController;
 
 public class mysqlConnection {
 	private static Connection conn;
@@ -155,6 +158,97 @@ public class mysqlConnection {
 					"  `risks` TEXT NULL,\n" +
 					"  PRIMARY KEY (`estimatorReportID`));\n" +
 					"");
+			stmt.execute("CREATE TABLE `icm`.`activitiesreport` (\r\n" + 
+					"  `reportID` INT NOT NULL,\r\n" + 
+					"  `reportScope` VARCHAR(45) NULL,\r\n" + 
+					"  `startDate` VARCHAR(45) NULL,\r\n" + 
+					"  `endDate` VARCHAR(45) NULL,\r\n" + 
+					"  `creationDate` VARCHAR(45) NULL,\r\n" + 
+					"  `ongoingRequestsMedian` DOUBLE NULL,\r\n" + 
+					"  `ongoingRequestsStandardDeviation` DOUBLE NULL,\r\n" + 
+					"  `ongoingRequests` DOUBLE NULL,\r\n" + 
+					"  `ongoingRequestsFrequencyDistribution` INT NOT NULL,\r\n" + 
+					"  ` suspendedRequestsMedian` DOUBLE NULL,\r\n" + 
+					"  ` suspendedRequestsStandardDeviation` DOUBLE NULL,\r\n" + 
+					"  ` suspendedRequests` DOUBLE NULL,\r\n" + 
+					"  ` suspendedRequestsFrequencyDistribution` INT NOT NULL,\r\n" + 
+					"  `closedRequestsMedian` DOUBLE NULL,\r\n" + 
+					"  `closedRequestsStandardDeviation` DOUBLE NULL,\r\n" + 
+					"  `closedRequests`  DOUBLE NULL,\r\n" + 
+					"  `closedRequestsFrequencyDistribution` INT NOT NULL,\r\n" + 
+					"  `rejectedRequestsMedian` DOUBLE NULL,\r\n" + 
+					"  `rejectedRequestsStandardDeviation` DOUBLE NULL,\r\n" + 
+					"  `rejectedRequests` DOUBLE NULL,\r\n" + 
+					"  `rejectedRequestsFrequencyDistribution` INT NOT NULL,\r\n" + 
+					"  `treatmentDaysRequestsMedian` DOUBLE NULL,\r\n" + 
+					"  `treatmentDaysStandardDeviation` DOUBLE NULL,\r\n" + 
+					"  `treatmentDays` DOUBLE NULL,\r\n" + 
+					"  `treatmentDaysFrequencyDistribution` INT NOT NULL,\r\n" + 
+					"  PRIMARY KEY (`reportID`));\r\n" + 
+					"");
+			stmt.execute("CREATE TABLE `icm`.`frequencydistribution-months` (\r\n" + 
+					"  `id` INT NOT NULL,\r\n" + 
+					"  `1` INT NULL,\r\n" + 
+					"  `2` INT NULL,\r\n" + 
+					"  `3` INT NULL,\r\n" + 
+					"  `4` INT NULL,\r\n" + 
+					"  `5` INT NULL,\r\n" + 
+					"  `6` INT NULL,\r\n" + 
+					"  `7` INT NULL,\r\n" + 
+					"  `8` INT NULL,\r\n" + 
+					"  `9` INT NULL,\r\n" + 
+					"  `10` INT NULL,\r\n" + 
+					"  `11` INT NULL,\r\n" + 
+					"  `12` INT NULL,\r\n" + 
+					"  PRIMARY KEY (`id`));\r\n" + 
+					"");
+			stmt.execute("CREATE TABLE `icm`.`frequencydistribution-daysinweek` (\r\n" + 
+					"  `id` INT NOT NULL,\r\n" + 
+					"  `1` INT NULL,\r\n" + 
+					"  `2` INT NULL,\r\n" + 
+					"  `3` INT NULL,\r\n" + 
+					"  `4` INT NULL,\r\n" + 
+					"  `5` INT NULL,\r\n" + 
+					"  `6` INT NULL,\r\n" + 
+					"  `7` INT NULL,\r\n" + 
+					"  PRIMARY KEY (`id`));\r\n" + 
+					"");
+			stmt.execute("CREATE TABLE `icm`.`frequencydistribution-daysinmonth` (\r\n" + 
+					"  `id` INT NOT NULL,\r\n" + 
+					"  `1` INT NULL,\r\n" + 
+					"  `2` INT NULL,\r\n" + 
+					"  `3` INT NULL,\r\n" + 
+					"  `4` INT NULL,\r\n" + 
+					"  `5` INT NULL,\r\n" + 
+					"  `6` INT NULL,\r\n" + 
+					"  `7` INT NULL,\r\n" + 
+					"  `8` INT NULL,\r\n" + 
+					"  `9` INT NULL,\r\n" + 
+					"  `10` INT NULL,\r\n" + 
+					"  `11` INT NULL,\r\n" + 
+					"  `12` INT NULL,\r\n" + 
+					"  `13` INT NULL,\r\n" + 
+					"  `14` INT NULL,\r\n" + 
+					"  `15` INT NULL,\r\n" + 
+					"  `16` INT NULL,\r\n" + 
+					"  `17` INT NULL,\r\n" + 
+					"  `18` INT NULL,\r\n" + 
+					"  `19` INT NULL,\r\n" + 
+					"  `20` INT NULL,\r\n" + 
+					"  `21` INT NULL,\r\n" + 
+					"  `22` INT NULL,\r\n" + 
+					"  `23` INT NULL,\r\n" + 
+					"  `24` INT NULL,\r\n" + 
+					"  `25` INT NULL,\r\n" + 
+					"  `26` INT NULL,\r\n" + 
+					"  `27` INT NULL,\r\n" + 
+					"  `28` INT NULL,\r\n" + 
+					"  `29` INT NULL,\r\n" + 
+					"  `30` INT NULL,\r\n" + 
+					"  `31` INT NULL,\r\n" + 
+					"  PRIMARY KEY (`id`));\r\n" + 
+					"" + 
+					"");
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -195,9 +289,12 @@ public class mysqlConnection {
 			buildDB();
 			enterUsersToDB();
 			enterChangeRequestToDB();
+			addActivitiesReport();
 			//testing
 			ArrayList<ChangeRequest> a = queryHandler.getChangeRequestQuerys().getAllChangeRequest();
 			ArrayList<User> b = queryHandler.getUserQuerys().getAllUsers();
+			ArrayList<ActivitiesReport> c =queryHandler.getActivitiesReportQuerys().getAllActivitiesReports();
+			
 			System.out.println("New DB ready for use !");
 		}
 	}
@@ -393,6 +490,144 @@ public class mysqlConnection {
 		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com",
 				collegeStatus.informationEngineer, lessPermissions);
 		Object[] arr2 = tester.testIfUserIcmPermissionCanBeRemoved(newUser, icmPermission.examiner);
-		//creating examiner
+		/// for report testing
+		
+		
+		start= LocalDate.of(2020, 2, 3);
+		startEndArray[4][2] =LocalDate.of(2020, 12, 25);
+		// change request stage 5
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 3, 3);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 4, 3);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 5, 13);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 5, 26);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 11, 3);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 5, 8);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 8, 3);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 10, 3);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// change request stage 5
+				start= LocalDate.of(2020, 10, 27);
+				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
+				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+				changeRequest.setStatus(ChangeRequestStatus.closed);
+				changeRequest.setStage(stager);
+				changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+				changeRequest.updateInitiatorRequest();
+				changeRequest.updateStage();
+				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 	}// END of enterChangeRequestToDB
+	
+	private void addActivitiesReport() {
+		ReportController cont = new ReportController(queryHandler);
+		LocalDate start = LocalDate.of(2020, 1, 1);
+		LocalDate end = LocalDate.of(2021, 1, 1);
+		ActivitiesReport c =cont.creatActivitiesReport(start,end,reportScope.months);
+		queryHandler.getActivitiesReportQuerys().InsertActivitiesReport(c);
+		ActivitiesReport c1 =cont.creatActivitiesReport(start,end,reportScope.dayOfmonth);
+		queryHandler.getActivitiesReportQuerys().InsertActivitiesReport(c1);
+		ActivitiesReport c2 =cont.creatActivitiesReport(start,end,reportScope.dayOfweek);
+		queryHandler.getActivitiesReportQuerys().InsertActivitiesReport(c2);
+		 start = LocalDate.of(2020, 3, 1);
+		ActivitiesReport d =cont.creatActivitiesReport(start,end,reportScope.months);
+		queryHandler.getActivitiesReportQuerys().InsertActivitiesReport(d);
+	} //END of  addActivitiesReport
 }//END of mysqlConnection

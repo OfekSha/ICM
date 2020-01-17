@@ -27,7 +27,11 @@ public class clientRequestFromServer implements Serializable {
         getDoc, // effectively downloding the  a requested document to the clients
         updateUser, //TODO : remove
         removeUserIcmPermission, // removes icmPermission from user while testing if can be done
-        alertClient // send string message to client.
+        alertClient, // send string message to client.
+        createNewActivitiesReport, // Create a new activity report 
+        getAllActivitiesReports	// get all activity reports in server
+        
+        
 
     }
 

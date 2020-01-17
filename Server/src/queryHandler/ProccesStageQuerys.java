@@ -235,12 +235,12 @@ public class ProccesStageQuerys {
 						u++;
 					}
 				}
-				if(re.getString(u) != null) {
+				if(re.getString(18) != null) {
 				    startEndArray[4][0] = LocalDate.parse(re.getString(18));
                 }
 				else startEndArray[4][0] = null;
 
-				if(re.getString(u) != null) {
+				if(re.getString(19) != null) {
 				    startEndArray[4][2] = LocalDate.parse(re.getString(19));
                 }
 				else startEndArray[4][2] = null;

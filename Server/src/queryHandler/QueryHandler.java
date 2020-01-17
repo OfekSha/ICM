@@ -13,6 +13,8 @@ import theServer.mysqlConnection;
  * @see UserQuerys
  * @see InspectorUpdatesQuerys
  * @see EstimatorReportQuerys
+ * @see FrequencydistributionQuerys
+ * @see ActivitiesReportQuerys
  *
  */
 public class QueryHandler {
@@ -27,6 +29,8 @@ public class QueryHandler {
 	private UserQuerys userQuerys;
 	private InspectorUpdatesQuerys inspectorUpdatesQuerys;
 	private EstimatorReportQuerys estimatorReportQuerys;
+	private FrequencydistributionQuerys frequencydistributionQuerys;
+	private ActivitiesReportQuerys activitiesReportQuerys ;
 
 	public QueryHandler(mysqlConnection mysqlConn) {
 		this.mysqlConn = mysqlConn;
@@ -37,7 +41,9 @@ public class QueryHandler {
 		this.userQuerys = new UserQuerys(this);
 		this.inspectorUpdatesQuerys = new InspectorUpdatesQuerys(this);
 		this.estimatorReportQuerys = new EstimatorReportQuerys(this);
-	}
+		this.frequencydistributionQuerys= new FrequencydistributionQuerys(this);
+		this.activitiesReportQuerys= new ActivitiesReportQuerys(this);
+		}
 
 	public mysqlConnection getmysqlConn() {
 		return mysqlConn;
@@ -71,6 +77,17 @@ public class QueryHandler {
 	public EstimatorReportQuerys getEstimatorReportQuerys() {
 		return estimatorReportQuerys;
 	}
+
+	public FrequencydistributionQuerys getFrequencydistributionQuerys() {
+		return frequencydistributionQuerys;
+	}
+
+	public ActivitiesReportQuerys getActivitiesReportQuerys() {
+		return activitiesReportQuerys;
+	}
+	
+	
+	
 
 	// all old prototype methods
 	// **********************************************************************************

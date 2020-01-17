@@ -1,5 +1,6 @@
 package theServer;
 import Entity.*;
+import Entity.ActivitiesReport.reportScope;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
@@ -13,7 +14,10 @@ import theServer.ServerTesting.whatHappened;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDate;
 import java.time.LocalTime;
+
+import Controllers.ReportController;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -60,6 +64,7 @@ public class EchoServer extends AbstractServer {
 		Object[] objectArray;
 		Object[] returningObjectArray;
 		ServerTesting tester = new ServerTesting(queryHandler);
+		ReportController reportController = new ReportController(queryHandler);
 		whatHappened varWhatHappened;
 
 		//---------------------------------------
@@ -229,6 +234,18 @@ public class EchoServer extends AbstractServer {
 				case removeUserIcmPermission:
 					objectArray = (Object[]) request.getObject();
 					sendBackObject = tester.testIfUserIcmPermissionCanBeRemoved((User) objectArray[0], (icmPermission) objectArray[1]);
+				case createNewActivitiesReport:
+					objectArray = (Object[]) request.getObject();
+					LocalDate start= (LocalDate) objectArray[0];
+					LocalDate end= (LocalDate) objectArray[1];
+					reportScope scope =(reportScope) objectArray[2];
+					ActivitiesReport tosend =reportController.creatActivitiesReport(start, end, scope);
+					queryHandler.getActivitiesReportQuerys().InsertActivitiesReport(tosend);
+					sendBackObject =tosend;
+					break;
+				case getAllActivitiesReports:
+					sendBackObject = queryHandler.getActivitiesReportQuerys().getAllActivitiesReports();
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
