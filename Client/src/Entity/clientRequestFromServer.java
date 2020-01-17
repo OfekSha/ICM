@@ -17,7 +17,7 @@ public class clientRequestFromServer implements Serializable {
         getAllUsers,			// getting all users from DB
         getChangeRequestByStatus, // getting all requests with the specified status
         getUsersByICMPermissions,// Getting all users with the  specified ICMPermission
-        getAllUsersByJob,		// getting all users with the specified job
+        getAllUsersByJob, 		// getting all users with the specified job
         getAllChangeRequestWithStatusAndStage, // get all requests in a specified:  stage AND substage AND state
         getAllChangeRequestWithStatusAndStageOnly, //get all requests in a specified:  stage  AND state
         getAllChangeRequestWithStatusAndSubStageOnly, //get all requests in a specified:  sub stage  AND state
