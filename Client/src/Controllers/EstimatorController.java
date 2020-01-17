@@ -7,7 +7,8 @@ import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.EstimatorReport;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
-
+import Entity.User.icmPermission;
+import Entity.User;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.UserForm;
 
@@ -16,8 +17,11 @@ import javafx.scene.control.MenuItem;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
+
 public class EstimatorController extends StageSupervisorController {
 
+	@SuppressWarnings("unchecked")
 	public void messageFromServer(Object message) {
 		// @@ need to add testing for message
 		clientRequestFromServer response = (clientRequestFromServer) message;
@@ -46,10 +50,17 @@ public class EstimatorController extends StageSupervisorController {
 		EstimatorReport report = new EstimatorReport(UserForm.user, location, changeDescription, desiredResult,
 				constraints, risks, Integer.valueOf(dueDaysEstimate));
 		request.getProcessStage().setEstimatorReport(report); // set new report for request.
-		request.getProcessStage().setEndDate(LocalDate.now());
-		request.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
-		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision);
+		request.getProcessStage().setEndDate(LocalDate.now()); //set end date of this stage
+		request.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
+		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
+		request.getProcessStage().setStartDate(LocalDate.now());
+		request.getProcessStage().setDueDate(LocalDate.now().plusDays(7));
 		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
+		// remove permission
+		User myUser=UserForm.user;
+		Object[] objToServer= {myUser,icmPermission.estimator};
+		messageToServer(new clientRequestFromServer(requestOptions.removeUserIcmPermission, objToServer));
+		
 	}
 
 	// end functions for request.

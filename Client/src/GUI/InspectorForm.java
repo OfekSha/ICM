@@ -7,7 +7,6 @@ import Entity.ProcessStage.ChargeRequestStages;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import GUI.PopUpWindows.ApproveDueTimeController;
-import GUI.PopUpWindows.ApproveExtensionController;
 import GUI.PopUpWindows.ApproveRoleForm;
 import GUI.PopUpWindows.InspectorChangeStatusForm;
 import GUI.PopUpWindows.InspectorChangeStatusForm.Status;
@@ -50,7 +49,7 @@ public class InspectorForm extends StageSupervisorForm {
 	@Override
 	public void getFromServer(Object message) {
 		controller.messageFromServer(message);
-		table.setData(controller.requests);
+		table.setData(InspectorController.requests);
 
 	}
 
@@ -114,7 +113,7 @@ public class InspectorForm extends StageSupervisorForm {
 			setButtons(false, false, false, false, false);
 			return;
 		}
-		controller.setSelectedRequest(selectedReq);
+		InspectorController.setSelectedRequest(selectedReq);
 		tabPaneController.onRequirementClicked(selectedReq);
 		//enable close:
 		if (selectedReq.getStage().getCurrentStage() == ChargeRequestStages.closure) {
@@ -199,6 +198,6 @@ public class InspectorForm extends StageSupervisorForm {
 
 	@Override
 	public ChangeRequest getSelectedReq() {
-		return controller.selectedRequest;
+		return InspectorController.selectedRequest;
 	}
 }
