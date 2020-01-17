@@ -105,7 +105,7 @@ public class EchoServer extends AbstractServer {
 
 					//varWhatHappend =tester.testUpstingUserCanUpdateUsers(client.getConnectedUser());
 					//sendBackObject =varWhatHappend;
-					sendBackObject =whatHappend.success;
+					sendBackObject =whatHappened.success;
 					//if (whatHappend.success==varWhatHappend) 			
 					queryHandler.getUserQuerys().updateAllUserFields((User) request.getObject());
 
