@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class ChangeRequest implements Serializable {
 
     public enum ChangeRequestStatus { //
-        ongoing, suspended, closed
+        ongoing, suspended, closed ,rejected
     }
     private int RequestID;
     private Initiator initiator;

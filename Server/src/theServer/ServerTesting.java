@@ -108,6 +108,56 @@ public class ServerTesting {
 	}// END of testifUserIcmPermissionCanBeRmoved()
 	
 	
+	
+	/**
+	 * @param changedUser - the user we want to add a permission to
+	 * @param permission  - the permission we want to add
+	 * @param request     - the permission related to the permission
+	 * 
+	 * 
+	 *                    <dl>
+	 *                    <dt>for permissions:
+	 *                    estimator,executionLeader,examiner:</dt>
+	 *                    <dd>- send a ChangeRequest entity which the user will
+	 *                    supervise</dd>
+	 *                    <dt>for
+	 *                    permissions:informationTechnologiesDepartmentManager,changeControlCommitteeChairman,changeControlCommitteeMember
+	 *                    send :</dt>
+	 *                    <dd>- ChangeRequest ==null</dd>
+	 *                    </dl>
+	 * @return
+	 */
+	public Object[] testifUserIcmPermissionCanBeAdded(User changedUser , icmPermission  permission ,ChangeRequest request) {
+		Object[] arr =new Object[2];
+		arr[0]=null;
+		arr[1]=null;
+		switch(permission) {
+		case informationTechnologiesDepartmentManager:
+			arr[0]= whatHappend.failedNoPermission;
+			break;
+		case inspector:
+			// need to test if there is one already
+			break;
+		case estimator:
+			arr[0]= whatHappend.failedNoPermission;
+			// need to test if there is no estimitor for the request
+			break;
+		case executionLeader:
+			// need to test if there is no executionLeader for the request
+			break;
+		case examiner:
+			// need to test if there is no examiner for the request
+			break;
+		case changeControlCommitteeChairman:
+			// need to test if there is one already
+			break;
+		case changeControlCommitteeMember:
+			// test there are no more then three
+			break;
+		}
+		return arr;
+	}//END of testifUserIcmPermissionCanBeAdded
+
 	/**@in buiding
 	 * 
 	 */

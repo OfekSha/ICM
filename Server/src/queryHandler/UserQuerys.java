@@ -25,7 +25,7 @@ public class UserQuerys {
     
     
     /** Inserts a full user entity in to the DB
-     * @param user ?
+     * @param user - the user wer are inserting to the DB 
      */
     public void insertUser(User user) { // send the use details.
         try {

@@ -1,34 +1,35 @@
 package Entity;
 
-public class ActivitiesReport extends   StatisticalReport {
+public class ActivitiesReport   {
 
-	//  class variables  
-	private int numRequests;
-	private int numDenied;
-	private int requestsTimeMap;
-	
-	
-	@Override
-	public void createReport() {
-		// TODO Auto-generated method stub
+/**[0] the median of the  requests which are ongoing 
+ * [1] the Standard Deviation of the requests which are ongoing
+ */
+private Integer[] numOfOngoingRequests = new  Integer[2];
 
-	}
-	
-	// get class variables
-	// if changes are to be made make sure to update the DB creation 
+/**[0] the median of the suspended requests 
+ * [1] the Standard Deviation of the suspended requests 
+ */
+private Integer[] numOfSuspendedRequests = new  Integer[2];
 
-	public int getNumRequests(){
-		return numRequests;
-	}
+/**[0] the median of the closed requests 
+ * [1] the Standard Deviation of the closed requests
+ */
+private Integer[]  numOfClosedRequests	= new  Integer[2];
+
+/**[0] the median of the Rejected requests
+ * [1] the Standard Deviation of the Rejected requests
+ */
+private Integer[]  numOfRejectedRequests = new  Integer[2];
+
+/**[0] the median of the Days it took to finish the request
+ * [1] the Standard Deviation of the Days it took to finish the request
+ */
+private Integer[]  numOfTreatmentDays	= new  Integer[2];
+
+
 	
-	public int  getNumDenied() {
-		return numDenied;
-	}
 	
-	
-	public int getRequestsTimeMap() {
-		return requestsTimeMap;
-	}
 	
 
-}
+}// END of ActivitiesReport
