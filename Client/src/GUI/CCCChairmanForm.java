@@ -153,7 +153,7 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 			//end initiator details.
 			btnAskForTimeExtension.setDisable(false);
 			switch (selectedReq.getStage().getCurrentSubStage()) {
-				case examinationAndDecision:
+				case ExaminationAndDecision:
 					btnSetDueTime.setDisable(false);
 					btnWriteReport.setDisable(true);
 					break;
