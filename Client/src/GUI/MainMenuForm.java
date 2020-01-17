@@ -126,9 +126,8 @@ public class MainMenuForm extends UserForm {
 		NextWindowLauncher(event, "/GUI/Examiner.fxml", this, true);
 	}
 
-	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) {
-		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
-		// WatchRequestForm(), true);
+	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
+		 NextWindowLauncher(event, "/GUI/CommiteeChairManForm.fxml", this, true);
 	}
 	
 	
