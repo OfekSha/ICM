@@ -116,6 +116,11 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     void askForDetails(ActionEvent event) {
 
     }
+    
+    @FXML
+    void setExaminer(ActionEvent event) {
+    	
+    }
 
 	    @FXML
 		public void filterRequests(ActionEvent event) {
