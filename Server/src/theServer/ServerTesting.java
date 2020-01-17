@@ -23,8 +23,13 @@ public class ServerTesting {
 		failedAlreadyExists,
 		success,
 		failedIsFrozen,
-		failedIsResponsibleForAstage
-	 }
+		failedIsResponsibleForAstage,
+		failedNoSuchUser,
+		failedRequestAlreadyHasCorrectSupervisor,
+		faildeUserMustBeCommitteeMember,
+		faildeUserLimitReached
+		
+		}
 	  
 	public ServerTesting(QueryHandler queryHandler) {
 		 this.queryHandler = queryHandler;
@@ -130,11 +135,15 @@ public class ServerTesting {
 	 *                    permissions:informationTechnologiesDepartmentManager,changeControlCommitteeChairman,changeControlCommitteeMember
 	 *                    send :</dt>
 	 *                    <dd>- ChangeRequest ==null</dd>
+	 *                    
 	 *                    </dl>
 	 * @return
 	 */
 	public Object[] testifUserIcmPermissionCanBeAdded(User changedUser , icmPermission  permission ,ChangeRequest request) {
 		Object[] arr =new Object[2];
+		ChangeRequest requestInDB;
+		User currentSupervisor;
+		ArrayList<User> usersInDB =new ArrayList();
 		arr[0]=null;
 		arr[1]=null;
 		switch(permission) {
@@ -142,28 +151,106 @@ public class ServerTesting {
 			arr[0]= whatHappened.failedNoPermission;
 			break;
 		case inspector:
-			// need to test if there is one already
+			// need to test if there is one already //excluded: admin
+			usersInDB =queryHandler.getUserQuerys().getAllUsersWithICMPermissions(icmPermission.inspector);
+			usersInDB=removeAdmin(usersInDB);
+			 if(hasicmPermission(usersInDB,icmPermission.inspector,1)) {
+				 arr[0]=whatHappened.faildeUserLimitReached;
+				 arr[1]=usersInDB;
+				 }
+			 else arr[0]=whatHappened.success;
 			break;
 		case estimator:
-			arr[0]= whatHappened.failedNoPermission;
-			// need to test if there is no estimitor for the request
+			// test if there is no estimitor for the request
+			requestInDB= queryHandler.getChangeRequestQuerys().getChangeRequest(request.getRequestID());
+			currentSupervisor =requestInDB.getProcessStage().getStageSupervisor();
+			if(currentSupervisor.getICMPermissions().contains(icmPermission.estimator)) {
+				arr[0]=whatHappened.failedRequestAlreadyHasCorrectSupervisor;
+				 arr[1]=requestInDB;
+				}
+			else arr[0]=whatHappened.success;		
 			break;
 		case executionLeader:
-			// need to test if there is no executionLeader for the request
+			// test if there is no executionLeader for the request
+			requestInDB= queryHandler.getChangeRequestQuerys().getChangeRequest(request.getRequestID());
+			currentSupervisor =requestInDB.getProcessStage().getStageSupervisor();
+			if(currentSupervisor.getICMPermissions().contains(icmPermission.executionLeader)) {
+				arr[0]=whatHappened.failedRequestAlreadyHasCorrectSupervisor;
+			 arr[1]=requestInDB;
+
+			}
+			else arr[0]=whatHappened.success;	
 			break;
 		case examiner:
-			// need to test if there is no examiner for the request
+			// test if user is changeControlCommitteeMember
+		if	(changedUser.getICMPermissions().contains(icmPermission.changeControlCommitteeMember)) {
+			//  test if there is no examiner for the request
+			requestInDB= queryHandler.getChangeRequestQuerys().getChangeRequest(request.getRequestID());
+			currentSupervisor =requestInDB.getProcessStage().getStageSupervisor();
+			if(currentSupervisor.getICMPermissions().contains(icmPermission.examiner)) {
+				arr[0]=whatHappened.failedRequestAlreadyHasCorrectSupervisor;
+				 arr[1]=requestInDB;
+			}
+			else arr[0]=whatHappened.success;	
+		}
+		else arr[0]=whatHappened.faildeUserMustBeCommitteeMember;
 			break;
 		case changeControlCommitteeChairman:
-			// need to test if there is one already
+			// need to test if there is one already // excluded: admin
+			usersInDB =queryHandler.getUserQuerys().getAllUsersWithICMPermissions(icmPermission.changeControlCommitteeChairman);
+			usersInDB=removeAdmin(usersInDB);
+			 if(hasicmPermission(usersInDB,icmPermission.changeControlCommitteeChairman,1))
+				 {
+				 arr[0]=whatHappened.faildeUserLimitReached;
+				 arr[1]=usersInDB;
+				 }			 
+			 else arr[0]=whatHappened.success;
 			break;
 		case changeControlCommitteeMember:
-			// test there are no more then three
+			// test there are no more then three //excluded: admin
+			usersInDB =queryHandler.getUserQuerys().getAllUsersWithICMPermissions(icmPermission.changeControlCommitteeMember);
+			usersInDB=removeAdmin(usersInDB);
+			 if(hasicmPermission(usersInDB,icmPermission.changeControlCommitteeMember,3)) {
+				 arr[0]=whatHappened.faildeUserLimitReached;
+				 arr[1]=usersInDB;
+			 }
+			 else arr[0]=whatHappened.success;
 			break;
 		}
 		return arr;
 	}//END of testifUserIcmPermissionCanBeAdded
 
+	/** removes admin from the user list
+	 * @param users
+	 * @return
+	 */
+	private ArrayList<User> removeAdmin(ArrayList<User> users) {
+		User admin = null;
+		for (User u : users) {
+			if (u.getUserName().equals("admin"))
+			admin = u;
+		}
+		users.remove(admin);
+		return users;
+	}
+
+	/** tests whether amount the given users has the icmPermission
+	 * @param users
+	 * @param permission 
+	 * @param  amount of users we want with the rule
+	 * @return true when one of the users in the list has the icmPermission
+	 */
+	private boolean hasicmPermission(ArrayList<User> users, icmPermission permission,int amount) {
+		int cnt=0;
+		for (User u : users) {
+			if (u.getICMPermissions().contains(permission)) {
+				cnt++;
+				if (amount==cnt )return true;
+			}
+		}
+		return false;
+	}
+	
 	/**@in buiding
 	 * 
 	 */
