@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controllers.ChairmanController;
+import Controllers.EstimatorController;
 import Controllers.ExaminerController;
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
@@ -87,16 +88,19 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     private TextField createdBy;
 
     @FXML
-    private Button btnSetDueTime;
+    private Button btnApprove;
 
     @FXML
-    private Button btnWriteReport;
+    private Button btnDissapprove;
 
     @FXML
     private Button btnAskForDetails;
 
     @FXML
     private Button btnAppointAnExaminer;
+
+    @FXML
+    void ApproveExecution(ActionEvent event) {
 
     private RequestTableView table;
 
@@ -115,20 +119,6 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     void askForDetails(ActionEvent event) {
 
     }
-
-
-    @FXML
-    void setExaminer(ActionEvent event) {
-
-    }
-	    
-
-	    @FXML
-	    void ExitBtn(ActionEvent event) {
-
-	    }
-
-
 
 	    @FXML
 		public void filterRequests(ActionEvent event) {
@@ -151,20 +141,24 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 			createdDate.setText(controller.selectedRequest.getStartDate().toString());
 			createdBy.setText(controller.selectedRequest.getInitiator().getTheInitiator().getUserName());
 			//end initiator details.
-			btnAskForTimeExtension.setDisable(false);
 			switch (selectedReq.getStage().getCurrentSubStage()) {
-				case ExaminationAndDecision:
-					btnSetDueTime.setDisable(false);
-					btnWriteReport.setDisable(true);
-					break;
 				case supervisorAction:
-					btnWriteReport.setDisable(false);
-					btnSetDueTime.setDisable(true);
+					btnApprove.setDisable(false);
+					btnDissapprove.setDisable(false);
+					btnAskForDetails.setDisable(false);
+					btnAppointAnExaminer.setDisable(true);
+					break;
+				case supervisorAllocation:
+					btnApprove.setDisable(true);
+					btnDissapprove.setDisable(true);
+					btnAskForDetails.setDisable(true);
+					btnAppointAnExaminer.setDisable(false);
 					break;
 				default:
-					btnAskForTimeExtension.setDisable(true);
-					btnWriteReport.setDisable(true);
-					btnSetDueTime.setDisable(true);
+					btnApprove.setDisable(true);
+					btnDissapprove.setDisable(true);
+					btnAskForDetails.setDisable(true);
+					btnAppointAnExaminer.setDisable(true);
 					break;
 			}
 		}
@@ -180,7 +174,8 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 
 	@Override
 	public void getFromServer(Object message) {
-		// TODO Auto-generated method stub
+		controller.messageFromServer(message);
+		table.setData(ChairmanController.requests);
 
 	}
 

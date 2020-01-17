@@ -44,7 +44,7 @@ public class ChairmanController extends StageSupervisorController {
 		clientRequestFromServer response = (clientRequestFromServer) message;
 		switch (response.getRequest()) {
 			case getAllChangeRequestWithStatusAndStage:
-				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
+				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];	
 				break;	
 		default:
 			break;
