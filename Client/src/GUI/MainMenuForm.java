@@ -1,5 +1,7 @@
 package GUI;
 
+import Entity.ChangeRequest;
+import Entity.Message;
 import Entity.User;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
@@ -7,8 +9,11 @@ import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 
 import java.net.URL;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.ResourceBundle;
 
@@ -40,14 +45,17 @@ public class MainMenuForm extends UserForm {
 	private Button btnExaminer;
 	@FXML
 	private Button btnChangeControlCommitteeChairman;
+	@FXML
+	private TextArea taMessges;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//TODO Implement it before use
-		
+		ClientLauncher.client.setClientUI(this);
+		taMessges.setEditable(false);
 		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
-		
+		 msg = new clientRequestFromServer(requestOptions.getAllMessges,null);
+		ClientLauncher.client.handleMessageFromClientUI(msg);
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
@@ -79,6 +87,8 @@ public class MainMenuForm extends UserForm {
 					break;
 			}
 		}
+		
+		
 	} // END of initialize();
 
 	// TODO: Load suitable list for each new form
@@ -114,5 +124,23 @@ public class MainMenuForm extends UserForm {
 		// NextWindowLauncher(event, "/GUI/MainMenuForm.fxml", this, new
 		// WatchRequestForm(), true);
 	}
-
+	
+	
+	
+	
+	@Override public void getFromServer(Object message) { 
+		  // msg is ArrayList of
+		  clientRequestFromServer request = (clientRequestFromServer) message;	 
+		  Object[] objectArray; 
+	  switch (request.getRequest()) 
+	  { 
+	  case getAllMessges: 
+		  ArrayList<Message> messgeList  =(ArrayList<Message>) request.getObject();
+		  if(messgeList != null) {
+	  taMessges.setText(""); for(Message e :messgeList)
+	  taMessges.appendText(e.toString()); } 
+		  break;
+		  } 
+	  }
+	 
 }// END of MainMenuForm

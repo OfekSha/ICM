@@ -82,7 +82,7 @@
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin></Label>
-                  <TextArea prefHeight="200.0" prefWidth="354.0">
+                  <TextArea fx:id="taMessges" prefHeight="459.0" prefWidth="438.0">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </VBox.margin></TextArea>

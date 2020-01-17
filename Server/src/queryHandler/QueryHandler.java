@@ -31,6 +31,7 @@ public class QueryHandler {
 	private EstimatorReportQuerys estimatorReportQuerys;
 	private FrequencydistributionQuerys frequencydistributionQuerys;
 	private ActivitiesReportQuerys activitiesReportQuerys ;
+	private MessagesQuerys messagesQuerys;
 
 	public QueryHandler(mysqlConnection mysqlConn) {
 		this.mysqlConn = mysqlConn;
@@ -43,6 +44,7 @@ public class QueryHandler {
 		this.estimatorReportQuerys = new EstimatorReportQuerys(this);
 		this.frequencydistributionQuerys= new FrequencydistributionQuerys(this);
 		this.activitiesReportQuerys= new ActivitiesReportQuerys(this);
+		this.messagesQuerys=  new MessagesQuerys(this);
 		}
 
 	public mysqlConnection getmysqlConn() {
@@ -84,6 +86,10 @@ public class QueryHandler {
 
 	public ActivitiesReportQuerys getActivitiesReportQuerys() {
 		return activitiesReportQuerys;
+	}
+
+	public MessagesQuerys getMessagesQuerys() {
+		return messagesQuerys;
 	}
 	
 	

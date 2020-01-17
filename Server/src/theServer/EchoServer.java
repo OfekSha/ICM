@@ -246,6 +246,20 @@ public class EchoServer extends AbstractServer {
 				case getAllActivitiesReports:
 					sendBackObject = queryHandler.getActivitiesReportQuerys().getAllActivitiesReports();
 					break;
+				case alertClient:
+					Message mesg =(Message) request.getObject();
+					queryHandler.getMessagesQuerys().InsertMessags(mesg);
+					User reciver=	queryHandler.getUserQuerys().selectUser(mesg.getTo());
+					ConnectionToClient otherClient =searchForConnectedClient(reciver);
+					if (otherClient!=null) {
+						try {otherClient.sendToClient(new clientRequestFromServer(request.getRequest(), request.getObject()));
+						} catch (IOException e) {e.printStackTrace();}
+					}
+					sendBackObject =whatHappened.success;
+					break;
+				case getAllMessges:
+					sendBackObject = queryHandler.getMessagesQuerys().SelectMessages(client.getConnectedUser());
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}
@@ -331,7 +345,24 @@ public class EchoServer extends AbstractServer {
 		}
 		return false;
 	}// END of testAllClientsForUser
+	
+	protected ConnectionToClient searchForConnectedClient(User lookingFor) {
+		Thread[] clientThreadList = getClientConnections();
 
+		for (Thread thread : clientThreadList) {
+			try {
+				User u = ((ConnectionToClient) thread).getConnectedUser();
+
+				if (lookingFor.equals(u)) {
+					return (ConnectionToClient) thread;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return null;
+	}// END of searchForConnectedClient
+	
 	public mysqlConnection getmysqlConnection() {
 		return mysqlConn;
 	}

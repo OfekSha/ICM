@@ -4,6 +4,7 @@ import Controllers.DocmentTableForDownloadsController;
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.Document;
+import Entity.Message;
 import Entity.User;
 import Entity.User.collegeStatus;
 import Entity.User.icmPermission;
@@ -239,6 +240,14 @@ public abstract class UserForm implements IcmForm {
 			case getDoc:
 				DocmentTableForDownloadsController.downloded = (Document) request.getObject();
 				DocmentTableForDownloadsController.wakeUpLunchedThread();
+				break;
+			case getAllMessges:
+				ArrayList<Message>  messgeList =(ArrayList<Message>) request.getObject();
+				if(messgeList != null) {
+					//taMessges.setText("");
+				for(Message e :messgeList) {}
+					//taMessges.appendText(e.toString());
+				}
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());

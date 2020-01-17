@@ -29,7 +29,8 @@ public class clientRequestFromServer implements Serializable {
         removeUserIcmPermission, // removes icmPermission from user while testing if can be done
         alertClient, // send string message to client.
         createNewActivitiesReport, // Create a new activity report 
-        getAllActivitiesReports	// get all activity reports in server
+        getAllActivitiesReports,	// get all activity reports in server
+        getAllMessges //  geting all messeges for client 
         
         
 

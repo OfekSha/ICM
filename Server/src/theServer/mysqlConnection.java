@@ -249,6 +249,13 @@ public class mysqlConnection {
 					"  PRIMARY KEY (`id`));\r\n" + 
 					"" + 
 					"");
+			stmt.execute("CREATE TABLE `icm`.`messages` (\r\n" + 
+					"  `id` INT NOT NULL,\r\n" + 
+					"  `from` VARCHAR(45) NULL,\r\n" + 
+					"  `to` VARCHAR(45) NULL,\r\n" + 
+					"  `messege` TEXT NULL,\r\n" + 
+					"  PRIMARY KEY (`id`));\r\n" + 
+					"");
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -295,6 +302,13 @@ public class mysqlConnection {
 			ArrayList<User> b = queryHandler.getUserQuerys().getAllUsers();
 			ArrayList<ActivitiesReport> c =queryHandler.getActivitiesReportQuerys().getAllActivitiesReports();
 			
+			queryHandler.getMessagesQuerys().InsertMessags(new Message("system", "admin", "the messege1"));
+			queryHandler.getMessagesQuerys().InsertMessags(new Message("system", "admin", "the messege2"));
+			queryHandler.getMessagesQuerys().InsertMessags(new Message("system", "admin", "the messege2"));
+			
+			EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+			User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+			ArrayList<Message> d = queryHandler.getMessagesQuerys().SelectMessages(newUser);
 			System.out.println("New DB ready for use !");
 		}
 	}
