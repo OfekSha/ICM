@@ -18,103 +18,59 @@ public class tabPaneInspectorForm    implements Initializable{
 
 	@FXML
 	private  TabPane tabPane;
+	/**
+	 * Initiator request information
+	 */
 	@FXML
-	private TextArea requestDetails;
+	private TextArea baseForChange,requestDetails,requestReason,comment;
 
-	@FXML
-	private TextArea requestReason;
-
-	@FXML
-	private TextArea comment;
-
+	/**
+	 * Initiator request information
+	 */
 	@FXML
 	private TextField informationSystem;
 
 
-	@FXML
-	private TextArea location;
+	/**
+	 * Estimator report information
+	 */
+	@FXML 
+	private TextArea location,changeDescription,desiredResult,constraints,risks;
 
-	@FXML
-	private TextArea changeDescription;
-
-	@FXML
-	private TextArea desiredResult;
-
-	@FXML
-	private TextArea constraints;
-
-	@FXML
-	private TextArea risks;
-
+	/**
+	 * Estimator report information 
+	 */
 	@FXML
 	private TextField dueTimeEstimate;
 
+	/**
+	 *  start date for each stage
+	 */
 	@FXML
-	private TextField start1;
-
+	private TextField start1,start2,start3,start4,start5;
+	/**
+	 *  end date for each stage
+	 */
 	@FXML
-	private TextField end1;
-
+	private TextField end1,end2,end3,end4,end5;
+	/**
+	 * check if was extension for each stage
+	 */
 	@FXML
-	private CheckBox extension1;
-
+	private CheckBox extension1,extension2,extension3,extension4,extension5;
+	/**
+	 * explain for extension for each stage
+	 */
 	@FXML
-	private TextArea explain1;
-
-	@FXML
-	private TextField start2;
-
-	@FXML
-	private TextField end2;
-
-	@FXML
-	private CheckBox extension2;
-
-	@FXML
-	private TextArea explain2;
-
-	@FXML
-	private TextField start3;
-
-	@FXML
-	private TextField end3;
-
-	@FXML
-	private CheckBox extension3;
-
-	@FXML
-	private TextArea explain3;
-
-	@FXML
-	private TextField start4;
-
-	@FXML
-	private TextField end4;
-
-	@FXML
-	private CheckBox extension4;
-
-	@FXML
-	private TextArea explain4;
-
-	@FXML
-	private TextField start5;
-
-	@FXML
-	private TextField end5;
-
-	@FXML
-	private CheckBox extension5;
-
-	@FXML
-	private TextArea explain5;
+	private TextArea explain1,explain2,explain3,explain4,explain5;
 
 	@FXML
 	public DocumentTableForDownloadsForm DocumentTableController; // the document table with download capability
 
 	public void onRequirementClicked(requirementForTable selectedReq) {
 		// set details into tab pane:
-		// requestDetails.setText(InspectorController.selectedRequest.);
+		baseForChange.setText(InspectorController.selectedRequest.getBaseforChange());
+		requestDetails.setText(InspectorController.selectedRequest.getProblemDescription());
 		requestReason.setText(InspectorController.selectedRequest.getChangeReason());
 		comment.setText(InspectorController.selectedRequest.getComment());
 		informationSystem.setText(InspectorController.selectedRequest.getSystem());
@@ -131,26 +87,7 @@ public class tabPaneInspectorForm    implements Initializable{
 		}
 		String[] explanations = selectedReq.getStage().getAllExtensionExplanation();
 		LocalDate[][] allDates = selectedReq.getStage().getDates();
-		start1.setText("");
-		end1.setText("");
-		explain1.setText("");
-		extension1.setSelected(false);
-		start2.setText("");
-		end2.setText("");
-		explain2.setText("");
-		extension2.setSelected(false);
-		start3.setText("");
-		end3.setText("");
-		explain3.setText("");
-		extension3.setSelected(false);
-		start4.setText("");
-		end4.setText("");
-		explain4.setText("");
-		extension4.setSelected(false);
-		start5.setText("");
-		end5.setText("");
-		explain5.setText("");
-		extension5.setSelected(false);
+		
 		if (selectedReq.getStage().getWasThereAnExtensionRequest()[0] == 2) {
 			start1.setText(allDates[0][0].toString());
 			end1.setText(allDates[0][2].toString());
@@ -183,10 +120,36 @@ public class tabPaneInspectorForm    implements Initializable{
 		}
 
 		// setting up the document table
-		//onRequirementTableClick(InspectorController.selectedRequest);
 		DocumentTableController.onRequirementTableClick(InspectorController.selectedRequest);
 	}
-
+	private void resetDetails() {
+		DocumentTableController.onRequirementTableClick(null);
+		baseForChange.setText(null);
+		requestDetails.setText(null);
+		requestReason.setText(null);
+		comment.setText(null);
+		informationSystem.setText(null);
+		start1.setText("");
+		end1.setText("");
+		explain1.setText("");
+		extension1.setSelected(false);
+		start2.setText("");
+		end2.setText("");
+		explain2.setText("");
+		extension2.setSelected(false);
+		start3.setText("");
+		end3.setText("");
+		explain3.setText("");
+		extension3.setSelected(false);
+		start4.setText("");
+		end4.setText("");
+		explain4.setText("");
+		extension4.setSelected(false);
+		start5.setText("");
+		end5.setText("");
+		explain5.setText("");
+		extension5.setSelected(false);
+	}
 
 
 	@Override

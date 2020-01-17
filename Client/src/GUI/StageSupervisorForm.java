@@ -96,8 +96,8 @@ public abstract class StageSupervisorForm extends UserForm {
 	/**
 	 * This method for button extension and used pop up window method for open GetExtension.fxml
 	 *
-	 * @param event ?
-	 *              see popupWindow ?
+	 * @param event
+	 * @see popupWindow
 	 */
 	@FXML
 	public void askExtensionClicked(ActionEvent event) {

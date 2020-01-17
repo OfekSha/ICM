@@ -25,22 +25,11 @@ public class EstimatorMainForm extends StageSupervisorForm {
 
 	// initiator details:
 	@FXML
-	private TextArea RequestDetails;
+	private TextArea baseForChange,RequestDetails,RequestReason,Comment;
 
 	@FXML
-	private TextArea RequestReason;
+	private TextField system,createdDate,createdBy;
 
-	@FXML
-	private TextArea Comment;
-
-	@FXML
-	private TextField system;
-
-	@FXML
-	private TextField createdDate;
-
-	@FXML
-	private TextField createdBy;
 
 	// end initiator details.
 
@@ -50,8 +39,6 @@ public class EstimatorMainForm extends StageSupervisorForm {
 		try {
 			popupWindow("/GUI/PopUpWindows/EstimateReport.fxml");
 		} catch (IOException e) {
-			// TODO Warning:(113, 23) Throwable argument 'e.getCause()' to
-			// 'System.out.println()' call
 			System.out.println(e.getCause());
 		}
 	}
@@ -85,7 +72,8 @@ public class EstimatorMainForm extends StageSupervisorForm {
 		EstimatorController.setSelectedRequest(selectedReq);
 
 		// set details for initiator:
-		RequestDetails.setText(EstimatorController.selectedRequest.getBaseforChange());
+		baseForChange.setText(EstimatorController.selectedRequest.getBaseforChange());
+		RequestDetails.setText(EstimatorController.selectedRequest.getProblemDescription());
 		RequestReason.setText(EstimatorController.selectedRequest.getChangeReason());
 		Comment.setText(EstimatorController.selectedRequest.getComment());
 		system.setText(EstimatorController.selectedRequest.getSystem());

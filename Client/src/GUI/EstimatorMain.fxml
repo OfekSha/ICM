@@ -92,12 +92,14 @@
                            <children>
                               <VBox alignment="TOP_CENTER" prefHeight="285.0" prefWidth="203.0">
                                  <children>
+                                    <Label text="Base for change" />
+                                    <TextArea fx:id="baseForChange" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="90.0" />
                                     <Label contentDisplay="BOTTOM" text="Change request details">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextArea fx:id="RequestDetails" editable="false" prefHeight="164.0" prefWidth="203.0" wrapText="true">
+                                    <TextArea fx:id="RequestDetails" editable="false" prefHeight="90.0" wrapText="true">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -107,13 +109,13 @@
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextArea fx:id="RequestReason" editable="false" prefHeight="120.0" prefWidth="203.0" wrapText="true" />
+                                    <TextArea fx:id="RequestReason" editable="false" prefHeight="90.0" wrapText="true" />
                                     <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="15.0" prefWidth="187.0" text="Comment">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextArea fx:id="Comment" editable="false" prefHeight="113.0" prefWidth="203.0" wrapText="true" />
+                                    <TextArea fx:id="Comment" editable="false" prefHeight="90.0" wrapText="true" />
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER" prefHeight="526.0" prefWidth="164.0">
@@ -123,7 +125,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </Label>
-                                    <TextField fx:id="system" editable="false" prefHeight="25.0" prefWidth="54.0" />
+                                    <TextField fx:id="system" editable="false" prefHeight="25.0" />
                                     <fx:include fx:id="DocumentTable" source="DocmentTableForDownloads.fxml" />
                                  </children>
                               </VBox>

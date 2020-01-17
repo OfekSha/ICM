@@ -46,6 +46,7 @@ public class DocmentTableForDownloadsController {
 	 * @see DocumentForTable
 	 */
 	public   ArrayList<DocumentForTable> DocumentForTableList(ChangeRequest selectedRequest) {
+		if (selectedRequest==null) return null;
 		ArrayList<DocumentForTable> newList = new ArrayList<>();
 		for (Document doc : selectedRequest.getDoc())
 			newList.add(new DocumentForTable(doc));
