@@ -91,15 +91,18 @@ public class ExaminerForm extends StageSupervisorForm {
 	    }
 
 	    @FXML
-	    void writeReportClicked(ActionEvent event) {
+	    void FailClicked(ActionEvent event) {
 	    	try {
-				popupWindow("/GUI/PopUpWindows/EstimateReport.fxml");
+				popupWindow("/GUI/PopUpWindows/FailReport.fxml");
 			} catch (IOException e) {
 				//TODO Warning:(113, 23) Throwable argument 'e.getCause()' to 'System.out.println()' call
 				System.out.println(e.getCause());
 			}
 	    }
-
+	    @FXML
+	    void Approve(ActionEvent event) {
+	    	
+	    }
 
 	@Override
 	public void getFromServer(Object message) {

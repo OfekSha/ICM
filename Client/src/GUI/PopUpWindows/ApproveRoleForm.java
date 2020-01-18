@@ -1,16 +1,13 @@
 package GUI.PopUpWindows;
 
-import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
-
 import java.awt.TextField;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Controllers.InspectorController;
 import Controllers.StageSupervisorController;
-import Entity.ChangeRequest;
+
 import Entity.User;
 import Entity.clientRequestFromServer;
 import Entity.ProcessStage.subStages;
@@ -60,7 +57,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 		ClientLauncher.client.setClientUI(this);
 		clientRequestFromServer newRequest;
 		switch (role) {
-		case estimator: //approve estimator
+		case estimator: // approve estimator
 			title.setText("Approve Estimator for request " + StageSupervisorController.selectedRequest.getRequestID());
 			newRequest = new clientRequestFromServer(requestOptions.getAllUsersByJob,
 					collegeStatus.informationEngineer);
@@ -71,7 +68,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 			newRequest = new clientRequestFromServer(requestOptions.getAllUsersByJob,
 					collegeStatus.informationEngineer);
 			break;
-		case examiner: //approve examiner.
+		case examiner: // approve examiner.
 			title.setText(
 					"Approve Examiner Leader for request " + StageSupervisorController.selectedRequest.getRequestID());
 			newRequest = new clientRequestFromServer(requestOptions.getUsersByICMPermissions,
@@ -83,7 +80,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 			break;
 		}
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
-		processStage=StageSupervisorController.selectedRequest.getProcessStage();
+		processStage = StageSupervisorController.selectedRequest.getProcessStage();
 	}
 
 	/**

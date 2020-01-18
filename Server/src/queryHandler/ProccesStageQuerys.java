@@ -65,12 +65,14 @@ public class ProccesStageQuerys {
                     "`stage2dueDateExtension`,\n" + 
                     "`stage3dueDateExtension`,\n" + 
                     "`stage4dueDateExtension`,\n" + 
-                    "`extensionRequestDate`\n" + 
+                    "`extensionRequestDate`,"
+                    + "timeAddedBecuseOfReturns,"
+                    + "timeAddedFromExtentions\n" + 
 					") " +//33
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
                     + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
                     + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-                    + " ?,?,?)");
+                    + " ?,?,?,?,?)");
             setAllProcessStageStatement(changeRequest, processStage , stmt);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -148,6 +150,8 @@ public class ProccesStageQuerys {
         }
         if (processStage.getExtensionRequestDate()==null) stmt.setString(33, null);
         else  stmt.setString(33, processStage.getExtensionRequestDate().toString());
+        stmt.setInt(34, processStage.getTimeAddedBecuseOfReturns());
+        stmt.setInt(35, processStage.getTimeAddedFromExtentions());
         stmt.execute();
         stmt.close();
     }//END setAllProcessStageStatement()
@@ -192,10 +196,12 @@ public class ProccesStageQuerys {
                     "`stage2dueDateExtension` = ?,\n" + 
                     "`stage3dueDateExtension` = ?,\n" + 
                     "`stage4dueDateExtension` = ?,\n" + 
-                    "`extensionRequestDate` = ?\n" + 
+                    "`extensionRequestDate` = ?,\n" + 
+                    "`timeAddedBecuseOfReturns` = ?,\n" +
+                    "`timeAddedFromExtentions` = ?\n" +
                     "WHERE `RequestID` = ?;\n" + 
-                    ""); //33 
-            stmt.setInt(34, processStage.getRequest().getRequestID());
+                    ""); //35 
+            stmt.setInt(36, processStage.getRequest().getRequestID());
             setAllProcessStageStatement(processStage.getRequest(), processStage, stmt);
             queryHandler.getEstimatorReportQuerys().UpdateOrInsertEstimatorReport(processStage.getEstimatorReport(),processStage.getRequest().getRequestID());
         } catch (SQLException e) {
@@ -270,11 +276,13 @@ public class ProccesStageQuerys {
                 
                 EstimatorReport estimatorReport =queryHandler.getEstimatorReportQuerys().SelectEstimatorreports(RequestID);
 				returnProcessStage = new ProcessStage(currentStage, currentSubStage,
-                        StageSupervisor, ExaminerFailReport,
-                        inspectorDocumentation, startEndArray, WasThereAnExtensionRequest,s);
+                StageSupervisor, ExaminerFailReport,
+                inspectorDocumentation, startEndArray, WasThereAnExtensionRequest,s);
 				returnProcessStage.setEstimatorReport(estimatorReport);
 				returnProcessStage.setAllDueDateExtension(extensiondate);
 				returnProcessStage.setExtensionRequestDate(date);
+				returnProcessStage.setTimeAddedBecuseOfReturns(re.getInt(34));
+				returnProcessStage.setTimeAddedFromExtentions(re.getInt(35));
 			}
 			
 		} catch (SQLException e) {

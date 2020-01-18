@@ -118,6 +118,8 @@ public class mysqlConnection {
 					"stage3dueDateExtension VARCHAR(45) NULL, " +						//29
 					"stage4dueDateExtension VARCHAR(45) NULL, " +
 					"extensionRequestDate VARCHAR(45) NULL, " +
+					"timeAddedBecuseOfReturns INT NULL, " +//1
+					"timeAddedFromExtentions INT NULL, " +//2
 					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID INT NOT NULL," +
@@ -419,7 +421,7 @@ public class mysqlConnection {
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange4", null);
 		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAllocation, newUser, "test4", "test4", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
 		changeRequest.setStage(stager);
-		changeRequest.setStatus(ChangeRequestStatus.suspended);
+		changeRequest.setStatus(ChangeRequestStatus.ongoing);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
