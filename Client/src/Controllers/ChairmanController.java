@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Entity.ChangeRequest;
@@ -12,6 +13,24 @@ import Entity.clientRequestFromServer.requestOptions;
 import javafx.scene.control.MenuItem;
 
 public class ChairmanController extends StageSupervisorController {
+	
+	public void ApproveExecution(ChangeRequest selectedRequest) {
+		
+		selectedRequest.getProcessStage().setEndDate(LocalDate.now()); //set end date of this stage
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
+		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
+		
+	}
+	
+	public void DisApproveExecution(ChangeRequest selectedRequest) {
+		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.closure);
+	}
+	
+	public void askForDetails(ChangeRequest selectedRequest) {
+		selectedRequest.getProcessStage().setEndDate(null); //set end date of this stage
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
+		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.meaningEvaluation); // next stage
+	}
 	
 	@Override
 	public void filterRequests(MenuItem menuItem) {
@@ -46,16 +65,18 @@ public class ChairmanController extends StageSupervisorController {
 			case getAllChangeRequestWithStatusAndStage:
 				requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];	
 				break;	
-			case 	
+		 	
 		default:
 			break;
+			
+	}
+	}
 
-	}
-	}
+
 
 	@Override
 	public StageSupervisorController getController() {
 		return this;
 	}
 }
-		
+

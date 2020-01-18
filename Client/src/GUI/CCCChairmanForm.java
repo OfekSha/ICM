@@ -3,6 +3,8 @@ package GUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Controllers.ChairmanController;
@@ -17,7 +19,10 @@ import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -103,17 +108,51 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 
     @FXML
     void ApproveExecution(ActionEvent event) {
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("WARNING");
+    	alert.setHeaderText("Are You Sure You Want To Approve Execution of The Request?");
+    	alert.setContentText("Approving will Lead the Request to The Next Stage");
+
+    	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == ButtonType.OK){
+    		getController().ApproveExecution(ChairmanController.selectedRequest);
+    	} else {
+    	   
+    	}
 
     }
     
     @FXML
     void DissaproveExecution(ActionEvent event) {
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("WARNING");
+    	alert.setHeaderText("Are You Sure You Want To Disapprove Execution of The Request?");
+    	alert.setContentText("Approving will Close The Request");
+
+    	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == ButtonType.OK){
+    		getController().DisApproveExecution(ChairmanController.selectedRequest);
+    	} else {
+    	   
+    	}
 
     }
 
 
     @FXML
     void askForDetails(ActionEvent event) {
+    	
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("WARNING");
+    	alert.setHeaderText("Are You Sure You Want To Request More Details for the Request?");
+    	alert.setContentText("Approving will Lead the Request to be Re-Estimated Again");
+
+    	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == ButtonType.OK){
+    		getController().askForDetails(ChairmanController.selectedRequest);
+    	} else {
+    	   
+    	}
 
     }
     
@@ -184,7 +223,7 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 	//TODO: the following  methods are from the class diagram:
 
 	@Override
-	public StageSupervisorController getController() {
+	public ChairmanController getController() {
 		// TODO Auto-generated method stub
 		return new ChairmanController();
 	}
@@ -199,7 +238,7 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 	@Override
 	public ChangeRequest getSelectedReq() {
 		// TODO Auto-generated method stub
-		return StageSupervisorController.selectedRequest;
+		return ChairmanController.selectedRequest;
 	}
 
 }
