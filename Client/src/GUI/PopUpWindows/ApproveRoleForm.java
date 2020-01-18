@@ -107,7 +107,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 			break;
 		}
 		cmbITMembers.setItems(userList);
-		StageSupervisorController.controller.messageFromServer(message);
+		
 
 	}
 
