@@ -17,19 +17,22 @@ public class ChairmanController extends StageSupervisorController {
 	public void ApproveExecution(ChangeRequest selectedRequest) {
 		
 		selectedRequest.getProcessStage().setEndDate(LocalDate.now()); //set end date of this stage
-		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
-		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
-		
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
+		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.execution); // next stage
+		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest,selectedRequest));
 	}
 	
 	public void DisApproveExecution(ChangeRequest selectedRequest) {
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.closure);
+		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest,selectedRequest));
 	}
 	
 	public void askForDetails(ChangeRequest selectedRequest) {
 		selectedRequest.getProcessStage().setEndDate(null); //set end date of this stage
 		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
 		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.meaningEvaluation); // next stage
+		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest,selectedRequest));
 	}
 	
 	@Override

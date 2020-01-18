@@ -157,7 +157,8 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     }
     
     @FXML
-    void setExaminer(ActionEvent event) {
+    void setExaminer(ActionEvent event) throws IOException {
+    	//popupWindow("/GUI/PopUpWindows/ApproveRole.fxml"); not sure
     	
     }
 
