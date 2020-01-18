@@ -10,6 +10,7 @@ import Controllers.StageSupervisorController;
 
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.collegeStatus;
 import Entity.User.icmPermission;
@@ -119,18 +120,27 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 	 */
 	public static void changeRole(User user) {
 		processStage.newStageSupervisor(user); // set user to be supervisor
-		processStage.setCurrentSubStage(subStages.determiningDueTime); // next sub stage
+	
 		switch (role) {
 		// give permission to user
 		case estimator:
 			user.getICMPermissions().add(icmPermission.estimator);
+			processStage.setCurrentSubStage(subStages.determiningDueTime); // next sub stage
+			processStage.setCurrentStage(ChargeRequestStages.meaningEvaluation);
 			processStage.setStartDate(LocalDate.now());
 			break;
 		case executionLeader:
 			user.getICMPermissions().add(User.icmPermission.executionLeader);
+			processStage.setCurrentSubStage(subStages.determiningDueTime); // next sub stage
+			processStage.setStartDate(LocalDate.now());
+			processStage.setCurrentStage(ChargeRequestStages.execution);
 			break;
 		case examiner:
 			user.getICMPermissions().add(User.icmPermission.examiner);
+			processStage.setCurrentSubStage(subStages.supervisorAction);
+			processStage.setCurrentStage(ChargeRequestStages.examination);
+			processStage.setStartDate(LocalDate.now());
+			processStage.setDueDate(LocalDate.now().plusDays(7));
 			break;
 		default:
 			throw new IllegalArgumentException(" can\"t approve role to stage " + processStage.getCurrentStage());
