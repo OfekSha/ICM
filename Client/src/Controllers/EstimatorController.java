@@ -53,8 +53,8 @@ public class EstimatorController extends StageSupervisorController {
 		request.getProcessStage().setEndDate(LocalDate.now()); //set end date of this stage
 		request.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
 		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
-		request.getProcessStage().setStartDate(LocalDate.now());
-		request.getProcessStage().setDueDate(LocalDate.now().plusDays(7));
+		request.getProcessStage().setStartDate(LocalDate.now()); //start next stage is now.
+		request.getProcessStage().setDueDate(LocalDate.now().plusDays(7)); // next stage due date 7 days
 		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 		// remove permission
 		User myUser=UserForm.user;
@@ -88,6 +88,12 @@ public class EstimatorController extends StageSupervisorController {
 		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption, toServerFilter);
 		messageToServer(toServer);
 
+	}
+
+	@Override
+	public StageSupervisorController getController() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 }

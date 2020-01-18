@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+import Controllers.EstimatorController;
 import Controllers.ExaminerController;
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
+import Entity.EstimatorReport;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import WindowApp.ClientLauncher;
@@ -38,17 +39,19 @@ public class ExaminerForm extends StageSupervisorForm {
 			requirementForTable selectedReq = table.onRequirementClicked(event);
 			if (selectedReq == null)
 				return;
-			controller.setSelectedRequest(selectedReq);
-
-			//set details for initiator:
-			location.setText(controller.selectedRequest.getBaseforChange());
-			changeDescription.setText(controller.selectedRequest.getChangeReason());
-			desiredResult.setText(controller.selectedRequest.getComment());
-			constraints.setText(controller.selectedRequest.getSystem());
-			risks.setText(controller.selectedRequest.getSystem());
-			createdDate.setText(controller.selectedRequest.getStartDate().toString());
-			createdBy.setText(controller.selectedRequest.getInitiator().getTheInitiator().getUserName());
-			//end initiator details.
+			ExaminerController.setSelectedRequest(selectedReq);
+			//Estimtor report details:
+			EstimatorReport report = ExaminerController.selectedRequest.getProcessStage().getEstimatorReport();
+			dueTimeEstimate.setText(String.valueOf(report.getTimeEstimate()));
+			location.setText(report.getlocation());
+			changeDescription.setText(report.getChangeDescription());
+			desiredResult.setText(report.getResultingResult());
+			constraints.setText(report.getConstraints());
+			risks.setText(report.getRisks());
+			//End Estimator report details.
+			createdDate.setText(ExaminerController.selectedRequest.getStartDate().toString());
+			createdBy.setText(ExaminerController.selectedRequest.getInitiator().getTheInitiator().getUserName());
+			
 			btnAskForTimeExtension.setDisable(false);
 			switch (selectedReq.getStage().getCurrentSubStage()) {
 				case determiningDueTime:
@@ -70,11 +73,6 @@ public class ExaminerForm extends StageSupervisorForm {
 	    @FXML
 		public void filterRequests(ActionEvent event) {
 	    	controller.filterRequests(((MenuItem) event.getSource()));
-	    }
-
-	    @FXML
-	    void onRequestClicked(ActionEvent event) {
-
 	    }
 
 	    @FXML

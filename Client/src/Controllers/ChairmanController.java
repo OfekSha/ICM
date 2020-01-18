@@ -52,5 +52,10 @@ public class ChairmanController extends StageSupervisorController {
 
 	}
 	}
+
+	@Override
+	public StageSupervisorController getController() {
+		return this;
+	}
 }
 		

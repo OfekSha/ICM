@@ -31,6 +31,9 @@ import java.util.ResourceBundle;
  * <li>TableView<requirementForTable> - tblView</li>
  * <li>TableColumn<requirementForTable, String> - idColumn, messageColumn</li>
  * <li>TableColumn<requirementForTable, Object> - statusColumn, dueTimeColumn</li>
+ * <li>Button - btnSetDueTime, btnAskForTimeExtension</li>
+ * @see popupWindow
+ * @see askExtensionClicked
  * @author Ofek
  *
  */

@@ -41,4 +41,9 @@ public class ExaminerController extends StageSupervisorController {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public StageSupervisorController getController() {
+		return this;
+	}
 }

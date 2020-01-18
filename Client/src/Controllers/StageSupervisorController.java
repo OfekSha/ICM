@@ -17,8 +17,11 @@ public abstract class StageSupervisorController {
 	protected static MenuItem filterSelected; // menu item choose to filter.
 	abstract public void messageFromServer(Object message); // handle server-client message.
 	abstract public void filterRequests(MenuItem menuItem);
+	abstract public StageSupervisorController getController();
+	static public StageSupervisorController controller;
 	public StageSupervisorController(){
 		requests=new ArrayList <ChangeRequest>();
+		controller=getController();
 	}
 	public static void setSelectedRequest(requirementForTable selectedReq) {
 		selectedRequest=getReq(selectedReq);

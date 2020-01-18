@@ -7,8 +7,6 @@ import Entity.InspectorUpdateDescription;
 import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
-import Entity.User;
-import Entity.User.icmPermission;
 import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import GUI.UserForm;
@@ -88,12 +86,6 @@ public class InspectorController extends StageSupervisorController {
 	}
 
 	// function for pop up windows:
-	public static ArrayList<User> informationEngineers;
-
-	public static void getInformationEngineers() {
-		messageToServer(
-				new clientRequestFromServer(requestOptions.getAllUsersByJob, User.collegeStatus.informationEngineer));
-	}
 
 	public static void approveDueTime(boolean approve, ChangeRequest req, String reason) {
 		InspectorUpdateDescription report;
@@ -111,30 +103,6 @@ public class InspectorController extends StageSupervisorController {
 		}
 		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
 	}
-
-	public static void changeRole(ChangeRequest req, User user) {
-		req.getProcessStage().newStageSupervisor(user); // set user to be supervisor
-		req.getProcessStage().setCurrentSubStage(subStages.determiningDueTime); // next sub stage
-		switch (req.getProcessStage().getCurrentStage()) {
-		// give permission to user
-		case meaningEvaluation:
-			user.getICMPermissions().add(icmPermission.estimator);
-			req.getProcessStage().setStartDate(LocalDate.now());
-			break;
-		case execution:
-			user.getICMPermissions().add(User.icmPermission.executionLeader);
-			break;
-		default:
-			throw new IllegalArgumentException(
-					"Inspector can\"t approve role to stage " + req.getProcessStage().getCurrentStage());
-		}
-		// send request to server
-		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
-		// send user with the new permission to the server.
-		messageToServer(new clientRequestFromServer(requestOptions.updateUser, user));
-
-	}
-
 	public static void approveExtension(boolean approve, ChangeRequest req, String reactionReason) {
 		InspectorUpdateDescription report;
 		if (approve) {
@@ -163,9 +131,6 @@ public class InspectorController extends StageSupervisorController {
 	public void  messageFromServer(Object message) {
 		clientRequestFromServer response = (clientRequestFromServer) message;
 		switch (response.getRequest()) {
-		case getAllUsersByJob: // for windows: approve role.
-			informationEngineers = (ArrayList<User>) ((Object[]) response.getObject())[0];
-			break;
 		case updateChangeRequest: // for windows: approve role,approve due date, and freeze/unfreeze/close
 									// request.
 			filterRequests(filterSelected);
@@ -195,6 +160,11 @@ public class InspectorController extends StageSupervisorController {
 			throw new IllegalArgumentException(
 					"the request " + response.getRequest() + " not implemented in the inspector controller.");
 		}
+	}
+
+	@Override
+	public StageSupervisorController getController() {
+		return this;
 	}
 
 }
