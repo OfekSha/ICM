@@ -14,12 +14,14 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static Entity.ProcessStage.ChargeRequestStages.execution;
 import static Entity.User.collegeStatus.informationEngineer;
 import static Entity.User.icmPermission.*;
-import static Entity.clientRequestFromServer.requestOptions.*;
+import static Entity.clientRequestFromServer.requestOptions.getAllUsersByJob;
+import static Entity.clientRequestFromServer.requestOptions.updateUser;
 
 public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 
@@ -53,16 +55,38 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	private User chosenOne;
 	private userForTable userForTable;
 	public static requirementForTable requirementForTable;
-
+	public static ChangeRequest exceededRequest;
+	public static ArrayList<ChangeRequest> exceededRequests = new ArrayList<>();
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClientLauncher.client.setClientUI(this);
 		getUsers();
-		new ExceedChecker().start();
+		getRequests();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		btnPerformanceReport.setDisable(true);
 		btnWatchDetails.setOnMouseClicked(event -> {
 			requirementForTable = tblRequests.getSelectionModel().getSelectedItem();
-			LaunchReportPopUp("/GUI/PopUpWindows/RequestDetails.fxml");
+			if (requirementForTable != null) {
+				LaunchReportPopUp("/GUI/PopUpWindows/RequestDetails.fxml");
+			}
 		});
+
+		changeRequests.forEach(req -> {
+			ProcessStage processStage = req.getProcessStage();
+			if (processStage.getDueDate() != null
+					&& LocalDate.now().isAfter(processStage.getDueDate())
+					&& processStage.getCurrentStage().equals(execution)) {
+				exceededRequests.add(req);
+			}
+		});
+
+		if (!exceededRequests.isEmpty() && exceededRequests.size() > 0) {
+			LaunchReportPopUp("/GUI/PopUpWindows/ExceedWarning.fxml");
+		}
 
 		btnActivitiesReport.setOnMouseClicked(event ->
 			LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml"));
@@ -70,10 +94,17 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 		btnDelayReport.setOnMouseClicked(event ->
 			LaunchReportPopUp("/GUI/PopUpWindows/DelayReport.fxml"));
 
-		btnPerformanceReport.setOnMouseClicked(event ->
-			LaunchReportPopUp("/GUI/PopUpWindows/PerformanceReport.fxml"));
+		btnPerformanceReport.setOnMouseClicked(event -> {
+			requirementForTable = tblRequests.getSelectionModel().getSelectedItem();
+			if (requirementForTable != null) {
+				LaunchReportPopUp("/GUI/PopUpWindows/PerformanceReport.fxml");
+			}
+		});
 
-		tblRequests.setOnMouseClicked(e -> btnRefresh.setDisable(false));
+		tblRequests.setOnMouseClicked(e -> {
+			btnRefresh.setDisable(false);
+			btnPerformanceReport.setDisable(false);
+		});
 		activeTab();
 	}
 
@@ -88,22 +119,18 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	public void activeTab() {
 		switch (tpITDeptManager.getSelectionModel().getSelectedItem().getId()) {
 			case "tabCommitteeAccredit":
-				btnRefresh.setOnMouseClicked(event -> {
-					btnWatchDetails.setDisable(true);
-					initCommitteeAccredit();
-				});
+				btnRefresh.setOnMouseClicked(event -> initCommitteeAccredit());
 				initCommitteeAccredit();
 				break;
 			case "tabITDeptPermissions":
 				btnRefresh.setOnMouseClicked(event -> {
-					btnWatchDetails.setDisable(true);
 					initITDeptPermissions();
 				});
 				initITDeptPermissions();
 				break;
 			case "tabViewRequests":
 				btnRefresh.setOnMouseClicked(event -> {
-					btnWatchDetails.setDisable(true);
+
 					initViewRequests();
 				});
 				initViewRequests();
@@ -114,6 +141,8 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	private void initCommitteeAccredit() {
 		userTableView = new UserTableView(tblViewUsers, colFirstName1,
 				colLastName1, colEmail1, colPermissions1);
+		btnPerformanceReport.setDisable(true);
+		btnWatchDetails.setDisable(true);
 		btnInspector.setDisable(true);
 		btnChairman.setDisable(true);
 		btnMember1.setDisable(true);
@@ -219,6 +248,7 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 		cbExaminer.setDisable(true);
 		cbEstimator.setDisable(true);
 		cbExecLeader.setDisable(true);
+		btnWatchDetails.setDisable(true);
 		btnSetPermissions.setDisable(true);
 
 		tblViewEngineers.setOnMouseClicked(event -> {
@@ -277,6 +307,8 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	 * TableColumn<requirementForTable, String> colDueTime;
 	 */
 	private void initViewRequests() {
+		btnWatchDetails.setDisable(true);
+		btnPerformanceReport.setDisable(true);
 		tblRequests.getItems().clear();
 		RequestTableView requestTableView = new RequestTableView(tblRequests, colID, colStatus,
 				colStage, colDueTime, colSystem, colInitiator, colStartDate);
@@ -299,32 +331,5 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	private void sendUpdateRequest() {
 		clientRequestFromServer newRequest = new clientRequestFromServer(updateUser, chosenOne);
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
-	}
-
-	private class ExceedChecker extends Thread {
-		public void run() {
-			launched = true;
-			try {
-				while (launched) {
-					getRequests();
-					Thread.sleep(10000);
-					changeRequests.forEach(req -> {
-						ProcessStage processStage = req.getProcessStage();
-						if (processStage.getDueDate() != null
-								&& LocalDate.now().isAfter(processStage.getDueDate())
-								&& processStage.getCurrentStage().equals(execution)) {
-							alertWindowLauncher(Alert.AlertType.WARNING,
-									"Requested time is exceed!",
-									"Request #" + req.getRequestID() +
-											"should've been finished before " + req.getProcessStage().getDueDate(),
-									"Due time of request is exceed but it still in process");
-						}
-					});
-				}
-			} catch (Exception e) {
-				System.out.println("Exceed check thread is down!");
-				e.printStackTrace();
-			}
-		}
 	}
 }

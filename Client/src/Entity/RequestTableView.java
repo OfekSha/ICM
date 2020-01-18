@@ -73,6 +73,14 @@ public class RequestTableView {
 
 	public RequestTableView(TableView<requirementForTable> tblViewRequests,
 							TableColumn<requirementForTable, String> columnId,
+							TableColumn<requirementForTable, Object> columnDueTime) {
+		this.tblViewRequests = tblViewRequests;
+		this.columnId = columnId;
+		this.columnDueTime = columnDueTime;
+	}
+
+	public RequestTableView(TableView<requirementForTable> tblViewRequests,
+							TableColumn<requirementForTable, String> columnId,
 							TableColumn<requirementForTable, Object> columnStatus,
 							TableColumn<requirementForTable, Object> columnDueTime) {
 		this.tblViewRequests = tblViewRequests;
