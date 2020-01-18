@@ -146,8 +146,8 @@
                   <HBox alignment="CENTER" prefHeight="33.0" prefWidth="816.0" spacing="10.0">
                      <children>
                         <Button fx:id="btnSetDueTime" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#setDueTimeClicked" text="Set Due Time" />
-                        <Button fx:id="btnApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#writeReportClicked" text="Approve" />
-                        <Button fx:id="btnFailed" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#writeReportClicked" text="Failed" />
+                        <Button fx:id="btnApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#Approve" text="Approve" />
+                        <Button fx:id="btnFailed" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#FailClicked" text="Failed" />
                         <Button fx:id="btnAskForTimeExtension" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#askExtensionClicked" text="Ask For Time Extension" />
                      </children>
                   </HBox>

@@ -59,10 +59,7 @@ public class InspectorController extends StageSupervisorController {
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndSubStageOnly;
 			break;
 		case "Waiting for close":
-			toServerFilter = new Object[2];
-			((Object[]) toServerFilter)[0] = ChargeRequestStages.closure; // the stage
-			((Object[]) toServerFilter)[1] = ChangeRequestStatus.ongoing; // the status
-			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStageOnly;
+			toServerOption = requestOptions.getAll;
 			break;
 		}
 		clientRequestFromServer toServer = new clientRequestFromServer(toServerOption, toServerFilter);
@@ -131,13 +128,24 @@ public class InspectorController extends StageSupervisorController {
 	public void  messageFromServer(Object message) {
 		clientRequestFromServer response = (clientRequestFromServer) message;
 		switch (response.getRequest()) {
+		case getAll:
+			requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
+			if (filterSelected.getText().contains("Waiting for close")) { // get just the closure stages.
+				ArrayList<ChangeRequest> newList = new ArrayList<>();
+				for (ChangeRequest req : requests) {
+					if (req.getProcessStage().getCurrentStage()==ChargeRequestStages.closure)
+						newList.add(req);
+				}
+				requests = newList;
+			}
+			break;
 		case updateChangeRequest: // for windows: approve role,approve due date, and freeze/unfreeze/close
 									// request.
 			filterRequests(filterSelected);
 			break;
 		case getChangeRequestByStatus:
 			requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
-			if (filterSelected.getText().contains("Waiting for Extension")) {
+			if (filterSelected.getText().contains("Waiting for Extension")) {// get just the request with extension.
 				ArrayList<ChangeRequest> newList = new ArrayList<>();
 				for (ChangeRequest req : requests) {
 					if (req.getProcessStage().getWasThereAnExtensionRequest()[req.getProcessStage().getCurrentStage()

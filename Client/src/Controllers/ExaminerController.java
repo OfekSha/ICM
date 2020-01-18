@@ -55,7 +55,6 @@ public class ExaminerController extends StageSupervisorController {
 					"the request " + response.getRequest() + " not implemented in the examiner controller.");
 		}
 	}
-
 	@Override
 	public StageSupervisorController getController() {
 		return this;
