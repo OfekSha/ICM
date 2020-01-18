@@ -20,8 +20,6 @@ public class ExceedWarning extends AbstractPopUp {
     public void initialize(URL location, ResourceBundle resources) {
         txtWarning.setText("Requests below exceeded their execution time");
         RequestTableView requestTableView = new RequestTableView(tblRequests, colID, colDueTime);
-        exceededRequests.forEach(e -> {
-            tblRequests.getItems().add(new RequestTableView.requirementForTable(e));
-        });
+        exceededRequests.forEach(e -> tblRequests.getItems().add(new RequestTableView.requirementForTable(e)));
     }
 }

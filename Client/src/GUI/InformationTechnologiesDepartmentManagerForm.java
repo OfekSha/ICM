@@ -77,7 +77,7 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 
 		changeRequests.forEach(req -> {
 			ProcessStage processStage = req.getProcessStage();
-			if (processStage.getDueDate() != null
+			if (!exceededRequests.contains(req) && processStage.getDueDate() != null
 					&& LocalDate.now().isAfter(processStage.getDueDate())
 					&& processStage.getCurrentStage().equals(execution)) {
 				exceededRequests.add(req);
