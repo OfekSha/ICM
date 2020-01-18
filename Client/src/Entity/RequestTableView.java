@@ -77,6 +77,7 @@ public class RequestTableView {
 		this.tblViewRequests = tblViewRequests;
 		this.columnId = columnId;
 		this.columnDueTime = columnDueTime;
+		initializeTableView();
 	}
 
 	public RequestTableView(TableView<requirementForTable> tblViewRequests,

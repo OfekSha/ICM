@@ -29,7 +29,7 @@
        <TableColumn fx:id="colDueTime" prefWidth="100.0" text="Due Time" />
      </columns>
    </TableView>
-   <Button fx:id="btnCancel" mnemonicParsing="false" text="OK!">
+   <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#getCancel" text="OK!">
       <VBox.margin>
          <Insets bottom="10.0" />
       </VBox.margin>
