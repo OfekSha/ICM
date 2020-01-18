@@ -1,5 +1,8 @@
 package Controllers;
 
+import java.util.ArrayList;
+
+import Entity.ChangeRequest;
 import Entity.clientRequestFromServer;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -45,6 +48,8 @@ public class ExaminerController extends StageSupervisorController {
 		case updateStatus:
 			filterRequests(filterSelected);
 			break;
+		case getAllChangeRequestWithStatusAndStage:
+			requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
 		default:
 			throw new IllegalArgumentException(
 					"the request " + response.getRequest() + " not implemented in the examiner controller.");

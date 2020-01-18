@@ -18,7 +18,6 @@ import java.util.ResourceBundle;
 /**
  * This class for the form of estimator it is extends of StageSupervisorForm
  * @see StageSupervisorForm
- * @author Ofek
  *
  */
 public class EstimatorMainForm extends StageSupervisorForm {

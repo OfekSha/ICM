@@ -22,6 +22,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 
+/**
+ * This class is for the examiner window.
+ * @see ExaminerController
+ * @see StageSupervisorForm
+ * @see StageSupervisorController
+ *
+ */
 public class ExaminerForm extends StageSupervisorForm {
 
 
@@ -35,7 +42,7 @@ public class ExaminerForm extends StageSupervisorForm {
 	    private Button btnSetDueTime,btnApprove,btnFailed,btnAskForTimeExtension;
 		private RequestTableView table;
 		public void onRequestClicked(MouseEvent event) {
-
+			
 			requirementForTable selectedReq = table.onRequirementClicked(event);
 			if (selectedReq == null)
 				return;
@@ -52,7 +59,7 @@ public class ExaminerForm extends StageSupervisorForm {
 			createdDate.setText(ExaminerController.selectedRequest.getStartDate().toString());
 			createdBy.setText(ExaminerController.selectedRequest.getInitiator().getTheInitiator().getUserName());
 			
-			btnAskForTimeExtension.setDisable(false);
+			btnAskForTimeExtension.setDisable(!(ExaminerController.checkExtension(ExaminerController.selectedRequest)));
 			switch (selectedReq.getStage().getCurrentSubStage()) {
 				case determiningDueTime:
 					btnSetDueTime.setDisable(false);

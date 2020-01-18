@@ -34,8 +34,6 @@ import java.util.ResourceBundle;
  * <li>Button - btnSetDueTime, btnAskForTimeExtension</li>
  * @see popupWindow
  * @see askExtensionClicked
- * @author Ofek
- *
  */
 public abstract class StageSupervisorForm extends UserForm {
 	@FXML
