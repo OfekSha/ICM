@@ -409,16 +409,27 @@ public class mysqlConnection {
 		lessPermissions.add(User.icmPermission.changeControlCommitteeChairman);
 		newUser = new User("changeControlCommitteeChairman", "1234", "FirstName", "LastName", "mail@email.com", collegeStatus.informationEngineer, lessPermissions);
 		initiator = new Initiator(newUser, null);
-
-		// change request stage 2
-		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange2", null);
-		changeRequest.setStatus(ChangeRequestStatus.suspended);
+		ProcessStage stager ;
 		LocalDate[][] startEndArray = new LocalDate[5][3];
 		int[] WasThereAnExtensionRequest = new int[5];
 		for (int i = 0; i < 5; i++) {
 			WasThereAnExtensionRequest[i] = 0;
 		}
-		ProcessStage stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+		// change request stage 4
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange4", null);
+		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAllocation, newUser, "test4", "test4", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
+		changeRequest.setStage(stager);
+		changeRequest.setStatus(ChangeRequestStatus.suspended);
+		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
+		changeRequest.updateInitiatorRequest();
+		changeRequest.updateStage();
+		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
+		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+		// change request stage 2
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange2", null);
+		changeRequest.setStatus(ChangeRequestStatus.suspended);
+	
+		 stager = new ProcessStage(ChargeRequestStages.examinationAndDecision, subStages.supervisorAction, newUser, "test2", "test2", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
 		changeRequest.setStage(stager);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
@@ -471,7 +482,8 @@ public class mysqlConnection {
 		changeRequest.updateStage();
 		queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 		queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
-
+		//stage 4
+		
 		//creating inspector
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.icmPermission.inspector);
