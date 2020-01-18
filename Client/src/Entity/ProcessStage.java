@@ -273,8 +273,7 @@ public class ProcessStage implements Serializable {
 	public void setEstimatorReport(EstimatorReport report) {
 		if (report != null) {
 			try {
-				if (StageSupervisor == null)
-					throw new IllegalArgumentException("StageSupervisor cannot be null");
+				
 				report.setReferencedRequest(getRequest());
 				estimatorReport = report;
 
