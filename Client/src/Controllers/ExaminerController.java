@@ -50,6 +50,7 @@ public class ExaminerController extends StageSupervisorController {
 			break;
 		case getAllChangeRequestWithStatusAndStage:
 			requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
+			break;
 		default:
 			throw new IllegalArgumentException(
 					"the request " + response.getRequest() + " not implemented in the examiner controller.");

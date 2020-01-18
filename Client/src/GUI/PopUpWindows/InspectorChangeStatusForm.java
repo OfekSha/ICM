@@ -6,11 +6,16 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+
 import Controllers.InspectorController;
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
+import Entity.Message;
 import Entity.User;
 import Entity.clientRequestFromServer;
+import Entity.clientRequestFromServer.requestOptions;
+import GUI.UserForm;
+import WindowApp.ClientLauncher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -65,6 +70,10 @@ public class InspectorChangeStatusForm extends AbstractPopUp {
 			alert.setHeaderText("email and sms was sent to the user");
 			alert.setContentText("The message is: " +str);
 			alert.showAndWait();
+			Message msgToAnotherClient= new Message(UserForm.user.getUserName(), req.getInitiator().getTheInitiator().getUserName(), str);
+			clientRequestFromServer newRequest =
+					new clientRequestFromServer(requestOptions.alertClient, msgToAnotherClient);
+			ClientLauncher.client.handleMessageFromClientUI(newRequest);
 			break;
 		case freeze:
 			InspectorController.freeze(InspectorController.selectedRequest);
