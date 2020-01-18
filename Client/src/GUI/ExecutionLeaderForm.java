@@ -2,13 +2,13 @@ package GUI;
 
 import Entity.ChangeRequest;
 import Entity.ProcessStage.subStages;
+import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,39 +33,42 @@ public class ExecutionLeaderForm extends UserForm {
 	public TextArea taInitiatorRequest;
 	public TableView<requirementForTable> tblRequests;
 	public TableColumn<requirementForTable, String> colID;
-	public TableColumn<requirementForTable, String> colStatus;
-	public TableColumn<requirementForTable, String> colDueTime;
+	public TableColumn<requirementForTable, Object> colStatus;
+	public TableColumn<requirementForTable, Object> colDueTime;
 
-
+	private RequestTableView requestTableView;
 	private String selectedID;
 	private ChangeRequest changeRequest;
 	private LocalDate currentDueTime;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		ClientLauncher.client.setClientUI(this);
 		initUI();
 	}
 
 	public void initUI() {
         getRequests();
+
+		requestTableView = new RequestTableView(tblRequests, colID, colStatus, colDueTime);
+
 		btnDueTime.setDisable(true);
 		btnApprove.setDisable(true);
 		btnGetExtension.setDisable(true);
+
 		taExaminerReport.clear();
 		taInitiatorRequest.clear();
+
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
 		Platform.runLater(this::setTableRequests);
 	}
 
 	protected void setTableRequests() {
-		tblRequests.getItems().clear();
-		colID.setCellValueFactory(new PropertyValueFactory<>("id"));
-		colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-		colDueTime.setCellValueFactory(new PropertyValueFactory<>("dueTime"));
 		changeRequests.forEach(e -> {
 			if (e.getProcessStage().getCurrentStage().equals(execution) &&
 			e.getProcessStage().getCurrentSubStage().equals(determiningDueTime)) {

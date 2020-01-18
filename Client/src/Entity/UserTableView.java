@@ -8,8 +8,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 
-import static Entity.User.collegeStatus.informationEngineer;
-
 public class UserTableView {
 
     public TableView<userForTable> tblViewUsers;
@@ -40,11 +38,8 @@ public class UserTableView {
      */
     public void setData(ArrayList<User> users) {
         ArrayList<userForTable> usersForTable = new ArrayList<>();
-        /*for (User user : users) {
-            usersForTable.add(new userForTable(user));
-        }*/
         users.forEach(u -> {
-            if (u.getCollegeStatus().equals(informationEngineer)) {
+            if (u.getICMPermissions().size() < 7) {
                 usersForTable.add(new userForTable(u));
             }
         });
@@ -94,8 +89,7 @@ public class UserTableView {
             userName = new SimpleStringProperty(user.getUserName());
             lastName = new SimpleStringProperty(user.getLastName());
             firstName = new SimpleStringProperty(user.getFirstName());
-            //permissions = new SimpleStringProperty(user.getICMPermissionString());
-            permissions = new SimpleStringProperty(user.getUserName());
+            permissions = new SimpleStringProperty(user.getICMPermissionString());
             collegeStatus = new SimpleStringProperty(user.getCollegeStatus().name());
         }
 
