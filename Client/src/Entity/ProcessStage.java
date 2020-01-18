@@ -2,6 +2,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 
 /**
@@ -66,6 +67,21 @@ public class ProcessStage implements Serializable {
 	 * 
 	 */
 	private LocalDate extensionRequestDate ;
+	
+	//--- for Performance report 
+	/** the amount of days added to the request from  going back on stages
+	 * 
+	 */
+	private int timeAddedBecuseOfReturns=0;
+	
+	/**--- for Performance report 
+	 *  the amount of days added to the request from getting extensions
+	 */
+	private int timeAddedFromExtentions=0;
+	//---
+	
+
+
 	/**
 	 * Constructor for client
 	 * 
@@ -106,7 +122,15 @@ public class ProcessStage implements Serializable {
 		this.ExtensionExplanation = ExtensionExplanation;
 	}
 
-	// input methods
+	public void setTimeAddedBecuseOfReturns(int timeAddedBecuseOfReturns) {
+		this.timeAddedBecuseOfReturns = timeAddedBecuseOfReturns;
+	}
+
+
+	public void setTimeAddedFromExtentions(int timeAddedFromExtentions) {
+		this.timeAddedFromExtentions = timeAddedFromExtentions;
+	}
+
 
 	public void setExtensionRequestDate(LocalDate extensionRequestDate) {
 		this.extensionRequestDate=extensionRequestDate;
@@ -118,6 +142,7 @@ public class ProcessStage implements Serializable {
 
 	public void setDueDateExtension(LocalDate dueDateExtension) {
 		this.dueDateExtension[currentStage.ordinal()]=dueDateExtension;
+		timeAddedFromExtentions =+ (int)startEndArray[currentStage.ordinal()][1].until( dueDateExtension, ChronoUnit.DAYS);
 	}
 	public void setAllDueDateExtension(LocalDate[] dueDateExtension) {
 		this.dueDateExtension=dueDateExtension;
@@ -239,7 +264,9 @@ public class ProcessStage implements Serializable {
 		}
 	}// END newStageSupervisor()
 
-	public void setCurrentStage(ChargeRequestStages newStage) { // TODO inforce stage order
+	public void setCurrentStage(ChargeRequestStages newStage) { 
+		if((this.currentStage == ChargeRequestStages.examinationAndDecision && newStage==ChargeRequestStages.meaningEvaluation )||(this.currentStage == ChargeRequestStages.examination && newStage==ChargeRequestStages.execution  ))
+			timeAddedBecuseOfReturns =(int) + startEndArray[currentStage.ordinal()][1].until( dueDateExtension[currentStage.ordinal()], ChronoUnit.DAYS);
 		currentStage = newStage;
 	}
 
@@ -359,6 +386,16 @@ public class ProcessStage implements Serializable {
 	}
 	public LocalDate getExtensionRequestDate() {
 		return extensionRequestDate;
+	}
+
+
+	public int getTimeAddedFromExtentions() {
+		return timeAddedFromExtentions;
+	}
+
+
+	public int getTimeAddedBecuseOfReturns() {
+		return timeAddedBecuseOfReturns;
 	}
 	
 }// END of Stage

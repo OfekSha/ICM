@@ -118,6 +118,8 @@ public class mysqlConnection {
 					"stage3dueDateExtension VARCHAR(45) NULL, " +						//29
 					"stage4dueDateExtension VARCHAR(45) NULL, " +
 					"extensionRequestDate VARCHAR(45) NULL, " +
+					"timeAddedBecuseOfReturns INT NULL, " +//1
+					"timeAddedFromExtentions INT NULL, " +//2
 					"PRIMARY KEY (RequestID));");
 			stmt.execute("CREATE TABLE icm.changerequest (" +
 					"RequestID INT NOT NULL," +
