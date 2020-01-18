@@ -43,7 +43,6 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 		estimator, executionLeader, examiner
 	};
 
-	public static StageSupervisorController controller;
 	public static Role role;
 	public ArrayList<User> informationEngineers;
 	public ArrayList<User> committeeMembers;
@@ -61,18 +60,18 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 		ClientLauncher.client.setClientUI(this);
 		clientRequestFromServer newRequest;
 		switch (role) {
-		case estimator:
+		case estimator: //approve estimator
 			title.setText("Approve Estimator for request " + StageSupervisorController.selectedRequest.getRequestID());
 			newRequest = new clientRequestFromServer(requestOptions.getAllUsersByJob,
 					collegeStatus.informationEngineer);
 			break;
-		case executionLeader:
+		case executionLeader: // approve execution leader
 			title.setText(
 					"Approve Execution Leader for request " + StageSupervisorController.selectedRequest.getRequestID());
 			newRequest = new clientRequestFromServer(requestOptions.getAllUsersByJob,
 					collegeStatus.informationEngineer);
 			break;
-		case examiner:
+		case examiner: //approve examiner.
 			title.setText(
 					"Approve Examiner Leader for request " + StageSupervisorController.selectedRequest.getRequestID());
 			newRequest = new clientRequestFromServer(requestOptions.getUsersByICMPermissions,
@@ -111,7 +110,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 			break;
 		}
 		cmbITMembers.setItems(userList);
-		controller.messageFromServer(message);
+		StageSupervisorController.controller.messageFromServer(message);
 
 	}
 

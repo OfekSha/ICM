@@ -92,7 +92,6 @@ public class EstimatorController extends StageSupervisorController {
 
 	@Override
 	public StageSupervisorController getController() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 

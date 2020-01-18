@@ -85,7 +85,6 @@ public class InspectorForm extends StageSupervisorForm {
 				// need to throw new exception.
 				break;
 		}
-		ApproveRoleForm.controller=controller;
 		popupWindow("/GUI/PopUpWindows/ApproveRole.fxml");
 	}
 

@@ -17,23 +17,7 @@ import java.util.ArrayList;
 
 public class InspectorController extends StageSupervisorController {
 
-	// functions for bottom buttons:
-	private static void changeStatus(ChangeRequest req, ChangeRequestStatus newStatus) {
-		req.setStatus(newStatus);
-		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
-	}
-
-	public static void freeze(ChangeRequest req) {
-		changeStatus(req, ChangeRequestStatus.suspended);
-	}
-
-	public static void unfreeze(ChangeRequest req) {
-		changeStatus(req, ChangeRequestStatus.ongoing);
-	}
-
-	public static void closeRequest(ChangeRequest req) {
-		changeStatus(req, ChangeRequestStatus.closed);
-	}
+	
 
 	// functions for watch button:
 	@Override
@@ -86,7 +70,23 @@ public class InspectorController extends StageSupervisorController {
 	}
 
 	// function for pop up windows:
+	private static void changeStatus(ChangeRequest req, ChangeRequestStatus newStatus) {
+		req.setStatus(newStatus);
+		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, req));
+	}
 
+	public static void freeze(ChangeRequest req) {
+		changeStatus(req, ChangeRequestStatus.suspended);
+	}
+
+	public static void unfreeze(ChangeRequest req) {
+		changeStatus(req, ChangeRequestStatus.ongoing);
+	}
+
+	public static void closeRequest(ChangeRequest req) {
+		req.getProcessStage().setEndDate(LocalDate.now());
+		changeStatus(req, ChangeRequestStatus.closed);
+	}
 	public static void approveDueTime(boolean approve, ChangeRequest req, String reason) {
 		InspectorUpdateDescription report;
 		if (approve) {
