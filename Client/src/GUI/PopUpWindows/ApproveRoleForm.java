@@ -70,7 +70,7 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 			break;
 		case examiner: // approve examiner.
 			title.setText(
-					"Approve Examiner Leader for request " + StageSupervisorController.selectedRequest.getRequestID());
+					"Approve Examiner for request " + StageSupervisorController.selectedRequest.getRequestID());
 			newRequest = new clientRequestFromServer(requestOptions.getUsersByICMPermissions,
 					icmPermission.changeControlCommitteeMember);
 			break;
