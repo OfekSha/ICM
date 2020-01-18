@@ -15,8 +15,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import Controllers.ReportController;
-
 public class mysqlConnection {
 	private static Connection conn;
 	private QueryHandler queryHandler;

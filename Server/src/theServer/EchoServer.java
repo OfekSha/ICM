@@ -17,8 +17,6 @@ import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import Controllers.ReportController;
-
 /**
  * This class overrides some of the methods in the abstract superclass in order
  * to give more functionality to the osf.server.
