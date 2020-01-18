@@ -5,6 +5,7 @@ import Entity.Document;
 import Entity.clientRequestFromServer;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.EstimatorReport;
+import Entity.ProcessStage;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.icmPermission;
@@ -38,29 +39,37 @@ public class EstimatorController extends StageSupervisorController {
 		case updateChangeRequest: // when update done, do refresh.
 			filterRequests(filterSelected);
 			break;
+		case getUsersByICMPermissions: // get chairman
+			chairMan=((ArrayList<User>)((Object[]) response.getObject())[0]).get(0);
+			chairmanStage.newStageSupervisor(chairMan);
+			messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, chairmanStage.getRequest()));
+			
 		default:
 			throw new IllegalArgumentException(
 					"the request " + response.getRequest() + " not implemented in the Estimator controller.");
 		}
 	}
-
+	private User chairMan;
+	private static ProcessStage chairmanStage;
 	// function for request:
 	public static void  setReport(ChangeRequest request, String location, String changeDescription, String desiredResult,
 			String constraints, String risks,String dueDaysEstimate) {
+		chairmanStage=request.getProcessStage();
+		messageToServer(new clientRequestFromServer(requestOptions.getUsersByICMPermissions, icmPermission.changeControlCommitteeChairman));
 		EstimatorReport report = new EstimatorReport(UserForm.user, location, changeDescription, desiredResult,
 				constraints, risks, Integer.valueOf(dueDaysEstimate));
-		request.getProcessStage().setEstimatorReport(report); // set new report for request.
-		request.getProcessStage().setEndDate(LocalDate.now()); //set end date of this stage
-		request.getProcessStage().setCurrentSubStage(subStages.supervisorAction);
-		request.getProcessStage().setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
-		request.getProcessStage().setStartDate(LocalDate.now()); //start next stage is now.
-		request.getProcessStage().setDueDate(LocalDate.now().plusDays(7)); // next stage due date 7 days
+		chairmanStage.setEstimatorReport(report); // set new report for request.
+		chairmanStage.setEndDate(LocalDate.now()); //set end date of this stage
+		chairmanStage.setCurrentSubStage(subStages.supervisorAction);
+		chairmanStage.setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
+		chairmanStage.setStartDate(LocalDate.now()); //start next stage is now.
+		chairmanStage.setDueDate(LocalDate.now().plusDays(7)); // next stage due date 7 days
+		chairmanStage.newStageSupervisor(null);
 		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 		// remove permission
-		User myUser=UserForm.user;
-		Object[] objToServer= {myUser,icmPermission.estimator};
-		messageToServer(new clientRequestFromServer(requestOptions.removeUserIcmPermission, objToServer));
-		
+				User myUser=UserForm.user;
+				Object[] objToServer= {myUser,icmPermission.estimator};
+				messageToServer(new clientRequestFromServer(requestOptions.removeUserIcmPermission, objToServer));
 	}
 
 	// end functions for request.

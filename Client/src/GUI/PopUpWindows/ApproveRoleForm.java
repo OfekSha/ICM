@@ -120,14 +120,17 @@ public class ApproveRoleForm extends AbstractPopUp implements IcmForm {
 	public static void changeRole(User user) {
 		processStage.newStageSupervisor(user); // set user to be supervisor
 		processStage.setCurrentSubStage(subStages.determiningDueTime); // next sub stage
-		switch (processStage.getCurrentStage()) {
+		switch (role) {
 		// give permission to user
-		case meaningEvaluation:
+		case estimator:
 			user.getICMPermissions().add(icmPermission.estimator);
 			processStage.setStartDate(LocalDate.now());
 			break;
-		case execution:
+		case executionLeader:
 			user.getICMPermissions().add(User.icmPermission.executionLeader);
+			break;
+		case examiner:
+			user.getICMPermissions().add(User.icmPermission.examiner);
 			break;
 		default:
 			throw new IllegalArgumentException(" can\"t approve role to stage " + processStage.getCurrentStage());
