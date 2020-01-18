@@ -1,6 +1,5 @@
 package theServer;
 import Entity.*;
-import Entity.ActivitiesReport.reportScope;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.InspectorUpdateDescription.inspectorUpdateKind;
 import Entity.ProcessStage.ChargeRequestStages;
@@ -8,6 +7,8 @@ import Entity.ProcessStage.subStages;
 import Entity.User.collegeStatus;
 import Entity.User.icmPermission;
 import queryHandler.QueryHandler;
+import reporting.ReportController;
+import reporting.ReportController.reportScope;
 import theServer.ServerTesting.whatHappened;
 
 import java.sql.*;
@@ -315,6 +316,8 @@ public class mysqlConnection {
 			newUser = new User("estimator", "1234", "Mrs.", "Estimator", "estimator@email.com", collegeStatus.informationEngineer, lessPermissions);
 			Object[] tt=tes.testifUserIcmPermissionCanBeAdded(newUser, icmPermission.executionLeader,queryHandler.getChangeRequestQuerys().getChangeRequest(3));
 			
+			
+	
 			System.out.println("New DB ready for use !");
 		}
 	}
@@ -510,12 +513,20 @@ public class mysqlConnection {
 		newUser = new User("examiner", "1234", "FirstName", "LastName", "mail@email.com",
 				collegeStatus.informationEngineer, lessPermissions);
 		Object[] arr2 = tester.testIfUserIcmPermissionCanBeRemoved(newUser, icmPermission.examiner);
-		/// for report testing
 		
-		
+		/// for report testing		
 		start= LocalDate.of(2020, 2, 3);
 		startEndArray[4][2] =LocalDate.of(2020, 12, 25);
+		
+		LocalDate proccesDue ,proccesEnd ;	
 		// change request stage 5
+		// late request
+		proccesDue = LocalDate.of(2020, 2, 25);
+		proccesEnd = LocalDate.of(2020, 2, 28);
+		for(int y=0 ; y<5 ; y++) {
+			startEndArray[y][1]=proccesDue;
+			startEndArray[y][2]=proccesEnd;	
+		}
 				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
 				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
 				changeRequest.setStatus(ChangeRequestStatus.closed);
@@ -526,6 +537,15 @@ public class mysqlConnection {
 				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 				// change request stage 5
+				//late request
+				proccesDue = LocalDate.of(2020, 5, 25);
+				proccesEnd = LocalDate.of(2020, 6, 28);
+				for(int y=0 ; y<5 ; y++) {
+					startEndArray[y][1]=proccesDue;
+					startEndArray[y][2]=proccesEnd;	
+				}
+				
+				
 				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
 				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
 				changeRequest.setStatus(ChangeRequestStatus.closed);
@@ -536,6 +556,14 @@ public class mysqlConnection {
 				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 				// change request stage 5
+				
+				//late request
+				proccesDue = LocalDate.of(2020, 4, 25);
+				proccesEnd = LocalDate.of(2020, 9, 28);
+				for(int y=0 ; y<5 ; y++) {
+					startEndArray[y][1]=proccesDue;
+					startEndArray[y][2]=proccesEnd;	
+				}
 				start= LocalDate.of(2020, 3, 3);
 				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
 				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
@@ -547,6 +575,13 @@ public class mysqlConnection {
 				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 				// change request stage 5
+				// not late request
+				proccesDue = LocalDate.of(2020, 4, 25);
+				proccesEnd = LocalDate.of(2020, 4, 22);
+				for(int y=0 ; y<5 ; y++) {
+					startEndArray[y][1]=proccesDue;
+					startEndArray[y][2]=proccesEnd;	
+				}
 				start= LocalDate.of(2020, 4, 3);
 				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
 				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
@@ -557,6 +592,13 @@ public class mysqlConnection {
 				changeRequest.updateStage();
 				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
+				// not late request
+				proccesDue = LocalDate.of(2020, 5, 25);
+				proccesEnd = LocalDate.of(2020, 4, 22);
+				for(int y=0 ; y<5 ; y++) {
+					startEndArray[y][1]=proccesDue;
+					startEndArray[y][2]=proccesEnd;	
+				}
 				// change request stage 5
 				start= LocalDate.of(2020, 5, 13);
 				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
@@ -569,6 +611,8 @@ public class mysqlConnection {
 				queryHandler.getInitiatorQuerys().insertInitiator(changeRequest.getInitiator());
 				queryHandler.getProccesStageQuerys().InsertProcessStage(changeRequest, changeRequest.getProcessStage());
 				// change request stage 5
+				// were don with late stuff 
+				startEndArray = new LocalDate[5][3];
 				start= LocalDate.of(2020, 5, 26);
 				changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange5", null);
 				stager = new ProcessStage(ChargeRequestStages.closure, subStages.supervisorAction, newUser, "test5", "test5", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
@@ -649,5 +693,9 @@ public class mysqlConnection {
 		 start = LocalDate.of(2020, 3, 1);
 		ActivitiesReport d =cont.creatActivitiesReport(start,end,reportScope.months);
 		queryHandler.getActivitiesReportQuerys().InsertActivitiesReport(d);
+		
+		DelayReport m= cont.createDelayReport(reportScope.months);
+		
+		
 	} //END of  addActivitiesReport
 }//END of mysqlConnection

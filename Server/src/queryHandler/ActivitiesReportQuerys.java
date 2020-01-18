@@ -11,9 +11,9 @@ import java.util.Arrays;
 import com.mysql.cj.x.protobuf.MysqlxNotice.Frame.Scope;
 
 import Entity.ActivitiesReport;
-import Entity.ActivitiesReport.reportScope;
 import Entity.EstimatorReport;
 import Entity.User;
+import reporting.ReportController.reportScope;
 
 /** * concentrates  all querys  for the tables:  activitiesreport 
 

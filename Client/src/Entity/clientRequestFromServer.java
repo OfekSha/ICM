@@ -31,8 +31,8 @@ public class clientRequestFromServer implements Serializable {
         createNewActivitiesReport, // Create a new activity report 
         getAllActivitiesReports,	// get all activity reports in server
         getAllMessges, //  geting all messeges for client 
-        addUserIcmPermission// addes icmPermission for user while testing if can be done
-        
+        addUserIcmPermission,// addes icmPermission for user while testing if can be done
+        getDelayReport// returns a DelayReport
         
 
     }

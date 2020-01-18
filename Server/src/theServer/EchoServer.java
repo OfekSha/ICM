@@ -1,6 +1,5 @@
 package theServer;
 import Entity.*;
-import Entity.ActivitiesReport.reportScope;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
@@ -9,6 +8,8 @@ import Entity.User.icmPermission;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import queryHandler.QueryHandler;
+import reporting.ReportController;
+import reporting.ReportController.reportScope;
 import theServer.ServerTesting.whatHappened;
 
 import java.io.IOException;
@@ -262,6 +263,10 @@ public class EchoServer extends AbstractServer {
 				case addUserIcmPermission:
 					objectArray = (Object[]) request.getObject();
 					sendBackObject = tester.testifUserIcmPermissionCanBeAdded((User) objectArray[0], (icmPermission) objectArray[1],(ChangeRequest)objectArray[2]);
+					break;
+				case getDelayReport: 
+					sendBackObject=reportController.createDelayReport( (reportScope) request.getObject());
+					break;
 				default:
 					throw new IllegalArgumentException("the request " + request + " not implemented in the osf.server.");
 			}

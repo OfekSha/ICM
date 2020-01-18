@@ -3,12 +3,10 @@ package Entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import reporting.ReportController.reportScope;
+
 public class ActivitiesReport implements Serializable {
-public enum reportScope{
-	
-	months,
-	dayOfweek, dayOfmonth
-}
+
 
 
 private int ID ;
@@ -26,12 +24,24 @@ private reportScope chosenScope ;
 	 * <p>[2] the number of ongoing requests
 	 */
 	private double[] ongoingRequests = new double[3];
+	/**  Frequency Distribution  for  ongoing Requests<p>
+	 * depending on the report Scope chosen:<p>
+	 *  <li>dayOfmonth : [0]-[30] - each containing the amount of  requests created that [day-1] which are ongoing </li>
+	 *  <li>dayOfweek:[0]-[6] - each containing the amount of  requests created that [day of the week-1] which are ongoing </li>
+	 *  <li>months:[0]-[11] - each containing the amount of  requests created that [month-1] which are ongoing</li>
+	 */
 	private int[] ongoingRequestsFrequencyDistribution;
 	/**
 	 * [0] the median of the suspended requests <p>[1] the Standard Deviation of the
 	 * suspended requests<p>[2] the number of suspended requests
 	 */
 	private double[] suspendedRequests = new double[3];
+	/**  Frequency Distribution  for  suspended Requests<p>
+	 * depending on the report Scope chosen:<p>
+	 *  <li>dayOfmonth : [0]-[30] - each containing the amount of  requests created that [day-1] which are suspended </li>
+	 *  <li>dayOfweek:[0]-[6] - each containing the amount of  requests created that [day of the week-1] which are suspended </li>
+	 *  <li>months:[0]-[11] - each containing the amount of  requests created that [month-1] which are suspended</li>
+	 */
 	private int[] suspendedRequestsFrequencyDistribution;
 
 	/**
@@ -39,6 +49,12 @@ private reportScope chosenScope ;
 	 * closed requests<p>[2] the number of closed requests
 	 */
 	private double[] closedRequests = new double[3];
+	/**  Frequency Distribution  for  closed Requests<p>
+	 * depending on the report Scope chosen:<p>
+	 *  <li>dayOfmonth : [0]-[30] - each containing the amount of  requests created that [day-1] which are closed </li>
+	 *  <li>dayOfweek:[0]-[6] - each containing the amount of  requests created that [day of the week-1] which are closed </li>
+	 *  <li>months:[0]-[11] - each containing the amount of  requests created that [month-1] which are closed</li>
+	 */
 	private int[] closedRequestsFrequencyDistribution;
 
 	/**
@@ -46,6 +62,12 @@ private reportScope chosenScope ;
 	 * Rejected requests<p>[2] the number of Rejected requests
 	 */
 	private double[] rejectedRequests = new double[3];
+	/**  Frequency Distribution  for  rejected Requests<p>
+	 * depending on the report Scope chosen:<p>
+	 *  <li>dayOfmonth : [0]-[30] - each containing the amount of  requests created that [day-1] which are rejected </li>
+	 *  <li>dayOfweek:[0]-[6] - each containing the amount of  requests created that [day of the week-1] which are rejected </li>
+	 *  <li>months:[0]-[11] - each containing the amount of  requests created that [month-1] which are rejected</li>
+	 */
 	private int[] rejectedRequestsFrequencyDistribution;
 
 	/**
@@ -53,6 +75,15 @@ private reportScope chosenScope ;
 	 * Deviation of the Days it took to finish the request<p>[2] the number of  days it took to finish
 	 */
 	private double[] treatmentDays = new double[3];
+	/**  Frequency Distribution  for  the amount of time it took to work on a request <p>
+	 * 	if the request has ended then from the time it began to the time it ended<p>
+	 * 	else from the time it began  until today
+	 *
+	 * depending on the report Scope chosen:<p>
+	 *  <li>dayOfmonth : [0]-[30] - each containing the amount of  time spent working  on the request  created that [day-1] </li>
+	 *  <li>dayOfweek:[0]-[6] - each containing the amount of  time spent working  on the request  created that  [day of the week-1] </li>
+	 *  <li>months:[0]-[11] - each containing the amount of  time spent working  on the request  created that [month-1]  </li>
+	 */
 	private int[] treatmentDaysFrequencyDistribution;
 
 	

@@ -111,6 +111,11 @@ public class ProcessStage implements Serializable {
 	public void setExtensionRequestDate(LocalDate extensionRequestDate) {
 		this.extensionRequestDate=extensionRequestDate;
 	}
+	public void setStartEndArray(LocalDate[][] startEndArray) {
+		this.startEndArray = startEndArray;
+	}
+
+
 	public void setDueDateExtension(LocalDate dueDateExtension) {
 		this.dueDateExtension[currentStage.ordinal()]=dueDateExtension;
 	}
