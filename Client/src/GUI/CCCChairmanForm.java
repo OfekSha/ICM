@@ -12,6 +12,7 @@ import Controllers.EstimatorController;
 import Controllers.ExaminerController;
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
+import Entity.EstimatorReport;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
 import WindowApp.ClientLauncher;
@@ -158,7 +159,7 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     
     @FXML
     void setExaminer(ActionEvent event) throws IOException {
-    	//popupWindow("/GUI/PopUpWindows/ApproveRole.fxml"); not sure
+    	popupWindow("/GUI/PopUpWindows/ApproveRole.fxml"); //not sure
     	
     }
 
@@ -172,14 +173,15 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 	    	requirementForTable selectedReq = table.onRequirementClicked(event);
 			if (selectedReq == null)
 				return;
-			controller.setSelectedRequest(selectedReq);
-
-			//set details for initiator:
-			location.setText(controller.selectedRequest.getBaseforChange());
-			changeDescription.setText(controller.selectedRequest.getChangeReason());
-			desiredResult.setText(controller.selectedRequest.getComment());
-			constraints.setText(controller.selectedRequest.getSystem());
-			risks.setText(controller.selectedRequest.getSystem());
+			ExaminerController.setSelectedRequest(selectedReq);
+			//Estimtor report details:
+			EstimatorReport report = ExaminerController.selectedRequest.getProcessStage().getEstimatorReport();
+			dueTimeEstimate.setText(String.valueOf(report.getTimeEstimate()));
+			location.setText(report.getlocation());
+			changeDescription.setText(report.getChangeDescription());
+			desiredResult.setText(report.getResultingResult());
+			constraints.setText(report.getConstraints());
+			risks.setText(report.getRisks());
 			createdDate.setText(controller.selectedRequest.getStartDate().toString());
 			createdBy.setText(controller.selectedRequest.getInitiator().getTheInitiator().getUserName());
 			//end initiator details.
@@ -225,7 +227,6 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
 
 	@Override
 	public ChairmanController getController() {
-		// TODO Auto-generated method stub
 		return new ChairmanController();
 	}
 
