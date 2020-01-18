@@ -710,6 +710,5 @@ public class mysqlConnection {
 		
 		DelayReport m= cont.createDelayReport(reportScope.months);
 		
-		
 	} //END of  addActivitiesReport
 }//END of mysqlConnection

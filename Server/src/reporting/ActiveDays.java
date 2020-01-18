@@ -16,11 +16,13 @@ public class ActiveDays implements FrequencyDistributionKind {
 	@Override
 	public int addToDistribution(ChangeRequest request) {
 		int days = 0;
-		LocalDate start = request.getStartDate();
-		LocalDate end = (request.getProcessStage().getDates())[4][2];
-		if (end == null)
-			end = LocalDate.now();
-		days = (int) start.until(end, ChronoUnit.DAYS);
+		LocalDate[][] dates = request.getProcessStage().getDates();
+		for (int i = 0; i < 5; i++) {
+			if(dates[i][1]==null) continue;
+			if(dates[i][2] != null) 
+			days =+ (int) dates[i][1].until( dates[i][2], ChronoUnit.DAYS);
+			else  days =+ (int) dates[i][1].until( LocalDate.now(), ChronoUnit.DAYS);
+		}		
 		return days;
 	}
 
