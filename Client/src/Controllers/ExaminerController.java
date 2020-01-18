@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Entity.ChangeRequest;
@@ -59,5 +60,14 @@ public class ExaminerController extends StageSupervisorController {
 	@Override
 	public StageSupervisorController getController() {
 		return this;
+	}
+	public static void Approve(){
+		selectedRequest.getProcessStage().setEndDate(LocalDate.now());
+		selectedRequest.getProcessStage().setCurrentStage(ChargeRequestStages.closure);
+		selectedRequest.getProcessStage().setCurrentSubStage(subStages.supervisorAllocation);
+		selectedRequest.getProcessStage().setStartDate(LocalDate.now());
+		selectedRequest.getProcessStage().newStageSupervisor(null);
+		clientRequestFromServer toServr= new clientRequestFromServer(requestOptions.updateChangeRequest,selectedRequest);
+		messageToServer(toServr);
 	}
 }

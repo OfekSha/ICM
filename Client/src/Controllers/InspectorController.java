@@ -129,7 +129,7 @@ public class InspectorController extends StageSupervisorController {
 		clientRequestFromServer response = (clientRequestFromServer) message;
 		switch (response.getRequest()) {
 		case getAll:
-			requests = (ArrayList<ChangeRequest>) ((Object[]) response.getObject())[0];
+			requests = (ArrayList<ChangeRequest>) response.getObject();
 			if (filterSelected.getText().contains("Waiting for close")) { // get just the closure stages.
 				ArrayList<ChangeRequest> newList = new ArrayList<>();
 				for (ChangeRequest req : requests) {

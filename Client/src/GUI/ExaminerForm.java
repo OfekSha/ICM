@@ -2,9 +2,10 @@ package GUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+import Controllers.ChairmanController;
 import Controllers.ExaminerController;
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
@@ -15,10 +16,13 @@ import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 
 
@@ -79,10 +83,11 @@ public class ExaminerForm extends StageSupervisorForm {
 					break;
 			}
 		}
-
+		private MenuItem filterSelected;
 	    @FXML
 		public void filterRequests(ActionEvent event) {
-	    	controller.filterRequests(((MenuItem) event.getSource()));
+	    	filterSelected=((MenuItem) event.getSource());
+	    	controller.filterRequests(filterSelected);
 	    }
 
 	    @FXML
@@ -101,7 +106,19 @@ public class ExaminerForm extends StageSupervisorForm {
 	    }
 	    @FXML
 	    void Approve(ActionEvent event) {
-	    	
+	    	Alert alert = new Alert(AlertType.CONFIRMATION);
+	    	alert.setTitle("WARNING");
+	    	alert.setHeaderText("Are You Sure You Want To approve exam of execution of The Request?");
+	    	alert.setContentText("Approving will Close The Request");
+
+	    	Optional<ButtonType> result = alert.showAndWait();
+	    	if (result.get() == ButtonType.OK){
+	    		ExaminerController.Approve();
+	    		controller.filterRequests(filterSelected);
+	    	} else {
+	    	   
+	    	}
+
 	    }
 
 	@Override
