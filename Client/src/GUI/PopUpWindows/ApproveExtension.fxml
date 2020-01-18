@@ -9,35 +9,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" spacing="15.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.ApproveExtensionController">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.ApproveExtensionController">
          <Label fx:id="title" text="Do you approve extension?" textAlignment="CENTER" textFill="WHITE">
             <font>
-               <Font size="14.0" />
+               <Font size="18.0" />
             </font>
          </Label>
-   <HBox prefHeight="184.0" prefWidth="441.0">
-      <children>
-         <VBox prefHeight="181.0" prefWidth="297.0">
-            <children>
-               <Label text="Extension explanation:" textFill="WHITE" />
-               <TextArea fx:id="extensionExplanation" editable="false" prefHeight="200.0" prefWidth="200.0" />
-            </children>
-         </VBox>
-         <VBox prefHeight="181.0" prefWidth="301.0">
-            <children>
-               <Label text="Your reason to your reaction:" textFill="WHITE" />
-               <TextArea fx:id="reactionReason" prefHeight="200.0" prefWidth="200.0" />
-            </children>
-         </VBox>
-      </children>
+   <HBox alignment="CENTER" fillHeight="false" spacing="10.0">
+         <Label alignment="TOP_LEFT" contentDisplay="BOTTOM" text="Extension explanation:" textFill="WHITE">
+            <graphic>
+               <TextArea fx:id="extensionExplanation" editable="false" prefHeight="160.0" prefWidth="230.0" />
+            </graphic>
+         </Label>
+         <Label alignment="TOP_LEFT" contentDisplay="BOTTOM" text="Your reason to your reaction:" textFill="WHITE">
+            <graphic>
+               <TextArea fx:id="reactionReason" prefHeight="160.0" prefWidth="230.0" />
+            </graphic>
+         </Label>
+      <VBox.margin>
+         <Insets left="10.0" right="10.0" />
+      </VBox.margin>
    </HBox>
-   <HBox prefHeight="33.0" prefWidth="341.0">
-      <children>
-         <Label text="Extension due date:" textFill="WHITE" />
+   <Label contentDisplay="RIGHT" text="Extension due date:" textFill="WHITE">
+      <graphic>
          <TextField fx:id="extensionDueDate" editable="false" />
-      </children>
-   </HBox>
-      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="230.0">
+      </graphic>
+   </Label>
+      <HBox alignment="CENTER" fillHeight="false" spacing="50.0">
             <Button fx:id="btnApprove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#getApprove" text="Approve">
                <opaqueInsets>
                   <Insets left="50.0" right="50.0" />
@@ -48,7 +46,7 @@
             </Button>
             <Button fx:id="btnDisapprove" mnemonicParsing="false" onAction="#getDisapprove" text="Disapprove">
          <HBox.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets />
          </HBox.margin></Button>
             <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#getCancel" text="Cancel">
                <opaqueInsets>

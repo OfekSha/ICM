@@ -39,17 +39,48 @@ public class RequestTableView {
 	public TableView<requirementForTable> tblViewRequests;
 	// table columns:
 	public TableColumn<requirementForTable, String> columnId;
-	public TableColumn<requirementForTable, Object> columnStatus;
-	public TableColumn<requirementForTable, Object> columnStage;
-	public TableColumn<requirementForTable, Object> columnDueTime;
 	public TableColumn<requirementForTable, String> columnMessage;
-	public TableColumn<requirementForTable, Object> columnInitiator;
-	public TableColumn<requirementForTable, Object> columnStartDate;
 	public TableColumn<requirementForTable, String> columnSystem;
 	public TableColumn<requirementForTable, String> columnProblemDescription;
 	public TableColumn<requirementForTable, String> columnWhyChange;
 	public TableColumn<requirementForTable, String> columnComment;
+
+	public TableColumn<requirementForTable, Object> columnStatus;
+	public TableColumn<requirementForTable, Object> columnStage;
+	public TableColumn<requirementForTable, Object> columnDueTime;
+	public TableColumn<requirementForTable, Object> columnInitiator;
+	public TableColumn<requirementForTable, Object> columnStartDate;
 	public TableColumn<requirementForTable, Object> columnDoc;
+
+	public RequestTableView(TableView<requirementForTable> tblViewRequests,
+							TableColumn<requirementForTable, String> columnId,
+							TableColumn<requirementForTable, Object> columnStatus,
+							TableColumn<requirementForTable, Object> columnStage,
+							TableColumn<requirementForTable, Object> columnDueTime,
+							TableColumn<requirementForTable, String> columnSystem,
+							TableColumn<requirementForTable, Object> columnInitiator,
+							TableColumn<requirementForTable, Object> columnStartDate) {
+		this.tblViewRequests = tblViewRequests;
+		this.columnId = columnId;
+		this.columnSystem = columnSystem;
+		this.columnStatus = columnStatus;
+		this.columnStage = columnStage;
+		this.columnDueTime = columnDueTime;
+		this.columnInitiator = columnInitiator;
+		this.columnStartDate = columnStartDate;
+		initializeTableView();
+	}
+
+	public RequestTableView(TableView<requirementForTable> tblViewRequests,
+							TableColumn<requirementForTable, String> columnId,
+							TableColumn<requirementForTable, Object> columnStatus,
+							TableColumn<requirementForTable, Object> columnDueTime) {
+		this.tblViewRequests = tblViewRequests;
+		this.columnId = columnId;
+		this.columnStatus = columnStatus;
+		this.columnDueTime = columnDueTime;
+		initializeTableView();
+	}
 
 	/**
 	 * Initialize the table and the properties of the columns.<br>
@@ -161,9 +192,6 @@ public class RequestTableView {
 	/**
 	 * 
 	 * Special class for Table View.
-	 * 
-	 * 
-	 *
 	 */
 	public static class requirementForTable {
 		private ChangeRequest originalRequest; // this is the original request before make it adaptable to table view
@@ -183,59 +211,6 @@ public class RequestTableView {
 
 		private SimpleObjectProperty<ArrayList<Document>> doc;
 
-		public String getMessage() {
-			return message.get();
-		}
-
-		public String getId() {
-			return id.get();
-		}
-
-		public ChangeRequestStatus getStatus() {
-			return status.get();
-		}
-
-		public ProcessStage getStage() {
-			return stage.get();
-		}
-
-		public LocalDate getDueTime() {
-			return dueTime.get();
-		}
-
-		//
-		public Initiator getInitiator() {
-			return initiator.get();
-		}
-
-		public LocalDate getStartDate() {
-			return startDate.get();
-		}
-
-		public String getSystem() {
-			return system.get();
-		}
-
-		public String getProblemDescription() {
-			return problemDescription.get();
-		}
-
-		public String getWhyChange() {
-			return whyChange.get();
-		}
-
-		public String getComment() {
-			return comment.get();
-		}
-
-		public ArrayList<Document> getDoc() {
-			return doc.get();
-		}
-
-		public ChangeRequest getOriginalRequest() { // Be careful when changing the original it is not change the table.
-			return originalRequest;
-		}
-
 		/**
 		 * 
 		 * constructor for requirementForTable.
@@ -247,7 +222,7 @@ public class RequestTableView {
 		public requirementForTable(ChangeRequest req) {
 			originalRequest = req;
 			int stageNumber = req.getProcessStage().getCurrentStage().ordinal();
-			id = new SimpleStringProperty(Integer.toString(req.getRequestID()));
+			id = new SimpleStringProperty(String.valueOf(req.getRequestID()));
 			status = new SimpleObjectProperty<>(req.getStatus());
 			message = new SimpleStringProperty("test");
 			stage = new SimpleObjectProperty<>(req.getProcessStage());
@@ -260,6 +235,158 @@ public class RequestTableView {
 			whyChange = new SimpleStringProperty(req.getChangeReason());
 			comment = new SimpleStringProperty(req.getComment());
 			doc = new SimpleObjectProperty<>(req.getDoc());
+		}
+
+		public ChangeRequest getOriginalRequest() {
+			return originalRequest;
+		}
+
+		public void setOriginalRequest(ChangeRequest originalRequest) {
+			this.originalRequest = originalRequest;
+		}
+
+		public String getMessage() {
+			return message.get();
+		}
+
+		public SimpleStringProperty messageProperty() {
+			return message;
+		}
+
+		public void setMessage(String message) {
+			this.message.set(message);
+		}
+
+		public String getId() {
+			return id.get();
+		}
+
+		public SimpleStringProperty idProperty() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id.set(id);
+		}
+
+		public ChangeRequestStatus getStatus() {
+			return status.get();
+		}
+
+		public SimpleObjectProperty<ChangeRequestStatus> statusProperty() {
+			return status;
+		}
+
+		public void setStatus(ChangeRequestStatus status) {
+			this.status.set(status);
+		}
+
+		public ProcessStage getStage() {
+			return stage.get();
+		}
+
+		public SimpleObjectProperty<ProcessStage> stageProperty() {
+			return stage;
+		}
+
+		public void setStage(ProcessStage stage) {
+			this.stage.set(stage);
+		}
+
+		public LocalDate getDueTime() {
+			return dueTime.get();
+		}
+
+		public SimpleObjectProperty<LocalDate> dueTimeProperty() {
+			return dueTime;
+		}
+
+		public void setDueTime(LocalDate dueTime) {
+			this.dueTime.set(dueTime);
+		}
+
+		public Initiator getInitiator() {
+			return initiator.get();
+		}
+
+		public SimpleObjectProperty<Initiator> initiatorProperty() {
+			return initiator;
+		}
+
+		public void setInitiator(Initiator initiator) {
+			this.initiator.set(initiator);
+		}
+
+		public LocalDate getStartDate() {
+			return startDate.get();
+		}
+
+		public SimpleObjectProperty<LocalDate> startDateProperty() {
+			return startDate;
+		}
+
+		public void setStartDate(LocalDate startDate) {
+			this.startDate.set(startDate);
+		}
+
+		public String getSystem() {
+			return system.get();
+		}
+
+		public SimpleStringProperty systemProperty() {
+			return system;
+		}
+
+		public void setSystem(String system) {
+			this.system.set(system);
+		}
+
+		public String getProblemDescription() {
+			return problemDescription.get();
+		}
+
+		public SimpleStringProperty problemDescriptionProperty() {
+			return problemDescription;
+		}
+
+		public void setProblemDescription(String problemDescription) {
+			this.problemDescription.set(problemDescription);
+		}
+
+		public String getWhyChange() {
+			return whyChange.get();
+		}
+
+		public SimpleStringProperty whyChangeProperty() {
+			return whyChange;
+		}
+
+		public void setWhyChange(String whyChange) {
+			this.whyChange.set(whyChange);
+		}
+
+		public String getComment() {
+			return comment.get();
+		}
+
+		public SimpleStringProperty commentProperty() {
+			return comment;
+		}
+
+		public void setComment(String comment) {
+			this.comment.set(comment);
+		}
+
+		public ArrayList<Document> getDoc() {
+			return doc.get();
+		}
+
+		public SimpleObjectProperty<ArrayList<Document>> docProperty() {
+			return doc;
+		}
+
+		public void setDoc(ArrayList<Document> doc) {
+			this.doc.set(doc);
 		}
 	}
 }
