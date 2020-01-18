@@ -233,6 +233,11 @@ public class EchoServer extends AbstractServer {
 				case removeUserIcmPermission:
 					objectArray = (Object[]) request.getObject();
 					sendBackObject = tester.testIfUserIcmPermissionCanBeRemoved((User) objectArray[0], (icmPermission) objectArray[1]);
+					if(((Object[])sendBackObject)[0] ==whatHappened.success)
+						queryHandler.getUserQuerys().updateIcmPermission((User) objectArray[0], (icmPermission) objectArray[1], 0);
+
+
+					break ;
 				case createNewActivitiesReport:
 					objectArray = (Object[]) request.getObject();
 					LocalDate start= (LocalDate) objectArray[0];
@@ -263,6 +268,8 @@ public class EchoServer extends AbstractServer {
 				case addUserIcmPermission:
 					objectArray = (Object[]) request.getObject();
 					sendBackObject = tester.testifUserIcmPermissionCanBeAdded((User) objectArray[0], (icmPermission) objectArray[1],(ChangeRequest)objectArray[2]);
+					if(((Object[])sendBackObject)[0] ==whatHappened.success)
+						queryHandler.getUserQuerys().updateIcmPermission((User) objectArray[0], (icmPermission) objectArray[1], 1);
 					break;
 				case getDelayReport: 
 					sendBackObject=reportController.createDelayReport( (reportScope) request.getObject());
