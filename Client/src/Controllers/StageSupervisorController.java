@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Entity.ChangeRequest;
 import Entity.clientRequestFromServer;
+import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.RequestTableView.requirementForTable;
 import Entity.clientRequestFromServer.requestOptions;
@@ -51,4 +52,5 @@ public abstract class StageSupervisorController {
 	protected static void messageToServer(clientRequestFromServer req) { // send to server request protocol.
 		ClientLauncher.client.handleMessageFromClientUI((Object)req);
 	}
+
 }
