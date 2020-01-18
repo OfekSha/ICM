@@ -2,6 +2,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import reporting.ReportController.reportScope;
 
@@ -207,6 +208,22 @@ private reportScope chosenScope ;
 	public void setID(int iD) {
 		ID = iD;
 	}
+
+	@Override
+	public String toString() {
+		return "ActivitiesReport\n ID=" + ID + ", chosenScope=" + chosenScope + ", startDate=" + startDate + ", endDate="
+				+ endDate + ", \n creationDate=" + creationDate + ", ongoingRequests=" + Arrays.toString(ongoingRequests)
+				+ ",\n ongoingRequestsFrequencyDistribution=" + Arrays.toString(ongoingRequestsFrequencyDistribution)
+				+ ", \n suspendedRequests=" + Arrays.toString(suspendedRequests)
+				+ ",\n suspendedRequestsFrequencyDistribution=" + Arrays.toString(suspendedRequestsFrequencyDistribution)
+				+ ",\n closedRequests=" + Arrays.toString(closedRequests) + ", \nclosedRequestsFrequencyDistribution="
+				+ Arrays.toString(closedRequestsFrequencyDistribution) + ", \nrejectedRequests="
+				+ Arrays.toString(rejectedRequests) + ",\n rejectedRequestsFrequencyDistribution="
+				+ Arrays.toString(rejectedRequestsFrequencyDistribution) + ", \n treatmentDays="
+				+ Arrays.toString(treatmentDays) + ",\n treatmentDaysFrequencyDistribution="
+				+ Arrays.toString(treatmentDaysFrequencyDistribution);
+	}
+	
 	
 	
 }// END of ActivitiesReport

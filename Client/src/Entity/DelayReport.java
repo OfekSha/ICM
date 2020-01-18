@@ -1,5 +1,7 @@
 package Entity;
 
+import java.util.Arrays;
+
 import reporting.ReportController.reportScope;
 
 public class DelayReport     {
@@ -70,6 +72,14 @@ public class DelayReport     {
 	}
 	public void setChosenScope(reportScope chosenScope) {
 		this.chosenScope = chosenScope;
+	}
+	@Override
+	public String toString() {
+		return "DelayReport chosenScope=" + chosenScope + ",\n numOfLateSubmission="
+				+ Arrays.toString(numOfLateSubmission) + ",\n LateSubmissionFrequencyDistribution="
+				+ Arrays.toString(LateSubmissionFrequencyDistribution) + ",\n lengthofLateSubmission="
+				+ Arrays.toString(lengthofLateSubmission) + ",\n lengthofLateSubmissionFrequencyDistribution="
+				+ Arrays.toString(lengthofLateSubmissionFrequencyDistribution);
 	}
 	
 	

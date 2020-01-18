@@ -5,7 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import Entity.ActivitiesReport;
 import Entity.ChangeRequest;
