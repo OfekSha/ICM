@@ -67,13 +67,11 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 		btnActivitiesReport.setOnMouseClicked(event ->
 			LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml"));
 
-		btnDelayReport.setOnMouseClicked(event -> {
-			//LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml");
-		});
+		btnDelayReport.setOnMouseClicked(event ->
+			LaunchReportPopUp("/GUI/PopUpWindows/DelayReport.fxml"));
 
-		btnPerformanceReport.setOnMouseClicked(event -> {
-			//LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml");
-		});
+		btnPerformanceReport.setOnMouseClicked(event ->
+			LaunchReportPopUp("/GUI/PopUpWindows/PerformanceReport.fxml"));
 
 		tblRequests.setOnMouseClicked(e -> btnRefresh.setDisable(false));
 		activeTab();

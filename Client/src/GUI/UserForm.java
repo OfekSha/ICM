@@ -41,6 +41,7 @@ public abstract class UserForm implements IcmForm {
 	static Stage popupWindow;
 	static boolean launched;
 	public static ActivitiesReport activitiesReport;
+	public static DelayReport delayReport;
 
 
 	@FXML
@@ -249,6 +250,9 @@ public abstract class UserForm implements IcmForm {
 				break;
 			case createNewActivitiesReport:
 				activitiesReport = (ActivitiesReport) request.getObject();
+				break;
+			case getDelayReport:
+				delayReport = (DelayReport) request.getObject();
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());
