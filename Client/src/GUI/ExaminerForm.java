@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Controllers.EstimatorController;
+
 import Controllers.ExaminerController;
 import Controllers.StageSupervisorController;
 import Entity.ChangeRequest;
@@ -32,7 +32,7 @@ public class ExaminerForm extends StageSupervisorForm {
 	    private TextField dueTimeEstimate,createdDate,createdBy;
 
 	    @FXML
-	    private Button btnSetDueTime,btnWriteReport,btnAskForTimeExtension;
+	    private Button btnSetDueTime,btnApprove,btnFailed,btnAskForTimeExtension;
 		private RequestTableView table;
 		public void onRequestClicked(MouseEvent event) {
 
@@ -56,15 +56,18 @@ public class ExaminerForm extends StageSupervisorForm {
 			switch (selectedReq.getStage().getCurrentSubStage()) {
 				case determiningDueTime:
 					btnSetDueTime.setDisable(false);
-					btnWriteReport.setDisable(true);
+					btnFailed.setDisable(true);
+					btnApprove.setDisable(true);
 					break;
 				case supervisorAction:
-					btnWriteReport.setDisable(false);
+					btnApprove.setDisable(false);
+					btnFailed.setDisable(false);
 					btnSetDueTime.setDisable(true);
 					break;
 				default:
 					btnAskForTimeExtension.setDisable(true);
-					btnWriteReport.setDisable(true);
+					btnApprove.setDisable(true);
+					btnFailed.setDisable(true);
 					btnSetDueTime.setDisable(true);
 					break;
 			}
@@ -93,7 +96,8 @@ public class ExaminerForm extends StageSupervisorForm {
 
 	@Override
 	public void getFromServer(Object message) {
-		// TODO Auto-generated method stub
+		controller.messageFromServer(message);
+		table.setData(ExaminerController.requests);
 
 	}
 	
@@ -107,7 +111,7 @@ public class ExaminerForm extends StageSupervisorForm {
 	@Override
 	public ChangeRequest getSelectedReq() {
 		
-		return controller.selectedRequest;
+		return ExaminerController.selectedRequest;
 	}
 
 	@Override

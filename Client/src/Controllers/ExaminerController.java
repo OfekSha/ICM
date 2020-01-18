@@ -23,7 +23,7 @@ public class ExaminerController extends StageSupervisorController {
 			((Object[]) toServerFilter)[2] = ChangeRequestStatus.ongoing;
 			toServerOption = requestOptions.getAllChangeRequestWithStatusAndStage;
 			break;
-		case "In need of a Report":
+		case "In need of an exam":
 			toServerFilter = new Object[3];
 			((Object[]) toServerFilter)[0] = ChargeRequestStages.examination;
 			((Object[]) toServerFilter)[1] = subStages.supervisorAction;
@@ -38,8 +38,17 @@ public class ExaminerController extends StageSupervisorController {
 
 	@Override
 	public void messageFromServer(Object message) {
-		// TODO Auto-generated method stub
-
+		clientRequestFromServer response = (clientRequestFromServer) message;
+		switch (response.getRequest()) {
+		case updateProcessStage:
+		case updateChangeRequest:
+		case updateStatus:
+			filterRequests(filterSelected);
+			break;
+		default:
+			throw new IllegalArgumentException(
+					"the request " + response.getRequest() + " not implemented in the examiner controller.");
+		}
 	}
 
 	@Override

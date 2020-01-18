@@ -18,7 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
-
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -101,8 +101,10 @@ public class InspectorForm extends StageSupervisorForm {
 	}
 
 	@FXML
-	public void closeRequest(ActionEvent event) { // @@ TODO: add pop up window.
-
+	public void closeRequest(ActionEvent event) throws IOException {
+		InspectorChangeStatusForm.status=Status.close;
+		InspectorChangeStatusForm.controller=controller;
+		popupWindow("/GUI/PopUpWindows/InspectorChangeStatus.fxml");
 	}
 
 	@FXML

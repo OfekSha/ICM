@@ -69,7 +69,7 @@
                               <MenuButton fx:id="menubtnWatch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="30.0" prefWidth="177.0" text="Filter" textAlignment="CENTER">
                                  <items>
                                     <MenuItem fx:id="DueTimeFilter" mnemonicParsing="false" onAction="#filterRequests" text="No approved due time" />
-                                    <MenuItem fx:id="ReportFilter" mnemonicParsing="false" onAction="#filterRequests" text="In need of a Report" />
+                                    <MenuItem fx:id="ReportFilter" mnemonicParsing="false" onAction="#filterRequests" text="In need of an exam" />
                                  </items>
                                  <font>
                                     <Font size="14.0" />
@@ -146,7 +146,8 @@
                   <HBox alignment="CENTER" prefHeight="33.0" prefWidth="816.0" spacing="10.0">
                      <children>
                         <Button fx:id="btnSetDueTime" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#setDueTimeClicked" text="Set Due Time" />
-                        <Button fx:id="btnWriteReport" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#writeReportClicked" text="Write Report" />
+                        <Button fx:id="btnApprove" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#writeReportClicked" text="Approve" />
+                        <Button fx:id="btnFailed" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#writeReportClicked" text="Failed" />
                         <Button fx:id="btnAskForTimeExtension" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#askExtensionClicked" text="Ask For Time Extension" />
                      </children>
                   </HBox>
