@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static Entity.ChangeRequest.ChangeRequestStatus.ongoing;
 import static Entity.ProcessStage.ChargeRequestStages.examination;
 import static Entity.ProcessStage.ChargeRequestStages.execution;
 import static Entity.ProcessStage.subStages.*;
@@ -69,9 +70,14 @@ public class ExecutionLeaderForm extends UserForm {
 	}
 
 	protected void setTableRequests() {
+		tblRequests.getItems().clear();
+
 		changeRequests.forEach(e -> {
 			if (e.getProcessStage().getCurrentStage().equals(execution) &&
-			e.getProcessStage().getCurrentSubStage().equals(determiningDueTime)) {
+					e.getStatus().equals(ongoing) &&
+					(e.getProcessStage().getCurrentSubStage().equals(determiningDueTime) ||
+					e.getProcessStage().getCurrentSubStage().equals(supervisorAction))
+				) {
 				tblRequests.getItems().add(new requirementForTable(e));
 			}
 		});
@@ -92,8 +98,8 @@ public class ExecutionLeaderForm extends UserForm {
 						processStage = cR.getProcessStage();
 					}
 				});
-				taInitiatorRequest.setText(changeRequest.getProblemDescription());
-				taExaminerReport.setText(changeRequest.getComment());
+				taInitiatorRequest.setText(changeRequest.getProcessStage().getEstimatorReport().toString());
+				taExaminerReport.setText(changeRequest.getProcessStage().getExaminerFailReport());
 
 				currentDueTime = processStage.getDueDate();
 				currentSubStage = processStage.getCurrentSubStage();
@@ -141,13 +147,11 @@ public class ExecutionLeaderForm extends UserForm {
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.isPresent() && result.get() == approveButton) {
-			if (processStage.getCurrentStage().equals(execution)) {
 				processStage.setCurrentStage(examination);
 				processStage.setCurrentSubStage(supervisorAllocation);
 				btnApprove.setDisable(true);
 				btnGetExtension.setDisable(true);
 				sendUpdateForRequest();
-			}
 		}
 	}
 

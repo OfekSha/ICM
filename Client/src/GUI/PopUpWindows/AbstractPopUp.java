@@ -1,12 +1,5 @@
 package GUI.PopUpWindows;
 
-import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
-
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import Controllers.StageSupervisorController;
 import Entity.ProcessStage;
 import Entity.clientRequestFromServer;
 import WindowApp.ClientLauncher;
@@ -16,12 +9,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static Entity.clientRequestFromServer.requestOptions.updateProcessStage;
+
 /**
  * abstract pop up window use as extends to use general buttons and function
  * @see #getCancel
  * @see #btnCancel
  */
-public abstract class AbstractPopUp implements IcmForm{
+public abstract class AbstractPopUp implements IcmForm {
 
 	public static ProcessStage processStage; // the selected process stage to change.
     /**

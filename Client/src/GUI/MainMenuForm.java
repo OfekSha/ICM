@@ -1,6 +1,5 @@
 package GUI;
 
-import Entity.ChangeRequest;
 import Entity.Message;
 import Entity.User;
 import Entity.clientRequestFromServer;
@@ -12,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.ResourceBundle;
@@ -54,14 +52,14 @@ public class MainMenuForm extends UserForm {
 		taMessges.setEditable(false);
 		Object msg = new clientRequestFromServer(requestOptions.changeInLogIn, user);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
-		 msg = new clientRequestFromServer(requestOptions.getAllMessges,null);
+		msg = new clientRequestFromServer(requestOptions.getAllMessges, null);
 		ClientLauncher.client.handleMessageFromClientUI(msg);
-		
+
 		// test  messeges
 		// msg = new clientRequestFromServer(requestOptions.alertClient,new Message(user.getUserName(),"admin","the messege"));
 		//ClientLauncher.client.handleMessageFromClientUI(msg);
 		//
-			
+
 		// access according to Permissions
 		btnInformationTechnologiesDepartmentManager.setDisable(true);
 		btnInspector.setDisable(true);
@@ -93,8 +91,8 @@ public class MainMenuForm extends UserForm {
 					break;
 			}
 		}
-		
-		
+
+
 	} // END of initialize();
 
 	// TODO: Load suitable list for each new form
@@ -103,11 +101,11 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void MakeAChangeRequest(ActionEvent event) throws Exception {
-		 NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/SubmitRequest.fxml", this, true);
 	}
 
 	public void InformationTechnologiesDepartmentManagerMenu(ActionEvent event) throws Exception {
-		 NextWindowLauncher(event, "/GUI/InformationTechnologiesDepartmentManager.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/InformationTechnologiesDepartmentManager.fxml", this, true);
 	}
 
 	public void InspectorMenu(ActionEvent event) throws Exception {
@@ -127,25 +125,25 @@ public class MainMenuForm extends UserForm {
 	}
 
 	public void ChangeControlCommitteeChairmanMenu(ActionEvent event) throws Exception {
-		 NextWindowLauncher(event, "/GUI/CommiteeChairManForm.fxml", this, true);
+		NextWindowLauncher(event, "/GUI/CommiteeChairManForm.fxml", this, true);
 	}
-	
-	
-	
-	
-	@Override public void getFromServer(Object message) { 
-		  // msg is ArrayList of
-		  clientRequestFromServer request = (clientRequestFromServer) message;	 
-		  Object[] objectArray; 
-	  switch (request.getRequest()) 
-	  { 
-	  case getAllMessges: 
-		  ArrayList<Message> messgeList  =(ArrayList<Message>) request.getObject();
-		  if(messgeList != null) {
-	  taMessges.setText(""); for(Message e :messgeList)
-	  taMessges.appendText(e.toString()); } 
-		  break;
-		  } 
-	  }
-	 
+
+
+	@Override
+	public void getFromServer(Object message) {
+		// msg is ArrayList of
+		clientRequestFromServer request = (clientRequestFromServer) message;
+		Object[] objectArray;
+		switch (request.getRequest()) {
+			case getAllMessges:
+				ArrayList<Message> messageList = (ArrayList<Message>) request.getObject();
+				if (messageList != null) {
+					taMessges.setText("");
+					for (Message e : messageList)
+						taMessges.appendText(e.toString());
+				}
+				break;
+		}
+	}
+
 }// END of MainMenuForm

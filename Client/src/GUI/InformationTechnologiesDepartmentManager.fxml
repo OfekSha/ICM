@@ -32,9 +32,12 @@
                   <Insets />
                </VBox.margin>
             </Button>
+            <Button fx:id="btnActivitiesReport" mnemonicParsing="false" prefWidth="180.0" text="Activities Report" />
+            <Button fx:id="btnDelayReport" mnemonicParsing="false" prefWidth="180.0" text="Delay Report" />
+            <Button fx:id="btnPerformanceReport" mnemonicParsing="false" prefWidth="180.0" text="Performance Report" />
             <Button fx:id="btnRefresh" mnemonicParsing="false" prefWidth="180.0" text="Refresh Table">
                <VBox.margin>
-                  <Insets bottom="350.0" />
+                  <Insets bottom="230.0" />
                </VBox.margin>
             </Button>
                 <Button fx:id="btnBack" mnemonicParsing="false" onAction="#MainScene" prefHeight="0.0" prefWidth="180.0" text="Back">
@@ -140,10 +143,6 @@
                            </HBox.margin>
                         </VBox>
                   </HBox>
-                </Tab>
-                <Tab fx:id="tabViewEmployeeLists" text="View employees lists">
-                    <HBox prefHeight="527.0">
-                       </HBox>
                 </Tab>
                 <Tab fx:id="tabViewRequests" text="View Requests">
                   <VBox alignment="TOP_CENTER" fillWidth="false">

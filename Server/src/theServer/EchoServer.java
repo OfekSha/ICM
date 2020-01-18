@@ -214,11 +214,6 @@ public class EchoServer extends AbstractServer {
 						if (testAllClientsForUser(UserInDB))
 							returning[1] = false;
 						else returning[1] = UserInDB.getPassword().equals(tryingToLogInUser.getPassword());
-					/*	if (UserInDB.getPassword().equals(tryingToLogInUser.getPassword()))
-							returning[1] = true;
-						else
-							returning[1] = false;
-					*/
 					}
 					sendBackObject = returning;
 

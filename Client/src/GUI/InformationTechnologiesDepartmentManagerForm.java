@@ -19,15 +19,17 @@ import java.util.ResourceBundle;
 import static Entity.ProcessStage.ChargeRequestStages.execution;
 import static Entity.User.collegeStatus.informationEngineer;
 import static Entity.User.icmPermission.*;
-import static Entity.clientRequestFromServer.requestOptions.getAllUsersByJob;
-import static Entity.clientRequestFromServer.requestOptions.updateUser;
+import static Entity.clientRequestFromServer.requestOptions.*;
 
 public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 
 	@FXML //Main side
-	public TabPane tpITDeptManager;
-	public Button btnWatchDetails;
 	public Button btnRefresh;
+	public Button btnDelayReport;
+	public Button btnWatchDetails;
+	public TabPane tpITDeptManager;
+	public Button btnActivitiesReport;
+	public Button btnPerformanceReport;
 	@FXML //Tab Committee Accredit
 	public Tab tabCommitteeAccredit;
 	public TableView<userForTable> tblViewUsers;
@@ -40,8 +42,6 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	public TableColumn<userForTable, String> colFirstName2, colLastName2, colEmail2, colPermissions2;
 	public Button btnSetPermissions;
 	public CheckBox cbEstimator, cbExecLeader, cbExaminer;
-	@FXML //Tab View Employee Lists
-	public Tab tabViewEmployeeLists;
 	@FXML //Tab View Requests
 	public Tab tabViewRequests;
 	public TableView<requirementForTable> tblRequests;
@@ -50,7 +50,6 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 
 	//Some useful variables
 	private UserTableView userTableView;
-	private RequestTableView requestTableView;
 	private User chosenOne;
 	private userForTable userForTable;
 	public static requirementForTable requirementForTable;
@@ -62,18 +61,34 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 		new ExceedChecker().start();
 		btnWatchDetails.setOnMouseClicked(event -> {
 			requirementForTable = tblRequests.getSelectionModel().getSelectedItem();
-			try {
-				popupWindowLauncher("/GUI/PopUpWindows/RequestDetails.fxml");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			LaunchReportPopUp("/GUI/PopUpWindows/RequestDetails.fxml");
 		});
+
+		btnActivitiesReport.setOnMouseClicked(event ->
+			LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml"));
+
+		btnDelayReport.setOnMouseClicked(event -> {
+			//LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml");
+		});
+
+		btnPerformanceReport.setOnMouseClicked(event -> {
+			//LaunchReportPopUp("/GUI/PopUpWindows/ActivityReport.fxml");
+		});
+
 		tblRequests.setOnMouseClicked(e -> btnRefresh.setDisable(false));
 		activeTab();
 	}
 
+	private void LaunchReportPopUp(String s) {
+		try {
+			popupWindowLauncher(s);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void activeTab() {
-		switch(tpITDeptManager.getSelectionModel().getSelectedItem().getId()) {
+		switch (tpITDeptManager.getSelectionModel().getSelectedItem().getId()) {
 			case "tabCommitteeAccredit":
 				btnRefresh.setOnMouseClicked(event -> {
 					btnWatchDetails.setDisable(true);
@@ -87,13 +102,6 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 					initITDeptPermissions();
 				});
 				initITDeptPermissions();
-				break;
-			case "tabViewEmployeeLists":
-				btnRefresh.setOnMouseClicked(event -> {
-					btnWatchDetails.setDisable(true);
-					initViewEmployeeLists();
-				});
-				initViewEmployeeLists();
 				break;
 			case "tabViewRequests":
 				btnRefresh.setOnMouseClicked(event -> {
@@ -191,6 +199,7 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 			tfMember1.setText(chosenOne.getFullName());
 			chosenOne.addPermission(changeControlCommitteeMember2);
 			sendUpdateRequest();
+
 			activeTab();
 		};
 	}
@@ -257,9 +266,6 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 		});
 	}
 
-	private void initViewEmployeeLists() {
-	}
-
 	/**
 	 * Tab View Requests
 	 * Tab tabViewRequests;
@@ -274,7 +280,7 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 	 */
 	private void initViewRequests() {
 		tblRequests.getItems().clear();
-		requestTableView = new RequestTableView(tblRequests, colID, colStatus,
+		RequestTableView requestTableView = new RequestTableView(tblRequests, colID, colStatus,
 				colStage, colDueTime, colSystem, colInitiator, colStartDate);
 		changeRequests.forEach(e ->	tblRequests.getItems().add(new requirementForTable(e)));
 	}
@@ -297,9 +303,6 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 		ClientLauncher.client.handleMessageFromClientUI(newRequest);
 	}
 
-	public void getUserId() {}
-	public void getRequestId() {}
-
 	private class ExceedChecker extends Thread {
 		public void run() {
 			launched = true;
@@ -312,7 +315,7 @@ public class InformationTechnologiesDepartmentManagerForm extends UserForm {
 						if (processStage.getDueDate() != null
 								&& LocalDate.now().isAfter(processStage.getDueDate())
 								&& processStage.getCurrentStage().equals(execution)) {
-							alertWindowLauncher(Alert.AlertType.ERROR,
+							alertWindowLauncher(Alert.AlertType.WARNING,
 									"Requested time is exceed!",
 									"Request #" + req.getRequestID() +
 											"should've been finished before " + req.getProcessStage().getDueDate(),

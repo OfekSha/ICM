@@ -1,14 +1,10 @@
 package GUI;
 
 import Controllers.DocmentTableForDownloadsController;
-import Entity.ChangeRequest;
+import Entity.*;
 import Entity.ChangeRequest.ChangeRequestStatus;
-import Entity.Document;
-import Entity.Message;
-import Entity.User;
 import Entity.User.collegeStatus;
 import Entity.User.icmPermission;
-import Entity.clientRequestFromServer;
 import Entity.clientRequestFromServer.requestOptions;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
@@ -44,6 +40,8 @@ public abstract class UserForm implements IcmForm {
 	static collegeStatus collegeStatus;
 	static Stage popupWindow;
 	static boolean launched;
+	public static ActivitiesReport activitiesReport;
+
 
 	@FXML
 	public Button btnExit;
@@ -242,12 +240,15 @@ public abstract class UserForm implements IcmForm {
 				DocmentTableForDownloadsController.wakeUpLunchedThread();
 				break;
 			case getAllMessges:
-				ArrayList<Message>  messgeList =(ArrayList<Message>) request.getObject();
+				ArrayList<Message> messgeList =(ArrayList<Message>) request.getObject();
 				if(messgeList != null) {
 					//taMessges.setText("");
 				for(Message e :messgeList) {}
 					//taMessges.appendText(e.toString());
 				}
+				break;
+			case createNewActivitiesReport:
+				activitiesReport = (ActivitiesReport) request.getObject();
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Request From Server Returned: " + request.getObject());

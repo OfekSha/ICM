@@ -103,7 +103,16 @@ public class EstimatorReport implements Serializable {
 	public String getRisks(){
 		return risks;
 	}
-	
-	 
 
+	@Override
+	public String toString() {
+		return 	"Estimator: " + estimator.getFullName() +
+				"\nReportID: " + estimatorReportID +
+				"\nChange Location: " + location +
+				"\nChange Description: " + changeDescription +
+				"\nDesired Result: " + resultingResult +
+				"\nConstraints: " + constraints +
+				"\nRisks: " + risks +
+				"\nEstimate Time: " + timeEstimate;
+	}
 }// END of EstimatorReport class

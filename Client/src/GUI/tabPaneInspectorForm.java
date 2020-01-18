@@ -14,15 +14,15 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class tabPaneInspectorForm    implements Initializable{
+public class tabPaneInspectorForm implements Initializable {
 
 	@FXML
-	private  TabPane tabPane;
+	private TabPane tabPane;
 	/**
 	 * Initiator request information
 	 */
 	@FXML
-	private TextArea baseForChange,requestDetails,requestReason,comment;
+	private TextArea baseForChange, requestDetails, requestReason, comment;
 
 	/**
 	 * Initiator request information
@@ -34,35 +34,35 @@ public class tabPaneInspectorForm    implements Initializable{
 	/**
 	 * Estimator report information
 	 */
-	@FXML 
-	private TextArea location,changeDescription,desiredResult,constraints,risks;
+	@FXML
+	private TextArea location, changeDescription, desiredResult, constraints, risks;
 
 	/**
-	 * Estimator report information 
+	 * Estimator report information
 	 */
 	@FXML
 	private TextField dueTimeEstimate;
 
 	/**
-	 *  start date for each stage
+	 * start date for each stage
 	 */
 	@FXML
-	private TextField start1,start2,start3,start4,start5;
+	private TextField start1, start2, start3, start4, start5;
 	/**
-	 *  end date for each stage
+	 * end date for each stage
 	 */
 	@FXML
-	private TextField end1,end2,end3,end4,end5;
+	private TextField end1, end2, end3, end4, end5;
 	/**
 	 * check if was extension for each stage
 	 */
 	@FXML
-	private CheckBox extension1,extension2,extension3,extension4,extension5;
+	private CheckBox extension1, extension2, extension3, extension4, extension5;
 	/**
 	 * explain for extension for each stage
 	 */
 	@FXML
-	private TextArea explain1,explain2,explain3,explain4,explain5;
+	private TextArea explain1, explain2, explain3, explain4, explain5;
 
 	@FXML
 	public DocumentTableForDownloadsForm DocumentTableController; // the document table with download capability
@@ -87,7 +87,7 @@ public class tabPaneInspectorForm    implements Initializable{
 		}
 		String[] explanations = selectedReq.getStage().getAllExtensionExplanation();
 		LocalDate[][] allDates = selectedReq.getStage().getDates();
-		
+
 		if (selectedReq.getStage().getWasThereAnExtensionRequest()[0] == 2) {
 			start1.setText(allDates[0][0].toString());
 			end1.setText(allDates[0][2].toString());
@@ -122,8 +122,9 @@ public class tabPaneInspectorForm    implements Initializable{
 		// setting up the document table
 		DocumentTableController.onRequirementTableClick(InspectorController.selectedRequest);
 	}
+
 	/**
-	 *  empty all fields 
+	 * empty all fields
 	 */
 	private void resetDetails() {
 		//Estimator report:
@@ -168,7 +169,4 @@ public class tabPaneInspectorForm    implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		resetDetails();
 	}
-
-
-
 }

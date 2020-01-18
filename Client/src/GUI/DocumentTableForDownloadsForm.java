@@ -28,7 +28,7 @@ public class DocumentTableForDownloadsForm {
 	public DocmentTableForDownloadsController controller = new DocmentTableForDownloadsController();
 
 	public void onRequirementTableClick(ChangeRequest selectedRequest) {
-		if (selectedRequest==null) { 
+		if (selectedRequest==null) {
 			tblViewDocuments.setItems(null);
 			return;
 		}

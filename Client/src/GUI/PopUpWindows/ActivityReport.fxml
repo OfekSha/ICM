@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="400.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PopUpWindows.ActivityReport">
+   <VBox alignment="CENTER">
+            <Text fx:id="txtReport" strokeType="OUTSIDE" strokeWidth="0.0" text="Activities Report">
+               <font>
+                  <Font size="24.0" />
+               </font>
+         <VBox.margin>
+            <Insets left="100.0" />
+         </VBox.margin>
+            </Text>
+            <TextArea fx:id="taReport" prefHeight="330.0" prefWidth="300.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </TextArea>
+
+   </VBox>
+   <VBox alignment="CENTER" fillWidth="false" spacing="10.0">
+
+         <Label contentDisplay="BOTTOM" text="Start Date:">
+            <graphic>
+               <DatePicker fx:id="dpStartDate" prefWidth="150.0" />
+            </graphic>
+         </Label>
+         <Label contentDisplay="BOTTOM" text="End Date:">
+            <graphic>
+               <DatePicker fx:id="dpEndDate" prefWidth="150.0" />
+            </graphic>
+         </Label>
+         <Label contentDisplay="BOTTOM" text="Scope:">
+            <graphic>
+               <ComboBox fx:id="cbScope" prefWidth="150.0" />
+            </graphic>
+         </Label>
+      <Button fx:id="btnGetReport" mnemonicParsing="false" prefWidth="150.0" text="Get Report" />
+      <HBox.margin>
+         <Insets top="20.0" />
+      </HBox.margin>
+   </VBox>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</HBox>
