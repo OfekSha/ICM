@@ -236,7 +236,7 @@ public class ProcessStage implements Serializable {
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
-		}
+		}else StageSupervisor=null;
 	}// END newStageSupervisor()
 
 	public void setCurrentStage(ChargeRequestStages newStage) { // TODO inforce stage order
