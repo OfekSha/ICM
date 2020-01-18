@@ -419,7 +419,7 @@ public class mysqlConnection {
 		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange4", null);
 		stager = new ProcessStage(ChargeRequestStages.examination, subStages.supervisorAllocation, newUser, "test4", "test4", startEndArray, WasThereAnExtensionRequest, ExtensionExplanation);
 		changeRequest.setStage(stager);
-		changeRequest.setStatus(ChangeRequestStatus.suspended);
+		changeRequest.setStatus(ChangeRequestStatus.ongoing);
 		changeRequest.setRequestID(queryHandler.getChangeRequestQuerys().InsertChangeRequest(changeRequest));
 		changeRequest.updateInitiatorRequest();
 		changeRequest.updateStage();
