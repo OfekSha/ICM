@@ -15,6 +15,8 @@ import Entity.ChangeRequest;
 import Entity.EstimatorReport;
 import Entity.RequestTableView;
 import Entity.RequestTableView.requirementForTable;
+import GUI.PopUpWindows.ApproveRoleForm;
+import GUI.PopUpWindows.ApproveRoleForm.Role;
 import WindowApp.ClientLauncher;
 import WindowApp.IcmForm;
 import javafx.event.ActionEvent;
@@ -159,7 +161,8 @@ public class CCCChairmanForm extends StageSupervisorForm  implements Initializab
     
     @FXML
     void setExaminer(ActionEvent event) throws IOException {
-    	popupWindow("/GUI/PopUpWindows/ApproveRole.fxml"); //not sure
+    	ApproveRoleForm.role=Role.examiner;
+    	popupWindow("/GUI/PopUpWindows/ApproveRole.fxml"); 
     	
     }
 
