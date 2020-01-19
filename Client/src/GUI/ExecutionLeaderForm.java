@@ -117,6 +117,11 @@ public class ExecutionLeaderForm extends UserForm {
 					btnGetExtension.setDisable(true);
 					btnApprove.setDisable(true);
 				}
+				if(currentSubStage.equals(supervisorAction)) {
+					btnDueTime.setDisable(true);
+					setGetExtensionEnabled();
+					btnApprove.setDisable(false);
+				}
 			}
 		}
 	}

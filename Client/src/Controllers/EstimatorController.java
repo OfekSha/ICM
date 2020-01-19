@@ -39,31 +39,24 @@ public class EstimatorController extends StageSupervisorController {
 		case updateChangeRequest: // when update done, do refresh.
 			filterRequests(filterSelected);
 			break;
-		case getUsersByICMPermissions: // get chairman
-			chairMan=((ArrayList<User>)((Object[]) response.getObject())[0]).get(0);
-			chairmanStage.newStageSupervisor(chairMan);
-			messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, chairmanStage.getRequest()));
-			break;
 		default:
 			break;
 		}
 	}
-	private User chairMan;
-	private static ProcessStage chairmanStage;
+	private static ProcessStage stage;
 	// function for request:
 	public static void  setReport(ChangeRequest request, String location, String changeDescription, String desiredResult,
 			String constraints, String risks,String dueDaysEstimate) {
-		chairmanStage=request.getProcessStage();
-		messageToServer(new clientRequestFromServer(requestOptions.getUsersByICMPermissions, icmPermission.changeControlCommitteeChairman));
+		stage=request.getProcessStage();
 		EstimatorReport report = new EstimatorReport(UserForm.user, location, changeDescription, desiredResult,
 				constraints, risks, Integer.valueOf(dueDaysEstimate));
-		chairmanStage.setEstimatorReport(report); // set new report for request.
-		chairmanStage.setEndDate(LocalDate.now()); //set end date of this stage
-		chairmanStage.setCurrentSubStage(subStages.supervisorAction);
-		chairmanStage.setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
-		chairmanStage.setStartDate(LocalDate.now()); //start next stage is now.
-		chairmanStage.setDueDate(LocalDate.now().plusDays(7)); // next stage due date 7 days
-		chairmanStage.newStageSupervisor(null);
+		stage.setEstimatorReport(report); // set new report for request.
+		stage.setEndDate(LocalDate.now()); //set end date of this stage
+		stage.setCurrentSubStage(subStages.supervisorAction);
+		stage.setCurrentStage(ChargeRequestStages.examinationAndDecision); // next stage
+		stage.setStartDate(LocalDate.now()); //start next stage is now.
+		stage.setDueDate(LocalDate.now().plusDays(7)); // next stage due date 7 days
+		stage.newStageSupervisor(null);
 		messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, request));
 		// remove permission
 				User myUser=UserForm.user;
