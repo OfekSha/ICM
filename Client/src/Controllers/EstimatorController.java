@@ -43,10 +43,9 @@ public class EstimatorController extends StageSupervisorController {
 			chairMan=((ArrayList<User>)((Object[]) response.getObject())[0]).get(0);
 			chairmanStage.newStageSupervisor(chairMan);
 			messageToServer(new clientRequestFromServer(requestOptions.updateChangeRequest, chairmanStage.getRequest()));
-			
+			break;
 		default:
-			throw new IllegalArgumentException(
-					"the request " + response.getRequest() + " not implemented in the Estimator controller.");
+			break;
 		}
 	}
 	private User chairMan;
