@@ -6,4 +6,5 @@ WindowApp
 ocsf.client
 ocsf.server
 queryHandler
+reporting
 theServer

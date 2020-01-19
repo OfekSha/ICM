@@ -133,7 +133,7 @@ public class InspectorController extends StageSupervisorController {
 			if (filterSelected.getText().contains("Waiting for close")) { // get just the closure stages.
 				ArrayList<ChangeRequest> newList = new ArrayList<>();
 				for (ChangeRequest req : requests) {
-					if (req.getProcessStage().getCurrentStage()==ChargeRequestStages.closure)
+					if (req.getProcessStage().getCurrentStage()==ChargeRequestStages.closure && (req.getStatus()==ChangeRequestStatus.ongoing ||req.getStatus()==ChangeRequestStatus.rejected))
 						newList.add(req);
 				}
 				requests = newList;
