@@ -185,6 +185,7 @@ public class ReportController {
 		report.setCreationDate(LocalDate.now());
 		Object[] filed = new Object[4];
 		double[] medianAndStandardDeviation = new double[3];
+		createOngoingFiled(start,  end,  chosenScope, report);
 		// ongoing filed
 		ArrayList<ChangeRequest> ongoing = queryHandler.getChangeRequestQuerys()
 				.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
@@ -260,6 +261,24 @@ public class ReportController {
 		}
 		return report;
 	}// End of creatActivitiesReport()
+	
+	public void  createOngoingFiled(LocalDate start, LocalDate end, reportScope chosenScope, ActivitiesReport report) {
+
+		Object[] filed = new Object[4];
+		double[] medianAndStandardDeviation = new double[3];
+		ArrayList<ChangeRequest> ongoing = queryHandler.getChangeRequestQuerys()
+				.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
+		if (ongoing != null) {
+			ongoing = isInDateRange(ongoing, start, end);
+			// filed = reportFiled(ongoing, chosenScope); //@deprecated
+			filed = newReportFiled(ongoing, chosenScope, new Count());
+			medianAndStandardDeviation[0] = (double) filed[1];
+			medianAndStandardDeviation[1] = (double) filed[2];
+			medianAndStandardDeviation[2] = (int) filed[3];
+			report.setOngoingRequests(medianAndStandardDeviation);
+			report.setOngoingRequestsFrequencyDistribution((int[]) filed[0]);
+		}
+	}// createOngoingFiled ()
 	
 	
 	/**  Creates a delay report in the chosen Scope
