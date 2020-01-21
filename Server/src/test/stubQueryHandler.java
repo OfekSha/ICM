@@ -11,12 +11,15 @@ import queryHandler.QueryHandler;
 
 public class stubQueryHandler implements ModelQueryHandler{
 	public ArrayList<ChangeRequest> fakeList;
+	public stubQueryHandler(ArrayList<ChangeRequest> fakeList) {
+		this.fakeList=fakeList;
+	}
 	Initiator testInitiator=new Initiator(new User("test", null, null, null, null, null, null),null);
 	QueryHandler query=new QueryHandler(null) {
 		public ChangeRequestQuerys getChangeRequestQuerys() {
 			return new ChangeRequestQuerys(query) {
 				public ArrayList<ChangeRequest> getAllChangeRequestWithStatus(ChangeRequestStatus ongoingStatus){
-					fakeList.add(new ChangeRequest(testInitiator,null,null, null, null, null, null, null));
+					//fakeList.add(new ChangeRequest(testInitiator,null,null, null, null, null, null, null));
 					return fakeList ;
 					
 				}

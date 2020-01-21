@@ -15,9 +15,10 @@ import reporting.ActiveDays;
 import reporting.Count;
 import reporting.DaysLate;
 import reporting.FrequencyDistributionKind;
+import reporting.injected.injectedMethod;
 import test.ModelQueryHandler;
 import test.realQueryHandler;
-
+@injected( nameOfInjectedVar = "modelQuerryHandler", functionsNames = { "createOngoingFiled" })
 public class ReportController {
 	ModelQueryHandler modelQuerryHandler; // real or stub query
 	public ReportController(ModelQueryHandler modelQuerryHandler){ // added for stub.
@@ -274,7 +275,7 @@ public class ReportController {
 		}
 		return report;
 	}// End of creatActivitiesReport()
-	
+	@injectedMethod(functionName = "createOngoingFiled")
 	public void  createOngoingFiled(LocalDate start, LocalDate end, reporting.ReportController.reportScope chosenScope, ActivitiesReport report) {
 		
 		Object[] filed = new Object[4];
