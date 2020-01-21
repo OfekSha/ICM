@@ -14,21 +14,32 @@ import Entity.ProcessStage;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
+import Injection.ChangeRequestDataBace;
 import theServer.mysqlConnection;
 
 /** concentrates  all querys  for the table changeRequest
  * 
  *
  */
-public class ChangeRequestQuerys {
+public class ChangeRequestQuerys implements ChangeRequestDataBace {
 	
 
-	 private final QueryHandler queryHandler;
-		
-	 public ChangeRequestQuerys( QueryHandler queryHandler) {
-	        this.queryHandler = queryHandler;
-	    }
+	 private  QueryHandler queryHandler;
+	
+	 
+	/*
+	 * public ChangeRequestQuerys( QueryHandler queryHandler) { this.queryHandler =
+	 * queryHandler; }
+	 */
 	    
+	 /** using this constractor means you have to update queryHanler<p>
+	 * use setQueryHandler
+	 */
+	public ChangeRequestQuerys(){
+	    }
+	public  void setQueryHandler( QueryHandler queryHandler) {
+        this.queryHandler = queryHandler;
+    }
 	    
 	    /**Inserting ChangeRequest
 	     * @param newRequest ?

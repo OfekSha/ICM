@@ -1,5 +1,6 @@
 package queryHandler;
 
+import Injection.ChangeRequestDataBace;
 import theServer.mysqlConnection;
 
 /**
@@ -22,7 +23,7 @@ public class QueryHandler {
 	private mysqlConnection mysqlConn;
 	private FilesQuerys filesQuerys;
 
-	private ChangeRequestQuerys changeRequestQuerys;
+	private ChangeRequestDataBace changeRequestQuerys;
 	private ProccesStageQuerys proccesStageQuerys;
 
 	private InitiatorQuerys initiatorQuerys;
@@ -33,10 +34,11 @@ public class QueryHandler {
 	private ActivitiesReportQuerys activitiesReportQuerys ;
 	private MessagesQuerys messagesQuerys;
 
-	public QueryHandler(mysqlConnection mysqlConn) {
+	public QueryHandler(mysqlConnection mysqlConn ,ChangeRequestDataBace changeRequestDataBace ) {
 		this.mysqlConn = mysqlConn;
 		this.filesQuerys = new FilesQuerys(this);
-		this.changeRequestQuerys = new ChangeRequestQuerys(this);
+		this.changeRequestQuerys = changeRequestDataBace;
+		changeRequestQuerys.setQueryHandler(this);
 		this.proccesStageQuerys = new ProccesStageQuerys(this);
 		this.initiatorQuerys = new InitiatorQuerys(this);
 		this.userQuerys = new UserQuerys(this);
@@ -55,7 +57,7 @@ public class QueryHandler {
 		return filesQuerys;
 	}
 
-	public ChangeRequestQuerys getChangeRequestQuerys() {
+	public ChangeRequestDataBace getChangeRequestQuerys() {
 		return changeRequestQuerys;
 	}
 

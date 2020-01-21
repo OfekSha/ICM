@@ -6,6 +6,7 @@ import Entity.ProcessStage.ChargeRequestStages;
 import Entity.ProcessStage.subStages;
 import Entity.User.collegeStatus;
 import Entity.User.icmPermission;
+import queryHandler.ChangeRequestQuerys;
 import queryHandler.QueryHandler;
 import reporting.ReportController;
 import reporting.ReportController.reportScope;
@@ -36,7 +37,7 @@ public class mysqlConnection {
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
-		queryHandler = new QueryHandler(this);
+		queryHandler = new QueryHandler(this,new ChangeRequestQuerys());
 	}
 
 	public Connection getConn() {
