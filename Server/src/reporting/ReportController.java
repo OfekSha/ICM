@@ -11,10 +11,20 @@ import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
 import Entity.DelayReport;
 import queryHandler.QueryHandler;
+import reporting.ActiveDays;
+import reporting.Count;
+import reporting.DaysLate;
+import reporting.FrequencyDistributionKind;
+import test.ModelQueryHandler;
+import test.realQueryHandler;
 
 public class ReportController {
-
-	
+	ModelQueryHandler modelQuerryHandler; // real or stub query
+	public ReportController(ModelQueryHandler modelQuerryHandler){ // added for stub.
+		if (modelQuerryHandler==null) modelQuerryHandler=new realQueryHandler();
+		this.modelQuerryHandler=modelQuerryHandler;
+		this.queryHandler = modelQuerryHandler.getQuerry();
+	}
 	public enum reportScope{
 		
 		months,
@@ -23,7 +33,10 @@ public class ReportController {
 	private final QueryHandler queryHandler;
 
 	public ReportController(QueryHandler queryHandler) {
+		modelQuerryHandler=new realQueryHandler(); // added for use real one.
+		((realQueryHandler) modelQuerryHandler).setQueryHandler(queryHandler);// added for use real one.
 		this.queryHandler = queryHandler;
+
 	}
 
 	// assisting methods
@@ -72,9 +85,9 @@ public class ReportController {
 	
 	
 	
-	public int[] newFrequencyDistribution(ArrayList<ChangeRequest> requests, reportScope chosenRange,FrequencyDistributionKind fdk) {
+	public int[] newFrequencyDistribution(ArrayList<ChangeRequest> requests, reporting.ReportController.reportScope chosenScope,FrequencyDistributionKind fdk) {
 		int[] frequencyDistribution = null;
-		switch (chosenRange) {
+		switch (chosenScope) {
 		case dayOfmonth:
 			frequencyDistribution = new int[31];
 			for (ChangeRequest e : requests) {
@@ -141,7 +154,7 @@ public class ReportController {
 	 *         [3] request amount
 	 * 
 	 */
-		public Object[] newReportFiled(ArrayList<ChangeRequest> requests, reportScope chosenScope,FrequencyDistributionKind fdk) {
+		public Object[] newReportFiled(ArrayList<ChangeRequest> requests, reporting.ReportController.reportScope chosenScope,FrequencyDistributionKind fdk) {
 			Object[] ret = new Object[4];
 			ret[0] = newFrequencyDistribution(requests, chosenScope,fdk);
 			int len=((int[])ret[0]).length;
@@ -176,7 +189,7 @@ public class ReportController {
 	 * @see ActivitiesReport
 	 * @see reportScope
 	 */
-	public ActivitiesReport creatActivitiesReport(LocalDate start, LocalDate end, reportScope chosenScope) {
+	public ActivitiesReport creatActivitiesReport(LocalDate start, LocalDate end, reporting.ReportController.reportScope chosenScope) {
 
 		ActivitiesReport report = new ActivitiesReport();
 		report.setScope(chosenScope);
@@ -185,6 +198,7 @@ public class ReportController {
 		report.setCreationDate(LocalDate.now());
 		Object[] filed = new Object[4];
 		double[] medianAndStandardDeviation = new double[3];
+		createOngoingFiled(start,  end,  chosenScope, report);
 		// ongoing filed
 		ArrayList<ChangeRequest> ongoing = queryHandler.getChangeRequestQuerys()
 				.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
@@ -261,13 +275,29 @@ public class ReportController {
 		return report;
 	}// End of creatActivitiesReport()
 	
-	
+	public void  createOngoingFiled(LocalDate start, LocalDate end, reporting.ReportController.reportScope chosenScope, ActivitiesReport report) {
+		
+		Object[] filed = new Object[4];
+		double[] medianAndStandardDeviation = new double[3];
+		ArrayList<ChangeRequest> ongoing = modelQuerryHandler.getQuerry().getChangeRequestQuerys()
+				.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
+		if (ongoing != null) {
+			ongoing = isInDateRange(ongoing, start, end);
+			// filed = reportFiled(ongoing, chosenScope); //@deprecated
+			filed = newReportFiled(ongoing, chosenScope, new Count());
+			medianAndStandardDeviation[0] = (double) filed[1];
+			medianAndStandardDeviation[1] = (double) filed[2];
+			medianAndStandardDeviation[2] = (int) filed[3];
+			report.setOngoingRequests(medianAndStandardDeviation);
+			report.setOngoingRequestsFrequencyDistribution((int[]) filed[0]);
+		}
+	}// createOngoingFiled ()
 	/**  Creates a delay report in the chosen Scope
 	 * @param chosenScope @see reportScope
 	 * @return a full DelayReport
 	 * @see DelayReport 
 	 */
-	public DelayReport createDelayReport(reportScope chosenScope) {
+	public DelayReport createDelayReport(reporting.ReportController.reportScope chosenScope) {
 		Object[] filed = new Object[4];
 		double[] medianAndStandardDeviation = new double[3];
 		DelayReport report = new DelayReport();
