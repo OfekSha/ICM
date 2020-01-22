@@ -9,6 +9,8 @@ import java.util.Arrays;
 import Entity.ActivitiesReport;
 import Entity.ChangeRequest;
 import Entity.ChangeRequest.ChangeRequestStatus;
+import injection.ModelQueryHandler;
+import injection.realQueryHandler;
 import Entity.DelayReport;
 import queryHandler.QueryHandler;
 import reporting.ActiveDays;
@@ -16,8 +18,6 @@ import reporting.Count;
 import reporting.DaysLate;
 import reporting.FrequencyDistributionKind;
 import reporting.injected.injectedMethod;
-import test.ModelQueryHandler;
-import test.realQueryHandler;
 @injected( nameOfInjectedVar = "modelQuerryHandler", functionsNames = { "createOngoingFiled" })
 public class ReportController {
 	ModelQueryHandler modelQuerryHandler; // real or stub query

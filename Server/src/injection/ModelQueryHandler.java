@@ -1,4 +1,4 @@
-package test;
+package injection;
 
 import queryHandler.QueryHandler;
 
