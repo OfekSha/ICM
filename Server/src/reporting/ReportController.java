@@ -190,7 +190,7 @@ public class ReportController {
 	 * @see ActivitiesReport
 	 * @see reportScope
 	 */
-	public ActivitiesReport creatActivitiesReport(LocalDate start, LocalDate end, reporting.ReportController.reportScope chosenScope) {
+	public ActivitiesReport creatActivitiesReport(LocalDate start, LocalDate end, reportScope chosenScope) {
 
 		ActivitiesReport report = new ActivitiesReport();
 		report.setScope(chosenScope);
