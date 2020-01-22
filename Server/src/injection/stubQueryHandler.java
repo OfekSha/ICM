@@ -17,13 +17,14 @@ public class stubQueryHandler implements ModelQueryHandler {
 		this.fakeList = fakeList;
 	}
 
-	Initiator testInitiator = new Initiator(new User("test", null, null, null, null, null, null), null);
+	public void setFakeList(ArrayList<ChangeRequest> fakeList) {
+		this.fakeList = fakeList;
+	}
+
 	QueryHandler query = new QueryHandler(null) {
 		public ChangeRequestQuerys getChangeRequestQuerys() {
 			return new ChangeRequestQuerys(query) {
 				public ArrayList<ChangeRequest> getAllChangeRequestWithStatus(ChangeRequestStatus ongoingStatus) {
-					// fakeList.add(new ChangeRequest(testInitiator,null,null, null, null, null,
-					// null, null));
 					return fakeList;
 
 				}
@@ -34,7 +35,6 @@ public class stubQueryHandler implements ModelQueryHandler {
 	@Override
 	public QueryHandler getQuerry() {
 		// TODO Auto-generated method stub
-	
 		return query;
 	}
 
