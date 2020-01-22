@@ -224,9 +224,9 @@ public class ActivitiesReportQuerys {
 	        	toPut.setEnd(LocalDate.parse(re.getString(4)));
 	        	toPut.setCreationDate(LocalDate.parse(re.getString(5)));
 	        	// ongoing
-	        	doubleArray[0] =re.getDouble(6);
-	        	doubleArray[1] =re.getDouble(7);
-	        	doubleArray[2] =re.getDouble(8);
+	        	doubleArray[0] =re.getDouble(6); // Median
+	        	doubleArray[1] =re.getDouble(7); // deviation
+	        	doubleArray[2] =re.getDouble(8); // requests
 	        	toPut.setOngoingRequests(Arrays.copyOf(doubleArray,doubleArray.length));
 	        	//9
 				// suspended

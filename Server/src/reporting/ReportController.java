@@ -86,7 +86,7 @@ public class ReportController {
 	
 	
 	
-	public int[] newFrequencyDistribution(ArrayList<ChangeRequest> requests, reporting.ReportController.reportScope chosenScope,FrequencyDistributionKind fdk) {
+	public int[] newFrequencyDistribution(ArrayList<ChangeRequest> requests, reportScope chosenScope,FrequencyDistributionKind fdk) {
 		int[] frequencyDistribution = null;
 		switch (chosenScope) {
 		case dayOfmonth:

@@ -44,10 +44,7 @@ public class ActivityReport extends AbstractPopUp {
                     break;
                 default: scope = months;
             }
-
-            clientRequestFromServer newRequest = new clientRequestFromServer(createNewActivitiesReport,
-                    new Object[] {dpStartDate.getValue(), dpEndDate.getValue(), scope});
-            ClientLauncher.client.handleMessageFromClientUI(newRequest);
+            getReports(scope,dpStartDate.getValue(), dpEndDate.getValue());
 
             try {
                 Thread.sleep(300);
@@ -58,6 +55,11 @@ public class ActivityReport extends AbstractPopUp {
             taReport.setText(activitiesReport.toString());
         });
 
+    }
+    public void getReports( ReportController.reportScope scope,LocalDate start,LocalDate end) {
+    	clientRequestFromServer newRequest = new clientRequestFromServer(createNewActivitiesReport,
+                new Object[] {start,end, scope});
+        ClientLauncher.client.handleMessageFromClientUI(newRequest);
     }
     
     
