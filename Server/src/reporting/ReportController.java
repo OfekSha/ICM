@@ -155,7 +155,7 @@ public class ReportController {
 	 *         [3] request amount
 	 * 
 	 */
-		public Object[] newReportFiled(ArrayList<ChangeRequest> requests, reporting.ReportController.reportScope chosenScope,FrequencyDistributionKind fdk) {
+		public Object[] newReportFiled(ArrayList<ChangeRequest> requests, reportScope chosenScope,FrequencyDistributionKind fdk) {
 			Object[] ret = new Object[4];
 			ret[0] = newFrequencyDistribution(requests, chosenScope,fdk);
 			int len=((int[])ret[0]).length;
@@ -201,6 +201,7 @@ public class ReportController {
 		double[] medianAndStandardDeviation = new double[3];
 		createOngoingFiled(start,  end,  chosenScope, report);
 		// ongoing filed
+		/*
 		ArrayList<ChangeRequest> ongoing = queryHandler.getChangeRequestQuerys()
 				.getAllChangeRequestWithStatus(ChangeRequestStatus.ongoing);
 		if (ongoing!=null) {
@@ -213,6 +214,7 @@ public class ReportController {
 		report.setOngoingRequests(medianAndStandardDeviation);
 		report.setOngoingRequestsFrequencyDistribution((int[]) filed[0]);
 		}
+		*/
 		// suspended filed
 		medianAndStandardDeviation= new double[3];
 		filed = new Object[4];
@@ -276,7 +278,7 @@ public class ReportController {
 		return report;
 	}// End of creatActivitiesReport()
 	@injectedMethod(functionName = "createOngoingFiled")
-	public void  createOngoingFiled(LocalDate start, LocalDate end, reporting.ReportController.reportScope chosenScope, ActivitiesReport report) {
+	public void  createOngoingFiled(LocalDate start, LocalDate end, reportScope chosenScope, ActivitiesReport report) {
 		
 		Object[] filed = new Object[4];
 		double[] medianAndStandardDeviation = new double[3];
