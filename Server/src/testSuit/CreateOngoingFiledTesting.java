@@ -207,9 +207,55 @@ class CreateOngoingFiledTesting {
 	}// void TestCalculations_NoOngoingRequestsInRange() 
 	
 
+	/** testing calculation for   reportScope.months
+	 * 
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<h2></h2>
+	 * <h2>requests in each month table</h2>
+	 * <table style="width:50%">
+  <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+    <th>9</th>
+    <th>10</th>
+    <th>11</th>
+    <th>12</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>2</td>
+    <td>2</td>
+     <td>1</td>
+    <td>2</td>
+    <td>1</td>
+     <td>3</td>
+    <td>1</td>
+    <td>2</td>
+     <td>3</td>
+    <td>1</td>
+    <td>3</td>
+    
+  </tr>
+  </tr>
+</table>
+	 */
 	@Test
 	@claculationsTesting
-		void testCalculations_inRangeNormal() {
+		void testCalculations_month() {
 		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
 		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
 		EnumSet<User.icmPermission> lessPermissions; //empty enum set
@@ -301,24 +347,380 @@ class CreateOngoingFiledTesting {
 		expectedDouble[1] = 0.8164965809;
 		expectedDouble[2] = 24;
 		
+		int [] reseultsInt =new int[12]  ;
+		int [] expectedInt =new int[12]  ;
+		expectedInt[0]= 3;
+		expectedInt[1]= 2;
+		expectedInt[2]= 2;
+		expectedInt[3]= 1;
+		expectedInt[4]= 2;
+		expectedInt[5]= 1;
+		expectedInt[6]= 3;
+		expectedInt[7]= 1;
+		expectedInt[8]= 2;
+		expectedInt[9]= 3;
+		expectedInt[10]= 1;
+		expectedInt[11]= 3;
+		
+				
 		try {
 			
 		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31),  reportScope.months, report);
 		reseultsDouble =report.getOngoingRequests();
 		for(int u =0 ; u<3 ;u++) 
-			assertTrue(comperDouble(expectedDouble[u], reseultsDouble[u]),"Months"+u+expectedDouble[u] +" != "+ reseultsDouble[u]);
+			assertTrue(compareDouble(expectedDouble[u], reseultsDouble[u]),u+expectedDouble[u] +" != "+ reseultsDouble[u]);
+		reseultsInt =report.getOngoingRequestsFrequencyDistribution();
 		
-		
-		int a;
+		for(int u =0 ; u<12 ;u++) 
+			assertTrue(compareInteger(expectedInt[u], reseultsInt[u])  ,u+expectedInt[u] +" != "+ reseultsInt[u]);
 		}catch(Exception e) {fail("no exceptions should be thrown");}
 		
-	}// void TestCalculations_NoOngoingRequestsInRange() 
+	}// void testCalculations_month() 
 	
-	
-	// arraylist has requests in range 
-	/*
-	 * 2) send correct and test the calculation are correct
+	/** testing calculation for   reportScope.daysInWeek
+	 * 
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<h2></h2>
+	 * <h2>requests in each day in week table</h2>
+	 * <table style="width:50%">
+  <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>2</td>
+    <td>2</td>
+     <td>1</td>
+    <td>2</td>
+    <td>1</td>
+     <td>3</td>
+    
+  </tr>
+  </tr>
+</table>
 	 */
+	@Test
+	@claculationsTesting
+		void testCalculations_daysInWeek() {
+		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start;
+		ChangeRequest changeRequest;
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 20);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 20);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 21);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 1, 21);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 22);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 23);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 1, 23);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		stub.setFakeList(theList);		
+		double [] reseultsDouble =new double[3]  ;
+		double [] expectedDouble =new double[3]  ;
+		expectedDouble[0] = 2;
+		expectedDouble[1] = 0.755928946;
+		expectedDouble[2] = 14;
+		
+		int [] reseultsInt =new int[7]  ;
+		int [] expectedInt =new int[7]  ;
+		expectedInt[0]= 3;
+		expectedInt[1]= 2;
+		expectedInt[2]= 2;
+		expectedInt[3]= 1;
+		expectedInt[4]= 2;
+		expectedInt[5]= 1;
+		expectedInt[6]= 3;
+		
+				
+		try {
+			
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 31),  reportScope.dayOfweek, report);
+		reseultsDouble =report.getOngoingRequests();
+		for(int u =0 ; u<3 ;u++) 
+			assertTrue(compareDouble(expectedDouble[u], reseultsDouble[u]),u+"Ongoing Requests: "+expectedDouble[u] +" != "+ reseultsDouble[u]);
+		reseultsInt =report.getOngoingRequestsFrequencyDistribution();
+		
+		for(int u =0 ; u<7 ;u++) 
+			assertTrue(compareInteger(expectedInt[u], reseultsInt[u])  ,u+" Ongoing Requests Frequency Distribution: "+expectedInt[u] +" != "+ reseultsInt[u]);
+		}catch(Exception e) {fail("no exceptions should be thrown");}
+		
+	}// void testCalculations_daysInWeek() 
+	
+	
+	/** testing calculation for   reportScope.dayOfmonth
+	 * 
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<h2></h2>
+	 * <h2>requests in each day of the month table</h2>
+	 * <table style="width:50%">
+  <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+    <th>8</th>
+    <th>9</th>
+    <th>10</th>
+    <th>11</th>
+    <th>12</th>
+       <th>13</th>
+    <th>14</th>
+    <th>15</th>
+    <th>16</th>
+    <th>17</th>
+    <th>18</th>
+    <th>19</th>
+    <th>20</th>
+    <th>21</th>
+    <th>22</th>
+    <th>23</th>
+    <th>24</th>
+       <th>25</th>
+    <th>26</th>
+    <th>27</th>
+    <th>28</th>
+    <th>29</th>
+    <th>30</th>
+    <th>31</th>
+
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>2</td>
+    <td>2</td>
+     <td>1</td>
+    <td>2</td>
+    <td>1</td>
+     <td>3</td>
+    <td>1</td>
+    <td>2</td>
+     <td>3</td>
+    <td>1</td>
+    <td>3</td>
+     <td>3</td>
+    <td>2</td>
+    <td>2</td>
+     <td>1</td>
+    <td>2</td>
+    <td>1</td>
+     <td>3</td>
+    <td>1</td>
+    <td>2</td>
+     <td>3</td>
+    <td>1</td>
+    <td>3</td>
+     <td>3</td>
+    <td>2</td>
+    <td>2</td>
+     <td>1</td>
+    <td>2</td>
+    <td>1</td>
+     <td>3</td>
+
+    
+  </tr>
+  </tr>
+</table>
+	 */
+	@Test
+	@claculationsTesting
+		void testCalculations_dayOfmonth() {
+		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start;
+		ChangeRequest changeRequest;
+		
+		for(int u =0 ; u<3*12 ; u=u+12) {
+		start =LocalDate.of(2020, 1, 1+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 1+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 1+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 2, 2+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 2, 2+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 3, 3+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 3, 3+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 4, 4+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 5, 5+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 5, 5+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 6, 6+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		
+		start =LocalDate.of(2020, 7, 7+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 7, 7+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 7, 7+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		if (u<2*12) {
+		start =LocalDate.of(2020, 8, 8+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 9, 9+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);	
+		start =LocalDate.of(2020, 9, 9+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 10, 10+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 10, 10+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);	
+		start =LocalDate.of(2020, 10, 10+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 11, 11+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 12, 12+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);	
+		start =LocalDate.of(2020, 12, 12+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 12, 12+u);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		}
+		}
+
+		stub.setFakeList(theList);		
+		double [] reseultsDouble =new double[3]  ;
+		double [] expectedDouble =new double[3]  ;
+		expectedDouble[0] = 2;
+		expectedDouble[1] = 0.8032193289;
+		expectedDouble[2] = 62;
+		
+		int [] reseultsInt =new int[31]  ;
+		int [] expectedInt =new int[31]  ;
+		for(int u =0 ; u<3*12 ; u=u+12) {
+		expectedInt[0+u]= 3;
+		expectedInt[1+u]= 2;
+		expectedInt[2+u]= 2;
+		expectedInt[3+u]= 1;
+		expectedInt[4+u]= 2;
+		expectedInt[5+u]= 1;
+		expectedInt[6+u]= 3;	
+		if (u<2*12) {
+		expectedInt[7+u]= 1;
+		expectedInt[8+u]= 2;
+		expectedInt[9+u]= 3;
+		expectedInt[10+u]= 1;
+		expectedInt[11+u]= 3;
+		}
+		}
+		
+				
+		try {
+			
+		reporter.createOngoingFiled( LocalDate.of(2019, 1, 1), LocalDate.of(2021, 1, 1),  reportScope.dayOfmonth, report);
+		reseultsDouble =report.getOngoingRequests();
+		for(int u =0 ; u<3 ;u++) 
+			assertTrue(compareDouble(expectedDouble[u], reseultsDouble[u]),u+"Ongoing Requests: "+expectedDouble[u] +" != "+ reseultsDouble[u]);
+		reseultsInt =report.getOngoingRequestsFrequencyDistribution();
+		
+		for(int u =0 ; u<31 ;u++) 
+			assertTrue(compareInteger(expectedInt[u], reseultsInt[u])  ,u+" Ongoing Requests Frequency Distribution: "+expectedInt[u] +" != "+ reseultsInt[u]);
+		}catch(Exception e) {fail("no exceptions should be thrown");}
+		
+	}// void testCalculations_month() 
 	
 	
 	
@@ -599,9 +1001,17 @@ class CreateOngoingFiledTesting {
 	}
 	
 	
-	private boolean comperDouble(double d1, double d2) {
+	private boolean compareDouble(double d1, double d2) {
 		double epsilon = (double) 0.0001;
 		if (Math.abs(d1 - d2) < epsilon)
+			return true;
+		else
+			return false;
+	} // ENd of  comperFloats	
+	
+	private boolean compareInteger(int i1, int i2) {
+
+		if (Integer.compare(i1, i2)==0)
 			return true;
 		else
 			return false;
