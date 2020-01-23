@@ -18,6 +18,7 @@ import reporting.Count;
 import reporting.DaysLate;
 import reporting.FrequencyDistributionKind;
 import reporting.injected.injectedMethod;
+
 @injected( nameOfInjectedVar = "modelQuerryHandler", functionsNames = { "createOngoingFiled" })
 public class ReportController {
 	ModelQueryHandler modelQuerryHandler; // real or stub query
@@ -277,6 +278,13 @@ public class ReportController {
 		}
 		return report;
 	}// End of creatActivitiesReport()
+	/**  creates the ongoing filed 
+	 * @param start - the day the report starts
+	 * @param end - the day the report ends 
+	 * @param chosenScope - the scope which the report ends in 
+	 * @param report  - a report witch on goings fileds will be filed 
+	 * 
+	 *  */
 	@injectedMethod(functionName = "createOngoingFiled")
 	public void  createOngoingFiled(LocalDate start, LocalDate end, reportScope chosenScope, ActivitiesReport report) {
 		

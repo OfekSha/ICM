@@ -4,11 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import Entity.ActivitiesReport;
 import Entity.ChangeRequest;
@@ -29,63 +33,290 @@ import reporting.ReportController.reportScope;
 import theServer.ServerTesting;
 import theServer.ServerTesting.whatHappened;
 
+/** testing the method createOngoingFiled() in class ReportController
+ * 	@see ReportController
+ *	{@link reporting.ReportController#createOngoingFiled(LocalDate, LocalDate, reportScope, ActivitiesReport)} 
+ */
+/**
+ * @author Yonathan
+ *
+ */
+@TestInstance(Lifecycle.PER_CLASS)
 class CreateOngoingFiledTesting {
 	
-	 private  ReportController reporter ;
-	 private stubQueryHandler stub  ;
-	 private  ActivitiesReport report;
+	
+	/** Indicates  the test sends faulty in put to the method<p>
+	 * Expecting the method to respond with an exception to alert of the mistake.<br>
+	 * Even thaw it currently dose not throw , it should because then it has no other mechanism to alert of Faulty inputs
+	 *
+	 */
+	public @interface FaultyInputsTesting {/*Marker*/ }
+	
+	/** Indicates  the test is testing the calculations are done correctly 
+	 * 
+	 *
+	 */
+	public @interface claculationsTesting {/*Marker*/ }
+
+	 private   ReportController reporter ;
+	 private  stubQueryHandler stub  ;
+	 private   ActivitiesReport report;
+	 private   ArrayList<ChangeRequest> fakeList; 
 	 
-	@BeforeEach
-	void initalize() {
+	 @BeforeAll
+	  void  initalize() {
 		stub = new stubQueryHandler(null);
 		reporter = new  ReportController(stub);
 		report = new ActivitiesReport();
+		fakeList=originalTesing();
 	} // END  of initalize()
 
-	/** sending faulty inputs to the method
+	
+	 
+
+	/** Sending the method a revered date range<p>
 	 * 
 	 */
 	@Test
-	void TestFaultyInputs() {
-	ArrayList<ChangeRequest> fakeList =originalTesing();
-	stub.setFakeList(fakeList);
-	// sending incorrect range
+	@FaultyInputsTesting
+	void testFaultyInputs_ReversedDates() {
+	stub.setFakeList((ArrayList<ChangeRequest>) fakeList.clone());
+	// Sending incorrect range
 	try {
 	reporter.createOngoingFiled(LocalDate.now(), LocalDate.of(2020, 1, 1), reportScope.months, report);
-	
-	fakeList =originalTesing();
-	stub.setFakeList(fakeList);
-	reporter.createOngoingFiled(null, null, reportScope.months, report);
-
-	
-	fail("need to alert of range");
+	fail("Need to alert of invalid range");
 	}catch(Exception e) {
-		fail();
 	}
-	}// End of  TestFaltyInputs 
+	}// End of  TestFaultyInputs_ReversedDates 
+	
+	
+	/** sending the method nulls instead of dates <p>
+	 *  we are expecting the method to protected against Null Pointer Exception and instead throw its own exception
+	 */
+	@Test
+	@FaultyInputsTesting
+	void testFaultyInputs_NullDates() {
+		stub.setFakeList((ArrayList<ChangeRequest>) fakeList.clone());		
+		try {
+			reporter.createOngoingFiled(LocalDate.now(), null, reportScope.months, report);
+		reporter.createOngoingFiled(null, LocalDate.of(2020, 1, 1), reportScope.months, report);
+		fail("Need to alert of invalid  range");
+		}catch(Exception e) {
+			if(e instanceof NullPointerException)
+				fail("Needs to deal with date nulls");
+		}	
+	} // 	void TestFaultyInputs_NullDates() 
+	
+	/** Sending the method null instead of reportScope<p>
+	 *  we are expecting the method to protected against Null Pointer exception and instead throw its own exception
+	 */
+	@Test
+	@FaultyInputsTesting
+	void testFaultyInputs_NullReportScope() {
+		stub.setFakeList((ArrayList<ChangeRequest>) fakeList.clone());		
+		try {
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1), null, report);
+		fail("Need to alert of invalid scope");
+		}catch(Exception e) {
+			if(e instanceof NullPointerException)
+				fail("Needs to deal with  scope nulls");
+		}	
+	} // 	void TestFaultyInputs_NullReportScope() 
+	
+	/**
+	 *  sending the method null instead of Activity report 
+	 *  we are expecting the method to protected against Null Pointer exception and instead throw its own exception
+	 */
+	@Test
+	@FaultyInputsTesting
+	void testFaultyInputs_NullReport() {
+		stub.setFakeList((ArrayList<ChangeRequest>) fakeList.clone());		
+		try {
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1),  reportScope.months, null);
+		fail("Need to alert of invalid report");
+		}catch(Exception e) {
+			if(e instanceof NullPointerException)
+				fail("Needs to deal with  report nulls");
+		}	
+	} // 	void TestFaultyInputs_NullReport() 
 	
 	
 	
-	// TESING IDEAS
-	// incorrect inputes
 	
-	/*1) send incorrect send range  - endin is befor the start 
-	 *2) send incorrect enum 
-	 *3) send null report 
-	 *4)send dates as not dates
+	/** testing what happens if there are no ongoing requests in the DB 
 	 * 
 	 */
+	@Test
+	@claculationsTesting
+		void testCalculations_NoOngoingRequestsInDB() {
+		stub.setFakeList(new ArrayList<ChangeRequest>());		
+		double[] zeroDouble = new double[3]  ;
+		int [] zeroInt = new int[12];
+		try {
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1),  reportScope.months, report);
+		assertTrue(Arrays.equals(zeroDouble, report.getOngoingRequests()));
+		assertTrue(Arrays.equals(zeroInt, report.getOngoingRequestsFrequencyDistribution()));
+		}catch(Exception e) {fail("no exceptions should be thrown");}
+		
+	}// Void TestCalculations_NoOngoingRequestsInDB() 
 	
-	// correct inputs
-	// empty arraylist:
-	/*1) there are no ongoing requests
-	 *2) all requests are not in range 
-	 *3) 
+	/** Testing  what happens if requests in DB are not in range
+	 * 
 	 */
+	@Test
+	@claculationsTesting
+		void testCalculations_NoOngoingRequestsInRange() {
+		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start = LocalDate.of(2020, 10, 30);
+		ChangeRequest changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 7, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 8, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 9, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		stub.setFakeList(theList);		
+		double[] zeroDouble = new double[3]  ;
+		for(double z :zeroDouble)
+			z=0;
+		int [] zeroInt ;
+		try {
+			zeroInt = new int[12];
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 6, 30),  reportScope.months, report);
+		assertTrue(Arrays.equals(zeroDouble, report.getOngoingRequests()),"Months- should be zeros " );
+		assertTrue(Arrays.equals(zeroInt, report.getOngoingRequestsFrequencyDistribution())," Months- should be zeros");
+		zeroInt = new int[31];
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 6, 30),  reportScope.dayOfmonth, report);
+		assertTrue(Arrays.equals(zeroDouble, report.getOngoingRequests()),"dayOfmonth- should be zeros " );
+		assertTrue(Arrays.equals(zeroInt, report.getOngoingRequestsFrequencyDistribution())," dayOfmonth- should be zeros");
+		zeroInt = new int[7];
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 6, 30),  reportScope.dayOfweek, report);
+		assertTrue(Arrays.equals(zeroDouble, report.getOngoingRequests()),"dayOfweek- should be zeros " );
+		assertTrue(Arrays.equals(zeroInt, report.getOngoingRequestsFrequencyDistribution())," dayOfweek- should be zeros");
+		}catch(Exception e) {fail("no exceptions should be thrown");}
+		
+	}// void TestCalculations_NoOngoingRequestsInRange() 
+	
+
+	@Test
+	@claculationsTesting
+		void testCalculations_inRangeNormal() {
+		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start;
+		ChangeRequest changeRequest;
+		start =LocalDate.of(2020, 1, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 2, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 2, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 3, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 3, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 4, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 5, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 5, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 6, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		
+		start =LocalDate.of(2020, 7, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		start =LocalDate.of(2020, 7, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 7, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 8, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 9, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);	
+		start =LocalDate.of(2020, 9, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 10, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 10, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);	
+		start =LocalDate.of(2020, 10, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 11, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 12, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);	
+		start =LocalDate.of(2020, 12, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 12, 24);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		stub.setFakeList(theList);		
+		double [] reseultsDouble =new double[3]  ;
+		double [] expectedDouble =new double[3]  ;
+		expectedDouble[0] = 2;
+		expectedDouble[1] = 0.8164965809;
+		expectedDouble[2] = 24;
+		
+		try {
+			
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31),  reportScope.months, report);
+		reseultsDouble =report.getOngoingRequests();
+		for(int u =0 ; u<3 ;u++) 
+			assertTrue(comperDouble(expectedDouble[u], reseultsDouble[u]),"Months"+u+expectedDouble[u] +" != "+ reseultsDouble[u]);
+		
+		
+		int a;
+		}catch(Exception e) {fail("no exceptions should be thrown");}
+		
+	}// void TestCalculations_NoOngoingRequestsInRange() 
+	
 	
 	// arraylist has requests in range 
 	/*
-	 * 1) send requests with wrong date ranges (start and end are mingelg incorrectly)
 	 * 2) send correct and test the calculation are correct
 	 */
 	
@@ -95,7 +326,10 @@ class CreateOngoingFiledTesting {
 	 *  <p> only difference is the  all the requests are ongoing 
 	 * @return an array list with the change requests created when the server starts
 	 */
-	private ArrayList<ChangeRequest> originalTesing() {
+	/**
+	 * @return
+	 */
+	private  ArrayList<ChangeRequest> originalTesing() {
 		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
 		
 		
@@ -111,7 +345,7 @@ class CreateOngoingFiledTesting {
 		changeRequest.updateStage();
 		theList.add(changeRequest);
 
-		// estimatore 
+		// estimator 
 		//creating estimator
 		lessPermissions = EnumSet.complementOf(Permissions);
 		lessPermissions.add(User.icmPermission.estimator);
@@ -363,6 +597,17 @@ class CreateOngoingFiledTesting {
 				
 				return theList;	
 	}
+	
+	
+	private boolean comperDouble(double d1, double d2) {
+		double epsilon = (double) 0.0001;
+		if (Math.abs(d1 - d2) < epsilon)
+			return true;
+		else
+			return false;
+	} // ENd of  comperFloats	
+	
+	
 } // End of  CreateOngoingFiledTesting class
 
 
