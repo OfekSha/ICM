@@ -35,7 +35,7 @@ import theServer.ServerTesting.whatHappened;
 
 /** testing the method createOngoingFiled() in class ReportController
  * 	@see ReportController
- *	{@link reporting.ReportController#createOngoingFiled(LocalDate, LocalDate, reportScope, ActivitiesReport)} 
+ *	
  */
 /**
  * @author Yonathan
@@ -53,7 +53,6 @@ class CreateOngoingFiledTesting {
 	public @interface FaultyInputsTesting {/*Marker*/ }
 	
 	/** Indicates  the test is testing the calculations are done correctly 
-	 * 
 	 *
 	 */
 	public @interface claculationsTesting {/*Marker*/ }
@@ -68,7 +67,7 @@ class CreateOngoingFiledTesting {
 		stub = new stubQueryHandler(null);
 		reporter = new  ReportController(stub);
 		report = new ActivitiesReport();
-		fakeList=originalTesing();
+		fakeList=someArrayfortesing();
 	} // END  of initalize()
 
 	
@@ -140,8 +139,50 @@ class CreateOngoingFiledTesting {
 		}	
 	} // 	void TestFaultyInputs_NullReport() 
 	
+	@Test
+	@FaultyInputsTesting
+	void testFaultyInputs_NoStartDate() {
+
+		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start =null;
+		ChangeRequest changeRequest;
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
 	
+
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		stub.setFakeList(theList);		
 	
+				
+		try {
+			reporter.createOngoingFiled( LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 1),  reportScope.dayOfweek, report);
+			fail("Need to alert of invalid request");
+		}catch(Exception e) {
+			if(e instanceof NullPointerException)
+				fail("Needs to deal with  date nulls");
+		}	
+
+		
+	}
 	
 	/** testing what happens if there are no ongoing requests in the DB 
 	 * 
@@ -160,6 +201,114 @@ class CreateOngoingFiledTesting {
 		
 	}// Void TestCalculations_NoOngoingRequestsInDB() 
 	
+	
+	
+	
+	/** testing if edages of date  range are calculated 
+	 * 
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<h2></h2>
+	 * <h2>requests in each day in week table</h2>
+	 * <table style="width:50%">
+  <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+    <th>6</th>
+    <th>7</th>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>0</td>
+    <td>0</td>
+     <td>0</td>
+    <td>0</td>
+    <td>0</td>
+     <td>2</td>
+    
+  </tr>
+  </tr>
+</table>
+	 */
+	@Test
+	@claculationsTesting
+		void testCalculations_edges() {
+
+		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
+		EnumSet<User.icmPermission> Permissions = EnumSet.allOf(User.icmPermission.class);
+		EnumSet<User.icmPermission> lessPermissions; //empty enum set
+		User newUser = new User("admin", "admin", "adminFirstName", "adiminLastName", "admin@email.com", collegeStatus.informationEngineer, Permissions);
+		Initiator initiator = new Initiator(newUser, null);
+		LocalDate start;
+		ChangeRequest changeRequest;
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 19);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+	
+
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+		start =LocalDate.of(2020, 1, 25);	
+		changeRequest = new ChangeRequest(initiator, start, "TheSystem", "test", "test", "test", "baseforChange1", null);
+		theList.add(changeRequest);
+
+		stub.setFakeList(theList);		
+		double [] reseultsDouble =new double[3]  ;
+		double [] expectedDouble =new double[3]  ;
+		expectedDouble[0] = 0;
+		expectedDouble[1] = 1.772810521;
+		expectedDouble[2] = 7;
+		
+		int [] reseultsInt =new int[7]  ;
+		int [] expectedInt =new int[7]  ;
+		expectedInt[0]= 5;
+		expectedInt[1]= 0;
+		expectedInt[2]= 0;
+		expectedInt[3]= 0;
+		expectedInt[4]= 0;
+		expectedInt[5]= 0;
+		expectedInt[6]= 2;
+		
+				
+		try {
+			
+		reporter.createOngoingFiled( LocalDate.of(2020, 1, 19), LocalDate.of(2020, 1, 25),  reportScope.dayOfweek, report);
+		reseultsDouble =report.getOngoingRequests();
+		reseultsInt =report.getOngoingRequestsFrequencyDistribution();
+		
+		for(int u =0 ; u<7 ;u++) 
+			assertTrue(compareInteger(expectedInt[u], reseultsInt[u])  ,u+" Ongoing Requests Frequency Distribution: "+expectedInt[u] +" != "+ reseultsInt[u]);
+		for(int u =0 ; u<3 ;u++) 
+			assertTrue(compareDouble(expectedDouble[u], reseultsDouble[u]),u+"Ongoing Requests: "+expectedDouble[u] +" != "+ reseultsDouble[u]);
+		
+		}catch(Exception e) {fail("no exceptions should be thrown");}
+		
+	}
+		
+	// void testCalculations_month() 
 	/** Testing  what happens if requests in DB are not in range
 	 * 
 	 */
@@ -724,14 +873,14 @@ table, th, td {
 	
 	
 	
-	/**  creates the testing DB the server stars with 
+	/**  creates some  array for  testing DB  
 	 *  <p> only difference is the  all the requests are ongoing 
 	 * @return an array list with the change requests created when the server starts
 	 */
 	/**
 	 * @return
 	 */
-	private  ArrayList<ChangeRequest> originalTesing() {
+	private  ArrayList<ChangeRequest> someArrayfortesing() {
 		ArrayList<ChangeRequest> theList = new ArrayList<ChangeRequest>();
 		
 		
