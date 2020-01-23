@@ -139,6 +139,9 @@ class CreateOngoingFiledTesting {
 		}	
 	} // 	void TestFaultyInputs_NullReport() 
 	
+	/** test what happens when some requests have a null start date 
+	 * 
+	 */
 	@Test
 	@FaultyInputsTesting
 	void testFaultyInputs_NoStartDate() {
