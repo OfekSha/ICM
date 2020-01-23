@@ -13,52 +13,54 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.EnumSet;
 
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Entity.ActivitiesReport;
-import Entity.ChangeRequest;
-import Entity.Initiator;
-import Entity.User;
-import Entity.User.collegeStatus;
-import Entity.User.icmPermission;
 import queryHandler.ActivitiesReportQuerys;
-import queryHandler.FrequencydistributionQuerys;
 import queryHandler.QueryHandler;
 import reporting.ReportController;
 import reporting.ReportController.reportScope;
 import theServer.mysqlConnection;
 
+/**
+ * this test suit is for testing database of ongoing requests in the activity
+ * report. don't run it in the real local database.(it will corrupt the
+ * database) this is use for testing only!
+ */
 class ActivityReportSqlTest {
-	Connection conn;
-	ReportController reportController;
-	mysqlConnection mySQL;
-	ActivitiesReportQuerys activityQry;
-	FrequencydistributionQuerys distributionQry;
 	// number of each column:
-	final int ID = 1; // Activity id column
-	final int SCOPE = 2; // id column
-	final int START = 3; // Start date column
-	final int END = 4; // End date column
-	final int CREATED = 5; // Created date column
-	final int MEDIAN = 6; // Median column
-	final int DEVIATION = 7; // id column
-	final int REQUESTS = 8; // Number of requests column
-	final int DISTRIBUTION = 9; // Distribution column
+	final int ID = 1; // Activity id column.
+	final int SCOPE = 2; // id column.
+	final int START = 3; // Start date column.
+	final int END = 4; // End date column.
+	final int CREATED = 5; // Created date column.
+	final int MEDIAN = 6; // Median column for ongoing.
+	final int DEVIATION = 7; // id column for ongoing.
+	final int REQUESTS = 8; // Number of requests column for ongoing.
+	final int DISTRIBUTION = 9; // Distribution column for ongoing.
 	// end numbering.
-	// Activity report details (only ongoing):
+	private Connection conn; // connection to mysql database.
+	private ReportController reportController; // the report controller to create activity report before testing the
+												// database.
+	private mysqlConnection mySQL; // need this connection class for tests.
+	private ActivitiesReportQuerys activityQry; // this is the class with the methods that need to tests.
+	ArrayList<ExpectedActivityReport> DbReports; // Activity reports from the database.
 
+	/**
+	 * This class is for save information from the database and then compare for the
+	 * testing functions.
+	 *
+	 */
 	private class ExpectedActivityReport {
 		int id, distribution;
-		String scope;
+		String scope; // this is for the status (test only ongoing)
 		double meidan, deviation, requests;
 		LocalDate start, end, created;
-		int[] monthDays = new int[31];
-		int[] weekDays = new int[7];
-		int[] yearMonths = new int[12];
+		int[] monthDays = new int[31]; // requests per day in every day of a month.
+		int[] weekDays = new int[7]; // requests per day in every day of a week.
+		int[] yearMonths = new int[12];// requests per month in every month of year.
 
 		public ExpectedActivityReport(int id, double requests, String scope, double meidan, double deviation,
 				int distribution, LocalDate start, LocalDate end, LocalDate created, int[] monthDays, int[] weekDays,
@@ -78,70 +80,27 @@ class ActivityReportSqlTest {
 		}
 	}
 
-	ArrayList<ExpectedActivityReport> DbReports;
-
-	// end details.
-	
 	@BeforeEach
 	void initilaize() {
 		connectMysql();
 		DbReports = new ArrayList<ExpectedActivityReport>();
 		mySQL = new mysqlConnection(); // local
 		activityQry = new QueryHandler(mySQL).getActivitiesReportQuerys();
-		distributionQry = new QueryHandler(mySQL).getFrequencydistributionQuerys();
 		reportController = new ReportController(new QueryHandler(mySQL));
 		mysqlConnection.dropDB(); // drop schema
-		mySQL.buildDB(); // build new schema with the relevent tables to icm.
+		mySQL.buildDB(); // build new schema with the relevant tables to icm.
 		createRequests();
-		
-
-	}
-	private void connectMysql() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/?serverTimezone=IST", "root",
-					"Aa123456");
-		}catch(SQLException | ClassNotFoundException e) {
-			System.out.println(e);
-		}
-			
-	}
-	private void createRequests() {
-		int j;
-		try {
-			PreparedStatement addRequestsStmt;
-			for (int i =0;i<=30;i++) {
-				String qry="INSERT INTO `icm`.`changerequest` (`RequestID`,`startDate`, `status`) VALUES (?, ?, 'ongoing');";
-				addRequestsStmt=conn.prepareStatement(qry);
-				addRequestsStmt.setInt(1, i);
-				if (i<10) j=i;
-				else if(i<15) j=i*7; // 5 weeks have request in same day
-				else j=i*31; // 15 months have diffrent requests.
-				addRequestsStmt.setNString(2, LocalDate.now().plusDays(j).toString());
-				addRequestsStmt.execute();
-				addRequestsStmt.close();
-				qry="INSERT INTO `icm`.`stage` (`RequestID`, `currentStage`, currentSubStage,`stage1extension`, `stage2extension`, `stage3extension`, `stage4extension`) VALUES (?, 'meaningEvaluation', 'ApprovingDueTime' , '0', '0', '0', '0');";
-				addRequestsStmt=conn.prepareStatement(qry);
-				addRequestsStmt.setInt(1, i);
-				addRequestsStmt.execute();
-				addRequestsStmt.close();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//
 	}
 
 	/**
-	 * Insert activity report from the server with the class QueryHandler. with 0
-	 * requests.
+	 * Insert activity report from the server by activityQry. test days per month
 	 */
 	@Test
 	void serverCreateDayOfMonthReportTest() {
 		ActivitiesReport report = reportController.creatActivitiesReport(LocalDate.now(), LocalDate.now().plusMonths(5),
-				reportScope.dayOfmonth);
-		activityQry.InsertActivitiesReport(report);
-		getOngoingReport();
+				reportScope.dayOfmonth); // make new activity report
+		activityQry.InsertActivitiesReport(report); // this is the tested method.
+		getOngoingReport(); // call for method to see the database and compare for testing.
 		assertEquals(1, DbReports.get(0).id);
 		assertEquals(report.getScope().toString(), DbReports.get(0).scope);
 		assertEquals(report.getStart(), DbReports.get(0).start);
@@ -155,8 +114,7 @@ class ActivityReportSqlTest {
 	}
 
 	/**
-	 * Insert activity report from the server with the class QueryHandler. with 0
-	 * requests.
+	 * Insert activity report from the server by activityQry. test days per week
 	 */
 	@Test
 	void serverCreateDayOfWeekReportTest() {
@@ -177,8 +135,7 @@ class ActivityReportSqlTest {
 	}
 
 	/**
-	 * Insert activity report from the server with the class QueryHandler. with 0
-	 * requests.
+	 * Insert activity report from the server by activityQry. test months per year
 	 */
 	@Test
 	void serverCreateMonthsReportTest() {
@@ -195,11 +152,11 @@ class ActivityReportSqlTest {
 		assertEquals(report.getOngoingRequests()[1], DbReports.get(0).deviation);
 		assertEquals(report.getOngoingRequests()[2], DbReports.get(0).requests);
 		assertArrayEquals(report.getOngoingRequestsFrequencyDistribution(), DbReports.get(0).yearMonths);
-		assertEquals(1, DbReports.get(0).distribution);
 	}
 
 	/**
-	 * Insert activity report from server and then get it from server
+	 * Insert activity report from server and then get it from server by method
+	 * getAllActivitiesReports test days per month
 	 */
 	@Test
 	void serverCreateDayOfMonthAndGetReportTest() {
@@ -217,11 +174,11 @@ class ActivityReportSqlTest {
 		assertEquals(reports.get(0).getOngoingRequests()[1], DbReports.get(0).deviation);
 		assertEquals(reports.get(0).getOngoingRequests()[2], DbReports.get(0).requests);
 		assertArrayEquals(reports.get(0).getOngoingRequestsFrequencyDistribution(), DbReports.get(0).monthDays);
-		assertEquals(1, DbReports.get(0).distribution);
 	}
 
 	/**
-	 * Insert activity report from server and then get it from server
+	 * Insert activity report from server and then get it from server by method
+	 * getAllActivitiesReports test days per week.
 	 */
 	@Test
 	void serverCreateDayOfWeekAndGetReportTest() {
@@ -239,11 +196,11 @@ class ActivityReportSqlTest {
 		assertEquals(reports.get(0).getOngoingRequests()[1], DbReports.get(0).deviation);
 		assertEquals(reports.get(0).getOngoingRequests()[2], DbReports.get(0).requests);
 		assertArrayEquals(reports.get(0).getOngoingRequestsFrequencyDistribution(), DbReports.get(0).weekDays);
-		assertEquals(1, DbReports.get(0).distribution);
 	}
 
 	/**
-	 * Insert activity report from server and then get it from server
+	 * Insert activity report from server and then get it from server by method
+	 * getAllActivitiesReports test months per year.
 	 */
 	@Test
 	void serverCreateMonthsAndGetReportTest() {
@@ -261,7 +218,6 @@ class ActivityReportSqlTest {
 		assertEquals(reports.get(0).getOngoingRequests()[1], DbReports.get(0).deviation);
 		assertEquals(reports.get(0).getOngoingRequests()[2], DbReports.get(0).requests);
 		assertArrayEquals(reports.get(0).getOngoingRequestsFrequencyDistribution(), DbReports.get(0).yearMonths);
-		assertEquals(1, DbReports.get(0).distribution);
 	}
 
 	/**
@@ -273,17 +229,116 @@ class ActivityReportSqlTest {
 		assertTrue(reports.isEmpty());
 	}
 
+	/**
+	 * make all kinds of reports.
+	 */
+	@Test
+	void serverCreateAllReportTest() {
+		ArrayList<ActivitiesReport> reports = new ArrayList<ActivitiesReport>();
+		//months per year:
+		ActivitiesReport report = reportController.creatActivitiesReport(LocalDate.now(), LocalDate.now().plusMonths(10),
+				reportScope.months);
+		reports.add(report);
+		//days per week:
+		activityQry.InsertActivitiesReport(report);
+		report = reportController.creatActivitiesReport(LocalDate.now(), LocalDate.now().plusMonths(5),
+				reportScope.dayOfweek);
+		reports.add(report);
+		//days per month:
+		activityQry.InsertActivitiesReport(report);
+		report = reportController.creatActivitiesReport(LocalDate.now(), LocalDate.now().plusMonths(2),
+				reportScope.dayOfmonth);
+		reports.add(report);
+		activityQry.InsertActivitiesReport(report);
+		getOngoingReport(); // save data
+		for (int i = 0; i < 3; i++) { // test for each report:
+			assertEquals(i+1, DbReports.get(i).id);
+			assertEquals(reports.get(i).getScope().toString(), DbReports.get(i).scope);
+			assertEquals(reports.get(i).getStart(), DbReports.get(i).start);
+			assertEquals(reports.get(i).getEnd(), DbReports.get(i).end);
+			assertEquals(reports.get(i).getCreationDate(), DbReports.get(i).created);
+			assertEquals(reports.get(i).getOngoingRequests()[0], DbReports.get(i).meidan);
+			assertEquals(reports.get(i).getOngoingRequests()[1], DbReports.get(i).deviation);
+			assertEquals(reports.get(i).getOngoingRequests()[2], DbReports.get(i).requests);
+			switch (reports.get(i).getScope()) {
+			case months:
+				assertArrayEquals(reports.get(i).getOngoingRequestsFrequencyDistribution(),
+						DbReports.get(i).yearMonths);
+				break;
+			case dayOfweek:
+				assertArrayEquals(reports.get(i).getOngoingRequestsFrequencyDistribution(), DbReports.get(i).weekDays);
+				break;
+			case dayOfmonth:
+				assertArrayEquals(reports.get(i).getOngoingRequestsFrequencyDistribution(), DbReports.get(i).monthDays);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Make a test connection to connect to the database
+	 */
+	private void connectMysql() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			// connect to local
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/?serverTimezone=IST", "root", "Aa123456");
+		} catch (SQLException | ClassNotFoundException e) {
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * This method create requests for testing.
+	 */
+	private void createRequests() {
+		int j; // sort the dates
+		try {
+			PreparedStatement addRequestsStmt;
+			for (int i = 0; i <= 30; i++) {
+				String qry = "INSERT INTO `icm`.`changerequest` (`RequestID`,`startDate`, `status`) VALUES (?, ?, 'ongoing');";
+				addRequestsStmt = conn.prepareStatement(qry);
+				addRequestsStmt.setInt(1, i);
+				if (i < 10)
+					j = i; // requests in 10 days since now.
+				else if (i < 15)
+					j = i * 7; // 5 weeks have request in same day from now.
+				else
+					j = i * 31; // 15 months have different requests from now.
+				addRequestsStmt.setNString(2, LocalDate.now().plusDays(j).toString());
+				addRequestsStmt.execute();
+				addRequestsStmt.close();
+				qry = "INSERT INTO `icm`.`stage` (`RequestID`, `currentStage`, currentSubStage,`stage1extension`, `stage2extension`, `stage3extension`, `stage4extension`) VALUES (?, 'meaningEvaluation', 'ApprovingDueTime' , '0', '0', '0', '0');";
+				addRequestsStmt = conn.prepareStatement(qry);
+				addRequestsStmt.setInt(1, i);
+				addRequestsStmt.execute();// Creates stages for every requests needed for testing methods.
+				addRequestsStmt.close();
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * get from the Database report and compare or test it against the server
+	 * methods.<br>
+	 * save data to DbReports - list of activity reports.
+	 */
 	private void getOngoingReport() {
 		try {
 			Statement stmntActivity = conn.createStatement();
-			stmntActivity.execute("SELECT * FROM icm.activitiesreport");
-			ResultSet resActivity = stmntActivity.getResultSet();
+			stmntActivity.execute("SELECT * FROM icm.activitiesreport"); // activity report.
+			ResultSet resActivity = stmntActivity.getResultSet(); // result for activity
 			PreparedStatement stmntWeekDays = conn
-					.prepareStatement("SELECT * FROM icm.`frequencydistribution-daysinweek` WHERE id=?");
+					.prepareStatement("SELECT * FROM icm.`frequencydistribution-daysinweek` WHERE id=?"); // days per
+																											// week.
 			PreparedStatement stmntMonthDays = conn
-					.prepareStatement("SELECT * FROM icm.`frequencydistribution-daysinmonth` WHERE id=?");
+					.prepareStatement("SELECT * FROM icm.`frequencydistribution-daysinmonth` WHERE id=?"); // days per
+																											// month.
 			PreparedStatement stmntYearMonths = conn
-					.prepareStatement("SELECT * FROM icm.`frequencydistribution-months` WHERE id=?");
+					.prepareStatement("SELECT * FROM icm.`frequencydistribution-months` WHERE id=?"); // months per
+																										// year.
 
 			while (resActivity.next()) {
 
@@ -296,7 +351,7 @@ class ActivityReportSqlTest {
 				Double deviation = resActivity.getDouble(DEVIATION);
 				Double requests = resActivity.getDouble(REQUESTS);
 				int distribution = resActivity.getInt(DISTRIBUTION);
-				// WeekDays
+				// days per week:
 				stmntWeekDays.setInt(1, distribution);
 				stmntWeekDays.execute();
 				ResultSet resWeekDays = stmntWeekDays.getResultSet();
@@ -306,7 +361,7 @@ class ActivityReportSqlTest {
 					for (int i = 2; i <= 8; i++)
 						weekDays[i - 2] = resWeekDays.getInt(i);
 				}
-				// MonthDays
+				// days per month:
 				stmntMonthDays.setInt(1, distribution);
 				stmntMonthDays.execute();
 				ResultSet resMonthDays = stmntMonthDays.getResultSet();
@@ -316,7 +371,7 @@ class ActivityReportSqlTest {
 					for (int i = 2; i <= 32; i++)
 						monthDays[i - 2] = resMonthDays.getInt(i);
 				}
-				// YearMonths
+				// months per year:
 				stmntYearMonths.setInt(1, distribution);
 				stmntYearMonths.execute();
 				ResultSet resYearMonths = stmntYearMonths.getResultSet();
@@ -326,11 +381,13 @@ class ActivityReportSqlTest {
 					for (int i = 2; i <= 13; i++)
 						yearMonths[i - 2] = resYearMonths.getInt(i);
 				}
+				// save the data:
 				DbReports.add(new ExpectedActivityReport(id, requests, scope, meidan, deviation, distribution, start,
 						end, created, monthDays, weekDays, yearMonths));
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
+			fail("Can't reach to the activity tables");
 		}
 
 	}
