@@ -2,6 +2,10 @@ package injection;
 
 import queryHandler.QueryHandler;
 
+/**
+ * Used when  dealing with DB 
+ *
+ */
 public class realQueryHandler implements ModelQueryHandler{
 	QueryHandler querry;
 	@Override
